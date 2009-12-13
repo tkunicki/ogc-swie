@@ -4,7 +4,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <mapper namespace="ogcMapper">
 
-	<resultMap id="ogcResultMap" type="map">
+	<resultMap id="ogcResultMap" type="XMLMap">
 		<result
 	    	property="om:ObservationCollection"
 	    	column="%ROOT_ELEMENT"
@@ -44,12 +44,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			
 	</resultMap>
 	
-	<resultMap id="observationsResultMap" type="map" extends="ogcResultMap">
+	<resultMap type="XMLMap" id="observationsResultMap" extends="ogcResultMap">
 	 	<result
 	 		property="^!{om:member"
-	 		column="newMember"
-	 		javaType="string"
-	 		/>
+	 		column="station_id"
+			javaType="string" />
 		<result
 			property="om:member/wml2:WaterMonitoringObservation/om:samplingTime/gml:TimePeriod/gml:beginPosition"
 			column="beginPosition"
@@ -59,62 +58,61 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="endPosition"
 			javaType="string" />
 		<result
-			property="om:member/wml2:WaterMonitoringObservation/om:procedure#xlink:href"
-			column="procedure"
+			property="om:member/wml2:WaterMonitoringObservation/om:procedure#xlink:href=urn:ogc:object:Sensor:usgs-gw:%s"
+			column="station_id"
 			javaType="string" />
 		<result
-			property="om:member/wml2:WaterMonitoringObservation/om:observedProperty#xlink:href"
-			column="observedProperty"
+			property="om:member/wml2:WaterMonitoringObservation/om:observedProperty#xlink:href=urn:ogc:def:property:OGC:GroundWaterLevel"
+			column="station_id"
 			javaType="string" />
 		<result
-			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint#id"
-			column="waterObservationPoint"
+			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint#id=usgs:%s"
+			column="station_id"
 			javaType="string" />
 		<result
-			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint/^gml:name#codeSpace"
-			column="nameCodeSpace1"
-			javaType="string" />
-		<result
-			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint/gml:name"
-			column="name1"
-			javaType="string" />
-		<result
-			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint/^gml:name#codeSpace"
-			column="nameCodeSpace2"
+			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint/^gml:name#codeSpace=urn:ietf:rfc:2141"
+			column="station_id"
 			javaType="string" />
 		<result
 			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint/gml:name"
-			column="name2"
+			column="station_id"
 			javaType="string" />
 		<result
-			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint/gml:boundedBy/gml:Envelope#srsName"
-			column="srsName"
+			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint/^gml:name#codeSpace=urn:x-ngwd"
+			column="station_id"
 			javaType="string" />
 		<result
-			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint/gml:boundedBy/gml:Envelope/gml:pos#srsDimension"
-			column="srsDimension"
+			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint/gml:name=usgs.gov.gw-wells.%s"
+			column="station_id"
+			javaType="string" />
+		<result
+			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint/gml:boundedBy/gml:Envelope#srsName=EPSG:4326"
+			column="station_id"
+			javaType="string" />
+		<result
+			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint/gml:boundedBy/gml:Envelope/gml:pos#srsDimension=2"
+			column="station_id"
 			javaType="string" />
 		<result
 			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint/gml:boundedBy/gml:Envelope/gml:pos"
 			column="pos"
 			javaType="string" />
 		<result
-			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint/gml:boundedBy/gml:Envelope/^gml:pos#srsDimension"
-			column="srsDimension"
+			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint/gml:boundedBy/gml:Envelope/^gml:pos#srsDimension=2"
+			column="station_id"
 			javaType="string" />
 		<result
 			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint/gml:boundedBy/gml:Envelope/gml:pos"
 			column="pos"
 			javaType="string" />
 		<result
-			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint/sa:position/gml:Point#srsName"
-			column="srsName"
+			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint/sa:position/gml:Point#srsName=EPSG:4326"
+			column="station_id"
 			javaType="string" />
 		<result
 			property="}om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint/sa:position/gml:Point/gml:pos"
 			column="pos"
 			javaType="string" />
-			
 		<result
 			property="{om:member/wml2:WaterMonitoringObservation/om:result/wml2:TimeSeries/wml2:domainExtent/gml:TimePeriod/gml:beginPosition"
 			column="beginPosition"
@@ -124,20 +122,20 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="endPosition"
 			javaType="string" />
 		<result
-			property="om:member/wml2:WaterMonitoringObservation/om:result/wml2:TimeSeries/wml2:defaultDataType#codeSpace"
-			column="defaultDataTypeCodeSpace"
+			property="om:member/wml2:WaterMonitoringObservation/om:result/wml2:TimeSeries/wml2:defaultDataType#codeSpace=http://usgs.gov/water/"
+			column="station_id"
 			javaType="string" />
 		<result
-			property="}om:member/wml2:WaterMonitoringObservation/om:result/wml2:TimeSeries/wml2:defaultDataType"
-			column="defaultDataType"
+			property="}om:member/wml2:WaterMonitoringObservation/om:result/wml2:TimeSeries/wml2:defaultDataType=InstVal"
+			column="station_id"
 			javaType="string" />
 		<result
 			property="om:member/wml2:WaterMonitoringObservation/om:result/wml2:TimeSeries/^wml2:element/wml2:TimeValuePair/wml2:time"
-			column="timeXXX"
+			column="currentPosition"
 			javaType="string" />
 		<result
-			property="om:member/wml2:WaterMonitoringObservation/om:result/wml2:TimeSeries/wml2:element/wml2:TimeValuePair/wml2:value/swe:Quantity/swe:uom#code"
-			column="units"
+			property="om:member/wml2:WaterMonitoringObservation/om:result/wml2:TimeSeries/wml2:element/wml2:TimeValuePair/wml2:value/swe:Quantity/swe:uom#code=ft"
+			column="value"
 			javaType="string" />
 		<result
 			property="om:member/wml2:WaterMonitoringObservation/om:result/wml2:TimeSeries/wml2:element/wml2:TimeValuePair/wml2:value/swe:Quantity/^swe:value"
@@ -147,23 +145,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	
 	<select id="observationsSelect" parameterType="map" resultMap="observationsResultMap" fetchSize="1024" useCache="false">
 		select
-			station_id as newMember,
-			CONCAT('urn:ogc:object:Sensor:usgs-gw:', station_id) as procedure,
-			'urn:ogc:def:property:OGC:GroundWaterLevel' as observedProperty,
-			CONCAT('usgs:', station_id) AS waterObservationPoint,
-			'urn:ietf:rfc:2141' as nameCodeSpace1,
-			station_id as name1,
-			'urn:x-ngwd' as nameCodeSpace2,
-			CONCAT('usgs.gov.gw-wells.', station_id) as name2,
-			'EPSG:4326' as srsName,
-			'2' as srsDimension,
+			station_id,
 			CONCAT(CONCAT(DEC_LONG_VA, ' '), DEC_LAT_VA) as pos,
 			TO_CHAR(first_date,'YYYY-MM-DD')||'T00:00:00+00:00' as beginPosition,
 			TO_CHAR(last_date,'YYYY-MM-DD')||'T00:00:00+00:00' as endPosition,
-			'http://usgs.gov/water/' as defaultDataTypeCodeSpace,
-			'InstVal' as defaultDataType,
-			TO_CHAR(date_desc,'YYYY-MM-DD')||'T00:00:00+00:00' as timeXXX,
-			'ft' as units,
+			TO_CHAR(date_desc,'YYYY-MM-DD')||'T00:00:00+00:00' as currentPosition,
 			value
 		from (
 			select

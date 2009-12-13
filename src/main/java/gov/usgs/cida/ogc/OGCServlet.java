@@ -1,6 +1,6 @@
 package gov.usgs.cida.ogc;
 
-import gov.usgs.webservices.ibatis.XMLStreamWriterDAO;
+import gov.usgs.webservices.ibatis.XMLStreamReaderDAO;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -25,6 +25,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
 import org.codehaus.stax2.XMLOutputFactory2;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -37,29 +38,31 @@ public class OGCServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private final static DocumentBuilderFactory documentBuilderFactory;
+	private final static XMLStreamReaderDAO streamReaderDAO;
 	private final static XMLOutputFactory2 xmlOutputFactory;
 	
-	private final static String BBOXNodeName = "ogc:BBOX";
-	private final static String lowerCornerNodeName = "gml:lowerCorner";
-	private final static String upperCornerNodeName = "gml:upperCorner";
+	private final static String BBOXElementName = "ogc:BBOX";
+	private final static String lowerCornerElementName = "gml:lowerCorner";
+	private final static String upperCornerElementName = "gml:upperCorner";
+	
 	private final static Pattern cornerPattern = Pattern.compile("\\s+");
 	
-	// IS SSF THREAD SAFE?
-	private static XMLStreamWriterDAO streamWriterDAO;
-	
 	static {
+		
 		documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		xmlOutputFactory = (XMLOutputFactory2)XMLOutputFactory2.newInstance();
 		xmlOutputFactory.setProperty(XMLOutputFactory2.IS_REPAIRING_NAMESPACES, false);
 		xmlOutputFactory.configureForSpeed();
 		
-
+		XMLStreamReaderDAO dao = null;
 		try {
 			SqlSessionFactoryBuilder ssfb = new SqlSessionFactoryBuilder();
 			DefaultSqlSessionFactory ssf = (DefaultSqlSessionFactory)ssfb.build(Resources.getResourceAsReader("configuration.xml"));
-			streamWriterDAO = new XMLStreamWriterDAO(ssf);
+			dao = new XMLStreamReaderDAO(ssf);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			streamReaderDAO = dao;
 		}
 	}
 
@@ -82,6 +85,7 @@ public class OGCServlet extends HttpServlet {
 		cleanedUpForOurPurposes.put("west", original.get("west")[0]);
 		cleanedUpForOurPurposes.put("north", original.get("north")[0]);
 		cleanedUpForOurPurposes.put("south", original.get("south")[0]);
+		dumpMap(cleanedUpForOurPurposes);
 		
 		queryAndSend(cleanedUpForOurPurposes, response);
 	}
@@ -112,7 +116,7 @@ public class OGCServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		OutputStream outputStream = response.getOutputStream();
 		try {
-			XMLStreamReader streamReader = streamWriterDAO.getStreamReader("ogcMapper.observationsSelect", parameterMap);
+			XMLStreamReader streamReader = streamReaderDAO.getStreamReader("ogcMapper.observationsSelect", parameterMap);
 			XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
 			XMLStreamUtils.copy(streamReader, streamWriter);
 		}catch (Exception e) {
@@ -134,85 +138,65 @@ public class OGCServlet extends HttpServlet {
 			return null;
 		}
 		Map<String, Object> parameterMap = new LinkedHashMap<String, Object>();
-		Node bBoxNode = findElementNode(document.getDocumentElement(), BBOXNodeName);
-		if (bBoxNode != null) {
-			Node lowerCornerNode= findElementNode(bBoxNode, lowerCornerNodeName);
-			Node upperCornerNode= findElementNode(bBoxNode, upperCornerNodeName);
-			if (lowerCornerNode != null && upperCornerNode != null) {
-				String lowerCornerText = lowerCornerNode.getTextContent().trim();
-				String upperCornerText = upperCornerNode.getTextContent().trim();
-				if (lowerCornerText != null && lowerCornerText.length() > 0 &&
-					upperCornerText != null && upperCornerText.length() > 0) {
-					String[] lowerCornerSplit = cornerPattern.split(lowerCornerText);
-					String[] upperCornerSplit = cornerPattern.split(upperCornerText);
-					if (lowerCornerSplit != null && lowerCornerSplit.length == 2 &&
-						upperCornerSplit != null && upperCornerSplit.length == 2) {
+		
+		Element bBoxElement = DOMUtil.getElementByTagName(document.getDocumentElement(), BBOXElementName);
+		if (bBoxElement != null) {
+			Element lowerElement = DOMUtil.getElementByTagName(
+					bBoxElement,
+					lowerCornerElementName);
+			Element upperElement = DOMUtil.getElementByTagName(
+					bBoxElement,
+					upperCornerElementName);
+			if (lowerElement != null && upperElement != null) {
+				String lowerText = lowerElement.getTextContent().trim();
+				String upperText = upperElement.getTextContent().trim();
+				if (lowerText != null && upperText != null) {
+					String[] lowerSplit = cornerPattern.split(lowerText);
+					String[] upperSplit = cornerPattern.split(upperText);
+					if (lowerSplit.length == 2 && upperSplit.length == 2) {
 						try {
-							float lon0 = Float.parseFloat(lowerCornerSplit[0]);
-							float lat0 = Float.parseFloat(lowerCornerSplit[1]);
-							float lon1 = Float.parseFloat(upperCornerSplit[0]);
-							float lat1 = Float.parseFloat(upperCornerSplit[1]);
+							float lon0 = Float.parseFloat(lowerSplit[0]);
+							float lat0 = Float.parseFloat(lowerSplit[1]);
+							float lon1 = Float.parseFloat(upperSplit[0]);
+							float lat1 = Float.parseFloat(upperSplit[1]);
 							String east = null;
 							String west = null;
 							String south = null;
 							String north = null;
 							if (lon0 < lon1) {
-								east = upperCornerSplit[0];
-								west = lowerCornerSplit[0];
+								east = upperSplit[0];
+								west = lowerSplit[0];
 							} else {
-								east = lowerCornerSplit[0];
-								west = upperCornerSplit[0];
+								east = lowerSplit[0];
+								west = upperSplit[0];
 							}
 							if (lat0 < lat1) {
-								south = lowerCornerSplit[1];
-								north = upperCornerSplit[1];
+								south = lowerSplit[1];
+								north = upperSplit[1];
 							} else {
-								south = upperCornerSplit[1];
-								north = lowerCornerSplit[1];
+								south = upperSplit[1];
+								north = lowerSplit[1];
 							}
 							parameterMap.put("east", east);
 							parameterMap.put("west", west);
 							parameterMap.put("south", south);
 							parameterMap.put("north", north);
 						} catch (NumberFormatException e) {
-							System.out.println(lowerCornerNodeName + " or " + upperCornerNodeName + " contain invalid number format");
+							System.out.println(lowerCornerElementName + " or " + upperCornerElementName + " contain value with invalid number format");
 						}
+					} else {
+						System.out.println(lowerCornerElementName + " or " + upperCornerElementName + " contain an invalid parameter count (expected 2).");
 					}
 				} else {
-					System.out.println(lowerCornerNodeName + " or " + upperCornerNodeName + " are empty.");
+					System.out.println(lowerCornerElementName + " or " + upperCornerElementName + " are empty.");
 				}
 			} else {
-				System.out.println(lowerCornerNodeName + " or " + upperCornerNodeName + " not found.");
+				System.out.println(lowerCornerElementName + " or " + upperCornerElementName + " not found.");
 			}
 		} else {
-			System.out.println(BBOXNodeName + " : not found.");
+			System.out.println(BBOXElementName + " : not found.");
 		}
 		return parameterMap;
-	}
-	
-	private Node findElementNode(Node node, String elementName) {
-		Node foundNode = null;
-		if (node == null) {
-			return null;
-		}
-		int nodeType = node.getNodeType();
-		switch (nodeType) {
-		case Node.ELEMENT_NODE:
-			if (node.getNodeName().equals(elementName)) {
-				foundNode = node;
-			} else {
-				NodeList childNodes = node.getChildNodes();
-				int childNodeCount = childNodes.getLength();
-				for (int childNodeIndex = 0; childNodeIndex < childNodeCount && foundNode == null; ++ childNodeIndex) {
-					foundNode = findElementNode(childNodes.item(childNodeIndex), elementName);
-				}
-			}
-			break;
-		case Node.DOCUMENT_NODE:
-			foundNode = findElementNode(((Document)node).getDocumentElement(), elementName);
-			break;
-		}
-		return foundNode;
 	}
 
 	private void dumpMap(Map<String, Object> map) {

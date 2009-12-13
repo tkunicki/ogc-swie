@@ -2,6 +2,9 @@
 PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN"
 "http://ibatis.apache.org/dtd/ibatis-3-config.dtd">
 <configuration>
+	<typeAliases>
+		<typeAlias alias="XMLMap" type="gov.usgs.webservices.ibatis.stax.XMLMapStreamMarshaller"/>
+	</typeAliases>
 	<objectFactory type="gov.usgs.webservices.ibatis.XMLMapObjectFactory" />
 	<environments default="development">
 		<environment id="development">
