@@ -5,8 +5,8 @@
 	<groupId>gov.usgs.cida</groupId>
 	<artifactId>ogc-ie</artifactId>
 	<packaging>war</packaging>
+	<name>OGC HWG IE Web Service</name>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ogc-ie</name>
 
 	<parent>
 		<groupId>gov.usgs.cida</groupId>
