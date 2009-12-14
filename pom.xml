@@ -55,15 +55,13 @@
 				<artifactId>cargo-maven2-plugin</artifactId>
 				<configuration>
 					<container>
-						<containerId>tomcat6x</containerId>
+						<containerId>${cargo.containerId}</containerId>
 						<type>remote</type>
 					</container>
 					<configuration>
 						<type>runtime</type>
 						<properties>
-							<!-- requires settings.xml with username and
-							     password under id husdon -->
-							<cargo.server.settings>hudson</cargo.server.settings>
+							<cargo.server.settings>${cargo.server.settings}</cargo.server.settings>
 						</properties>
 					</configuration>
 				</configuration>
