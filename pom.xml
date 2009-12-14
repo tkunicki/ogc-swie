@@ -46,7 +46,29 @@
 			</exclusions>
 		</dependency>
 	</dependencies>
+	
 	<build>
 		<finalName>ogc-ie</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<configuration>
+					<container>
+						<containerId>tomcat6x</containerId>
+						<type>remote</type>
+					</container>
+					<configuration>
+						<type>runtime</type>
+						<properties>
+							<!-- requires settings.xml with username and
+							     password under id husdon -->
+							<cargo.server.settings>hudson</cargo.server.settings>
+						</properties>
+					</configuration>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
+	
 </project>
