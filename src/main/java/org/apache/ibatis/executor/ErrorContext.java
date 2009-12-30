@@ -85,7 +85,6 @@ public class ErrorContext {
     message = null;
     sql = null;
     cause = null;
-    System.out.println("ErrorContext.reset()");
     return this;
   }
 
