@@ -15,4 +15,12 @@
 		<servlet-name>OGCServlet</servlet-name>
 		<url-pattern>/sosbbox</url-pattern>
 	</servlet-mapping>
+	
+	<listener>
+		<listener-class>gov.usgs.webservices.util.PermGenCleanupListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>gov.usgs.webservices.ibatis.ErrorContextPermGenLeakFixListener</listener-class>
+	</listener>
+	
 </web-app>
