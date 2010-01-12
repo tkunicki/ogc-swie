@@ -23,7 +23,7 @@ public class PermGenCleanupListener implements ServletContextListener {
     			if (driver.getClass().getClassLoader() == getClass().getClassLoader()) {
     				try {
     					DriverManager.deregisterDriver(driver);
-    					System.out.println("INFO:  deregistered driver:" + driver.getClass().getName());
+//    					System.out.println("INFO:  deregistered driver:" + driver.getClass().getName());
     				} catch (Exception ex) {
     					System.out.println("ERROR: failed deregistered driver:" + driver.getClass().getName() + ", " + e);
     				}

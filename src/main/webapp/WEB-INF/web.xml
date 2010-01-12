@@ -19,8 +19,5 @@
 	<listener>
 		<listener-class>gov.usgs.webservices.util.PermGenCleanupListener</listener-class>
 	</listener>
-	<listener>
-		<listener-class>gov.usgs.webservices.ibatis.ErrorContextPermGenLeakFixListener</listener-class>
-	</listener>
 	
 </web-app>
