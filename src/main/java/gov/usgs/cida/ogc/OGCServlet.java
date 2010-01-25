@@ -1,10 +1,14 @@
 package gov.usgs.cida.ogc;
 
+import gov.usgs.webservices.ibatis.IXMLStreamReaderDAO;
 import gov.usgs.webservices.ibatis.XMLStreamReaderDAO;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -26,8 +30,6 @@ import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
 import org.codehaus.stax2.XMLOutputFactory2;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -38,7 +40,7 @@ public class OGCServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private final static DocumentBuilderFactory documentBuilderFactory;
-	private final static XMLStreamReaderDAO streamReaderDAO;
+	private final static IXMLStreamReaderDAO streamReaderDAO;
 	private final static XMLOutputFactory2 xmlOutputFactory;
 	
 	private final static String BBOXElementName = "ogc:BBOX";
@@ -54,7 +56,7 @@ public class OGCServlet extends HttpServlet {
 		xmlOutputFactory.setProperty(XMLOutputFactory2.IS_REPAIRING_NAMESPACES, false);
 		xmlOutputFactory.configureForSpeed();
 		
-		XMLStreamReaderDAO dao = null;
+		IXMLStreamReaderDAO dao = null;
 		try {
 			SqlSessionFactoryBuilder ssfb = new SqlSessionFactoryBuilder();
 			DefaultSqlSessionFactory ssf = (DefaultSqlSessionFactory)ssfb.build(Resources.getResourceAsReader("configuration.xml"));
@@ -77,17 +79,10 @@ public class OGCServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Map<String, String[]> original = request.getParameterMap();
-		Map<String, Object> cleanedUpForOurPurposes = new LinkedHashMap<String, Object>();
-		
-		cleanedUpForOurPurposes.put("east", original.get("east")[0]);
-		cleanedUpForOurPurposes.put("west", original.get("west")[0]);
-		cleanedUpForOurPurposes.put("north", original.get("north")[0]);
-		cleanedUpForOurPurposes.put("south", original.get("south")[0]);
-		dumpMap(cleanedUpForOurPurposes);
-		
-		queryAndSend(cleanedUpForOurPurposes, response);
+		Map<String, String[]> parameterMap = request.getParameterMap();
+		queryAndSend(parameterMap , response);
 	}
 
 	/**
@@ -97,11 +92,8 @@ public class OGCServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			Document document = createDocumentFromRequest(request);
-			Map<String, Object> parameterMap = createParameterMapFromDocument(document);
-			dumpMap(parameterMap);
-			
+			Map<String, String[]> parameterMap = createParameterMapFromDocument(document);
 			queryAndSend(parameterMap, response);
-			
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
 		} catch (SAXException e) {
@@ -111,7 +103,8 @@ public class OGCServlet extends HttpServlet {
 		}
 	}
 	
-	private void queryAndSend(Map<String, Object> parameterMap, HttpServletResponse response) throws IOException {
+	private void queryAndSend(Map<String, String[]> parameterMap, HttpServletResponse response) throws IOException {
+		dumpMap(parameterMap);
 		response.setContentType("text/xml");
 		response.setCharacterEncoding("UTF-8");
 		OutputStream outputStream = response.getOutputStream();
@@ -133,11 +126,11 @@ public class OGCServlet extends HttpServlet {
 		return document;
 	}
 
-	private Map<String, Object> createParameterMapFromDocument(Document document) throws Exception {
+	private Map<String, String[]> createParameterMapFromDocument(Document document) throws Exception {
 		if (document == null) {
 			return null;
 		}
-		Map<String, Object> parameterMap = new LinkedHashMap<String, Object>();
+		Map<String, String[]> parameterMap = new LinkedHashMap<String, String[]>();
 		
 		Element bBoxElement = DOMUtil.getElementByTagName(document.getDocumentElement(), BBOXElementName);
 		if (bBoxElement != null) {
@@ -177,10 +170,10 @@ public class OGCServlet extends HttpServlet {
 								south = upperSplit[1];
 								north = lowerSplit[1];
 							}
-							parameterMap.put("east", east);
-							parameterMap.put("west", west);
-							parameterMap.put("south", south);
-							parameterMap.put("north", north);
+							parameterMap.put("east", new String[] { east } );
+							parameterMap.put("west", new String[] { west } );
+							parameterMap.put("south", new String[] { south } );
+							parameterMap.put("north", new String[] { north } );
 						} catch (NumberFormatException e) {
 							System.out.println(lowerCornerElementName + " or " + upperCornerElementName + " contain value with invalid number format");
 						}
@@ -199,14 +192,25 @@ public class OGCServlet extends HttpServlet {
 		return parameterMap;
 	}
 
-	private void dumpMap(Map<String, Object> map) {
+	private void dumpMap(Map<String, String[]> m) {
 		System.out.println("Parameters are: ");
-		if (map != null && map.size() > 0) {
-		for (Map.Entry<String, Object> entry : map.entrySet()) {
-			System.out.println(" " + entry.getKey() + "-> " + entry.getValue());
-		}
+		if (m != null && m.size() > 0) {
+			for (Map.Entry<String, String[]> e : m.entrySet()) {
+				System.out.print(" " + e.getKey() + "-> ");
+				List<String> v = Arrays.asList(e.getValue());
+				Iterator<String> i = v.iterator();
+				if ( i.hasNext()) {
+					System.out.print(i.next());
+					while (i.hasNext()) {
+						System.out.print(", " + i.next());
+					}
+				} else {
+					System.out.print("[empty]");
+				}
+				System.out.println();
+			}
 		} else {
-			System.out.println("<empty>");
+			System.out.println("[empty]");
 		}
 	}
 }
