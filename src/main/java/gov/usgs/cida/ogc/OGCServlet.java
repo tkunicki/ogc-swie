@@ -3,8 +3,11 @@ package gov.usgs.cida.ogc;
 import gov.usgs.webservices.ibatis.IXMLStreamReaderDAO;
 import gov.usgs.webservices.ibatis.XMLStreamReaderDAO;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URLDecoder;
+import java.nio.CharBuffer;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -18,40 +21,39 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
 import org.codehaus.stax2.XMLOutputFactory2;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
+import org.w3c.dom.Node;
 
 /**
- * Servlet implementation class EchoServlet
+ * Servlet implementation class OGCServlet
  */
 public class OGCServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 
-	private final static DocumentBuilderFactory documentBuilderFactory;
+	private final static String XPATH_Envelope = "//sos:GetObservation/sos:featureOfInterest/ogc:BBOX[ogc:PropertyName='gml:location']/gml:Envelope";
+	private final static String XPATH_cornerLower = "gml:lowerCorner/text()";
+	private final static String XPATH_upperCorner = "gml:upperCorner/text()";
+	
+	private final static Pattern PATTERN_cornerSplit = Pattern.compile("\\s+");
+	
 	private final static IXMLStreamReaderDAO streamReaderDAO;
 	private final static XMLOutputFactory2 xmlOutputFactory;
 	
-	private final static String BBOXElementName = "ogc:BBOX";
-	private final static String lowerCornerElementName = "gml:lowerCorner";
-	private final static String upperCornerElementName = "gml:upperCorner";
-	
-	private final static Pattern cornerPattern = Pattern.compile("\\s+");
 	
 	static {
-		
-		documentBuilderFactory = DocumentBuilderFactory.newInstance();
+
 		xmlOutputFactory = (XMLOutputFactory2)XMLOutputFactory2.newInstance();
 		xmlOutputFactory.setProperty(XMLOutputFactory2.IS_REPAIRING_NAMESPACES, false);
 		xmlOutputFactory.configureForSpeed();
@@ -91,13 +93,37 @@ public class OGCServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			Document document = createDocumentFromRequest(request);
+			String contentType = request.getContentType();
+			String characterEncoding = request.getCharacterEncoding();
+			if ( characterEncoding == null || characterEncoding.length() == 0) {
+				characterEncoding = "UTF-8";
+			}
+
+			BufferedReader reader = request.getReader();
+			CharBuffer buffer = CharBuffer.allocate(128 << 10);
+			while ( reader.read(buffer) != -1 &&
+					buffer.hasRemaining() );
+			
+			if (buffer.remaining() == 0 && reader.read() < 0) {
+				response.sendError(403, "Request body too large, limited to " + buffer.capacity() + " bytes");
+				return;
+			}
+			
+			buffer.flip();
+			String documentString = buffer.toString();
+	
+			if ("application/x-www-form-urlencoded".equals(contentType)) {
+				if (documentString.startsWith("request=")) {
+					documentString = documentString.substring(8);	
+				}
+				documentString = URLDecoder.decode(documentString, characterEncoding);
+			}
+
+			Document document = DOMUtil.createDocument(documentString);
+			
 			Map<String, String[]> parameterMap = createParameterMapFromDocument(document);
 			queryAndSend(parameterMap, response);
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
-			e.printStackTrace();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -119,75 +145,64 @@ public class OGCServlet extends HttpServlet {
 		}
 	}
 
-	private Document createDocumentFromRequest(HttpServletRequest request)
-			throws ParserConfigurationException, SAXException, IOException {
-		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-		Document document = documentBuilder.parse(request.getInputStream());
-		return document;
-	}
-
 	private Map<String, String[]> createParameterMapFromDocument(Document document) throws Exception {
 		if (document == null) {
 			return null;
 		}
 		Map<String, String[]> parameterMap = new LinkedHashMap<String, String[]>();
 		
-		Element bBoxElement = DOMUtil.getElementByTagName(document.getDocumentElement(), BBOXElementName);
-		if (bBoxElement != null) {
-			Element lowerElement = DOMUtil.getElementByTagName(
-					bBoxElement,
-					lowerCornerElementName);
-			Element upperElement = DOMUtil.getElementByTagName(
-					bBoxElement,
-					upperCornerElementName);
-			if (lowerElement != null && upperElement != null) {
-				String lowerText = lowerElement.getTextContent().trim();
-				String upperText = upperElement.getTextContent().trim();
+		XPathFactory xpathFactory = XPathFactory.newInstance();
+		XPath xpath = xpathFactory.newXPath();
+		xpath.setNamespaceContext(new OGCBinding.GetObservationNamespaceContext());
+		XPathExpression envelopeExpression =  xpath.compile(XPATH_Envelope);
+		XPathExpression lowerCornerExpression =  xpath.compile(XPATH_cornerLower);
+		XPathExpression upperCornerExpression =  xpath.compile(XPATH_upperCorner);
+		
+		Object envelopeResult = envelopeExpression.evaluate(document, XPathConstants.NODE);
+		if (envelopeResult != null && envelopeResult instanceof Node) {
+			Node envelopeNode = (Node)envelopeResult;
+			String lowerCornerString = lowerCornerExpression.evaluate(envelopeNode);
+			String upperCornerString = upperCornerExpression.evaluate(envelopeNode);
+			if (lowerCornerString != null && upperCornerString != null) {
+				String lowerText = lowerCornerString.trim();
+				String upperText = upperCornerString.trim();
 				if (lowerText != null && upperText != null) {
-					String[] lowerSplit = cornerPattern.split(lowerText);
-					String[] upperSplit = cornerPattern.split(upperText);
+					String[] lowerSplit = PATTERN_cornerSplit.split(lowerText);
+					String[] upperSplit = PATTERN_cornerSplit.split(upperText);
 					if (lowerSplit.length == 2 && upperSplit.length == 2) {
 						try {
 							float lon0 = Float.parseFloat(lowerSplit[0]);
 							float lat0 = Float.parseFloat(lowerSplit[1]);
 							float lon1 = Float.parseFloat(upperSplit[0]);
 							float lat1 = Float.parseFloat(upperSplit[1]);
-							String east = null;
-							String west = null;
-							String south = null;
-							String north = null;
 							if (lon0 < lon1) {
-								east = upperSplit[0];
-								west = lowerSplit[0];
+								parameterMap.put("east", new String[] { upperSplit[0]} );
+								parameterMap.put("west", new String[] { lowerSplit[0]} );
 							} else {
-								east = lowerSplit[0];
-								west = upperSplit[0];
+								parameterMap.put("east", new String[] { lowerSplit[0] } );
+								parameterMap.put("west", new String[] { upperSplit[0] } );
 							}
 							if (lat0 < lat1) {
-								south = lowerSplit[1];
-								north = upperSplit[1];
+								parameterMap.put("south", new String[] { lowerSplit[1] } );
+								parameterMap.put("north", new String[] { upperSplit[1] } );
 							} else {
-								south = upperSplit[1];
-								north = lowerSplit[1];
+								parameterMap.put("south", new String[] { upperSplit[1] } );
+								parameterMap.put("north", new String[] { lowerSplit[1] } );
 							}
-							parameterMap.put("east", new String[] { east } );
-							parameterMap.put("west", new String[] { west } );
-							parameterMap.put("south", new String[] { south } );
-							parameterMap.put("north", new String[] { north } );
 						} catch (NumberFormatException e) {
-							System.out.println(lowerCornerElementName + " or " + upperCornerElementName + " contain value with invalid number format");
+							System.out.println(XPATH_cornerLower + " or " + XPATH_upperCorner + " contain value with invalid number format");
 						}
 					} else {
-						System.out.println(lowerCornerElementName + " or " + upperCornerElementName + " contain an invalid parameter count (expected 2).");
+						System.out.println(XPATH_cornerLower + " or " + XPATH_upperCorner + " contain an invalid parameter count (expected 2, whitespace delimited).");
 					}
 				} else {
-					System.out.println(lowerCornerElementName + " or " + upperCornerElementName + " are empty.");
+					System.out.println(XPATH_cornerLower + " or " + XPATH_upperCorner + " are empty.");
 				}
 			} else {
-				System.out.println(lowerCornerElementName + " or " + upperCornerElementName + " not found.");
+				System.out.println(XPATH_cornerLower + " or " + XPATH_upperCorner + " not found.");
 			}
 		} else {
-			System.out.println(BBOXElementName + " : not found.");
+			System.out.println(XPATH_Envelope + " : not found.");
 		}
 		return parameterMap;
 	}
