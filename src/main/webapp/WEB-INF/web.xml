@@ -8,14 +8,30 @@
 		<servlet-name>OGCServlet</servlet-name>
 		<display-name>OGCServlet</display-name>
 		<description></description>
-		<servlet-class>
-			gov.usgs.cida.ogc.OGCServlet</servlet-class>
+		<servlet-class>gov.usgs.cida.ogc.OGCServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>WFSServlet</servlet-name>
+		<display-name>WFSServlet</display-name>
+		<description></description>
+		<servlet-class>gov.usgs.cida.ogc.WFSServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>OGCServlet</servlet-name>
 		<url-pattern>/sosbbox</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>WFSServlet</servlet-name>
+		<url-pattern>/wfs</url-pattern>
+	</servlet-mapping>
 	
+	<context-param>
+  		<param-name>contextConfigLocation</param-name>
+  		<param-value>/WEB-INF/**/*Context.xml</param-value>
+	</context-param>
+	<listener>
+  		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
 	<listener>
 		<listener-class>gov.usgs.webservices.util.PermGenCleanupListener</listener-class>
 	</listener>

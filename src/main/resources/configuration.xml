@@ -15,5 +15,6 @@ PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN"
 	</environments>
 	<mappers>
 		<mapper resource="ogcMapper.xml" />
+		<mapper resource="wfsMapper.xml" />
 	</mappers>
 </configuration>

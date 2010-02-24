@@ -32,6 +32,8 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
 import org.codehaus.stax2.XMLOutputFactory2;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -48,26 +50,12 @@ public class OGCServlet extends HttpServlet {
 	
 	private final static Pattern PATTERN_cornerSplit = Pattern.compile("\\s+");
 	
-	private final static IXMLStreamReaderDAO streamReaderDAO;
 	private final static XMLOutputFactory2 xmlOutputFactory;
 	
-	
 	static {
-
 		xmlOutputFactory = (XMLOutputFactory2)XMLOutputFactory2.newInstance();
 		xmlOutputFactory.setProperty(XMLOutputFactory2.IS_REPAIRING_NAMESPACES, false);
 		xmlOutputFactory.configureForSpeed();
-		
-		IXMLStreamReaderDAO dao = null;
-		try {
-			SqlSessionFactoryBuilder ssfb = new SqlSessionFactoryBuilder();
-			DefaultSqlSessionFactory ssf = (DefaultSqlSessionFactory)ssfb.build(Resources.getResourceAsReader("configuration.xml"));
-			dao = new XMLStreamReaderDAO(ssf);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			streamReaderDAO = dao;
-		}
 	}
 
 	/**
@@ -104,7 +92,7 @@ public class OGCServlet extends HttpServlet {
 			while ( reader.read(buffer) != -1 &&
 					buffer.hasRemaining() );
 			
-			if (buffer.remaining() == 0 && reader.read() < 0) {
+			if (buffer.remaining() == 0 && reader.read() > -1) {
 				response.sendError(403, "Request body too large, limited to " + buffer.capacity() + " bytes");
 				return;
 			}
@@ -135,7 +123,7 @@ public class OGCServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		OutputStream outputStream = response.getOutputStream();
 		try {
-			XMLStreamReader streamReader = streamReaderDAO.getStreamReader("ogcMapper.observationsSelect", parameterMap);
+			XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("ogcMapper.observationsSelect", parameterMap);
 			XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
 			XMLStreamUtils.copy(streamReader, streamWriter);
 		}catch (Exception e) {
@@ -164,17 +152,17 @@ public class OGCServlet extends HttpServlet {
 			String lowerCornerString = lowerCornerExpression.evaluate(envelopeNode);
 			String upperCornerString = upperCornerExpression.evaluate(envelopeNode);
 			if (lowerCornerString != null && upperCornerString != null) {
-				String lowerText = lowerCornerString.trim();
-				String upperText = upperCornerString.trim();
-				if (lowerText != null && upperText != null) {
-					String[] lowerSplit = PATTERN_cornerSplit.split(lowerText);
-					String[] upperSplit = PATTERN_cornerSplit.split(upperText);
-					if (lowerSplit.length == 2 && upperSplit.length == 2) {
-						try {
-							float lon0 = Float.parseFloat(lowerSplit[0]);
-							float lat0 = Float.parseFloat(lowerSplit[1]);
-							float lon1 = Float.parseFloat(upperSplit[0]);
-							float lat1 = Float.parseFloat(upperSplit[1]);
+				String[] lowerSplit = PATTERN_cornerSplit.split(lowerCornerString.trim());
+				String[] upperSplit = PATTERN_cornerSplit.split(upperCornerString.trim());
+				if (lowerSplit.length == 2 && upperSplit.length == 2) {
+					try {
+						float lon0 = Float.parseFloat(lowerSplit[0]);
+						float lat0 = Float.parseFloat(lowerSplit[1]);
+						float lon1 = Float.parseFloat(upperSplit[0]);
+						float lat1 = Float.parseFloat(upperSplit[1]);
+						if (Float.isNaN(lon0) || Float.isNaN(lat0) || Float.isNaN(lon1) || Float.isNaN(lat1)) {
+							System.err.println("invalid number format");
+						} else {
 							if (lon0 < lon1) {
 								parameterMap.put("east", new String[] { upperSplit[0]} );
 								parameterMap.put("west", new String[] { lowerSplit[0]} );
@@ -189,14 +177,12 @@ public class OGCServlet extends HttpServlet {
 								parameterMap.put("south", new String[] { upperSplit[1] } );
 								parameterMap.put("north", new String[] { lowerSplit[1] } );
 							}
-						} catch (NumberFormatException e) {
-							System.out.println(XPATH_cornerLower + " or " + XPATH_upperCorner + " contain value with invalid number format");
 						}
-					} else {
-						System.out.println(XPATH_cornerLower + " or " + XPATH_upperCorner + " contain an invalid parameter count (expected 2, whitespace delimited).");
+					} catch (NumberFormatException e) {
+						System.out.println(XPATH_cornerLower + " or " + XPATH_upperCorner + " contain value with invalid number format");
 					}
 				} else {
-					System.out.println(XPATH_cornerLower + " or " + XPATH_upperCorner + " are empty.");
+					System.out.println(XPATH_cornerLower + " or " + XPATH_upperCorner + " contain an invalid parameter count (expected 2, whitespace delimited).");
 				}
 			} else {
 				System.out.println(XPATH_cornerLower + " or " + XPATH_upperCorner + " not found.");
@@ -227,5 +213,20 @@ public class OGCServlet extends HttpServlet {
 		} else {
 			System.out.println("[empty]");
 		}
+	}
+	
+	private XMLStreamReaderDAO getXMLStreamReaderDAO() throws ServletException {
+		XMLStreamReaderDAO xmlStreamReaderDAO = null;
+		ApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+		if (ac != null) {
+			Object o = ac.getBean("xmlStreamReaderDAO");
+			if (o != null && o instanceof XMLStreamReaderDAO) {
+				xmlStreamReaderDAO = (XMLStreamReaderDAO)o;
+			}
+		}
+		if(xmlStreamReaderDAO == null) {
+			throw new ServletException("Configuation error, unable to obtain reference to XMLStreamReaderDAO");
+		}
+		return xmlStreamReaderDAO;
 	}
 }

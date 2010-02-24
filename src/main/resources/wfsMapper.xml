@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="wfsMapper">
+
+	<resultMap id="wfsBaseMap" type="XMLMap">
+		<result
+	    	property="wfs:FeatureCollection"
+	    	column="%ROOT_ELEMENT"
+			javaType="string" />
+	    <result
+	    	property="xmlns:wfs=http://www.opengis.net/wfs"
+	    	column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+	    <result
+	    	property="xmlns:gml=http://www.opengis.net/gml"
+	    	column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+		<result
+	    	property="xmlns:sa=http://www.opengis.net/sampling/1.0"
+	    	column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+	    <result
+	    	property="xmlns:gwml=http://www.nrcan.gc.ca/xml/gwml/1"
+	    	column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+		<result
+	    	property="xmlns:gsml=urn:cgi:xmlns:CGI:GeoSciML:2.0"
+	    	column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+		<result
+    		property="xmlns:xlink=http://www.w3.org/1999/xlink"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+		<result
+    		property="xmlns:xs=http://www.w3.org/2001/XMLSchema"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+		<result
+    		property="xmlns:xsi=http://www.w3.org/2001/XMLSchema-instance"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+		<result
+    		property="xsi:schemaLocation=http://www.opengis.net/om/1.0 http://schemas.opengis.net/om/1.0.0/om.xsd"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+			
+	</resultMap>
+	
+	<resultMap type="XMLMap" id="wfsResultMap" extends="wfsBaseMap">
+	 	<result
+	 		property="^!{gml:featureMember"
+	 		column="id"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell#gml:id"
+			column="id"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/^gml:name#codeSpace=urn:gov.usgs.nwis.station_nm"
+			column="station_nm"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gml:name"
+			column="station_nm"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/^gml:name#codeSpace=urn:urn:gov.usgs.nwis.agency_cd_site_no"
+			column="id"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gml:name"
+			column="id"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope#srsName=ESPG:4326"
+			column="lat_long"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope/gml:pos#srsDimension=2"
+			column="lat_long"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope/gml:pos"
+			column="lat_long"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/sa:position/gml:Point#srsName=ESPG:4326"
+			column="lat_long_alt"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/sa:position/gml:Point/gml:pos"
+			column="lat_long_alt"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gwml:referenceElevation#uom=urn:ogc:def:uom:UCUM:ft"
+			column="alt"
+			javaType="string" />
+		<result
+			property="}gml:featureMember/gwml:WaterWell/gml:boundedBy/gwml:referenceElevation"
+			column="alt"
+			javaType="string" />
+<!--
+		<result
+			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gwml:wellDepth/gsml:CGI_NumericValue/gsml:principalValue#urn:ogc:def:uom:UCUM:ft"
+			column="???"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gwml:wellDepth/gsml:CGI_NumericValue/gsml:principalValue"
+			column="???"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gwml:wellStatus/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.alt_datum_cd"
+			column="???"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gwml:wellStatus/gsml:CGI_TermValue/gsml:value"
+			column="???"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gwml:wellType/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.alt_datum_cd"
+			column="???"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gwml:wellType/gsml:CGI_TermValue/gsml:value"
+			column="???"
+			javaType="string" />
+-->
+	</resultMap>
+	
+	<select id="wfsSelect" parameterType="map" resultMap="wfsResultMap" fetchSize="1024" useCache="false">
+		SELECT
+			s.agency_cd||'.'||s.site_no AS id,
+			s.station_nm,
+			s.dec_lat_va||' '||s.dec_long_va AS lat_long,
+			s.dec_lat_va||' '||s.dec_long_va||' '||s.alt_va AS lat_long_alt,
+			s.alt_va AS alt
+			
+		FROM
+			nwis_dwh_star.sites_gw_mvw_summ s
+		WHERE  
+		    s.dec_lat_va BETWEEN #{south[0]} AND #{north[0]}
+		AND
+		 	s.dec_long_va BETWEEN #{west[0]} AND #{east[0]}
+		<if test="maxFeatures != null">
+		AND ROWNUM<![CDATA[ < ]]> #maxFeatures[0]
+		</if>
+	    ORDER BY
+			s.station_nm
+	</select>
+
+</mapper> 
