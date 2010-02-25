@@ -76,12 +76,12 @@ public class WFSServlet extends HttpServlet {
 	}
 	
 	private void parseParameterMap(Map<String, String[]> parameterMap) {
-		String[] reguest = parameterMap.get("REQUEST");
-		if(reguest == null || reguest.length != 1 || "GetFeature".equals(reguest[0])) {
+		String[] request = parameterMap.get("REQUEST");
+		if(request == null || request.length != 1 || !"GetFeature".equalsIgnoreCase(request[0])) {
 			throw new IllegalArgumentException("REQUEST missing or invalid");
 		}
 		String[] typename = parameterMap.get("TYPENAME");
-		if(reguest == null || reguest.length != 1 || "gwml:WaterWell".equals(reguest[0])) {
+		if(typename == null || typename.length != 1 || !"gwml:WaterWell".equals(typename[0])) {
 			throw new IllegalArgumentException("TYPENAME missing or invalid");
 		}
 		String[] bBox = parameterMap.get("BBOX");

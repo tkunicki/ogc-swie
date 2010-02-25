@@ -74,7 +74,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="id"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope#srsName=ESPG:4326"
+			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope#srsName=EPSG:4326"
 			column="lat_long"
 			javaType="string" />
 		<result
@@ -86,7 +86,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="lat_long"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/sa:position/gml:Point#srsName=ESPG:4326"
+			property="gml:featureMember/gwml:WaterWell/sa:position/gml:Point#srsName=EPSG:4326"
 			column="lat_long_alt"
 			javaType="string" />
 		<result
@@ -102,7 +102,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="alt"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/gwml:wellStatus/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.alt_datum_cd"
+			property="gml:featureMember/gwml:WaterWell/^gwml:wellStatus/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.alt_datum_cd"
 			column="alt_datum_cd"
 			javaType="string" />
 		<result
@@ -138,8 +138,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			s.well_depth_va,
 			s.nat_water_use_cd
 		FROM
-<!--			nwis_dwh_star.sites_gw_mvw_summ s-->
-			nwis_dwh_star.sites_gw_mvw_detail s
+			nwis_dwh_star.sites_gw_mvw_summ s
 		WHERE  
 		    s.dec_lat_va BETWEEN #{south[0]} AND #{north[0]}
 		AND
