@@ -86,59 +86,60 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="lat_long"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/sa:position/gml:Point#srsName=ESPG:4326"
+			property="gml:featureMember/gwml:WaterWell/sa:position/gml:Point#srsName=ESPG:4326"
 			column="lat_long_alt"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/sa:position/gml:Point/gml:pos"
+			property="gml:featureMember/gwml:WaterWell/sa:position/gml:Point/gml:pos"
 			column="lat_long_alt"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gwml:referenceElevation#uom=urn:ogc:def:uom:UCUM:ft"
+			property="gml:featureMember/gwml:WaterWell/gwml:referenceElevation#uom=urn:ogc:def:uom:UCUM:ft"
 			column="alt"
 			javaType="string" />
 		<result
-			property="}gml:featureMember/gwml:WaterWell/gml:boundedBy/gwml:referenceElevation"
+			property="gml:featureMember/gwml:WaterWell/gwml:referenceElevation"
 			column="alt"
 			javaType="string" />
-<!--
 		<result
-			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gwml:wellDepth/gsml:CGI_NumericValue/gsml:principalValue#urn:ogc:def:uom:UCUM:ft"
-			column="???"
+			property="gml:featureMember/gwml:WaterWell/gwml:wellStatus/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.alt_datum_cd"
+			column="alt_datum_cd"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gwml:wellDepth/gsml:CGI_NumericValue/gsml:principalValue"
-			column="???"
+			property="}gml:featureMember/gwml:WaterWell/gwml:wellStatus/gsml:CGI_TermValue/gsml:value"
+			column="alt_datum_cd"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gwml:wellStatus/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.alt_datum_cd"
-			column="???"
+			property="gml:featureMember/gwml:WaterWell/^gwml:wellDepth/gsml:CGI_NumericValue/gsml:principalValue#uom=urn:ogc:def:uom:UCUM:ft"
+			column="well_depth_va"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gwml:wellStatus/gsml:CGI_TermValue/gsml:value"
-			column="???"
+			property="gml:featureMember/gwml:WaterWell/gwml:wellDepth/gsml:CGI_NumericValue/gsml:principalValue"
+			column="well_depth_va"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gwml:wellType/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.alt_datum_cd"
-			column="???"
+			property="gml:featureMember/gwml:WaterWell/^gwml:wellType/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.nat_water_use_cd"
+			column="nat_water_use_cd"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gwml:wellType/gsml:CGI_TermValue/gsml:value"
-			column="???"
+			property="gml:featureMember/gwml:WaterWell/gwml:wellType/gsml:CGI_TermValue/gsml:value"
+			column="nat_water_use_cd"
 			javaType="string" />
--->
 	</resultMap>
 	
 	<select id="wfsSelect" parameterType="map" resultMap="wfsResultMap" fetchSize="1024" useCache="false">
-		SELECT
+		SELECT DISTINCT
 			s.agency_cd||'.'||s.site_no AS id,
 			s.station_nm,
 			s.dec_lat_va||' '||s.dec_long_va AS lat_long,
 			s.dec_lat_va||' '||s.dec_long_va||' '||s.alt_va AS lat_long_alt,
-			s.alt_va AS alt
-			
+			s.alt_va AS alt,
+			s.alt_datum_cd,
+			s.well_depth_va,
+			s.nat_water_use_cd
 		FROM
-			nwis_dwh_star.sites_gw_mvw_summ s
+<!--			nwis_dwh_star.sites_gw_mvw_summ s-->
+			nwis_dwh_star.sites_gw_mvw_detail s
 		WHERE  
 		    s.dec_lat_va BETWEEN #{south[0]} AND #{north[0]}
 		AND

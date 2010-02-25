@@ -28,15 +28,8 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 public class WFSServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-	public final static String MAX_FEATURE = "maxFeatures";
-	public final static String BBOX = "BBOX";
-	public final static String REQUEST = "REQUEST";
-	public final static String TYPENAME = "TYPENAME";
-	
-	private final static Pattern PATTERN_SPLIT_BBOX = Pattern.compile(",");
 	
 	private final static XMLOutputFactory2 xmlOutputFactory;
-
 	static {
 		xmlOutputFactory = (XMLOutputFactory2)XMLOutputFactory2.newInstance();
 		xmlOutputFactory.setProperty(XMLOutputFactory2.IS_REPAIRING_NAMESPACES, false);
@@ -49,8 +42,6 @@ public class WFSServlet extends HttpServlet {
     public WFSServlet() {
         super();
         // TODO Auto-generated constructor stub
-        
-        
     }
 
 	/**
@@ -85,9 +76,17 @@ public class WFSServlet extends HttpServlet {
 	}
 	
 	private void parseParameterMap(Map<String, String[]> parameterMap) {
-		String[] bBox = parameterMap.get(BBOX);
+		String[] reguest = parameterMap.get("REQUEST");
+		if(reguest == null || reguest.length != 1 || "GetFeature".equals(reguest[0])) {
+			throw new IllegalArgumentException("REQUEST missing or invalid");
+		}
+		String[] typename = parameterMap.get("TYPENAME");
+		if(reguest == null || reguest.length != 1 || "gwml:WaterWell".equals(reguest[0])) {
+			throw new IllegalArgumentException("TYPENAME missing or invalid");
+		}
+		String[] bBox = parameterMap.get("BBOX");
 		if(bBox != null && bBox.length == 1) {
-			String[] split = PATTERN_SPLIT_BBOX.split(bBox[0]);
+			String[] split = bBox[0].split(",");
 			if (split != null && split.length == 4) {
 				try {
 					float lon0 = Float.parseFloat(split[0]);
@@ -113,13 +112,13 @@ public class WFSServlet extends HttpServlet {
 						}
 					}
 				} catch (NumberFormatException e) {
-					// error
+					throw new IllegalArgumentException("BBOX invalid number format");
 				}
 			} else {
-				// error
+				throw new IllegalArgumentException("BBOX invalid argument count");
 			}
 		} else {
-			// error
+			throw new IllegalArgumentException("BBOX missing");
 		}
 	}
 	
