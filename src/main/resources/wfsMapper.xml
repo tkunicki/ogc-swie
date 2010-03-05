@@ -110,7 +110,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="alt_datum_cd"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/^gwml:wellDepth/gsml:CGI_NumericValue/gsml:principalValue#uom=urn:ogc:def:uom:UCUM:ft"
+			property="gml:featureMember/gwml:WaterWell/^gwml:wellDepth/gsml:CGI_NumericValue/gsml:principalValue#uom=urn:ogc:def:uom:UCUM:ft_i"
 			column="well_depth_va"
 			javaType="string" />
 		<result
