@@ -66,7 +66,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="station_nm"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/^gml:name#codeSpace=urn:urn:gov.usgs.nwis.agency_cd_site_no"
+			property="gml:featureMember/gwml:WaterWell/^gml:name#codeSpace=urn:gov.usgs.nwis.agency_cd_site_no"
 			column="id"
 			javaType="string" />
 		<result
@@ -75,26 +75,26 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope#srsName=EPSG:4326"
-			column="lat_long"
+			column="long_lat"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope/gml:pos#srsDimension=2"
-			column="lat_long"
+			column="long_lat"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope/gml:pos"
-			column="lat_long"
+			column="long_lat"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/sa:position/gml:Point#srsName=EPSG:4326"
-			column="lat_long_alt"
+			column="long_lat_alt"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/sa:position/gml:Point/gml:pos"
-			column="lat_long_alt"
+			column="long_lat_alt"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/gwml:referenceElevation#uom=urn:ogc:def:uom:UCUM:ft"
+			property="gml:featureMember/gwml:WaterWell/gwml:referenceElevation#uom=urn:ogc:def:uom:UCUM:ft_i"
 			column="alt"
 			javaType="string" />
 		<result
@@ -119,11 +119,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/^gwml:wellType/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.nat_water_use_cd"
-			column="nat_water_use_cd"
+			column="nat_water_use_name"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/gwml:wellType/gsml:CGI_TermValue/gsml:value"
-			column="nat_water_use_cd"
+			column="nat_water_use_name"
 			javaType="string" />
 	</resultMap>
 	
@@ -131,12 +131,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		SELECT DISTINCT
 			s.agency_cd||'.'||s.site_no AS id,
 			s.station_nm,
-			s.dec_lat_va||' '||s.dec_long_va AS lat_long,
-			s.dec_lat_va||' '||s.dec_long_va||' '||s.alt_va AS lat_long_alt,
+			s.dec_long_va||' '||s.dec_lat_va AS long_lat,
+			s.dec_long_va||' '||s.dec_lat_va||' '||s.alt_va AS long_lat_alt,
 			s.alt_va AS alt,
 			s.alt_datum_cd,
 			s.well_depth_va,
-			s.nat_water_use_cd
+			s.nat_water_use_name
 		FROM
 			nwis_dwh_star.sites_gw_mvw_summ s
 		WHERE  
