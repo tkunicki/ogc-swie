@@ -14,9 +14,10 @@ public abstract class OGCBinding {
 		public final static Map<String, String> namespaceMap; 
 		static {
 			namespaceMap = new HashMap<String, String>();
-			namespaceMap.put("sos", "http://www.opengis.net/sos/1.0");
-			namespaceMap.put("ogc", "http://www.opengis.net/ogc");
 			namespaceMap.put("gml", "http://www.opengis.net/gml");
+			namespaceMap.put("ogc", "http://www.opengis.net/ogc");
+			namespaceMap.put("sa", "http://www.opengis.net/sampling/1.0");
+			namespaceMap.put("sos", "http://www.opengis.net/sos/1.0");
 		}
 		
 		@Override

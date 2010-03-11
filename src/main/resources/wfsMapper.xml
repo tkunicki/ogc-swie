@@ -18,7 +18,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    	column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
 		<result
-	    	property="xmlns:sa=http://www.opengis.net/sampling/1.0"
+	    	property="xmlns:gsml=urn:cgi:xmlns:CGI:GeoSciML:2.0"
 	    	column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
 	    <result
@@ -26,7 +26,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    	column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
 		<result
-	    	property="xmlns:gsml=urn:cgi:xmlns:CGI:GeoSciML:2.0"
+	    	property="xmlns:om=http://www.opengis.net/om/1.0"
+	    	column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+		<result
+	    	property="xmlns:sa=http://www.opengis.net/sampling/1.0"
 	    	column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
 		<result
@@ -102,20 +106,20 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="alt"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/^gwml:wellStatus/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.alt_datum_cd"
-			column="alt_datum_cd"
-			javaType="string" />
-		<result
-			property="}gml:featureMember/gwml:WaterWell/gwml:wellStatus/gsml:CGI_TermValue/gsml:value"
-			column="alt_datum_cd"
-			javaType="string" />
-		<result
 			property="gml:featureMember/gwml:WaterWell/^gwml:wellDepth/gsml:CGI_NumericValue/gsml:principalValue#uom=urn:ogc:def:uom:UCUM:ft_i"
 			column="well_depth_va"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/gwml:wellDepth/gsml:CGI_NumericValue/gsml:principalValue"
 			column="well_depth_va"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/^gwml:wellStatus/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.alt_datum_cd"
+			column="alt_datum_cd"
+			javaType="string" />
+		<result
+			property="}gml:featureMember/gwml:WaterWell/gwml:wellStatus/gsml:CGI_TermValue/gsml:value"
+			column="alt_datum_cd"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/^gwml:wellType/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.nat_water_use_cd"
@@ -127,10 +131,214 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="string" />
 	</resultMap>
 	
-	<select id="wfsSelect" parameterType="map" resultMap="wfsResultMap" fetchSize="1024" useCache="false">
+	<resultMap type="XMLMap" id="wfsResultMapXXX" extends="wfsBaseMap">
+	 	<id
+	 		property="^!{gml:featureMember"
+	 		column="id"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell#gml:id"
+			column="id"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/^gml:name#codeSpace=urn:gov.usgs.nwis.station_nm"
+			column="station_nm"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gml:name"
+			column="station_nm"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/^gml:name#codeSpace=urn:gov.usgs.nwis.agency_cd_site_no"
+			column="id"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gml:name"
+			column="id"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope#srsName=EPSG:4326"
+			column="long_lat"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope/gml:pos#srsDimension=2"
+			column="long_lat"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope/gml:pos"
+			column="long_lat"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/sa:position/gml:Point#srsName=EPSG:4326"
+			column="long_lat_alt"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/sa:position/gml:Point/gml:pos"
+			column="long_lat_alt"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:referenceElevation#uom=urn:ogc:def:uom:UCUM:ft_i"
+			column="alt"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:referenceElevation"
+			column="alt"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/^gwml:wellDepth/gsml:CGI_NumericValue/gsml:principalValue#uom=urn:ogc:def:uom:UCUM:ft_i"
+			column="well_depth_va"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:wellDepth/gsml:CGI_NumericValue/gsml:principalValue"
+			column="well_depth_va"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/^gwml:wellStatus/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.alt_datum_cd"
+			column="alt_datum_cd"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:wellStatus/gsml:CGI_TermValue/gsml:value"
+			column="alt_datum_cd"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/^gwml:wellType/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.nat_water_use_cd"
+			column="nat_water_use_name"
+			javaType="string" />
+		<result
+			property="}gml:featureMember/gwml:WaterWell/gwml:wellType/gsml:CGI_TermValue/gsml:value"
+			column="nat_water_use_name"
+			javaType="string" />
+			
+<!--		<result-->
+<!--			property="{gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation#gml:id"-->
+<!--			column="water_level_id"-->
+<!--			javaType="string" />-->
+<!--		<result-->
+<!--			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/gml:description=Test Yield"-->
+<!--			column="water_level_id"-->
+<!--			javaType="string" />-->
+<!--		<result-->
+<!--			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/gml:name#codeSpace=urn:x-ngwd:ab:WaterLevel"-->
+<!--			column="water_level_id"-->
+<!--			javaType="string" />-->
+<!--		<result-->
+<!--			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/gml:name"-->
+<!--			column="water_level_id"-->
+<!--			javaType="string" />-->
+<!--		<result-->
+<!--			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:samplingTime/gml:TimeInstant/gml:position"-->
+<!--			column="disc_dt"-->
+<!--			javaType="string" />-->
+<!--		<result-->
+<!--			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:procedure#xlink:href=urn:x-ngwd:procedure:unknown"-->
+<!--			column="water_level_id"-->
+<!--			javaType="string" />-->
+<!--		<result-->
+<!--			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:observedProperty#xlink:href=urn:x-ngwd:def:phenomenon:OGC:WellYield"-->
+<!--			column="water_level_id"-->
+<!--			javaType="string" />-->
+<!--		<result-->
+<!--			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:featureOfInterest#xlink:href"-->
+<!--			column="id"-->
+<!--			javaType="string" />-->
+<!--		<result-->
+<!--			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:result#xsi:type=gml:MeasureType"-->
+<!--			column="disc_va"-->
+<!--			javaType="string" />-->
+<!--		<result-->
+<!--			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:result#uom=urn:x-ngwd:def:uom:gpm_f"-->
+<!--			column="disc_va"-->
+<!--			javaType="string" />-->
+<!--		<result-->
+<!--			property="}gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:result"-->
+<!--			column="disc_va"-->
+<!--			javaType="string" />-->
+			
+		<collection property="XXX" column="site_no" select="wfsLithSelect" javaType="list" />
+			
+	</resultMap>
+	
+	<resultMap type="XMLMap" id="wfsLithResultMapXXX">
+		<id
+			property="gml:featureMember/gwml:WaterWell/^gwml:logElement/gsml:MappedInterval/gsml:observationMethod/gsml:CGI_TermValue/gsml:value#codeSpace=urn:x-ngwd:classifier:GIN:ObservationMethod"
+			column="HYDROSTRUNIT_ID"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:logElement/gsml:MappedInterval/gsml:observationMethod/gsml:CGI_TermValue/gsml:value=borehole"
+			column="HYDROSTRUNIT_ID"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:logElement/gsml:MappedInterval/gsml:specification/gwml:HydrostratigraphicUnit#gml:id"
+			column="HYDROSTRUNIT_ID"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:logElement/gsml:MappedInterval/gsml:specification/gwml:HydrostratigraphicUnit/gml:description"
+			column="LITH_NAME"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:logElement/gsml:MappedInterval/gsml:specification/gwml:HydrostratigraphicUnit/gsml:observationMethod/gsml:CGI_TermValue/gsml:value#codeSpace=urn:x-ngwd:classifier:GIN:ObservationMethod"
+			column="HYDROSTRUNIT_ID"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:logElement/gsml:MappedInterval/gsml:specification/gwml:HydrostratigraphicUnit/gsml:observationMethod/gsml:CGI_TermValue/gsml:value=borehole"
+			column="HYDROSTRUNIT_ID"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:logElement/gsml:MappedInterval/gsml:specification/gwml:HydrostratigraphicUnit/gsml:purpose=instance"
+			column="HYDROSTRUNIT_ID"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:logElement/gsml:MappedInterval/gsml:specification/gwml:HydrostratigraphicUnit/gsml:composition/gsml:CompositionPart/gsml:role#codeSpace=urn:x-ngwd:classifier:GIN:Role"
+			column="LITH_NAME"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:logElement/gsml:MappedInterval/gsml:specification/gwml:HydrostratigraphicUnit/gsml:composition/gsml:CompositionPart/gsml:role=contains"
+			column="LITH_NAME"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:logElement/gsml:MappedInterval/gsml:specification/gwml:HydrostratigraphicUnit/gsml:composition/gsml:CompositionPart/gsml:lithology/gsml:ControlledConcept/gml:name#codeSpace=urn:x-ngwd:classifierScheme:USGS:Lithology:2010"
+			column="LITH_NAME"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:logElement/gsml:MappedInterval/gsml:specification/gwml:HydrostratigraphicUnit/gsml:composition/gsml:CompositionPart/gsml:lithology/gsml:ControlledConcept/gml:name#xml:lang=eng"
+			column="LITH_NAME"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:logElement/gsml:MappedInterval/gsml:specification/gwml:HydrostratigraphicUnit/gsml:composition/gsml:CompositionPart/gsml:lithology/gsml:ControlledConcept/gml:name"
+			column="LITH_NAME"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:logElement/gsml:MappedInterval/gsml:specification/gwml:HydrostratigraphicUnit/gsml:composition/gsml:CompositionPart/gsml:material/gsml:UnconsolidatedMaterial/gml:name"
+			column="LITH_NAME"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:logElement/gsml:MappedInterval/gsml:specification/gwml:HydrostratigraphicUnit/gsml:composition/gsml:CompositionPart/gsml:material/gsml:UnconsolidatedMaterial/gsml:purpose=instance"
+			column="LITH_NAME"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:logElement/gsml:MappedInterval/gsml:specification/gwml:HydrostratigraphicUnit/gsml:composition/gsml:CompositionPart/gsml:proportion/gsml:CGI_TermValue/gsml:value#codeSpace=urn:ietf:rfc:2141"
+			column="LITH_NAME"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:logElement/gsml:MappedInterval/gsml:specification/gwml:HydrostratigraphicUnit/gsml:composition/gsml:CompositionPart/gsml:proportion/gsml:CGI_TermValue/gsml:value=urn:ogc:def:nil:OGC:unknown"
+			column="LITH_NAME"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:logElement/gsml:MappedInterval/gsml:shape/gml:LineString#srsDimension=1"
+			column="LITH_TOP_BOTTOM"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:logElement/gsml:MappedInterval/gsml:shape/gml:LineString/gml:coordinates"
+			column="LITH_TOP_BOTTOM"
+			javaType="string" />
+	</resultMap>
+	
+	
+	<select id="wfsSelect" parameterType="map" resultMap="wfsResultMapXXX" fetchSize="1024" useCache="false">
 		SELECT DISTINCT
 			s.agency_cd||'.'||s.site_no AS id,
-			s.station_nm,
+			s.site_no as site_no,
+			TRIM(s.station_nm) as station_nm,
 			s.dec_long_va||' '||s.dec_lat_va AS long_lat,
 			s.dec_long_va||' '||s.dec_lat_va||' '||s.alt_va AS long_lat_alt,
 			s.alt_va AS alt,
@@ -138,16 +346,39 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			s.well_depth_va,
 			s.nat_water_use_name
 		FROM
-			nwis_dwh_star.sites_gw_mvw_summ s
-		WHERE  
-		    s.dec_lat_va BETWEEN #{south[0]} AND #{north[0]}
-		AND
-		 	s.dec_long_va BETWEEN #{west[0]} AND #{east[0]}
+			nwis_dwh_star.sites_gw_mvw s
+			
+		WHERE 
+			s.dec_lat_va BETWEEN #{south[0]} AND #{north[0]} AND s.dec_long_va BETWEEN #{west[0]} AND #{east[0]}
 		<if test="maxFeatures != null">
-		AND ROWNUM<![CDATA[ < ]]> #maxFeatures[0]
+		AND ROWNUM<![CDATA[ < ]]> #{maxFeatures[0]}
 		</if>
 	    ORDER BY
-			s.station_nm
+			station_nm
+	</select>
+	
+	<select id="wfsLithSelect" parameterType="map" resultMap="wfsLithResultMapXXX" fetchSize="1024" useCache="false">
+		SELECT DISTINCT
+    		b.AGENCY_CD||'.'||b.SITE_NO||'.'||b.GEOH_SEQ_NU AS HYDROSTRUNIT_ID,
+			b.LITH_NAME,
+			TRIM(b.LITH_TOP_VA)||' '||TRIM(b.LITH_BOTTOM_VA) AS LITH_TOP_BOTTOM,
+			b.LITH_TOP_VA
+		FROM
+			nwis_dwh_star.gw_site_detail b
+		INNER JOIN ( 
+			SELECT DISTINCT
+				CD,
+				DESCR
+			FROM
+				nwis_dwh_star.mycodes
+			WHERE
+				which = 'LITH_CD') c ON b.LITH_CD = c.CD
+		WHERE 
+			b.SITE_NO = #{site_no}
+		AND
+			( b.LITH_TOP_VA IS NOT NULL OR b.LITH_BOTTOM_VA IS NOT NULL )
+		ORDER BY
+			b.LITH_TOP_VA
 	</select>
 
 </mapper> 
