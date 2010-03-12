@@ -49,15 +49,14 @@ public class WFSServlet extends HttpServlet {
 	 */
 	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Map<String, String[]> parameterMap = new HashMap<String, String[]>((Map<String, String[]>)request.getParameterMap());
 		
-		parseParameterMap(parameterMap);
+		Object parameters = parseParameterMap((Map<String, String[]>)request.getParameterMap());
 		
 		response.setContentType("text/xml");
 		response.setCharacterEncoding("UTF-8");
 		OutputStream outputStream = response.getOutputStream();
 		try {
-			XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("wfsMapper.wfsSelect", parameterMap);
+			XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("wfsMapper.wfsSelect", parameters);
 			XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
 			XMLStreamUtils.copy(streamReader, streamWriter);
 		} catch (XMLStreamException e) {
@@ -75,41 +74,52 @@ public class WFSServlet extends HttpServlet {
 		doGet(request, response);
 	}
 	
-	private void parseParameterMap(Map<String, String[]> parameterMap) {
-		String[] request = parameterMap.get("REQUEST");
-		if(request == null || request.length != 1 || !"GetFeature".equalsIgnoreCase(request[0])) {
+	private Object parseParameterMap(Map<String, String[]> originalMap) {
+		
+		Map<String, Object> scrubbedMap = new HashMap<String, Object>();
+		
+		String request = null;
+		String typeName = null;
+		String bBox = null;
+		String featureId = null;
+		String maxFeatures = null;
+		for (Map.Entry<String, String[]> entry : originalMap.entrySet()) {
+			String key = entry.getKey();
+			String[] value = entry.getValue();
+			if ("request".equalsIgnoreCase(key)) {
+				if (value != null && value.length > 0) { request = value[0]; }
+			} else if ("typeName".equalsIgnoreCase(key)) {
+				if (value != null && value.length > 0) { typeName = value[0]; }
+			} else if ("bBox".equalsIgnoreCase(key)) {
+				if (value != null && value.length > 0) { bBox = value[0]; }
+			} else if ("featureId".equalsIgnoreCase(key)) {
+				if (value != null && value.length > 0) { featureId = value[0]; }
+			} else if ("maxFeatures".equalsIgnoreCase(key)) {
+				if (value != null && value.length > 0) { maxFeatures = value[0]; }
+			}
+		}
+		
+		if(!"GetFeature".equalsIgnoreCase(request)) {
 			throw new IllegalArgumentException("REQUEST missing or invalid");
 		}
-		String[] typename = parameterMap.get("TYPENAME");
-		if(typename == null || typename.length != 1 || !"gwml:WaterWell".equals(typename[0])) {
+		if(!"gwml:WaterWell".equals(typeName)) {
 			throw new IllegalArgumentException("TYPENAME missing or invalid");
 		}
-		String[] bBox = parameterMap.get("BBOX");
-		if(bBox != null && bBox.length == 1) {
-			String[] split = bBox[0].split(",");
-			if (split != null && split.length == 4) {
+		if(bBox != null) {
+			String[] bBoxSplit = bBox.split(",");
+			if (bBoxSplit != null && bBoxSplit.length == 4) {
 				try {
-					float lon0 = Float.parseFloat(split[0]);
-					float lat0 = Float.parseFloat(split[1]);
-					float lon1 = Float.parseFloat(split[2]);
-					float lat1 = Float.parseFloat(split[3]);
-					if (Float.isNaN(lon0) || Float.isNaN(lat0) || Float.isNaN(lon1) || Float.isNaN(lat1)) {
-						System.err.println("invalid number format");
+					float west = Float.parseFloat(bBoxSplit[0]);
+					float south = Float.parseFloat(bBoxSplit[1]);
+					float east = Float.parseFloat(bBoxSplit[2]);
+					float north = Float.parseFloat(bBoxSplit[3]);
+					if (Float.isNaN(west) || Float.isNaN(south) || Float.isNaN(east) || Float.isNaN(north)) {
+						throw new IllegalArgumentException("BBOX invalid number format");
+					}
+					if (west < east && south < north) {
+						scrubbedMap.put("bBox", bBoxSplit);
 					} else {
-						if (lon0 < lon1) {
-							parameterMap.put("east", new String[] { split[2]} );
-							parameterMap.put("west", new String[] { split[0]} );
-						} else {
-							parameterMap.put("east", new String[] { split[0] } );
-							parameterMap.put("west", new String[] { split[2] } );
-						}
-						if (lat0 < lat1) {
-							parameterMap.put("south", new String[] { split[1] } );
-							parameterMap.put("north", new String[] { split[3] } );
-						} else {
-							parameterMap.put("south", new String[] { split[3] } );
-							parameterMap.put("north", new String[] { split[1] } );
-						}
+						throw new IllegalArgumentException("BBOX invalid bounding box values");
 					}
 				} catch (NumberFormatException e) {
 					throw new IllegalArgumentException("BBOX invalid number format");
@@ -117,9 +127,22 @@ public class WFSServlet extends HttpServlet {
 			} else {
 				throw new IllegalArgumentException("BBOX invalid argument count");
 			}
-		} else {
-			throw new IllegalArgumentException("BBOX missing");
 		}
+		if (featureId != null) {
+			scrubbedMap.put("featureId", featureId);
+		}
+		if (maxFeatures != null) {
+			try {
+				int maxFeaturesI = Integer.parseInt(maxFeatures);
+				if (maxFeaturesI > 0) {
+					scrubbedMap.put("maxFeatures", maxFeaturesI);
+				}
+			} catch (NumberFormatException e) {
+				throw new IllegalArgumentException("MAXFEATURES invalid number format");
+			}
+		}
+		
+		return scrubbedMap;
 	}
 	
 	private XMLStreamReaderDAO getXMLStreamReaderDAO() throws ServletException {

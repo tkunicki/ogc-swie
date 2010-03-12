@@ -49,89 +49,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     		property="xsi:schemaLocation=http://www.opengis.net/om/1.0 http://schemas.opengis.net/om/1.0.0/om.xsd"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
-			
 	</resultMap>
 	
 	<resultMap type="XMLMap" id="wfsResultMap" extends="wfsBaseMap">
-	 	<result
-	 		property="^!{gml:featureMember"
-	 		column="id"
-			javaType="string" />
-		<result
-			property="gml:featureMember/gwml:WaterWell#gml:id"
-			column="id"
-			javaType="string" />
-		<result
-			property="gml:featureMember/gwml:WaterWell/^gml:name#codeSpace=urn:gov.usgs.nwis.station_nm"
-			column="station_nm"
-			javaType="string" />
-		<result
-			property="gml:featureMember/gwml:WaterWell/gml:name"
-			column="station_nm"
-			javaType="string" />
-		<result
-			property="gml:featureMember/gwml:WaterWell/^gml:name#codeSpace=urn:gov.usgs.nwis.agency_cd_site_no"
-			column="id"
-			javaType="string" />
-		<result
-			property="gml:featureMember/gwml:WaterWell/gml:name"
-			column="id"
-			javaType="string" />
-		<result
-			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope#srsName=EPSG:4326"
-			column="long_lat"
-			javaType="string" />
-		<result
-			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope/gml:pos#srsDimension=2"
-			column="long_lat"
-			javaType="string" />
-		<result
-			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope/gml:pos"
-			column="long_lat"
-			javaType="string" />
-		<result
-			property="gml:featureMember/gwml:WaterWell/sa:position/gml:Point#srsName=EPSG:4326"
-			column="long_lat_alt"
-			javaType="string" />
-		<result
-			property="gml:featureMember/gwml:WaterWell/sa:position/gml:Point/gml:pos"
-			column="long_lat_alt"
-			javaType="string" />
-		<result
-			property="gml:featureMember/gwml:WaterWell/gwml:referenceElevation#uom=urn:ogc:def:uom:UCUM:ft_i"
-			column="alt"
-			javaType="string" />
-		<result
-			property="gml:featureMember/gwml:WaterWell/gwml:referenceElevation"
-			column="alt"
-			javaType="string" />
-		<result
-			property="gml:featureMember/gwml:WaterWell/^gwml:wellDepth/gsml:CGI_NumericValue/gsml:principalValue#uom=urn:ogc:def:uom:UCUM:ft_i"
-			column="well_depth_va"
-			javaType="string" />
-		<result
-			property="gml:featureMember/gwml:WaterWell/gwml:wellDepth/gsml:CGI_NumericValue/gsml:principalValue"
-			column="well_depth_va"
-			javaType="string" />
-		<result
-			property="gml:featureMember/gwml:WaterWell/^gwml:wellStatus/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.alt_datum_cd"
-			column="alt_datum_cd"
-			javaType="string" />
-		<result
-			property="}gml:featureMember/gwml:WaterWell/gwml:wellStatus/gsml:CGI_TermValue/gsml:value"
-			column="alt_datum_cd"
-			javaType="string" />
-		<result
-			property="gml:featureMember/gwml:WaterWell/^gwml:wellType/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.nat_water_use_cd"
-			column="nat_water_use_name"
-			javaType="string" />
-		<result
-			property="gml:featureMember/gwml:WaterWell/gwml:wellType/gsml:CGI_TermValue/gsml:value"
-			column="nat_water_use_name"
-			javaType="string" />
-	</resultMap>
-	
-	<resultMap type="XMLMap" id="wfsResultMapXXX" extends="wfsBaseMap">
 	 	<id
 	 		property="^!{gml:featureMember"
 	 		column="id"
@@ -254,11 +174,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <!--			column="disc_va"-->
 <!--			javaType="string" />-->
 			
-		<collection property="XXX" column="site_no" select="wfsLithSelect" javaType="list" />
+		<collection property="XXX" column="site_no" select="wfsLogElementSelect" javaType="list" />
 			
 	</resultMap>
 	
-	<resultMap type="XMLMap" id="wfsLithResultMapXXX">
+	<resultMap type="XMLMap" id="wfsLogElementResultMap">
 		<id
 			property="gml:featureMember/gwml:WaterWell/^gwml:logElement/gsml:MappedInterval/gsml:observationMethod/gsml:CGI_TermValue/gsml:value#codeSpace=urn:x-ngwd:classifier:GIN:ObservationMethod"
 			column="HYDROSTRUNIT_ID"
@@ -334,7 +254,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	
-	<select id="wfsSelect" parameterType="map" resultMap="wfsResultMapXXX" fetchSize="1024" useCache="false">
+	<select id="wfsSelect" parameterType="map" resultMap="wfsResultMap" fetchSize="1024" useCache="false">
 		SELECT DISTINCT
 			s.agency_cd||'.'||s.site_no AS id,
 			s.site_no as site_no,
@@ -347,17 +267,25 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			s.nat_water_use_name
 		FROM
 			nwis_dwh_star.sites_gw_mvw s
-			
-		WHERE 
-			s.dec_lat_va BETWEEN #{south[0]} AND #{north[0]} AND s.dec_long_va BETWEEN #{west[0]} AND #{east[0]}
-		<if test="maxFeatures != null">
-		AND ROWNUM<![CDATA[ < ]]> #{maxFeatures[0]}
-		</if>
+		WHERE 1 = 0
+		<trim prefix="OR (" suffix=")" prefixOverrides="AND">
+			<if test="bBox != null">
+		AND s.dec_long_va BETWEEN #{bBox[0]} AND #{bBox[2]} AND s.dec_lat_va BETWEEN #{bBox[1]} AND #{bBox[3]} 
+			</if>
+			<if test="featureId != null">
+<!--		AND s.agency_cd||'.'||s.site_no = #{featureId}-->
+		AND SUBSTR(#{featureId}, 1, INSTR(#{featureId}, '.') - 1) = s.agency_cd
+		AND SUBSTR(#{featureId}, INSTR(#{featureId}, '.') + 1) = s.site_no
+			</if>
+			<if test="maxFeatures != null">
+		AND ROWNUM<![CDATA[ <= ]]> #{maxFeatures}
+			</if>
+		</trim>	
 	    ORDER BY
 			station_nm
 	</select>
 	
-	<select id="wfsLithSelect" parameterType="map" resultMap="wfsLithResultMapXXX" fetchSize="1024" useCache="false">
+	<select id="wfsLogElementSelect" parameterType="map" resultMap="wfsLogElementResultMap" fetchSize="1024" useCache="false">
 		SELECT DISTINCT
     		b.AGENCY_CD||'.'||b.SITE_NO||'.'||b.GEOH_SEQ_NU AS HYDROSTRUNIT_ID,
 			b.LITH_NAME,
@@ -376,7 +304,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		WHERE 
 			b.SITE_NO = #{site_no}
 		AND
-			( b.LITH_TOP_VA IS NOT NULL OR b.LITH_BOTTOM_VA IS NOT NULL )
+			b.LITH_TOP_VA IS NOT NULL
+		AND
+			b.LITH_BOTTOM_VA IS NOT NULL
 		ORDER BY
 			b.LITH_TOP_VA
 	</select>
