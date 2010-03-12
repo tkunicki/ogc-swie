@@ -102,7 +102,7 @@ public class WFSServlet extends HttpServlet {
 		if(!"GetFeature".equalsIgnoreCase(request)) {
 			throw new IllegalArgumentException("REQUEST missing or invalid");
 		}
-		if(!"gwml:WaterWell".equals(typeName)) {
+		if(!"gwml:WaterWell".equals(typeName) && featureId == null) {
 			throw new IllegalArgumentException("TYPENAME missing or invalid");
 		}
 		if(bBox != null) {
@@ -114,13 +114,15 @@ public class WFSServlet extends HttpServlet {
 					float east = Float.parseFloat(bBoxSplit[2]);
 					float north = Float.parseFloat(bBoxSplit[3]);
 					if (Float.isNaN(west) || Float.isNaN(south) || Float.isNaN(east) || Float.isNaN(north)) {
-						throw new IllegalArgumentException("BBOX invalid number format");
+						throw new IllegalArgumentException("BBOX invalid number value");
 					}
-					if (west < east && south < north) {
-						scrubbedMap.put("bBox", bBoxSplit);
-					} else {
-						throw new IllegalArgumentException("BBOX invalid bounding box values");
+					if (west > east) {
+						String s = bBoxSplit[0]; bBoxSplit[0] = bBoxSplit[2]; bBoxSplit[2] = s;
 					}
+					if (south > north) {
+						String s = bBoxSplit[1]; bBoxSplit[1] = bBoxSplit[3]; bBoxSplit[3] = s;
+					}
+					scrubbedMap.put("bBox", bBoxSplit);
 				} catch (NumberFormatException e) {
 					throw new IllegalArgumentException("BBOX invalid number format");
 				}
