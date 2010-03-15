@@ -125,8 +125,16 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="nat_water_use_name"
 			javaType="string" />
 		<result
-			property="}gml:featureMember/gwml:WaterWell/gwml:wellType/gsml:CGI_TermValue/gsml:value"
+			property="gml:featureMember/gwml:WaterWell/gwml:wellType/gsml:CGI_TermValue/gsml:value"
 			column="nat_water_use_name"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:onlineResource#xlink:href=http://waterdata.usgs.gov/nwis/inventory?search_site_no=%s&amp;search_site_no_match_type=exact&amp;sort_key=site_no&amp;group_key=NONE&amp;sitefile_output_format=html_table&amp;column_name=agency_cd&amp;column_name=site_no&amp;column_name=station_nm&amp;format=station_manuscript&amp;list_of_search_criteria=search_site_no"
+			column="site_no"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:onlineResource#xlink:title=USGS NWIS Database"
+			column="site_no"
 			javaType="string" />
 			
 <!--		<result-->
@@ -273,7 +281,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		AND s.dec_long_va BETWEEN #{bBox[0]} AND #{bBox[2]} AND s.dec_lat_va BETWEEN #{bBox[1]} AND #{bBox[3]} 
 			</if>
 			<if test="featureId != null">
-<!--		AND s.agency_cd||'.'||s.site_no = #{featureId}-->
 		AND SUBSTR(#{featureId}, 1, INSTR(#{featureId}, '.') - 1) = s.agency_cd
 		AND SUBSTR(#{featureId}, INSTR(#{featureId}, '.') + 1) = s.site_no
 			</if>

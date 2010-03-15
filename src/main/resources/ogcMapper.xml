@@ -66,7 +66,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="station_id"
 			javaType="string" />
 		<result
-			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint#id=usgs:%s"
+			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint#gml:id=usgs:%s"
 			column="station_id"
 			javaType="string" />
 		<result
