@@ -1,7 +1,7 @@
 package gov.usgs.cida.ogc;
 
-import gov.usgs.webservices.ibatis.IXMLStreamReaderDAO;
 import gov.usgs.webservices.ibatis.XMLStreamReaderDAO;
+import gov.usgs.webservices.stax.XMLStreamUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,8 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import javanet.staxutils.XMLStreamUtils;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,9 +26,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
 import org.codehaus.stax2.XMLOutputFactory2;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;

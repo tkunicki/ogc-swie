@@ -61,7 +61,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="id"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/^gml:name#codeSpace=urn:gov.usgs.nwis.station_nm"
+			property="gml:featureMember/gwml:WaterWell/^gml:name#codeSpace=http://cida.xxx.gov/station_nm/"
 			column="station_nm"
 			javaType="string" />
 		<result
@@ -88,6 +88,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope/gml:pos"
 			column="long_lat"
 			javaType="string" />
+			
+		<association property="UNUSED" column="site_no" select="wfsRelatedObservationSelect" javaType="list" />
+			
 		<result
 			property="gml:featureMember/gwml:WaterWell/sa:position/gml:Point#srsName=EPSG:4326"
 			column="long_lat_alt"
@@ -133,57 +136,61 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="site_no"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/gwml:onlineResource#xlink:title=USGS NWIS Database"
+			property="}gml:featureMember/gwml:WaterWell/gwml:onlineResource#xlink:title=USGS NWIS Database"
 			column="site_no"
 			javaType="string" />
+		
+<!--		<collection property="X0" column="site_no" select="wfsRelatedObservationSelect" javaType="list" />-->
+		
+		<collection property="UNUSED" column="site_no" select="wfsLogElementSelect" javaType="list" />
 			
-<!--		<result-->
-<!--			property="{gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation#gml:id"-->
-<!--			column="water_level_id"-->
-<!--			javaType="string" />-->
-<!--		<result-->
-<!--			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/gml:description=Test Yield"-->
-<!--			column="water_level_id"-->
-<!--			javaType="string" />-->
-<!--		<result-->
-<!--			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/gml:name#codeSpace=urn:x-ngwd:ab:WaterLevel"-->
-<!--			column="water_level_id"-->
-<!--			javaType="string" />-->
-<!--		<result-->
-<!--			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/gml:name"-->
-<!--			column="water_level_id"-->
-<!--			javaType="string" />-->
-<!--		<result-->
-<!--			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:samplingTime/gml:TimeInstant/gml:position"-->
-<!--			column="disc_dt"-->
-<!--			javaType="string" />-->
-<!--		<result-->
-<!--			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:procedure#xlink:href=urn:x-ngwd:procedure:unknown"-->
-<!--			column="water_level_id"-->
-<!--			javaType="string" />-->
-<!--		<result-->
-<!--			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:observedProperty#xlink:href=urn:x-ngwd:def:phenomenon:OGC:WellYield"-->
-<!--			column="water_level_id"-->
-<!--			javaType="string" />-->
-<!--		<result-->
-<!--			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:featureOfInterest#xlink:href"-->
-<!--			column="id"-->
-<!--			javaType="string" />-->
-<!--		<result-->
-<!--			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:result#xsi:type=gml:MeasureType"-->
-<!--			column="disc_va"-->
-<!--			javaType="string" />-->
-<!--		<result-->
-<!--			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:result#uom=urn:x-ngwd:def:uom:gpm_f"-->
-<!--			column="disc_va"-->
-<!--			javaType="string" />-->
-<!--		<result-->
-<!--			property="}gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:result"-->
-<!--			column="disc_va"-->
-<!--			javaType="string" />-->
-			
-		<collection property="XXX" column="site_no" select="wfsLogElementSelect" javaType="list" />
-			
+	</resultMap>
+	
+	<resultMap type="XMLMap" id="wfsRelatedObservationResultMap">
+		<id
+			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/^om:Observation#gml:id"
+			column="WATERLEVEL_ID"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/gml:description=Test Yield"
+			column="WATERLEVEL_ID"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/gml:name#codeSpace=urn:x-ngwd:ab:WaterLevel"
+			column="WATERLEVEL_ID"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/gml:name"
+			column="WATERLEVEL_ID"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:samplingTime/gml:TimeInstant/gml:position"
+			column="disc_dt"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:procedure#xlink:href=urn:x-ngwd:procedure:unknown"
+			column="WATERLEVEL_ID"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:observedProperty#xlink:href=urn:x-ngwd:def:phenomenon:OGC:WellYield"
+			column="WATERLEVEL_ID"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:featureOfInterest#xlink:href"
+			column="ID"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:result#xsi:type=gml:MeasureType"
+			column="disc_va"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:result#uom=urn:x-ngwd:def:uom:gpm_f"
+			column="disc_va"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:result"
+			column="disc_va"
+			javaType="string" />
 	</resultMap>
 	
 	<resultMap type="XMLMap" id="wfsLogElementResultMap">
@@ -261,7 +268,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="string" />
 	</resultMap>
 	
-	
 	<select id="wfsSelect" parameterType="map" resultMap="wfsResultMap" fetchSize="1024" useCache="false">
 		SELECT DISTINCT
 			s.agency_cd||'.'||s.site_no AS id,
@@ -299,15 +305,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			TRIM(b.LITH_TOP_VA)||' '||TRIM(b.LITH_BOTTOM_VA) AS LITH_TOP_BOTTOM,
 			b.LITH_TOP_VA
 		FROM
-			nwis_dwh_star.gw_site_detail b
+			NWIS_DWH_STAR.GW_SITE_DETAIL b
 		INNER JOIN ( 
 			SELECT DISTINCT
 				CD,
 				DESCR
 			FROM
-				nwis_dwh_star.mycodes
+				NWIS_DWH_STAR.MYCODES
 			WHERE
-				which = 'LITH_CD') c ON b.LITH_CD = c.CD
+				WHICH = 'LITH_CD') c ON b.LITH_CD = c.CD
 		WHERE 
 			b.SITE_NO = #{site_no}
 		AND
@@ -317,5 +323,22 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		ORDER BY
 			b.LITH_TOP_VA
 	</select>
+	
+	<select id="wfsRelatedObservationSelect" parameterType="map" resultMap="wfsRelatedObservationResultMap" fetchSize="1024" useCache="false">
+		SELECT DISTINCT
+			b.AGENCY_CD||'.'||b.SITE_NO AS ID,
+			b.AGENCY_CD||'.'||b.SITE_NO||'.YLD.'||b.DISC_SEQ_NU AS WATERLEVEL_ID,
+			b.DISC_SEQ_NU,
+			b.DISC_DT
+		FROM
+			NWIS_DWH_STAR.GW_SITE_DETAIL b
+		WHERE
+		 	b.SITE_NO = #{site_no}
+		AND 
+		    b.DISC_SEQ_NU IS NOT NULL
+		ORDER BY
+			b.DISC_SEQ_NU
+	</select>
+	
 
 </mapper> 

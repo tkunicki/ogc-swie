@@ -1,14 +1,12 @@
 package gov.usgs.cida.ogc;
 
 import gov.usgs.webservices.ibatis.XMLStreamReaderDAO;
+import gov.usgs.webservices.stax.XMLStreamUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
-
-import javanet.staxutils.XMLStreamUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
