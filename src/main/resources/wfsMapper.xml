@@ -54,93 +54,93 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<resultMap id="wfsResultMap" type="XMLMap" extends="wfsBaseMap">
 	 	<id
 	 		property="^!{gml:featureMember"
-	 		column="id"
+	 		column="FEATURE_ID"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell#gml:id"
-			column="id"
+			column="FEATURE_ID"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/^gml:name#codeSpace=http://cida.xxx.gov/station_nm/"
-			column="station_nm"
+			property="gml:featureMember/gwml:WaterWell/^gml:name#codeSpace=urn:gov.usgs.nwis.station_nm"
+			column="STATION_NM"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/gml:name"
-			column="station_nm"
+			column="STATION_NM"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/^gml:name#codeSpace=urn:gov.usgs.nwis.agency_cd_site_no"
-			column="id"
+			column="FEATURE_ID"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/gml:name"
-			column="id"
+			column="FEATURE_ID"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope#srsName=EPSG:4326"
-			column="long_lat"
+			column="LONG_LAT"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope/gml:pos#srsDimension=2"
-			column="long_lat"
+			column="LONG_LAT"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope/gml:pos"
-			column="long_lat"
+			column="LONG_LAT"
 			javaType="string" />
 			
-		<association property="UNUSED" column="site_no" select="wfsRelatedObservationSelect" javaType="list" />
+		<association property="UNUSED" column="FEATURE_ID" select="wfsRelatedObservationSelect" javaType="list" />
 			
 		<result
 			property="gml:featureMember/gwml:WaterWell/sa:position/gml:Point#srsName=EPSG:4326"
-			column="long_lat_alt"
+			column="LONG_LAT_ALT"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/sa:position/gml:Point/gml:pos"
-			column="long_lat_alt"
+			column="LONG_LAT_ALT"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/gwml:referenceElevation#uom=urn:ogc:def:uom:UCUM:ft_i"
-			column="alt"
+			column="ALT"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/gwml:referenceElevation"
-			column="alt"
+			column="ALT"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/^gwml:wellDepth/gsml:CGI_NumericValue/gsml:principalValue#uom=urn:ogc:def:uom:UCUM:ft_i"
-			column="well_depth_va"
+			column="WELL_DEPTH_VA"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/gwml:wellDepth/gsml:CGI_NumericValue/gsml:principalValue"
-			column="well_depth_va"
+			column="WELL_DEPTH_VA"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/^gwml:wellStatus/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.alt_datum_cd"
-			column="alt_datum_cd"
+			column="ALT_DATUM_CD"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/gwml:wellStatus/gsml:CGI_TermValue/gsml:value"
-			column="alt_datum_cd"
+			column="ALT_DATUM_CD"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/^gwml:wellType/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.nat_water_use_cd"
-			column="nat_water_use_name"
+			column="NAT_WATER_USE_NAME"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/gwml:wellType/gsml:CGI_TermValue/gsml:value"
-			column="nat_water_use_name"
+			column="NAT_WATER_USE_NAME"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/gwml:onlineResource#xlink:href=http://waterdata.usgs.gov/nwis/inventory?search_site_no=%s&amp;search_site_no_match_type=exact&amp;sort_key=site_no&amp;group_key=NONE&amp;sitefile_output_format=html_table&amp;column_name=agency_cd&amp;column_name=site_no&amp;column_name=station_nm&amp;format=station_manuscript&amp;list_of_search_criteria=search_site_no"
-			column="site_no"
+			column="SITE_NO"
 			javaType="string" />
 		<result
 			property="}gml:featureMember/gwml:WaterWell/gwml:onlineResource#xlink:title=USGS NWIS Database"
-			column="site_no"
+			column="SITE_NO"
 			javaType="string" />
 		
-		<collection property="UNUSED" column="site_no" select="wfsLogElementSelect" javaType="list" />
+		<association property="UNUSED" column="FEATURE_ID" select="wfsLogElementSelect" javaType="list" />
 			
 	</resultMap>
 	
@@ -163,7 +163,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:samplingTime/gml:TimeInstant/gml:position"
-			column="disc_dt"
+			column="DISC_DT"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:procedure#xlink:href=urn:x-ngwd:procedure:unknown"
@@ -175,19 +175,19 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:featureOfInterest#xlink:href"
-			column="ID"
+			column="FEATURE_ID"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:result#xsi:type=gml:MeasureType"
-			column="disc_va"
+			column="DISC_VA"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:result#uom=urn:x-ngwd:def:uom:gpm_f"
-			column="disc_va"
+			column="DISC_VA"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/om:Observation/om:result"
-			column="disc_va"
+			column="DISC_VA"
 			javaType="string" />
 	</resultMap>
 	
@@ -268,74 +268,65 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	
 	<select id="wfsSelect" parameterType="map" resultMap="wfsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 		SELECT DISTINCT
-			s.agency_cd||'.'||s.site_no AS id,
-			s.site_no as site_no,
-			TRIM(s.station_nm) as station_nm,
-			s.dec_long_va||' '||s.dec_lat_va AS long_lat,
-			s.dec_long_va||' '||s.dec_lat_va||' '||s.alt_va AS long_lat_alt,
-			s.alt_va AS alt,
-			s.alt_datum_cd,
-			s.well_depth_va,
-			s.nat_water_use_name
+			s.MY_SITEID AS FEATURE_ID,
+			SUBSTR(s.MY_SITEID, INSTR(s.MY_SITEID, '.') + 1) AS SITE_NO,
+			TRIM(s.STATION_NM) AS STATION_NM,
+			s.DEC_LONG_VA||' '||s.DEC_LAT_VA AS LONG_LAT,
+			s.DEC_LONG_VA||' '||s.DEC_LAT_VA||' '||s.ALT_VA AS LONG_LAT_ALT,
+			s.ALT_VA AS ALT,
+			s.ALT_DATUM_CD,
+			s.WELL_DEPTH_VA,
+			s.NAT_WATER_USE_NAME
 		FROM
-			nwis_dwh_star.sites_gw_mvw s
+			NWIS_DWH_STAR.SITES_GW_MVW_DETAIL s
 		WHERE 1 = 0
 		<trim prefix="OR (" suffix=")" prefixOverrides="AND">
 			<if test="bBox != null">
-		AND s.dec_long_va BETWEEN #{bBox[0]} AND #{bBox[2]} AND s.dec_lat_va BETWEEN #{bBox[1]} AND #{bBox[3]} 
+		AND s.DEC_LONG_VA BETWEEN #{bBox[0]} AND #{bBox[2]} AND s.DEC_LAT_VA BETWEEN #{bBox[1]} AND #{bBox[3]} 
 			</if>
 			<if test="featureId != null">
-		AND SUBSTR(#{featureId}, 1, INSTR(#{featureId}, '.') - 1) = s.agency_cd
-		AND SUBSTR(#{featureId}, INSTR(#{featureId}, '.') + 1) = s.site_no
+        AND s.MY_SITEID = #{featureId}
 			</if>
 			<if test="maxFeatures != null">
 		AND ROWNUM<![CDATA[ <= ]]> #{maxFeatures}
 			</if>
 		</trim>	
 	    ORDER BY
-			station_nm
+			STATION_NM
 	</select>
 	
 	<select id="wfsLogElementSelect" parameterType="map" resultMap="wfsLogElementResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 		SELECT DISTINCT
-    		b.AGENCY_CD||'.'||b.SITE_NO||'.'||b.GEOH_SEQ_NU AS HYDROSTRUNIT_ID,
-			b.LITH_NAME,
-			TRIM(b.LITH_TOP_VA)||' '||TRIM(b.LITH_BOTTOM_VA) AS LITH_TOP_BOTTOM,
-			b.LITH_TOP_VA
+    		s.MY_HYDROSTRUNIT_ID AS HYDROSTRUNIT_ID,
+			s.LITH_NAME,
+			TRIM(s.LITH_TOP_VA)||' '||TRIM(s.LITH_BOTTOM_VA) AS LITH_TOP_BOTTOM,
+			s.LITH_TOP_VA
 		FROM
-			NWIS_DWH_STAR.GW_SITE_DETAIL b
-		INNER JOIN ( 
-			SELECT DISTINCT
-				CD,
-				DESCR
-			FROM
-				NWIS_DWH_STAR.MYCODES
-			WHERE
-				WHICH = 'LITH_CD') c ON b.LITH_CD = c.CD
+			NWIS_DWH_STAR.SITES_GW_MVW_DETAIL s
 		WHERE 
-			b.SITE_NO = #{site_no}
+			s.MY_SITEID = #{featureId}
 		AND
-			b.LITH_TOP_VA IS NOT NULL
+			s.LITH_TOP_VA IS NOT NULL
 		AND
-			b.LITH_BOTTOM_VA IS NOT NULL
+			s.LITH_BOTTOM_VA IS NOT NULL
 		ORDER BY
-			b.LITH_TOP_VA
+			s.LITH_TOP_VA
 	</select>
 	
 	<select id="wfsRelatedObservationSelect" parameterType="map" resultMap="wfsRelatedObservationResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 		SELECT DISTINCT
-			b.AGENCY_CD||'.'||b.SITE_NO AS ID,
-			b.AGENCY_CD||'.'||b.SITE_NO||'.YLD.'||b.DISC_SEQ_NU AS WATERLEVEL_ID,
-			b.DISC_SEQ_NU,
-			b.DISC_DT
+			s.MY_SITEID AS FEATURE_ID,
+			s.MYWATERLEVELID AS WATERLEVEL_ID,
+			s.DISC_SEQ_NU,
+			s.DISC_DT
 		FROM
-			NWIS_DWH_STAR.GW_SITE_DETAIL b
+			NWIS_DWH_STAR.SITES_GW_MVW_DETAIL s
 		WHERE
-		 	b.SITE_NO = #{site_no}
+		 	s.MY_SITEID = #{featureId}
 		AND 
-		    b.DISC_SEQ_NU IS NOT NULL
+		    s.DISC_SEQ_NU IS NOT NULL
 		ORDER BY
-			b.DISC_SEQ_NU
+			s.DISC_SEQ_NU
 	</select>
 	
 
