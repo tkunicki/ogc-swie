@@ -44,7 +44,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			
 	</resultMap>
 	
-	<resultMap type="XMLMap" id="observationsResultMap" extends="ogcResultMap">
+	<resultMap id="observationsResultMap" type="XMLMap" extends="ogcResultMap">
 	 	<result
 	 		property="^!{om:member"
 	 		column="station_id"
@@ -143,7 +143,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="string" />
 	</resultMap>
 	
-	<select id="observationsSelect" parameterType="map" resultMap="observationsResultMap" fetchSize="1024" useCache="false">
+	<select id="observationsSelect" parameterType="map" resultMap="observationsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 		select
 			station_id,
 			DEC_LONG_VA||' '||DEC_LAT_VA as pos,

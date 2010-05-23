@@ -51,7 +51,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="string" />
 	</resultMap>
 	
-	<resultMap type="XMLMap" id="wfsResultMap" extends="wfsBaseMap">
+	<resultMap id="wfsResultMap" type="XMLMap" extends="wfsBaseMap">
 	 	<id
 	 		property="^!{gml:featureMember"
 	 		column="id"
@@ -140,13 +140,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="site_no"
 			javaType="string" />
 		
-<!--		<collection property="X0" column="site_no" select="wfsRelatedObservationSelect" javaType="list" />-->
-		
 		<collection property="UNUSED" column="site_no" select="wfsLogElementSelect" javaType="list" />
 			
 	</resultMap>
 	
-	<resultMap type="XMLMap" id="wfsRelatedObservationResultMap">
+	<resultMap id="wfsRelatedObservationResultMap" type="XMLMap">
 		<id
 			property="gml:featureMember/gwml:WaterWell/sa:relatedObservation/^om:Observation#gml:id"
 			column="WATERLEVEL_ID"
@@ -193,7 +191,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="string" />
 	</resultMap>
 	
-	<resultMap type="XMLMap" id="wfsLogElementResultMap">
+	<resultMap id="wfsLogElementResultMap" type="XMLMap">
 		<id
 			property="gml:featureMember/gwml:WaterWell/^gwml:logElement/gsml:MappedInterval/gsml:observationMethod/gsml:CGI_TermValue/gsml:value#codeSpace=urn:x-ngwd:classifier:GIN:ObservationMethod"
 			column="HYDROSTRUNIT_ID"
@@ -268,7 +266,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="string" />
 	</resultMap>
 	
-	<select id="wfsSelect" parameterType="map" resultMap="wfsResultMap" fetchSize="1024" useCache="false">
+	<select id="wfsSelect" parameterType="map" resultMap="wfsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 		SELECT DISTINCT
 			s.agency_cd||'.'||s.site_no AS id,
 			s.site_no as site_no,
@@ -298,7 +296,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			station_nm
 	</select>
 	
-	<select id="wfsLogElementSelect" parameterType="map" resultMap="wfsLogElementResultMap" fetchSize="1024" useCache="false">
+	<select id="wfsLogElementSelect" parameterType="map" resultMap="wfsLogElementResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 		SELECT DISTINCT
     		b.AGENCY_CD||'.'||b.SITE_NO||'.'||b.GEOH_SEQ_NU AS HYDROSTRUNIT_ID,
 			b.LITH_NAME,
@@ -324,7 +322,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			b.LITH_TOP_VA
 	</select>
 	
-	<select id="wfsRelatedObservationSelect" parameterType="map" resultMap="wfsRelatedObservationResultMap" fetchSize="1024" useCache="false">
+	<select id="wfsRelatedObservationSelect" parameterType="map" resultMap="wfsRelatedObservationResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 		SELECT DISTINCT
 			b.AGENCY_CD||'.'||b.SITE_NO AS ID,
 			b.AGENCY_CD||'.'||b.SITE_NO||'.YLD.'||b.DISC_SEQ_NU AS WATERLEVEL_ID,
