@@ -88,8 +88,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope/gml:pos"
 			column="LONG_LAT"
 			javaType="string" />
-			
-		<association property="UNUSED" column="FEATURE_ID" select="wfsRelatedObservationSelect" javaType="list" />
+
+        <!-- removed per NLB 05.24.2010, will be put back in later but still needs output validation... -->
+		<!--<association property="UNUSED" column="FEATURE_ID" select="wfsRelatedObservationSelect" javaType="list" />-->
 			
 		<result
 			property="gml:featureMember/gwml:WaterWell/sa:position/gml:Point#srsName=EPSG:4326"
