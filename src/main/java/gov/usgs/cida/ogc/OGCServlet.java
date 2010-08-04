@@ -33,10 +33,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 /**
- * Servlet implementation class OGCServlet
+ * Servlet implementation class to handle SOS requests
  */
 public class OGCServlet extends HttpServlet {
 	
+	public static final String SPECIAL_XML_POST_VARIABLE = "request";
+
 	private static final long serialVersionUID = 1L;
 
 //	private final static String XPATH_Envelope = "//sos:GetObservation/sos:featureOfInterest/ogc:BBOX[ogc:PropertyName='gml:location']/gml:Envelope";
@@ -65,6 +67,7 @@ public class OGCServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Map<String, String[]> parameterMap = request.getParameterMap();
@@ -75,12 +78,13 @@ public class OGCServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			String contentType = request.getContentType();
 			String characterEncoding = request.getCharacterEncoding();
 			if ( characterEncoding == null || characterEncoding.length() == 0) {
-				characterEncoding = "UTF-8";
+				characterEncoding = "UTF-8"; // default character encoding if unspecified
 			}
 
 			BufferedReader reader = request.getReader();
@@ -88,6 +92,7 @@ public class OGCServlet extends HttpServlet {
 			while ( reader.read(buffer) != -1 &&
 					buffer.hasRemaining() );
 			
+			// Protect against denial of service attacks?
 			if (buffer.remaining() == 0 && reader.read() > -1) {
 				response.sendError(403, "Request body too large, limited to " + buffer.capacity() + " bytes");
 				return;
@@ -96,9 +101,14 @@ public class OGCServlet extends HttpServlet {
 			buffer.flip();
 			String documentString = buffer.toString();
 	
+			// Perform URL decoding, if necessary
 			if ("application/x-www-form-urlencoded".equals(contentType)) {
-				if (documentString.startsWith("request=")) {
-					documentString = documentString.substring(8);	
+				if (documentString.startsWith(SPECIAL_XML_POST_VARIABLE + "=")) {
+					// This is a hack to permit xml to be easily submitted via a form POST.
+					// By convention, we are allowing users to post xml if they name it
+					// with a POST parameter "request". The problem is that "request" is
+					// a reserved key in OGC services, and should not be used.
+					documentString = documentString.substring(SPECIAL_XML_POST_VARIABLE.length() + 1);	
 				}
 				documentString = URLDecoder.decode(documentString, characterEncoding);
 			}
@@ -138,6 +148,10 @@ public class OGCServlet extends HttpServlet {
 		XPathFactory xpathFactory = XPathFactory.newInstance();
 		XPath xpath = xpathFactory.newXPath();
 		xpath.setNamespaceContext(new OGCBinding.GetObservationNamespaceContext());
+		
+		// Currently, the only parameter we are handling is the bounding box
+		
+		// XPath expressions for the container of the bounding box and the upper and lower corners
 		XPathExpression envelopeExpression =  xpath.compile(XPATH_Envelope);
 		XPathExpression lowerCornerExpression =  xpath.compile(XPATH_cornerLower);
 		XPathExpression upperCornerExpression =  xpath.compile(XPATH_upperCorner);
@@ -147,6 +161,8 @@ public class OGCServlet extends HttpServlet {
 			Node envelopeNode = (Node)envelopeResult;
 			String lowerCornerString = lowerCornerExpression.evaluate(envelopeNode);
 			String upperCornerString = upperCornerExpression.evaluate(envelopeNode);
+			
+			// Parse the coordinates of the bounding box corner parameters
 			if (lowerCornerString != null && upperCornerString != null) {
 				String[] lowerSplit = PATTERN_cornerSplit.split(lowerCornerString.trim());
 				String[] upperSplit = PATTERN_cornerSplit.split(upperCornerString.trim());
@@ -189,6 +205,11 @@ public class OGCServlet extends HttpServlet {
 		return parameterMap;
 	}
 
+	/**
+	 * Output request parameters to System.out() for debugging/logging
+	 * 
+	 * @param m map
+	 */
 	private void dumpMap(Map<String, String[]> m) {
 		System.out.println("Parameters are: ");
 		if (m != null && m.size() > 0) {

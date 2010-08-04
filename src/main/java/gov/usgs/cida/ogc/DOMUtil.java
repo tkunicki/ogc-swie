@@ -17,6 +17,12 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+/**
+ * Utility methods for creating w3c Document from Strings and other sources
+ * 
+ * @author tkunicki
+ *
+ */
 public abstract class DOMUtil {
 
 	private final static DocumentBuilderFactory documentBuilderFactory;
