@@ -1,24 +1,34 @@
 package gov.usgs.cida.ogc;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
 
 public enum WFS_1_1_Operation {
-	GetCapabilities(true, new String[] {"request", "typeName", "bBox", "featureId", "maxFeatures"}),
+	GetCapabilities(true, null),
 	DescribeFeatureType(true, null),
 	GetGMLObject(false, null),
-	GetFeature(true, null),
+	GetFeature(true, new String[] {"request", "typeName", "bBox", "featureId", "maxFeatures"}),
 	Transaction(false, null),
 	LockFeature(false, null),
 	GetFeatureWithLock(false, null)
 	;
 	
 	public final boolean isMandatory;
-	public final List<String> handledParameters = null;
+	public final List<String> opArguments;
 	
-	WFS_1_1_Operation(boolean isRequired, String[] handledParameters){
+	WFS_1_1_Operation(boolean isRequired, String[] args){
 		this.isMandatory = isRequired;
+		if (args != null) {
+			List<String> list = new ArrayList<String>();
+			list.addAll(Arrays.asList(args));
+			this.opArguments = Collections.unmodifiableList(list);
+		} else {
+			this.opArguments = Collections.emptyList();
+		}
 	}
 	
 	public static WFS_1_1_Operation parse(String... value) {

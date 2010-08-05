@@ -26,7 +26,7 @@
 					<ows:ElectronicMailAddress>nlbooth@usgs.gov</ows:ElectronicMailAddress>
 				</ows:Address>
 				<!-- TODO: get "public" url -->
-				<ows:OnlineResource xlink:href="http://ngwd-bdnes.nrn.nrcan.gc.ca/service/gin/wfs/gin"/>
+				<ows:OnlineResource xlink:href="http://infotrek.er.usgs.gov/ogc-ie/wfs"/>
 				<ows:HoursOfService>24x7 experimental</ows:HoursOfService>
 				<ows:ContactInstructions>8h30-16h00 GMT-5</ows:ContactInstructions>
 			</ows:ContactInfo>
@@ -47,7 +47,7 @@
 					<ows:Country>U.S.A.</ows:Country>
 					<ows:ElectronicMailAddress>tkunicki@usgs.gov</ows:ElectronicMailAddress>
 				</ows:Address>
-				<ows:OnlineResource xlink:href="http://ngwd-bdnes.nrn.nrcan.gc.ca/service/gin/wfs/gin"/>
+				<ows:OnlineResource xlink:href="http://infotrek.er.usgs.gov/ogc-ie/wfs"/>
 				<ows:HoursOfService>24x7</ows:HoursOfService>
 				<ows:ContactInstructions>9h30-16h30 GMT-5</ows:ContactInstructions>
 			</ows:ContactInfo>
@@ -58,8 +58,8 @@
 		<ows:Operation name="GetFeature">
 			<ows:DCP>
 				<ows:HTTP>
-					<ows:Get xlink:href="http://ngwd-bdnes.nrn.nrcan.gc.ca/service/gin/wfs/gin?"/>
-					<ows:Post xlink:href="http://ngwd-bdnes.nrn.nrcan.gc.ca/service/gin/wfs/gin"/>
+					<ows:Get xlink:href="http://infotrek.er.usgs.gov/ogc-ie/wfs?"/>
+					<ows:Post xlink:href="http://infotrek.er.usgs.gov/ogc-ie/wfs"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="resultType">
@@ -74,8 +74,8 @@
 		<ows:Operation name="DescribeFeatureType">
 			<ows:DCP>
 				<ows:HTTP>
-					<ows:Get xlink:href="http://ngwd-bdnes.nrn.nrcan.gc.ca/service/gin/wfs/gin?"/>
-					<ows:Post xlink:href="http://ngwd-bdnes.nrn.nrcan.gc.ca/service/gin/wfs/gin"/>
+					<ows:Get xlink:href="http://infotrek.er.usgs.gov/ogc-ie/wfs?"/>
+					<ows:Post xlink:href="http://infotrek.er.usgs.gov/ogc-ie/wfs"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="outputFormat">
@@ -86,8 +86,8 @@
 		<ows:Operation name="GetCapabilities">
 			<ows:DCP>
 				<ows:HTTP>
-					<ows:Get xlink:href="http://ngwd-bdnes.nrn.nrcan.gc.ca/service/gin/wfs/gin?"/>
-					<ows:Post xlink:href="http://ngwd-bdnes.nrn.nrcan.gc.ca/service/gin/wfs/gin"/>
+					<ows:Get xlink:href="http://infotrek.er.usgs.gov/ogc-ie/wfs?"/>
+					<ows:Post xlink:href="http://infotrek.er.usgs.gov/ogc-ie/wfs"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="AcceptVersions">

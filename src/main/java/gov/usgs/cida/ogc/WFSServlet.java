@@ -3,9 +3,14 @@ package gov.usgs.cida.ogc;
 import gov.usgs.webservices.ibatis.XMLStreamReaderDAO;
 import gov.usgs.webservices.stax.XMLStreamUtils;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,18 +84,45 @@ public class WFSServlet extends HttpServlet {
 				XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("wfsMapper.wfsSelect", parameters);
 				XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
 				XMLStreamUtils.copy(streamReader, streamWriter);
+				break;
 			case DescribeFeatureType:
-				OutputStreamWriter writer = new OutputStreamWriter(outputStream);
-				writer.write("<DescribeFeatureTypeResponse/>");
-				writer.flush();
+				// Just sending back static file for now.
+				InputStream inStream = this.getClass().getResourceAsStream("/ogc/wfs/DescribeFeatureType.xml");
+				copy(inStream, outputStream);
+				outputStream.flush();
+				break;
 			case GetCapabilities:
 				// Note, should take a look at http://www.java2s.com/Open-Source/Java-Document/GIS/GeoServer/org/geoserver/wfs/CapabilitiesTransformer.java.htm
-				writer = new OutputStreamWriter(outputStream);
-				writer.write("<GetCapabilitiesResponse/>");
-				writer.flush();
-				//this.getClass().getResourceAsStream("ogc/wfs/GetCapabilities.xml");
+				// Just sending back static file for now.
+				inStream = this.getClass().getResourceAsStream("/ogc/wfs/GetCapabilities.xml");
+				copy(inStream, outputStream);
+				outputStream.flush();
+				break;
+				
 		}
 	}
+	
+    /**
+     * Copies InputStream to OutputStream
+     * 
+     * @param input
+     * @param output
+     * @return
+     * @throws IOException
+     * [TODO] move this to a better location
+     */
+    public static int copy(InputStream input, OutputStream output)
+                throws IOException {
+        byte[] buffer = new byte[8 << 5]; // 8k buffer size
+        int count = 0;
+        int n = 0;
+        while (-1 != (n = input.read(buffer))) {
+            output.write(buffer, 0, n);
+            count += n;
+        }
+        return count;
+    }
+
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -123,11 +155,11 @@ public class WFSServlet extends HttpServlet {
 	private Map<String, Object> scrub(Map<String, String[]> originalMap,
 			WFS_1_1_Operation opType) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		List<String> handledParameters = opType.handledParameters;
+		List<String> handledParameters = opType.opArguments;
 		for (Map.Entry<String, String[]> entry : originalMap.entrySet()) {
 			String key = entry.getKey();
 			String[] value = entry.getValue();
-			if (handledParameters != null) {
+			if (handledParameters.size() > 0) {
 				for (String param: handledParameters) {
 					if (param.equalsIgnoreCase(key)) result.put(param, value[0]);
 				}
