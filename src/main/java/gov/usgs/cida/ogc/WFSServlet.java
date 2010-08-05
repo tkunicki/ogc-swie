@@ -5,7 +5,9 @@ import gov.usgs.webservices.stax.XMLStreamUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -34,6 +36,8 @@ public class WFSServlet extends HttpServlet {
 		xmlOutputFactory.configureForSpeed();
 	}
 	
+
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -49,21 +53,43 @@ public class WFSServlet extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		Object parameters = parseParameterMap((Map<String, String[]>)request.getParameterMap());
+		Map<String, Object> parameters = parseParameterMap((Map<String, String[]>)request.getParameterMap());
 		
 		response.setContentType("text/xml");
 		response.setCharacterEncoding("UTF-8");
 		OutputStream outputStream = response.getOutputStream();
+		WFS_1_1_Operation opType = WFS_1_1_Operation.parse((String)parameters.get("request"));
+		
 		try {
-			XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("wfsMapper.wfsSelect", parameters);
-			XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
-			XMLStreamUtils.copy(streamReader, streamWriter);
+			handleRequest(parameters, outputStream, opType);
+
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 		} finally {
 			outputStream.flush();
 		}
 		
+	}
+
+	private void handleRequest(Map<String, Object> parameters,
+			OutputStream outputStream, WFS_1_1_Operation opType)
+			throws ServletException, XMLStreamException, IOException {
+		switch(opType) {
+			case GetFeature:
+				XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("wfsMapper.wfsSelect", parameters);
+				XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
+				XMLStreamUtils.copy(streamReader, streamWriter);
+			case DescribeFeatureType:
+				OutputStreamWriter writer = new OutputStreamWriter(outputStream);
+				writer.write("<DescribeFeatureTypeResponse/>");
+				writer.flush();
+			case GetCapabilities:
+				// Note, should take a look at http://www.java2s.com/Open-Source/Java-Document/GIS/GeoServer/org/geoserver/wfs/CapabilitiesTransformer.java.htm
+				writer = new OutputStreamWriter(outputStream);
+				writer.write("<GetCapabilitiesResponse/>");
+				writer.flush();
+				//this.getClass().getResourceAsStream("ogc/wfs/GetCapabilities.xml");
+		}
 	}
 
 	/**
@@ -74,34 +100,51 @@ public class WFSServlet extends HttpServlet {
 		doGet(request, response);
 	}
 	
-	private Object parseParameterMap(Map<String, String[]> originalMap) {
+	private Map<String, Object> parseParameterMap(Map<String, String[]> originalMap) {
 		
-		Map<String, Object> scrubbedMap = new HashMap<String, Object>();
+		WFS_1_1_Operation opType = WFS_1_1_Operation.parse(originalMap.get("request"));
 		
-		String request = null;
-		String typeName = null;
-		String bBox = null;
-		String featureId = null;
-		String maxFeatures = null;
+		if (opType == null)	{
+			throw new IllegalArgumentException("REQUEST missing");
+		}
+		
+		Map<String, Object> scrubbedMap = scrub(originalMap, opType);
+		switch(opType) {
+			case GetFeature:
+				return applyGetFeatureBusinessRulesScrubbing(scrubbedMap);
+			case GetCapabilities:
+			case DescribeFeatureType:
+				return scrubbedMap;
+			default:
+				throw new IllegalArgumentException("Currently not handling REQUEST=" + opType.name());		
+		}
+	}
+
+	private Map<String, Object> scrub(Map<String, String[]> originalMap,
+			WFS_1_1_Operation opType) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		List<String> handledParameters = opType.handledParameters;
 		for (Map.Entry<String, String[]> entry : originalMap.entrySet()) {
 			String key = entry.getKey();
 			String[] value = entry.getValue();
-			if ("request".equalsIgnoreCase(key)) {
-				if (value != null && value.length > 0) { request = value[0]; }
-			} else if ("typeName".equalsIgnoreCase(key)) {
-				if (value != null && value.length > 0) { typeName = value[0]; }
-			} else if ("bBox".equalsIgnoreCase(key)) {
-				if (value != null && value.length > 0) { bBox = value[0]; }
-			} else if ("featureId".equalsIgnoreCase(key)) {
-				if (value != null && value.length > 0) { featureId = value[0]; }
-			} else if ("maxFeatures".equalsIgnoreCase(key)) {
-				if (value != null && value.length > 0) { maxFeatures = value[0]; }
+			if (handledParameters != null) {
+				for (String param: handledParameters) {
+					if (param.equalsIgnoreCase(key)) result.put(param, value[0]);
+				}
+			} else {
+				// just take the first parameter.
+				result.put(key, value[0]);
 			}
 		}
-		
-		if(!"GetFeature".equalsIgnoreCase(request)) {
-			throw new IllegalArgumentException("REQUEST missing or invalid");
-		}
+
+		return result;
+	}
+
+	private Map<String, Object> applyGetFeatureBusinessRulesScrubbing(Map<String, Object> scrubbedMap) {
+		String typeName = (String) scrubbedMap.get("typeName");
+		String bBox = (String) scrubbedMap.get("bBox");
+		String featureId = (String) scrubbedMap.get("featureId");
+		String maxFeatures = (String) scrubbedMap.get("maxFeatures");
 		if(!"gwml:WaterWell".equals(typeName) && featureId == null) {
 			throw new IllegalArgumentException("TYPENAME missing or invalid");
 		}

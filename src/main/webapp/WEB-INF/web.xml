@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE web-app SYSTEM "C:\Documents and Settings\ilinkuo\my documents\Downloads\web-app_2_3.dtd">
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
 <web-app>
 	<display-name>OGC GWIE {Owner: NB, Coder: TK}</display-name>
 	<description>OGC GWIE</description>
@@ -18,13 +20,13 @@
 	<servlet>
 		<servlet-name>OGCServlet</servlet-name>
 		<display-name>OGCServlet</display-name>
-		<description>Handler for OGC SOS service</description>
+		<description>Handler for OGC SOS service exposed at http://infotrek.er.usgs.gov/ogc-ie/sosbbox </description>
 		<servlet-class>gov.usgs.cida.ogc.OGCServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>WFSServlet</servlet-name>
 		<display-name>WFSServlet</display-name>
-		<description>Handler for OGC WFS service</description>
+		<description>Handler for OGC WFS service exposed at http://infotrek.er.usgs.gov/ogc-ie/wfs </description>
 		<servlet-class>gov.usgs.cida.ogc.WFSServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
