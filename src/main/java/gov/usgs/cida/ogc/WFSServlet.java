@@ -3,14 +3,9 @@ package gov.usgs.cida.ogc;
 import gov.usgs.webservices.ibatis.XMLStreamReaderDAO;
 import gov.usgs.webservices.stax.XMLStreamUtils;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,10 +62,11 @@ public class WFSServlet extends HttpServlet {
 		
 		try {
 			handleRequest(parameters, outputStream, opType);
-
-		} catch (XMLStreamException e) {
+		} catch (Exception e) {
+			
 			e.printStackTrace();
 		} finally {
+			System.out.println("hi");
 			outputStream.flush();
 		}
 		
