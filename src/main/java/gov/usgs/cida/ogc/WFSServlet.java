@@ -130,7 +130,7 @@ public class WFSServlet extends HttpServlet {
 	
 	private Map<String, Object> parseParameterMap(Map<String, String[]> originalMap) {
 		
-		WFS_1_1_Operation opType = WFS_1_1_Operation.parse(originalMap.get("request"));
+		WFS_1_1_Operation opType = determineRequestType(originalMap);
 		
 		if (opType == null)	{
 			throw new IllegalArgumentException("REQUEST missing");
@@ -146,6 +146,18 @@ public class WFSServlet extends HttpServlet {
 			default:
 				throw new IllegalArgumentException("Currently not handling REQUEST=" + opType.name());		
 		}
+	}
+	
+	private WFS_1_1_Operation determineRequestType(Map<String, String[]> originalMap){
+		for (Map.Entry<String, String[]> entry : originalMap.entrySet()) {
+			if ("request".equalsIgnoreCase(entry.getKey())) {
+				String[] value = entry.getValue();
+				if (value != null && value.length > 0) {
+					return WFS_1_1_Operation.parse(value[0]);
+				}
+			}
+		}
+		return null;
 	}
 
 	private Map<String, Object> scrub(Map<String, String[]> originalMap,
