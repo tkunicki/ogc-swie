@@ -83,15 +83,26 @@ public class WFSServlet extends HttpServlet {
 				break;
 			case DescribeFeatureType:
 				// Just sending back static file for now.
-				InputStream inStream = this.getClass().getResourceAsStream("/ogc/wfs/DescribeFeatureType.xml");
+				String resource = "/ogc/wfs/DescribeFeatureType.xml";
+				InputStream inStream = this.getClass().getResourceAsStream(resource);
+				if (inStream != null) {
+					copy(inStream, outputStream);
+				} else {
+					outputStream.write(("<error>Unable to retrieve resource " + resource + "</error").getBytes());
+				}
 				copy(inStream, outputStream);
 				outputStream.flush();
 				break;
 			case GetCapabilities:
 				// Note, should take a look at http://www.java2s.com/Open-Source/Java-Document/GIS/GeoServer/org/geoserver/wfs/CapabilitiesTransformer.java.htm
 				// Just sending back static file for now.
-				inStream = this.getClass().getResourceAsStream("/ogc/wfs/GetCapabilities.xml");
-				copy(inStream, outputStream);
+				resource = "/ogc/wfs/GetCapabilities.xml";
+				inStream = this.getClass().getResourceAsStream(resource);
+				if (inStream != null) {
+					copy(inStream, outputStream);
+				} else {
+					outputStream.write(("<error>Unable to retrieve resource " + resource + "</error").getBytes());
+				}
 				outputStream.flush();
 				break;
 				
@@ -167,13 +178,18 @@ public class WFSServlet extends HttpServlet {
 		for (Map.Entry<String, String[]> entry : originalMap.entrySet()) {
 			String key = entry.getKey();
 			String[] value = entry.getValue();
+			boolean isHandled = false;
 			if (handledParameters.size() > 0) {
 				for (String param: handledParameters) {
-					if (param.equalsIgnoreCase(key)) result.put(param, value[0]);
+					if (param.equalsIgnoreCase(key)) {
+						result.put(param, value[0]);
+						isHandled = true;
+					}
 				}
-			} else {
-				// just take the first parameter.
-				result.put(key, value[0]);
+			}
+			if (!isHandled){
+				// just take the first parameter and lowercase the key.
+				result.put(key.toLowerCase(), value[0]);
 			}
 		}
 
