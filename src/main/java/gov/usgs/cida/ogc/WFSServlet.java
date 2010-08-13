@@ -2,19 +2,26 @@ package gov.usgs.cida.ogc;
 
 import gov.usgs.webservices.ibatis.XMLStreamReaderDAO;
 import gov.usgs.webservices.stax.XMLStreamUtils;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
@@ -57,80 +64,55 @@ public class WFSServlet extends HttpServlet {
 		
 		response.setContentType("text/xml");
 		response.setCharacterEncoding("UTF-8");
-		OutputStream outputStream = response.getOutputStream();
 		WFS_1_1_Operation opType = WFS_1_1_Operation.parse((String)parameters.get("request"));
-		
-		try {
-			handleRequest(parameters, outputStream, opType);
-		} catch (Exception e) {
-			
-			e.printStackTrace();
-		} finally {
-			System.out.println("hi");
-			outputStream.flush();
-		}
-		
-	}
 
-	private void handleRequest(Map<String, Object> parameters,
-			OutputStream outputStream, WFS_1_1_Operation opType)
-			throws ServletException, XMLStreamException, IOException {
 		switch(opType) {
+
 			case GetFeature:
-				XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("wfsMapper.wfsSelect", parameters);
-				XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
-				XMLStreamUtils.copy(streamReader, streamWriter);
-				break;
-			case DescribeFeatureType:
-				// Just sending back static file for now.
-				String resource = "/ogc/wfs/DescribeFeatureType.xml";
-				InputStream inStream = this.getClass().getResourceAsStream(resource);
-				if (inStream != null) {
-					copy(inStream, outputStream);
-				} else {
-					outputStream.write(("<error>Unable to retrieve resource " + resource + "</error").getBytes());
+				OutputStream outputStream = response.getOutputStream();
+				try {
+					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("wfsMapper.wfsSelect", parameters);
+					XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
+					XMLStreamUtils.copy(streamReader, streamWriter);
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					outputStream.flush();
 				}
-				copy(inStream, outputStream);
-				outputStream.flush();
 				break;
+
 			case GetCapabilities:
-				// Note, should take a look at http://www.java2s.com/Open-Source/Java-Document/GIS/GeoServer/org/geoserver/wfs/CapabilitiesTransformer.java.htm
+			case DescribeFeatureType:
+
+				String baseURL = request.getRequestURL().toString().replaceFirst(request.getServletPath() + "$", "");
+				Map<String, String> replacementMap = new HashMap<String, String>();
+				replacementMap.put("base.url", baseURL);
+
 				// Just sending back static file for now.
-				resource = "/ogc/wfs/GetCapabilities.xml";
-				inStream = this.getClass().getResourceAsStream(resource);
-				if (inStream != null) {
-					copy(inStream, outputStream);
-				} else {
-					outputStream.write(("<error>Unable to retrieve resource " + resource + "</error").getBytes());
+				String resource = opType == WFS_1_1_Operation.GetCapabilities ?
+					"/ogc/wfs/GetCapabilities.xml" :
+					"/ogc/wfs/DescribeFeatureType.xml";
+
+				InputStream inputStream = getClass().getResourceAsStream(resource);
+				BufferedWriter writer = wrapAsBufferedWriter(response.getWriter());
+				try {
+					if (inputStream != null) {
+						filter (replacementMap,
+								wrapAsBufferedReader(inputStream),
+								writer);
+					} else {
+						writer.append("<error>Unable to retrieve resource " + resource + "</error");
+					}
+				} finally {
+					writer.flush();
+					if (inputStream != null) {
+						try { inputStream.close(); } catch (IOException e) { }
+					}
 				}
-				outputStream.flush();
-				break;
-				
+			break;
 		}
 	}
 	
-    /**
-     * Copies InputStream to OutputStream
-     * 
-     * @param input
-     * @param output
-     * @return
-     * @throws IOException
-     * [TODO] move this to a better location
-     */
-    public static int copy(InputStream input, OutputStream output)
-                throws IOException {
-        byte[] buffer = new byte[8 << 5]; // 8k buffer size
-        int count = 0;
-        int n = 0;
-        while (-1 != (n = input.read(buffer))) {
-            output.write(buffer, 0, n);
-            count += n;
-        }
-        return count;
-    }
-
-
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -259,5 +241,48 @@ public class WFSServlet extends HttpServlet {
 			throw new ServletException("Configuation error, unable to obtain reference to XMLStreamReaderDAO");
 		}
 		return xmlStreamReaderDAO;
+	}
+
+	private final static Pattern REGEXREPLACE_PATTERN = Pattern.compile("\\$\\{([\\w\\.]+)\\}");
+
+	private void filter(Map<String, String> replacementMap, BufferedReader reader, BufferedWriter writer) throws IOException {
+		String line = null;
+		while ( (line = reader.readLine()) != null) {
+			Matcher matcher = REGEXREPLACE_PATTERN.matcher(line);
+			StringBuffer filteredLineBuffer = new StringBuffer();
+			while (matcher.find()) {
+				String key = matcher.group(1);
+				String value = replacementMap.get(key);
+				if (value == null) {
+					// if no key found in replacement map, just put back the original value
+					value = matcher.group();
+				}
+				matcher.appendReplacement(filteredLineBuffer, value);
+			}
+			matcher.appendTail(filteredLineBuffer);
+			writer.append(filteredLineBuffer);
+			writer.newLine();
+		}
+		writer.flush();
+	}
+
+	private BufferedWriter wrapAsBufferedWriter(OutputStream outputStream) {
+		return new BufferedWriter(new OutputStreamWriter(outputStream));
+	}
+
+	private BufferedWriter wrapAsBufferedWriter(Writer writer) {
+		return writer instanceof BufferedWriter ?
+			(BufferedWriter)writer :
+			new BufferedWriter(writer);
+	}
+
+	private BufferedReader wrapAsBufferedReader(InputStream inputStream) {
+		return new BufferedReader(new InputStreamReader(inputStream));
+	}
+
+	private BufferedReader wrapAsBufferedReader(Reader reader) {
+		return reader instanceof BufferedReader ?
+			(BufferedReader)reader :
+			new BufferedReader(reader);
 	}
 }

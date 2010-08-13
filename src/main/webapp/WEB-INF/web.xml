@@ -20,13 +20,13 @@
 	<servlet>
 		<servlet-name>OGCServlet</servlet-name>
 		<display-name>OGCServlet</display-name>
-		<description>Handler for OGC SOS service exposed at http://infotrek.er.usgs.gov/ogc-ie/sosbbox </description>
+		<description>Handler for OGC SOS service</description>
 		<servlet-class>gov.usgs.cida.ogc.OGCServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>WFSServlet</servlet-name>
 		<display-name>WFSServlet</display-name>
-		<description>Handler for OGC WFS service exposed at http://infotrek.er.usgs.gov/ogc-ie/wfs </description>
+		<description>Handler for OGC WFS service</description>
 		<servlet-class>gov.usgs.cida.ogc.WFSServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
