@@ -7,6 +7,12 @@ import java.util.List;
 
 
 
+/**
+ * Based on OGC Web Feature Service 1.1 standard 
+ * at http://www.opengeospatial.org/standards/wfs
+ * @author ilinkuo
+ *
+ */
 public enum WFS_1_1_Operation {
 	GetCapabilities(true, null),
 	DescribeFeatureType(true, null),

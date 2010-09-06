@@ -16,12 +16,19 @@
 				<dd><a href="<%=baseURL%>/wfs?request=DescribeFeatureType"><%=baseURL%>/wfs?request=DescribeFeatureType</a></dd>
 			</dl>
 			<dl>
-				<dt>GetFeature</dt>
+				<dt>GetFeature by bounding box</dt>
 				<dd><a href="<%=baseURL%>/wfs?request=GetFeature&bBox=-89.7,42.8,-89.2,43.3&typeName=gwml:WaterWell"><%=baseURL%>/wfs?request=GetFeature&bBox=-89.7,42.8,-89.2,43.3&typeName=gwml:WaterWell</a></dd>
+			</dl>
+			<dl>
+				<dt>GetFeature by feature id</dt>
+				<dd><a href="<%=baseURL%>/wfs?request=GetFeature&featureId=USGS.435629089353901&typeName=gwml:WaterWell"><%=baseURL%>/wfs?request=GetFeature&featureId=USGS.435629089353901&typeName=gwml:WaterWell</a></dd>
 			</dl>			
 		</li>
 		<li><strong>Sensor Observation Service</strong><br/><%=baseURL%>/sosbbox
-
+			<dl>
+				<dt>nonstandard GetObservations using explicit bounding box KVP</dt>
+				<dd><a href="<%=baseURL%>/sosbbox?north=43&south=42.9&east=-89.57&west=-89.65"><%=baseURL%>/sosbbox?north=43&south=42.9&east=-89.57&west=-89.65</a></dd>
+			</dl>
 		</li>	
 	</ul>
 </body>
