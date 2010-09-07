@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A Map<T> with case-insensitive String lookups
+ * A Map<String, T> with case-insensitive String lookups
  * 
  * @author ilinkuo
  *
@@ -22,6 +22,8 @@ public class CaseInsensitiveMap<T> extends CanonicalKeyMap<String, T> {
 	 * @param sArray
 	 * @param separator
 	 * @return
+	 * 
+	 * Note: this method really belongs elsewhere
 	 */
 	public static String join(String[] sArray, String separator) {
 		StringBuilder sb = new StringBuilder();
@@ -54,6 +56,12 @@ public class CaseInsensitiveMap<T> extends CanonicalKeyMap<String, T> {
 		
 		return result;
 	}
+	// ============
+	// CONSTRUCTORS
+	// ============
+	public CaseInsensitiveMap(){};
+	
+	public CaseInsensitiveMap(int size){ super(size);};
 	
 	// ================
 	// Instance Methods

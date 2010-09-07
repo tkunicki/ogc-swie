@@ -1,27 +1,36 @@
 package gov.usgs.cida.utils.collections;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 /**
- * A Map implementation whose keys are case insensitive. Does not allow null keys.
+ * A Map implementation whose keys are in some canonical form. Conversion to the
+ * canonical form is done automatically at lookup.
+ * 
  * @author ilinkuo
- *
+ * 
  * @param <T>
  */
 public abstract class CanonicalKeyMap<S, T> implements Map<S, T> {
 	private final Map<S, T>  _backingMap;
-	private final Set<S> keys = new HashSet<S>();
+	
+	/**
+	 * keys is to return the original key
+	 */
+	private final Set<S> keys;
 	
 	public CanonicalKeyMap(){
 		_backingMap = new HashMap<S, T>();
+		keys = new HashSet<S>();
 	};
 	
 	public CanonicalKeyMap(int size){
 		_backingMap = new HashMap<S, T>(size);
+		keys = new HashSet<S>(size);
 	};
 	
 	// utility method
@@ -35,7 +44,7 @@ public abstract class CanonicalKeyMap<S, T> implements Map<S, T> {
 
 	@Override
 	public boolean containsKey(Object key) {
-		return keys.contains(toCanonicalKey(key));
+		return _backingMap.containsKey(toCanonicalKey(key));
 	}
 
 	@Override
@@ -60,13 +69,21 @@ public abstract class CanonicalKeyMap<S, T> implements Map<S, T> {
 
 	@Override
 	public Set<S> keySet() {
-		return _backingMap.keySet();
+		// return the original keys
+		return Collections.unmodifiableSet(keys);
 	}
 
 	@Override
 	public T put(S key, T value) {
 		S canonicalKey = toCanonicalKey(key);
-		keys.add(canonicalKey);
+		if (!_backingMap.containsKey(canonicalKey)) {
+			// This helps to cut down on the occurrence of different forms of
+			// the same key, but does not completely prevent it
+			keys.add(key);
+		}
+		
+		// Note that keys.add() may != _backingMap.put()
+		// Not sure if this is something I need to worry about
 		return _backingMap.put(canonicalKey, value);
 
 	}
@@ -87,6 +104,9 @@ public abstract class CanonicalKeyMap<S, T> implements Map<S, T> {
 	@Override
 	public T remove(Object key) {
 		S canonicalKey = toCanonicalKey(key);
+		// Note that this does not remove all the variants of a canonical key,
+		// but the possibility of that happening is reduced by the code in put(). 
+		// Not sure if I really need to worry about this.
 		keys.remove(key);
 		return _backingMap.remove(canonicalKey);
 	}
@@ -100,6 +120,13 @@ public abstract class CanonicalKeyMap<S, T> implements Map<S, T> {
 	public Collection<T> values() {
 		return _backingMap.values();
 	}
+
+	@Override
+	public String toString() {
+		return _backingMap.toString();
+	}
+	
+	
 	
 	
 

@@ -64,6 +64,7 @@ public class WFSServlet extends HttpServlet {
 			case DescribeFeatureType:
 				parameters = new CaseInsensitiveMap<Object>();
 				parameters.putAll(params);
+				// Note that we don't actually do anything with the parameters at the moment.
 				break;
 			default:
 				throw new IllegalArgumentException("Currently not handling REQUEST=" + opType.name());		
@@ -174,6 +175,7 @@ public class WFSServlet extends HttpServlet {
 					if (Float.isNaN(west) || Float.isNaN(south) || Float.isNaN(east) || Float.isNaN(north)) {
 						throw new IllegalArgumentException("BBOX invalid number value");
 					}
+					// Is this for Alaska, this switching of order?
 					if (west > east) {
 						String s = bBoxSplit[0]; bBoxSplit[0] = bBoxSplit[2]; bBoxSplit[2] = s;
 					}
