@@ -61,7 +61,12 @@ public class CaseInsensitiveMap<T> extends CanonicalKeyMap<String, T> {
 	// ============
 	public CaseInsensitiveMap(){};
 	
-	public CaseInsensitiveMap(int size){ super(size);};
+	public CaseInsensitiveMap(int size){ super(size);}
+	
+	public CaseInsensitiveMap(Map<String, T> originalMap){ 
+		this(originalMap.size());
+		this.putAll(originalMap);
+	}
 	
 	// ================
 	// Instance Methods

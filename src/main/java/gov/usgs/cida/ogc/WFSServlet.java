@@ -1,12 +1,13 @@
 package gov.usgs.cida.ogc;
 
 import gov.usgs.cida.utils.collections.CaseInsensitiveMap;
+
 import gov.usgs.webservices.ibatis.XMLStreamReaderDAO;
 import gov.usgs.webservices.stax.XMLStreamUtils;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -20,6 +21,8 @@ import javax.xml.stream.XMLStreamWriter;
 import org.codehaus.stax2.XMLOutputFactory2;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import gov.usgs.cida.ogc.FileResponseUtil;
 
 /**
  * Servlet implementation class WFSServlet
@@ -62,20 +65,41 @@ public class WFSServlet extends HttpServlet {
 				break;
 			case GetCapabilities:
 			case DescribeFeatureType:
+				/* From 04-094 WFS Implementation Spec v 1.1 Section 8.1
+				 * 
+				 * The function of the DescribeFeatureType operation is to
+				 * generate a schema description of feature types serviced by a
+				 * WFS implementation. The schema descriptions define how a WFS
+				 * implementation expects feature instances to be encoded on
+				 * input (via Insert and Update requests) and how feature
+				 * instances will be generated on output (in response to
+				 * GetFeature and GetGmlObject requests). The only mandatory
+				 * output in response to a DescribeFeatureType request is a GML3
+				 * application schema defined using XML Schema. However, for the
+				 * purposes of experimentation, vendor extension, or even
+				 * extensions that serve a specific community of interest, other
+				 * acceptable output format values may be advertised by a WFS
+				 * service in the capabilities document [clause 13]. The meaning
+				 * of such values in not defined in the WFS specification. The
+				 * only proviso in such cases is that WFS clients may safely
+				 * ignore outputFormat values that they do not recognize.
+				 */
 				parameters = new CaseInsensitiveMap<Object>();
 				parameters.putAll(params);
 				// Note that we don't actually do anything with the parameters at the moment.
+				
+				
 				break;
 			default:
 				throw new IllegalArgumentException("Currently not handling REQUEST=" + opType.name());		
 		}
 		
-		response.setContentType("text/xml");
+		response.setContentType(OGC_WFSConstants.DEFAULT_DESCRIBEFEATURETYPE_OUTPUTFORMAT);
 		response.setCharacterEncoding("UTF-8");
 		OutputStream outputStream = response.getOutputStream();
 		
 		try {
-			handleRequest(parameters, outputStream, opType);
+			handleRequest(request, outputStream, parameters, opType);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -84,8 +108,7 @@ public class WFSServlet extends HttpServlet {
 		
 	}
 
-	private void handleRequest(Map<String, Object> parameters,
-			OutputStream outputStream, WFS_1_1_Operation opType)
+	private void handleRequest(HttpServletRequest request, OutputStream outputStream, Map<String, Object> parameters, WFS_1_1_Operation opType)
 			throws ServletException, XMLStreamException, IOException {
 		switch(opType) {
 			case GetFeature:
@@ -93,55 +116,24 @@ public class WFSServlet extends HttpServlet {
 				XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
 				XMLStreamUtils.copy(streamReader, streamWriter);
 				break;
-			case DescribeFeatureType:
-				// Just sending back static file for now.
-				String resource = "/ogc/wfs/DescribeFeatureType.xml";
-				InputStream inStream = this.getClass().getResourceAsStream(resource);
-				if (inStream != null) {
-					copy(inStream, outputStream);
-				} else {
-					outputStream.write(("<error>Unable to retrieve resource " + resource + "</error").getBytes());
-				}
-				copy(inStream, outputStream);
-				outputStream.flush();
-				break;
 			case GetCapabilities:
-				// Note, should take a look at http://www.java2s.com/Open-Source/Java-Document/GIS/GeoServer/org/geoserver/wfs/CapabilitiesTransformer.java.htm
+			case DescribeFeatureType:
+
+				String baseURL = request.getRequestURL().toString().replaceFirst(request.getServletPath() + "$", "");
+				Map<String, String> replacementMap = new HashMap<String, String>();
+				replacementMap.put("base.url", baseURL);
+
 				// Just sending back static file for now.
-				resource = "/ogc/wfs/GetCapabilities.xml";
-				inStream = this.getClass().getResourceAsStream(resource);
-				if (inStream != null) {
-					copy(inStream, outputStream);
-				} else {
-					outputStream.write(("<error>Unable to retrieve resource " + resource + "</error").getBytes());
-				}
-				outputStream.flush();
+				String resource = opType == WFS_1_1_Operation.GetCapabilities ?
+					"/ogc/wfs/GetCapabilities.xml" :
+					"/ogc/wfs/DescribeFeatureType.xml";
+				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
+
+				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
+						errorMessage);
 				break;
-				
 		}
 	}
-	
-    /**
-     * Copies InputStream to OutputStream
-     * 
-     * @param input
-     * @param output
-     * @return
-     * @throws IOException
-     * [TODO] move this to a better location
-     */
-    public static int copy(InputStream input, OutputStream output)
-                throws IOException {
-        byte[] buffer = new byte[8 << 5]; // 8k buffer size
-        int count = 0;
-        int n = 0;
-        while (-1 != (n = input.read(buffer))) {
-            output.write(buffer, 0, n);
-            count += n;
-        }
-        return count;
-    }
-
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

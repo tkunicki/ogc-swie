@@ -1,0 +1,181 @@
+<sos:Capabilities 
+	xmlns:sos="http://www.opengis.net/sos/1.0" 
+	xmlns:oost="http://www.oostethys.org/schemas/0.1.0/oostethys" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:ows="http://www.opengis.net/ows/1.1" 
+	xmlns:xlink="http://www.w3.org/1999/xlink" 
+	xmlns:gml="http://www.opengis.net/gml" 
+	xmlns:swe="http://www.opengis.net/swe/1.0.1" 
+	xsi:schemaLocation="http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosGetCapabilities.xsd" 
+	version="1.0.0">
+	<ows:ServiceIdentification>
+		<ows:Title>USGS Groundwater Interoperability Experiment Sensor Observation Service</ows:Title>
+		<ows:Abstract>This is a minimal implementation of SOS 1.0.0, in progress, based on USGS NWIS data</ows:Abstract>
+		<ows:Keywords>
+			<ows:Keyword>WFS</ows:Keyword>
+			<ows:Keyword>Groundwater</ows:Keyword>
+			<ows:Keyword>USGS</ows:Keyword>
+			<ows:Keyword>Interoperability</ows:Keyword>
+			<ows:Keyword>Experiment</ows:Keyword>
+			<ows:Keyword>CIDA</ows:Keyword>
+			<ows:Keyword>NWIS</ows:Keyword>
+			<ows:Keyword>Water</ows:Keyword>
+			<ows:Keyword>Wells</ows:Keyword>
+		</ows:Keywords>
+		<ows:ServiceType codeSpace="http://opengeospatial.net">OGC:SOS</ows:ServiceType>
+		<ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
+		<ows:Fees>None</ows:Fees>
+		<ows:AccessConstraints>None</ows:AccessConstraints>
+	</ows:ServiceIdentification>
+	<ows:ServiceProvider>
+		<ows:ProviderName>USGS Center for Integrated Data Analytics (CIDA)</ows:ProviderName>
+		<ows:ProviderSite xlink:href="http://cida.usgs.gov"/>
+		<ows:ServiceContact>
+			<ows:IndividualName>Nate Booth</ows:IndividualName>
+			<ows:PositionName>Project Manager</ows:PositionName>
+			<ows:ContactInfo>
+				<ows:Phone>
+					<ows:Voice>608-239-1108</ows:Voice>
+				</ows:Phone>
+				<ows:Address>
+					<ows:DeliveryPoint>8505 Research Way</ows:DeliveryPoint>
+					<ows:City>Middleton</ows:City>
+					<ows:AdministrativeArea>WI</ows:AdministrativeArea>
+					<ows:PostalCode>53562</ows:PostalCode>
+					<ows:Country>U.S.A.</ows:Country>
+					<ows:ElectronicMailAddress>nlbooth@usgs.gov</ows:ElectronicMailAddress>
+				</ows:Address>
+				<ows:OnlineResource xlink:href="${base.url}/wfs"/>
+				<ows:HoursOfService>24x7 experimental</ows:HoursOfService>
+				<ows:ContactInstructions>8h30-16h00 GMT-5</ows:ContactInstructions>
+			</ows:ContactInfo>
+			<ows:Role>USGS OGC PointOfContact</ows:Role>
+		</ows:ServiceContact>
+		<!-- Only one ServiceContact allowed in this version of schema
+		<ows:ServiceContact>
+			<ows:IndividualName>Thomas Kunicki</ows:IndividualName>
+			<ows:PositionName>Project Lead</ows:PositionName>
+			<ows:ContactInfo>
+				<ows:Phone>
+					<ows:Voice>608-821-3851</ows:Voice>
+				</ows:Phone>
+				<ows:Address>
+					<ows:DeliveryPoint>8505 Research Way</ows:DeliveryPoint>
+					<ows:City>Middleton</ows:City>
+					<ows:AdministrativeArea>WI</ows:AdministrativeArea>
+					<ows:PostalCode>53562</ows:PostalCode>
+					<ows:Country>U.S.A.</ows:Country>
+					<ows:ElectronicMailAddress>tkunicki@usgs.gov</ows:ElectronicMailAddress>
+				</ows:Address>
+				<ows:OnlineResource xlink:href="${base.url}/wfs"/>
+				<ows:HoursOfService>24x7</ows:HoursOfService>
+				<ows:ContactInstructions>9h30-16h30 GMT-5</ows:ContactInstructions>
+			</ows:ContactInfo>
+			<ows:Role>USGS OGC GroundWater Interoperability Experiment Project Lead</ows:Role>
+		</ows:ServiceContact>
+		 -->
+	</ows:ServiceProvider>
+	<ows:OperationsMetadata>
+		<ows:Operation name="GetCapabilities">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Get xlink:href="${base.url}/sosbbox?"/>
+					<!-- 
+					<ows:Post xlink:href="${base.url}/wfs"/>
+					 -->
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="service">
+				<ows:AllowedValues>
+					<ows:Value>SOS</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+			<ows:Parameter name="version">
+				<ows:AllowedValues>
+					<ows:Value>1.0.0</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Operation name="GetObservation">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Get xlink:href="${base.url}/sosbbox/sos"/>
+					<ows:Post xlink:href="${base.url}/sosbbox/sos"/>
+				</ows:HTTP>
+			</ows:DCP>
+			<!-- 
+			<ows:Parameter name="offering">
+				<ows:AllowedValues>
+					<ows:Value>observationOffering3</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+			<ows:Parameter name="observedProperty">
+				<ows:AllowedValues>
+					<ows:Value>http://mmisw.org/ont/cf/parameter/sea_water_temperature</ows:Value>
+					<ows:Value>http://mmisw.org/ont/cf/parameter/conductivity</ows:Value>
+					<ows:Value>http://mmisw.org/ont/cf/parameter/sea_water_salinity</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+			 -->
+		</ows:Operation>
+		<!-- 
+		<ows:Operation name="DescribeSensor">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Get xlink:href="${base.url}/sosbbox/sos"/>
+					<ows:Post xlink:href="${base.url}/sosbbox/sos"/>
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="version">
+				<ows:AllowedValues>
+					<ows:Value>1.0.0</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+			<ows:Parameter name="service">
+				<ows:AllowedValues>
+					<ows:Value>SOS</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+			<ows:Parameter name="outputFormat">
+				<ows:AllowedValues>
+					<ows:Value>text/xml;subtype="sensorML/1.0.1"</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+			
+			<ows:Parameter name="procedure">
+				<ows:AllowedValues>
+					<ows:Value>urn:mbari:org</ows:Value>
+					<ows:Value>uri:mbari:org:mooring:m2</ows:Value>
+					<ows:Value>urn:mbari:org:device:1455</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+			 
+		</ows:Operation>
+		-->
+	</ows:OperationsMetadata>
+	<sos:Contents>
+		<sos:ObservationOfferingList>
+			<sos:ObservationOffering gml:id="usgs.water.gwie.waterLevels">
+				<gml:description/>
+				<gml:boundedBy>
+					<gml:Envelope srsName="urn:ogc:def:crs:EPSG:6.5:4326">
+						<gml:lowerCorner>-125 24</gml:lowerCorner>
+						<gml:upperCorner>-66 123</gml:upperCorner>
+					</gml:Envelope>
+				</gml:boundedBy>
+				<sos:time>
+					<gml:TimePeriod gml:id="timePeriod3">
+						<gml:beginPosition>1900-01-01T12:00:00Z</gml:beginPosition>
+						<!-- TODO make the end time dynamic -->
+						<gml:endPosition>2010-10-01T12:00:00Z</gml:endPosition>
+					</gml:TimePeriod>
+				</sos:time>
+				<sos:procedure xlink:href="http://nemi.usgs.gov/water/procedure/unknown"/>
+				<sos:observedProperty xlink:href="http://usgs.gov/water/parameter/water_level"/>
+				<sos:featureOfInterest xlink:href="http://usgs.gov/water/groundwater_wells"/>
+				<sos:responseFormat>text/xml; subtype="om/1.0.0"</sos:responseFormat>
+				<sos:responseMode>inline</sos:responseMode>
+			</sos:ObservationOffering>
+		</sos:ObservationOfferingList>
+	</sos:Contents>
+</sos:Capabilities>

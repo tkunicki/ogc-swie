@@ -1,14 +1,17 @@
 package gov.usgs.cida.ogc;
 
+import gov.usgs.cida.utils.collections.CaseInsensitiveMap;
 import gov.usgs.webservices.ibatis.XMLStreamReaderDAO;
 import gov.usgs.webservices.stax.XMLStreamUtils;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLDecoder;
 import java.nio.CharBuffer;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -16,6 +19,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,7 +42,6 @@ import org.w3c.dom.Node;
 public class OGCServlet extends HttpServlet {
 	
 	public static final String SPECIAL_XML_POST_VARIABLE = "request";
-
 	private static final long serialVersionUID = 1L;
 
 //	private final static String XPATH_Envelope = "//sos:GetObservation/sos:featureOfInterest/ogc:BBOX[ogc:PropertyName='gml:location']/gml:Envelope";
@@ -70,8 +73,8 @@ public class OGCServlet extends HttpServlet {
 	@Override
 	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Map<String, String[]> parameterMap = request.getParameterMap();
-		queryAndSend(parameterMap , response);
+		Map<String, String[]> parameterMap = new CaseInsensitiveMap<String[]>(request.getParameterMap());
+		queryAndSend(request, response, parameterMap);
 	}
 
 	/**
@@ -116,33 +119,75 @@ public class OGCServlet extends HttpServlet {
 			Document document = DOMUtil.createDocument(documentString);
 			
 			Map<String, String[]> parameterMap = createParameterMapFromDocument(document);
-			queryAndSend(parameterMap, response);
+			queryAndSend(request, response, parameterMap);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private void queryAndSend(Map<String, String[]> parameterMap, HttpServletResponse response) throws IOException {
+	
+	private void queryAndSend(HttpServletRequest request, HttpServletResponse response, Map<String, String[]> parameterMap) throws IOException {
 		dumpMap(parameterMap);
-		response.setContentType("text/xml");
+		// TODO parameterMap may or may not be case-insensitive, depending on path of arrival post or get. Correct this later.
+		SOS_1_0_Operation opType = SOS_1_0_Operation.parse(parameterMap.get("request"));
+		
+		ServletOutputStream outputStream = response.getOutputStream();
+		response.setContentType(OGC_WFSConstants.DEFAULT_DESCRIBEFEATURETYPE_OUTPUTFORMAT);
 		response.setCharacterEncoding("UTF-8");
-		OutputStream outputStream = response.getOutputStream();
-		try {
-			XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("ogcMapper.observationsSelect", parameterMap);
-			XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
-			XMLStreamUtils.copy(streamReader, streamWriter);
-		}catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			outputStream.flush();
+		switch (opType) {
+			case GetObservation:
+				try {
+					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("ogcMapper.observationsSelect", parameterMap);
+					XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
+					XMLStreamUtils.copy(streamReader, streamWriter);
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					outputStream.flush();
+				}
+				break;
+			case GetCapabilities:
+				String baseURL = request.getRequestURL().toString().replaceFirst(request.getServletPath() + "$", "");
+				Map<String, String> replacementMap = new HashMap<String, String>();
+				replacementMap.put("base.url", baseURL);
+
+				// Just sending back static file for now.
+				String resource = "/ogc/sos/GetCapabilities.xml";
+				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
+				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
+						errorMessage);
+				break;
+			case DescribeSensor:
+				BufferedWriter writer = FileResponseUtil.wrapAsBufferedWriter(outputStream);
+				try {
+					writer.append("<error>DescribeSensor REQUEST type to be implemented</error>");
+				} catch (Exception e) {
+					// TODO: handle exception
+				} finally {
+					outputStream.flush();
+				}
+				
+				break;
+			default:
+				writer = FileResponseUtil.wrapAsBufferedWriter(outputStream);
+				try {
+					writer.append("unrecognized or unhandled REQUEST type = " + opType);
+				} catch (Exception e) {
+					// TODO: handle exception
+				} finally {
+					outputStream.flush();
+				}
+				break;
 		}
+
 	}
 
 	private Map<String, String[]> createParameterMapFromDocument(Document document) throws Exception {
 		if (document == null) {
 			return null;
 		}
+		// TODO Ask Tom why a LinkedHashMap?
 		Map<String, String[]> parameterMap = new LinkedHashMap<String, String[]>();
 		
 		XPathFactory xpathFactory = XPathFactory.newInstance();

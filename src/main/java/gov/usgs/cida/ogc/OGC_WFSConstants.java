@@ -84,6 +84,68 @@ public class OGC_WFSConstants {
 	// 7.8 Common XML Attributes. Does this only apply to exceptions
 	public static final String[] commonAttributes = {"version", "service", "handle"};
 	
+	// 8.2 DescribeFeatureType Request parameters
+	/* <DescribeFeatureType outputFormat=""><TypeName></TypeName></DescribeFeatureType> */
+	
+	
+	// DescribeFeatureType outputformat values
+	public static final String DEFAULT_DESCRIBEFEATURETYPE_OUTPUTFORMAT = "text/xml; subtype=gml/3.1.1";
+	public static final String[] backwardCompatibleDescribeFeatureTypeOutputFormats = {"XMLSCHEMA","text/xml; subtype=gml/2.1.2"};
+	
+	// 9.2 GetFeature outputFormat values
+	public static final String DEFAULT_GETFEATURE_OUTPUTFORMAT = DEFAULT_DESCRIBEFEATURETYPE_OUTPUTFORMAT;
+	public static final String[] backwardCompatibleGetFeatureOutputFormats = {"GML2","text/xml; subtype=gml/2.1.2"};
+	public static final String DEFAULT_RESULTTYPE = "Results";
+	public static final String[] resultTypeValues = {DEFAULT_RESULTTYPE,"hits"};
+	
+	public static final String[] queryAttributes = {"typeName","featureVersion","srsName",
+		"traverseLinkDepth","traverseXlinkExpiry"};
+	// typeName is mandatory, comma-dellimited list of types/aliases to be joined. See 9.2 for details
+	public static final String[] srsSpecificationFormats = {"EPSG:<EPSG code>",
+		"http://www.opengis.net/gml/srs/epsg.xml#<EPSG code>",
+		"urn:EPSG:geographicCRC:<epsg code>"};
+	public static final boolean validateSRSSpecificationFormat(String value) {
+		return true;
+	}
+	
+	public static final boolean validateTraverseLinkDepthFormat(String value) {
+		// positive integers union {"*"}
+		return true;
+	}
+	
+	// traverseXlinkExpiry in minutes, how long a service should wait to receive a nested GetGMLObject request
+	
+	// wfs:PropertyName indicates which optional properties should be returned
+	// wfs:XlinkPropertyName seems to be indicate those which should be abbreviated, may have its own @traverseLinkDepth and @traverseXlinkExpiry
+	// "wfs:PropertyName","wfs:XlinkPropertyName"
+	
+	// //9.3 GetFeatureWithLock
+	// @timeStamp, @numberOfFeatures
+	
+	// 9.3.1 outlines dyanmic schema generation per request 
+	
+	// 9.5 for examples of GetFeature requests
+	
+	// Section 10 GetGMLObject()
+	
+	// 10.2.1 URI parsing
+	public static boolean validateURI(String value) {
+		// Note that "#" and "fragment identifier suffix" are mandatory and require raising an exception
+		return true;
+	}
+	
+	// 11, 12 skipped LockFeature and Transaction operations
+	
+	// 13 GetCapabilities
+	public static final String[] GetCapabilitiesSections = {"Service Identification", "Service Provider", "Operation Metadata", "FeatureType list", "ServesGMLObjectType", "ServesGMLObjectType", "Filter capabilities"};
+	
+	
+	
+
+	
+	
+	
+	
 	
 	
 	

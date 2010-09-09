@@ -26,8 +26,19 @@
 		</li>
 		<li><strong>Sensor Observation Service</strong><br/><%=baseURL%>/sosbbox
 			<dl>
+				<dt>GetCapabilities</dt>
+				<dd><a href="<%=baseURL%>/sosbbox?request=GetCapabilities"><%=baseURL%>/sosbbox?request=GetCapabilities</a></dd>
+			</dl>
+			<dl>
+				<dt>DescribeSensor (To be implemented)</dt>
+				<dd><a href="<%=baseURL%>/sosbbox?request=DescribeSensor"><%=baseURL%>/sosbbox?request=DescribeSensor</a></dd>
+			</dl>
+			<dl>
 				<dt>nonstandard GetObservations using explicit bounding box KVP</dt>
-				<dd><a href="<%=baseURL%>/sosbbox?north=43&south=42.9&east=-89.57&west=-89.65"><%=baseURL%>/sosbbox?north=43&south=42.9&east=-89.57&west=-89.65</a></dd>
+				<dd><a href="<%=baseURL%>/sosbbox?request=GetObservation&north=43&south=42.9&east=-89.57&west=-89.65"><%=baseURL%>/sosbbox?request=GetObservation&north=43&south=42.9&east=-89.57&west=-89.65</a></dd>
+			</dl>
+			<dl>
+				<dt>GetObservations POST (Example forthcoming</dt>
 			</dl>
 		</li>	
 	</ul>

@@ -20,4 +20,22 @@ public class VersionNegotiationException extends OGCException {
 		return null;
 	}
 
+	@Override
+	public String getCode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getHandle() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getLocator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

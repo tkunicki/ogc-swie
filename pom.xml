@@ -22,12 +22,6 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>gov.usgs.cida</groupId>
 			<artifactId>webservice-ibatis</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
@@ -72,6 +66,25 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>htmlunit</groupId>
+			<artifactId>htmlunit</artifactId>
+			<version>1.7</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<!-- [IK] this dependency isn't really used -->
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc14</artifactId>
+			<version>10.2.0.4</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	
 	<build>
@@ -91,6 +104,39 @@
 							<cargo.server.settings>${cargo.server.settings}</cargo.server.settings>
 						</properties>
 					</configuration>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.4.3</version>
+				<configuration>
+					<testFailureIgnore>true</testFailureIgnore>
+						<!-- NOTE: extra properties required for unit tests -->
+					<systemProperties>
+					<!-- Not sure what props I need. Do it later
+						<property>
+							<name>catalina.base</name>
+							<value>target/test-classes</value>
+						</property>
+						<property>
+							<name>catalina.home</name>
+							<value>target/test-classes</value>
+						</property>
+						<property>
+							<name>dbuser</name>
+							<value>PUBS_V2</value>
+						</property>
+						<property>
+							<name>dbpass</name>
+							<value></value>
+						</property>
+						<property>
+							<name>dburl</name>
+							<value>jdbc:oracle:thin:@witest.er.usgs.gov:1521:witest</value>
+						</property>
+					 -->
+					</systemProperties>
 				</configuration>
 			</plugin>
 		</plugins>

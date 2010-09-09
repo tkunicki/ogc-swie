@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  This schema isn't quite valid as I haven't defined wfs: or ogc:
+	This is a simple schema fragment. I've commented out the entire thing because of annoying validation errors
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:element name="GetFeature" type="wfs:GetFeatureType"/>
+	<xsd:complexType name="GetFeatureType">
+		<xsd:complexContent>
+			<xsd:extension base="wfs:BaseRequestType">
+				<xsd:sequence>
+					<xsd:element ref="wfs:Query" maxOccurs="unbounded"/>
+				</xsd:sequence>
+				<xsd:attribute name="resultType" type="wfs:ResultTypeType" use="optional" default="results"/>
+				<xsd:attribute name="outputFormat" type="xsd:string" use="optional" default="text/xml; subtype=3.1.1"/>
+				<xsd:attribute name="maxFeatures" type="xsd:positiveInteger" use="optional"/>
+				<xsd:attribute name="traverseXlinkDepth" type="xsd:string" use="optional"/>
+				<xsd:attribute name="traverseXlinkExpiry" type="xsd:positiveInteger" use="optional"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:simpleType name="ResultTypeType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="results"/>
+			<xsd:enumeration value="hits"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="Query" type="wfs:QueryType"/>
+	<xsd:complexType name="QueryType">
+		<xsd:sequence>
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
+				<xsd:element ref="wfs:PropertyName"/>
+				<xsd:element ref="ogc:Function"/>
+			</xsd:choice>
+			<xsd:element ref="ogc:Filter" minOccurs="0" maxOccurs="1"/>
+			<xsd:element ref="ogc:SortBy" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="handle" type="xsd:string" use="optional"/>
+		<xsd:attribute name="typeName" type="wfs:TypeNameListType" use="required"/>
+		<xsd:attribute name="featureVersion" type="xsd:string" use="optional"/>
+		<xsd:attribute name="srsName" type="xsd:anyURI" use="optional"/>
+	</xsd:complexType>
+	<xsd:simpleType name="Base_TypeNameListType">
+		<xsd:list itemType="QName"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="TypeNameListType">
+		<xsd:restriction base="wfs:Base_TypeNameListType">
+			<xsd:pattern value="((\w:)?\w(=\w)?){1,}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>
+-->

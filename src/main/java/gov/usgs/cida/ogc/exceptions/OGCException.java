@@ -8,5 +8,12 @@ public abstract class OGCException extends Exception {
 	
 	public abstract String getReferenceDocumentSection();
 	
+	// OGC mandated properties See 04-094 7.7 Exception Reporting
+	public abstract String getCode();
+	public abstract String getLocator();
+	public abstract String getHandle();
+
+	
+	
 	
 }
