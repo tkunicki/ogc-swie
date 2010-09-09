@@ -170,7 +170,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		      ||SITE_NO station_id,
 		      DEC_LAT_VA,
 		      DEC_LONG_VA
-		    FROM nwis_dwh_star.sites_gw_mvw s
+		    FROM nwis_dwh_star.SITES_GW_ALL_MVW s
 		    WHERE ( 
 		      sdo_geom.relate( 
 		        s.geom, sdo_dim_array( 

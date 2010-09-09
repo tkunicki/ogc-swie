@@ -281,7 +281,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			s.WELL_DEPTH_VA,
 			s.NAT_WATER_USE_NAME
 		FROM
-			NWIS_DWH_STAR.SITES_GW_MVW s
+			NWIS_DWH_STAR.SITES_GW_ALL_MVW s
 		WHERE 1 = 0
 		<trim prefix="OR (" suffix=")" prefixOverrides="AND">
 			<if test="bBox != null">
@@ -305,7 +305,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			TRIM(g.LITH_TOP_VA)||' '||TRIM(g.LITH_BOTTOM_VA) AS LITH_TOP_BOTTOM,
 			g.LITH_TOP_VA
 		FROM
-			NWIS_DWH_STAR.SITES_GW_MVW s
+			NWIS_DWH_STAR.SITES_GW_ALL_MVW s
 		INNER JOIN
 			NWIS_DWH_STAR.GWSI_GEOH_AQFR g ON s.DWH_SITE_ID = g.DWH_SITE_ID
 		WHERE 
@@ -317,7 +317,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		ORDER BY
 			g.LITH_TOP_VA
 	</select>
-
+	
+	<!--
 	<select id="wfsRelatedObservationSelect" parameterType="map" resultMap="wfsRelatedObservationResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 		SELECT DISTINCT
 			s.MY_SITEID AS FEATURE_ID,
@@ -333,5 +334,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		ORDER BY
 			s.DISC_SEQ_NU
 	</select>
+-->
 
 </mapper> 
