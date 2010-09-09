@@ -22,7 +22,8 @@
 			<dl>
 				<dt>GetFeature by feature id</dt>
 				<dd><a href="<%=baseURL%>/wfs?request=GetFeature&featureId=USGS.435629089353901&typeName=gwml:WaterWell"><%=baseURL%>/wfs?request=GetFeature&featureId=USGS.435629089353901&typeName=gwml:WaterWell</a></dd>
-			</dl>			
+			</dl>
+			<!-- TODO: add example with maxFeatures -->
 		</li>
 		<li><strong>Sensor Observation Service</strong><br/><%=baseURL%>/sosbbox
 			<dl>

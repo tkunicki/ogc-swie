@@ -41,7 +41,7 @@ import org.w3c.dom.Node;
  */
 public class OGCServlet extends HttpServlet {
 	
-	public static final String SPECIAL_XML_POST_VARIABLE = "request";
+	public static final String SPECIAL_XML_POST_VARIABLE = "requestHack";
 	private static final long serialVersionUID = 1L;
 
 //	private final static String XPATH_Envelope = "//sos:GetObservation/sos:featureOfInterest/ogc:BBOX[ogc:PropertyName='gml:location']/gml:Envelope";
