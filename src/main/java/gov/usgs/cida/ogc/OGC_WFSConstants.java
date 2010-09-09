@@ -56,7 +56,7 @@ public class OGC_WFSConstants {
 		"http://www.opengeospatial.net/ogc"};
 	
 	// 7.1 Find out what this means "It is further assumed that a feature 
-	// identifier is encoded as described in the OpenGIS® Filter 
+	// identifier is encoded as described in the OpenGIS Filter 
 	// Encoding Implementation Specification [3]."
 	
 	public static boolean validateAsNCName(String propertyName) {
