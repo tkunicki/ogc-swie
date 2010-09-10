@@ -22,7 +22,9 @@ import org.codehaus.stax2.XMLOutputFactory2;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import gov.usgs.cida.ogc.FileResponseUtil;
+import gov.usgs.cida.ogc.specs.OGC_WFSConstants;
+import gov.usgs.cida.ogc.specs.WFS_1_1_Operation;
+import gov.usgs.cida.ogc.utils.FileResponseUtil;
 
 /**
  * Servlet implementation class WFSServlet

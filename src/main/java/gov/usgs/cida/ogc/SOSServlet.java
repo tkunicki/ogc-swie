@@ -1,5 +1,9 @@
 package gov.usgs.cida.ogc;
 
+import gov.usgs.cida.ogc.specs.OGC_WFSConstants;
+import gov.usgs.cida.ogc.specs.SOS_1_0_Operation;
+import gov.usgs.cida.ogc.utils.DOMUtil;
+import gov.usgs.cida.ogc.utils.FileResponseUtil;
 import gov.usgs.cida.utils.collections.CaseInsensitiveMap;
 import gov.usgs.webservices.ibatis.XMLStreamReaderDAO;
 import gov.usgs.webservices.stax.XMLStreamUtils;
@@ -39,7 +43,7 @@ import org.w3c.dom.Node;
 /**
  * Servlet implementation class to handle SOS requests
  */
-public class OGCServlet extends HttpServlet {
+public class SOSServlet extends HttpServlet {
 	
 	public static final String SPECIAL_XML_POST_VARIABLE = "requestHack";
 	private static final long serialVersionUID = 1L;
@@ -62,7 +66,7 @@ public class OGCServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public OGCServlet() {
+	public SOSServlet() {
 		super();
 	}
 
@@ -138,7 +142,7 @@ public class OGCServlet extends HttpServlet {
 		switch (opType) {
 			case GetObservation:
 				try {
-					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("ogcMapper.observationsSelect", parameterMap);
+					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("sosMapper.observationsSelect", parameterMap);
 					XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
 					XMLStreamUtils.copy(streamReader, streamWriter);
 				} catch (Exception e) {

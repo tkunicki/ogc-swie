@@ -1,4 +1,4 @@
-package gov.usgs.cida.ogc;
+package gov.usgs.cida.ogc.utils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

@@ -1,4 +1,4 @@
-package gov.usgs.cida.ogc;
+package gov.usgs.cida.ogc.specs;
 
 /**
  * From 04-094 Web Feature Service Implementation Specification v1.1. All

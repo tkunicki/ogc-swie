@@ -2,9 +2,9 @@
  <!DOCTYPE mapper
 PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-<mapper namespace="ogcMapper">
+<mapper namespace="sosMapper">
 
-	<resultMap id="ogcResultMap" type="XMLMap">
+	<resultMap id="sosResultMap" type="XMLMap">
 		<result
 	    	property="om:ObservationCollection"
 	    	column="%ROOT_ELEMENT"
@@ -44,7 +44,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			
 	</resultMap>
 	
-	<resultMap id="observationsResultMap" type="XMLMap" extends="ogcResultMap">
+	<resultMap id="observationsResultMap" type="XMLMap" extends="sosResultMap">
 	 	<result
 	 		property="^!{om:member"
 	 		column="station_id"

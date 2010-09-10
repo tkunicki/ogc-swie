@@ -1,6 +1,6 @@
-package gov.usgs.cida.ogc.exceptions;
+package gov.usgs.cida.ogc.specs.exceptions;
 
-public class InvalidEncodingTypeException extends OGCException {
+public class FormatException extends OGCException {
 
 	@Override
 	public String getReferenceDocumentName() {
@@ -17,6 +17,10 @@ public class InvalidEncodingTypeException extends OGCException {
 	@Override
 	public String getReferenceDocumentSection() {
 		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public String getOriginalValue() {
 		return null;
 	}
 

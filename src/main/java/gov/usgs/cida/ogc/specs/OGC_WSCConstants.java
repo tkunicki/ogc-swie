@@ -1,4 +1,4 @@
-package gov.usgs.cida.ogc;
+package gov.usgs.cida.ogc.specs;
 
 /**
  * Based on OGC Web Service Common standard (document 06-121r9)

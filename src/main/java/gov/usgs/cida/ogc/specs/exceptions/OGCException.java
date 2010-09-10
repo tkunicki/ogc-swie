@@ -1,4 +1,4 @@
-package gov.usgs.cida.ogc.exceptions;
+package gov.usgs.cida.ogc.specs.exceptions;
 
 public abstract class OGCException extends Exception {
 	

@@ -1,4 +1,4 @@
-package gov.usgs.cida.ogc;
+package gov.usgs.cida.ogc.specs;
 
 import java.util.ArrayList;
 import java.util.Arrays;
