@@ -6,6 +6,16 @@
 <body>
 	<h1>Services Implemented</h1>
 	<ul>
+		<li><strong>Web Mapping Service</strong><br/>
+			<dl>
+				<dt>GetCapabilities</dt>
+				<dd><a href="http://infotrek.er.usgs.gov/mapviewer11gr1/wms?REQUEST=GetCapabilities&VERSION=1.1.1&SERVICE=WMS ">http://infotrek.er.usgs.gov/mapviewer11gr1/wms?REQUEST=GetCapabilities&VERSION=1.1.1&SERVICE=WMS</a></dd>
+			</dl>
+			<dl>
+				<dt>GetMap</dt>
+				<dd><a href="http://infotrek.er.usgs.gov/mapviewer11gr1/wms?REQUEST=GetMap&VERSION=1.1.1&FORMAT=image/gif&SERVICE=WMS&BBOX=-90,43,-89,44&SRS=EPSG:4326&LAYERS=GW_SITES&WIDTH=580&HEIGHT=500 ">http://infotrek.er.usgs.gov/mapviewer11gr1/wms?REQUEST=GetMap&VERSION=1.1.1&FORMAT=image/gif&SERVICE=WMS&BBOX=-90,43,-89,44&SRS=EPSG:4326&LAYERS=GW_SITES&WIDTH=580&HEIGHT=500 </a></dd>
+			</dl>
+		</li>
 		<li><strong>Web Feature Service</strong><br/>
 			<dl>
 				<dt>GetCapabilities</dt>
@@ -39,7 +49,7 @@
 				<dd><a href="<%=baseURL%>/sosbbox?request=GetObservation&north=43&south=42.9&east=-89.57&west=-89.65"><%=baseURL%>/sosbbox?request=GetObservation&north=43&south=42.9&east=-89.57&west=-89.65</a></dd>
 			</dl>
 			<dl>
-				<dt>GetObservations POST (Example forthcoming</dt>
+				<dt>GetObservations POST (Example forthcoming)</dt>
 			</dl>
 		</li>	
 	</ul>
