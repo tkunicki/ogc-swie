@@ -118,6 +118,7 @@
 						<exclude>**/ExampleCharacterizationTest.java</exclude>
 						<exclude>**/RecorderTest.java</exclude>
 						<exclude>**/CharacterizationTestUtilsTest.java</exclude>
+						<exclude>**/CharacterizationTestHelperTest.java</exclude>
 					</excludes>
 					<systemProperties>
 					<!-- Not sure what props I need. Do it later
