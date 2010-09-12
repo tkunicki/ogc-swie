@@ -2,23 +2,17 @@ package gov.usgs.cida.ogc;
 
 import gov.usgs.cida.ogc.specs.OGC_WFSConstants;
 import gov.usgs.cida.ogc.specs.SOS_1_0_Operation;
-import gov.usgs.cida.ogc.utils.DOMUtil;
 import gov.usgs.cida.ogc.utils.FileResponseUtil;
+import gov.usgs.cida.ogc.utils.ServletHandlingUtils;
+import gov.usgs.cida.ogc.utils.ServletHandlingUtils.RequestBodyExceededException;
 import gov.usgs.cida.utils.collections.CaseInsensitiveMap;
 import gov.usgs.webservices.ibatis.XMLStreamReaderDAO;
 import gov.usgs.webservices.stax.XMLStreamUtils;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URLDecoder;
-import java.nio.CharBuffer;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -45,7 +39,8 @@ import org.w3c.dom.Node;
  */
 public class SOSServlet extends HttpServlet {
 	
-	public static final String SPECIAL_XML_POST_VARIABLE = "requestHack";
+	private static final String DEFAULT_ENCODING = "UTF-8";
+
 	private static final long serialVersionUID = 1L;
 
 //	private final static String XPATH_Envelope = "//sos:GetObservation/sos:featureOfInterest/ogc:BBOX[ogc:PropertyName='gml:location']/gml:Envelope";
@@ -86,59 +81,30 @@ public class SOSServlet extends HttpServlet {
 	 *      response)
 	 */
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws RequestBodyExceededException, IOException {
 		try {
-			String contentType = request.getContentType();
-			String characterEncoding = request.getCharacterEncoding();
-			if ( characterEncoding == null || characterEncoding.length() == 0) {
-				characterEncoding = "UTF-8"; // default character encoding if unspecified
-			}
-
-			BufferedReader reader = request.getReader();
-			CharBuffer buffer = CharBuffer.allocate(128 << 10);
-			while ( reader.read(buffer) != -1 &&
-					buffer.hasRemaining() );
-			
-			// Protect against denial of service attacks?
-			if (buffer.remaining() == 0 && reader.read() > -1) {
-				response.sendError(403, "Request body too large, limited to " + buffer.capacity() + " bytes");
-				return;
-			}
-			
-			buffer.flip();
-			String documentString = buffer.toString();
-	
-			// Perform URL decoding, if necessary
-			if ("application/x-www-form-urlencoded".equals(contentType)) {
-				if (documentString.startsWith(SPECIAL_XML_POST_VARIABLE + "=")) {
-					// This is a hack to permit xml to be easily submitted via a form POST.
-					// By convention, we are allowing users to post xml if they name it
-					// with a POST parameter "request". The problem is that "request" is
-					// a reserved key in OGC services, and should not be used.
-					documentString = documentString.substring(SPECIAL_XML_POST_VARIABLE.length() + 1);	
-				}
-				documentString = URLDecoder.decode(documentString, characterEncoding);
-			}
-
-			Document document = DOMUtil.createDocument(documentString);
-			
+			Document document = ServletHandlingUtils.extractXMLRequestDocument(request);
 			Map<String, String[]> parameterMap = createParameterMapFromDocument(document);
 			queryAndSend(request, response, parameterMap);
 			
+		} catch (RequestBodyExceededException rbe) {
+			// If we get errors in the request parsing, then just send the error
+			int errorCode = (rbe.errorCode != null)? rbe.errorCode: 403; // 403 as default value for error code
+			rbe.printStackTrace();
+			response.sendError(errorCode, rbe.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 	private void queryAndSend(HttpServletRequest request, HttpServletResponse response, Map<String, String[]> parameterMap) throws IOException {
-		dumpMap(parameterMap);
+		ServletHandlingUtils.dumpRequestParamsToConsole(parameterMap);
 		// TODO parameterMap may or may not be case-insensitive, depending on path of arrival post or get. Correct this later.
 		SOS_1_0_Operation opType = SOS_1_0_Operation.parse(parameterMap.get("request"));
 		
 		ServletOutputStream outputStream = response.getOutputStream();
 		response.setContentType(OGC_WFSConstants.DEFAULT_DESCRIBEFEATURETYPE_OUTPUTFORMAT);
-		response.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding(DEFAULT_ENCODING);
 		switch (opType) {
 			case GetObservation:
 				try {
@@ -152,9 +118,8 @@ public class SOSServlet extends HttpServlet {
 				}
 				break;
 			case GetCapabilities:
-				String baseURL = request.getRequestURL().toString().replaceFirst(request.getServletPath() + "$", "");
 				Map<String, String> replacementMap = new HashMap<String, String>();
-				replacementMap.put("base.url", baseURL);
+				replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
 
 				// Just sending back static file for now.
 				String resource = "/ogc/sos/GetCapabilities.xml";
@@ -254,33 +219,6 @@ public class SOSServlet extends HttpServlet {
 		return parameterMap;
 	}
 
-	/**
-	 * Output request parameters to System.out() for debugging/logging
-	 * 
-	 * @param m map
-	 */
-	private void dumpMap(Map<String, String[]> m) {
-		System.out.println("Parameters are: ");
-		if (m != null && m.size() > 0) {
-			for (Map.Entry<String, String[]> e : m.entrySet()) {
-				System.out.print(" " + e.getKey() + "-> ");
-				List<String> v = Arrays.asList(e.getValue());
-				Iterator<String> i = v.iterator();
-				if ( i.hasNext()) {
-					System.out.print(i.next());
-					while (i.hasNext()) {
-						System.out.print(", " + i.next());
-					}
-				} else {
-					System.out.print("[empty]");
-				}
-				System.out.println();
-			}
-		} else {
-			System.out.println("[empty]");
-		}
-	}
-	
 	private XMLStreamReaderDAO getXMLStreamReaderDAO() throws ServletException {
 		XMLStreamReaderDAO xmlStreamReaderDAO = null;
 		ApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(getServletContext());

@@ -1,8 +1,8 @@
 package gov.usgs.cida.utils.collections;
 
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * A Map<String, T> with case-insensitive String lookups
@@ -11,7 +11,13 @@ import java.util.Map;
  *
  * @param <T>
  */
-public class CaseInsensitiveMap<T> extends CanonicalKeyMap<String, T> {
+public class CaseInsensitiveMap<T> extends TreeMap<String, T> {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 279858929205077765L;
+
 
 	// ======================
 	// Public Utility Methods
@@ -59,30 +65,17 @@ public class CaseInsensitiveMap<T> extends CanonicalKeyMap<String, T> {
 	// ============
 	// CONSTRUCTORS
 	// ============
-	public CaseInsensitiveMap(){};
+	public CaseInsensitiveMap(){
+		// Tom found this nice trick
+		super(String.CASE_INSENSITIVE_ORDER);
+	};
 	
-	public CaseInsensitiveMap(int size){ super(size);}
 	
 	public CaseInsensitiveMap(Map<String, T> originalMap){ 
-		this(originalMap.size());
+		this();
 		this.putAll(originalMap);
 	}
 	
-	// ================
-	// Instance Methods
-	// ================
-	public String toCanonicalKey(String key) {
-		return (key == null)? null: key.toLowerCase();
-	}
-
-	@Override
-	public String toCanonicalKey(Object key) {
-		return (key == null)? null: key.toString().toLowerCase();
-	}
-	
-	public CaseInsensitiveMap<String> asMapOfStrings(){
-		return stringifyValues(this);		
-	}
 	
 
 	

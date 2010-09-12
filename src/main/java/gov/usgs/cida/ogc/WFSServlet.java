@@ -1,7 +1,10 @@
 package gov.usgs.cida.ogc;
 
+import gov.usgs.cida.ogc.specs.OGC_WFSConstants;
+import gov.usgs.cida.ogc.specs.WFS_1_1_Operation;
+import gov.usgs.cida.ogc.utils.FileResponseUtil;
+import gov.usgs.cida.ogc.utils.ServletHandlingUtils;
 import gov.usgs.cida.utils.collections.CaseInsensitiveMap;
-
 import gov.usgs.webservices.ibatis.XMLStreamReaderDAO;
 import gov.usgs.webservices.stax.XMLStreamUtils;
 
@@ -21,10 +24,6 @@ import javax.xml.stream.XMLStreamWriter;
 import org.codehaus.stax2.XMLOutputFactory2;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-
-import gov.usgs.cida.ogc.specs.OGC_WFSConstants;
-import gov.usgs.cida.ogc.specs.WFS_1_1_Operation;
-import gov.usgs.cida.ogc.utils.FileResponseUtil;
 
 /**
  * Servlet implementation class WFSServlet
@@ -89,8 +88,6 @@ public class WFSServlet extends HttpServlet {
 				parameters = new CaseInsensitiveMap<Object>();
 				parameters.putAll(params);
 				// Note that we don't actually do anything with the parameters at the moment.
-				
-				
 				break;
 			default:
 				throw new IllegalArgumentException("Currently not handling REQUEST=" + opType.name());		
@@ -121,9 +118,8 @@ public class WFSServlet extends HttpServlet {
 			case GetCapabilities:
 			case DescribeFeatureType:
 
-				String baseURL = request.getRequestURL().toString().replaceFirst(request.getServletPath() + "$", "");
 				Map<String, String> replacementMap = new HashMap<String, String>();
-				replacementMap.put("base.url", baseURL);
+				replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
 
 				// Just sending back static file for now.
 				String resource = opType == WFS_1_1_Operation.GetCapabilities ?
@@ -146,7 +142,7 @@ public class WFSServlet extends HttpServlet {
 	}
 	
 
-	private Map<String, Object> applyGetFeatureBusinessRulesScrubbing(CaseInsensitiveMap<String> params) {
+	private CaseInsensitiveMap<Object> applyGetFeatureBusinessRulesScrubbing(CaseInsensitiveMap<String> params) {
 		CaseInsensitiveMap<Object> result = new CaseInsensitiveMap<Object>();
 		result.putAll(params);
 		
@@ -201,6 +197,11 @@ public class WFSServlet extends HttpServlet {
 		return result;
 	}
 	
+	/**
+	 * Retrieves Spring configuration bean
+	 * @return
+	 * @throws ServletException
+	 */
 	private XMLStreamReaderDAO getXMLStreamReaderDAO() throws ServletException {
 		XMLStreamReaderDAO xmlStreamReaderDAO = null;
 		ApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
