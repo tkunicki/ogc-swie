@@ -31,7 +31,7 @@
 			</dl>
 			<dl>
 				<dt>GetFeature by feature id</dt>
-				<dd><a href="<%=baseURL%>/wfs?request=GetFeature&featureId=USGS.435629089353901&typeName=gwml:WaterWell"><%=baseURL%>/wfs?request=GetFeature&featureId=USGS.435629089353901&typeName=gwml:WaterWell</a></dd>
+				<dd><a href="<%=baseURL%>/wfs?request=GetFeature&featureId=USGS.425856089320601&typeName=gwml:WaterWell"><%=baseURL%>/wfs?request=GetFeature&featureId=USGS.425856089320601&typeName=gwml:WaterWell</a></dd>
 			</dl>
 			<!-- TODO: add example with maxFeatures -->
 		</li>
@@ -46,7 +46,11 @@
 			</dl>
 			<dl>
 				<dt>nonstandard GetObservations using explicit bounding box KVP</dt>
-				<dd><a href="<%=baseURL%>/sosbbox?request=GetObservation&north=43&south=42.9&east=-89.57&west=-89.65"><%=baseURL%>/sosbbox?request=GetObservation&north=43&south=42.9&east=-89.57&west=-89.65</a></dd>
+				<dd><a href="<%=baseURL%>/sosbbox?request=GetObservation&north=43&south=42.8&east=-89.50&west=-89.70"><%=baseURL%>/sosbbox?request=GetObservation&north=43&south=42.8&east=-89.50&west=-89.70</a></dd>
+			</dl>
+			<dl>
+				<dt>nonstandard GetObservations using feature id</dt>
+				<dd><a href="<%=baseURL%>/sosbbox?request=GetObservation&featureId=USGS.425856089320601"><%=baseURL%>/sosbbox?request=GetObservation&featureId=USGS.425856089320601</a></dd>
 			</dl>
 			<dl>
 				<dt>GetObservations POST (Example forthcoming)</dt>

@@ -172,20 +172,30 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		      DEC_LONG_VA
 		    FROM nwis_dwh_star.SITES_GW_ALL_MVW s
 		    WHERE ( 
-		      sdo_geom.relate( 
-		        s.geom, sdo_dim_array( 
-		          sdo_dim_element('X', -180, 180, .005),
-		          sdo_dim_element('Y', -90, 90, .005) ),
-		        'anyinteract',
-		        mdsys.sdo_geometry(
-		          2003,
-		          8307,
-		          NULL,
-		          mdsys.sdo_elem_info_array(1,1003,3),
-		          mdsys.sdo_ordinate_array(#{west[0]},#{south[0]},#{east[0]},#{north[0]}) ),
-		        sdo_dim_array(
-		          sdo_dim_element('X', -180, 180, .005),
-		          sdo_dim_element('Y', -90, 90, .005) ) ) = 'TRUE')
+
+		    <choose>
+		    	<when test="featureId != null">
+		    		s.SITE_NO = #{featureId[0]}
+		    	</when>
+		    	<otherwise>
+		    		sdo_geom.relate( 
+		        		s.geom, sdo_dim_array( 
+							sdo_dim_element('X', -180, 180, .005),
+							sdo_dim_element('Y', -90, 90, .005) ),
+						'anyinteract',
+						mdsys.sdo_geometry(
+						2003,
+						8307,
+						NULL,
+						mdsys.sdo_elem_info_array(1,1003,3),
+						mdsys.sdo_ordinate_array(#{west[0]},#{south[0]},#{east[0]},#{north[0]}) ),
+						sdo_dim_array(
+							sdo_dim_element('X', -180, 180, .005),
+						sdo_dim_element('Y', -90, 90, .005) ) ) = 'TRUE'
+		    	</otherwise>
+		    </choose>  
+
+				)
 		    ) s,
 		    nwis_dwh_star.gwsi_levels g
 		  WHERE s.DWH_SITE_ID=g.DWH_SITE_ID

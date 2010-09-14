@@ -89,7 +89,7 @@ public class OGCServicesCharacterizationTest extends HttpTestHelper{
 	public void testWfsGetFeature_byFeatureId() throws IOException {
 		SERVICE_NAME = WFS;
 		params.request = "GetFeature";
-		params.featureId = "USGS.435629089353901";
+		params.featureId = "USGS.425856089320601";
 		params.typeName = GWML_WATER_WELL;
 		
 		Response response = call();
@@ -132,6 +132,21 @@ public class OGCServicesCharacterizationTest extends HttpTestHelper{
 		// Add host into the key so we can store and compare responses against different hosts
 		assertEquals(characterization("SOS#GetObservations_extents.url#" + HOST), response.url);
 		assertEquals(characterization("SOS#GetObservations_extents#" + HOST), response.content);
+	}
+	
+	@Test
+	public void testSosGetObservations_byFeatureId() throws IOException {
+		SERVICE_NAME = SOS;
+		params.request = "GetObservation";
+		params.featureId = "USGS.425856089320601";
+		
+		Response response = call();
+		assertEquals(Integer.valueOf(200), response.responseCode);
+		assertTrue(response.mimeType.contains(XML_MIMETYPE));
+		
+		// Add host into the key so we can store and compare responses against different hosts
+		assertEquals(characterization("SOS#GetObservations_fid.url#" + HOST), response.url);
+		assertEquals(characterization("SOS#GetObservations_fid#" + HOST), response.content);
 	}
 
 	

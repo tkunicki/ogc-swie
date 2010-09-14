@@ -107,6 +107,9 @@ public class SOSServlet extends HttpServlet {
 		response.setCharacterEncoding(DEFAULT_ENCODING);
 		switch (opType) {
 			case GetObservation:
+				cleanFeatureId(parameterMap);
+				
+
 				try {
 					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("sosMapper.observationsSelect", parameterMap);
 					XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
@@ -150,6 +153,20 @@ public class SOSServlet extends HttpServlet {
 				break;
 		}
 
+	}
+
+	private void cleanFeatureId(
+			Map<String, String[]> parameterMap) {
+		String[] featureParam = parameterMap.get("featureId");
+		if (featureParam != null && featureParam[0] != null) {
+			String featureId = featureParam[0];
+			if (featureId.startsWith("USGS.")) {
+				System.out.println(featureId + " - ");
+				featureId = featureId.substring(5);
+				System.out.println(featureId);
+				featureParam[0] = featureId;
+			}
+		}
 	}
 
 	private Map<String, String[]> createParameterMapFromDocument(Document document) throws Exception {

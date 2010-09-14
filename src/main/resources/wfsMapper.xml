@@ -288,7 +288,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		AND s.DEC_LONG_VA BETWEEN #{bBox[0]} AND #{bBox[2]} AND s.DEC_LAT_VA BETWEEN #{bBox[1]} AND #{bBox[3]} 
 			</if>
 			<if test="featureId != null">
-        AND s.MY_SITEID = #{featureId}
+        AND s.SITE_NO = #{featureId}
 			</if>
 			<if test="maxFeatures != null">
 		AND ROWNUM<![CDATA[ <= ]]> #{maxFeatures}
