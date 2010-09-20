@@ -301,7 +301,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<select id="wfsLogElementSelect" parameterType="map" resultMap="wfsLogElementResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 		SELECT DISTINCT
     		s.AGENCY_CD||'.'||s.SITE_NO||'.'||g.GEOH_SEQ_NU||'.'||g.AQFR_SEQ_NU AS HYDROSTRUNIT_ID,
-			g.LITH_NM,
+			g.LITH_NM as LITH_NAME,
 			TRIM(g.LITH_TOP_VA)||' '||TRIM(g.LITH_BOTTOM_VA) AS LITH_TOP_BOTTOM,
 			g.LITH_TOP_VA
 		FROM
