@@ -189,6 +189,11 @@ public class SOSServlet extends HttpServlet {
 		
 		Object envelopeResult = envelopeExpression.evaluate(document, XPathConstants.NODE);
 		if (envelopeResult != null && envelopeResult instanceof Node) {
+			// We are necessarily in the GetObservations element, by the expression for XPATH_Envelope
+			{	// bad logic. Refactor out
+				parameterMap.put("request", new String[] {"GetObservation"});
+			}
+			
 			Node envelopeNode = (Node)envelopeResult;
 			String lowerCornerString = lowerCornerExpression.evaluate(envelopeNode);
 			String upperCornerString = upperCornerExpression.evaluate(envelopeNode);
