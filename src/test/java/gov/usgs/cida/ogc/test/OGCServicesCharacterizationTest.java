@@ -65,7 +65,6 @@ public class OGCServicesCharacterizationTest extends HttpTestHelper{
 		
 		// Add host into the key so we can store and compare responses against different hosts
 		assertEquals(characterization("WFS#DescFeature.url#" + HOST), response.url);
-		System.out.println(response.content);
 		assertEquals(characterization("WFS#DescFeature.content#" + HOST), response.content);
 	}
 	

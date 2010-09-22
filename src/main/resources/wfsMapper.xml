@@ -78,15 +78,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope#srsName=EPSG:4326"
-			column="LAT_LON"
+			column="LON_LAT"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope/gml:pos#srsDimension=2"
-			column="LAT_LON"
+			column="LON_LAT"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope/gml:pos"
-			column="LAT_LON"
+			column="LON_LAT"
 			javaType="string" />
 
         <!-- removed per NLB 05.24.2010, will be put back in later but still needs output validation... -->
@@ -94,11 +94,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			
 		<result
 			property="gml:featureMember/gwml:WaterWell/sa:position/gml:Point#srsName=EPSG:4326"
-			column="LAT_LON_ALT"
+			column="LON_LAT_ALT"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/sa:position/gml:Point/gml:pos"
-			column="LAT_LON_ALT"
+			column="LON_LAT_ALT"
 			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/gwml:referenceElevation#uom=urn:ogc:def:uom:UCUM:ft_i"
@@ -142,7 +142,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="string" />
 		
 		<association property="UNUSED" column="SITE_NO" select="wfsLogElementSelect" javaType="list" />
-			
+		
+		<!-- REMOVED due to significant performance impact. Causes GIN download manager to time out even with relative small areas
+		<association property="UNUSED" column="SITE_NO" select="wfsScreenElementSelect" javaType="list" />
+		-->
 	</resultMap>
 	
 	<resultMap id="wfsRelatedObservationResultMap" type="XMLMap">
@@ -266,7 +269,30 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="LITH_TOP_BOTTOM"
 			javaType="string" />
 	</resultMap>
-	
+
+	<resultMap id="wfsScreenElementResultMap" type="XMLMap">
+		<id
+			property="gml:featureMember/gwml:WaterWell/^gwml:construction/gwml:Screen/gwml:screenElement/gwml:ScreenComponent#gml:id"
+			column="CONSTRUCTION_ID"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:construction/gwml:Screen/gwml:screenElement/gwml:ScreenComponent/gwml:position/gml:LineString#srsName=EPSG:4326"
+			column="CONSTRUCTION_ID"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:construction/gwml:Screen/gwml:screenElement/gwml:ScreenComponent/gwml:position/gml:LineString/gml:coordinates"
+			column="TOP_BTM_DEPTH"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:construction/gwml:Screen/gwml:screenElement/gwml:ScreenComponent/gwml:material/gsml:CGI_TermValue/gsml:value#codeSpace=urn:x-ngwd:classifierScheme:USGS:Screen:2010"
+			column="CONSTRUCTION_ID"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:construction/gwml:Screen/gwml:screenElement/gwml:ScreenComponent/gwml:material/gsml:CGI_TermValue/gsml:value"
+			column="OPEN_MATERIAL_DS"
+			javaType="string" />
+	</resultMap>
+
 	<select id="wfsSelect" parameterType="map" resultMap="wfsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 		SELECT DISTINCT
 			s.AGENCY_CD||'.'||s.SITE_NO AS FEATURE_ID,
@@ -274,8 +300,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			TRIM(s.STATION_NM) AS STATION_NM,
 			<!-- 2010.09.08 reversed based on OGC guidance note, pending discussion with OGC HWG IE folks -->
 			<!-- http://www.ogcnetwork.net/node/491 -->
-			s.DEC_LAT_VA||' '||s.DEC_LONG_VA AS LAT_LON,
-			s.DEC_LAT_VA||' '||s.DEC_LONG_VA||' '||s.ALT_VA AS LAT_LON_ALT,
+			s.DEC_LONG_VA||' '||s.DEC_LAT_VA AS LON_LAT,
+			s.DEC_LONG_VA||' '||s.DEC_LAT_VA||' '||s.ALT_VA AS LON_LAT_ALT,
 			s.ALT_VA AS ALT,
 			s.ALT_DATUM_CD,
 			s.WELL_DEPTH_VA,
@@ -317,7 +343,21 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		ORDER BY
 			g.LITH_TOP_VA
 	</select>
-	
+
+	<select id="wfsScreenElementSelect" parameterType="map" resultMap="wfsScreenElementResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">	
+		select distinct 
+			c.open_top_va||' '||c.open_bottom_va AS TOP_BTM_DEPTH,
+			s.agency_cd||'.'||s.site_no||'.SCREEN.'||c.open_seq_nu as construction_id,
+			c.open_top_va,
+			c.open_bottom_va,
+			c.open_material_ds 
+		from NWIS_DWH_STAR.SITES_GW_ALL_MVW s, nwis_dwh_star.gwsi_cons_csng_open_hole c 
+		where s.dwh_site_id=c.dwh_site_id
+			and c.open_material_ds is not null
+			and s.site_no = #{site_no}
+		order by c.open_top_va, c.open_bottom_va
+	</select>
+
 	<!--
 	<select id="wfsRelatedObservationSelect" parameterType="map" resultMap="wfsRelatedObservationResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 		SELECT DISTINCT
