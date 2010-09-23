@@ -141,6 +141,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			property="om:member/wml2:WaterMonitoringObservation/om:result/wml2:TimeSeries/wml2:element/wml2:TimeValuePair/wml2:value/swe:Quantity/^swe:value"
 			column="value"
 			javaType="string" />
+		<result
+			property="om:member/wml2:WaterMonitoringObservation/om:result/wml2:TimeSeries/wml2:element/wml2:TimeValuePair/wml2:method"
+			column="method_ds"
+			javaType="string" />
 	</resultMap>
 	
 	<select id="observationsSelect" parameterType="map" resultMap="observationsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
@@ -150,7 +154,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		  DEC_LONG_VA||' '||DEC_LAT_VA AS pos,
 		  TO_CHAR(first_date,'YYYY-MM-DD')||'T00:00:00+00:00' AS beginPosition,
 		  TO_CHAR(last_date,'YYYY-MM-DD')||'T00:00:00+00:00' AS endPosition,
-		  TO_CHAR(date_desc,'YYYY-MM-DD')||'T00:00:00+00:00' AS currentPosition,
+		  TO_CHAR(date_desc,'YYYY-MM-DD')||NVL(TO_CHAR(times,'THH24:MI'),'T00:00')||':00+00:00' AS currentPosition, 
+		  method_ds,
 		  value
 		FROM
 		  (SELECT s.station_id,
@@ -161,6 +166,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		    MAX(to_date(g.dates,'YYYYMMDD')) OVER (PARTITION BY s.station_id ORDER BY to_date(g.dates,'YYYYMMDD') DESC) last_date,
 		    to_date(g.dates,'YYYYMMDD') date_desc,
 		    g.times,
+		    g.method_ds,
 		    g.value,
 		    g.status_cd remark
 		  FROM
