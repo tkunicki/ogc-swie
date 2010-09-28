@@ -357,6 +357,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			and s.site_no = #{site_no}
 		order by c.open_top_va, c.open_bottom_va
 	</select>
+	<!-- 
+		consider a join into wfsselect?
+	 -->
 
 	<!--
 	<select id="wfsRelatedObservationSelect" parameterType="map" resultMap="wfsRelatedObservationResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">

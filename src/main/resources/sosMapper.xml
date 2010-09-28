@@ -154,7 +154,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		  DEC_LONG_VA||' '||DEC_LAT_VA AS pos,
 		  TO_CHAR(first_date,'YYYY-MM-DD')||'T00:00:00+00:00' AS beginPosition,
 		  TO_CHAR(last_date,'YYYY-MM-DD')||'T00:00:00+00:00' AS endPosition,
-		  TO_CHAR(date_desc,'YYYY-MM-DD')||NVL(TO_CHAR(times,'THH24:MI'),'T00:00')||':00+00:00' AS currentPosition, 
+		  TO_CHAR(date_desc,'YYYY-MM-DD')||'T00:00:00+00:00' AS currentPosition, 
 		  method_ds,
 		  value
 		FROM
@@ -207,9 +207,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		  WHERE s.DWH_SITE_ID=g.DWH_SITE_ID
 		  AND LENGTH(g.dates) = 8
 		  ORDER BY s.station_id,
-		    to_date(g.dates,'YYYYMMDD'),
-		    g.times
+		    to_date(g.dates,'YYYYMMDD'), g.times
+
 		  )
 	</select>
+	<!-- Jessica asked that LENGTH(g.dates) = 8 gets taken out. -->
 
 </mapper> 
