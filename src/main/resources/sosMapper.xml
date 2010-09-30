@@ -134,8 +134,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="currentPosition"
 			javaType="string" />
 		<result
-			property="om:member/wml2:WaterMonitoringObservation/om:result/wml2:TimeSeries/wml2:element/wml2:TimeValuePair/wml2:value/swe:Quantity/swe:uom#code=ft"
-			column="value"
+			property="om:member/wml2:WaterMonitoringObservation/om:result/wml2:TimeSeries/wml2:element/wml2:TimeValuePair/wml2:value/swe:Quantity/swe:uom"
+			column="units"
 			javaType="string" />
 		<result
 			property="om:member/wml2:WaterMonitoringObservation/om:result/wml2:TimeSeries/wml2:element/wml2:TimeValuePair/wml2:value/swe:Quantity/^swe:value"
@@ -152,23 +152,25 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<!-- 2010.09.08 reversed based on OGC guidance note, pending discussion with OGC HWG IE folks -->
 			<!-- http://www.ogcnetwork.net/node/491 -->
 		  DEC_LONG_VA||' '||DEC_LAT_VA AS pos,
-		  TO_CHAR(first_date,'YYYY-MM-DD')||'T00:00:00+00:00' AS beginPosition,
-		  TO_CHAR(last_date,'YYYY-MM-DD')||'T00:00:00+00:00' AS endPosition,
-		  TO_CHAR(date_desc,'YYYY-MM-DD')||'T00:00:00+00:00' AS currentPosition, 
+		  TO_CHAR(first_date,'YYYY-MM-DD HH24:MI') AS beginPosition,
+		  TO_CHAR(last_date,'YYYY-MM-DD HH24:MI') AS endPosition,
+		  TO_CHAR(date_desc,'YYYY-MM-DD HH24:MI') AS currentPosition, 
 		  method_ds,
-		  value
+		  value,
+		  report_units AS units
 		FROM
 		  (SELECT s.station_id,
 		    s.DEC_LAT_VA,
 		    s.DEC_LONG_VA,
-		    ROW_NUMBER( ) OVER (PARTITION BY s.station_id ORDER BY to_date(g.dates,'YYYYMMDD') DESC) myrow,
-		    MIN(to_date(g.dates,'YYYYMMDD')) OVER (PARTITION BY s.station_id ORDER BY to_date(g.dates,'YYYYMMDD')) first_date,
-		    MAX(to_date(g.dates,'YYYYMMDD')) OVER (PARTITION BY s.station_id ORDER BY to_date(g.dates,'YYYYMMDD') DESC) last_date,
-		    to_date(g.dates,'YYYYMMDD') date_desc,
-		    g.times,
+		    <!-- Not sure about this row JIW
+		     ROW_NUMBER( ) OVER (PARTITION BY s.station_id ORDER BY to_date(g.dates,'YYYYMMDD') DESC) myrow, -->
+		    MIN(g.dates) OVER (PARTITION BY s.station_id) first_date,
+		    MAX(g.dates) OVER (PARTITION BY s.station_id) last_date,
+		    (g.dates) date_desc,
 		    g.method_ds,
 		    g.value,
-		    g.status_cd remark
+		    n.report_units,
+		    g.remark
 		  FROM
 		    (SELECT dwh_site_id,
 		      AGENCY_CD
@@ -176,7 +178,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		      ||SITE_NO station_id,
 		      DEC_LAT_VA,
 		      DEC_LONG_VA
-		    FROM nwis_dwh_star.SITES_GW_ALL_MVW s
+		    FROM gw_data_portal.SITES_GW_ALL_MVW s
 		    WHERE ( 
 
 		    <choose>
@@ -203,11 +205,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 				)
 		    ) s,
-		    nwis_dwh_star.gwsi_levels g
+		    gw_data_portal.gwsi_levels g,
+		    nwis_dwh_star.parmfile_master n
 		  WHERE s.DWH_SITE_ID=g.DWH_SITE_ID
-		  AND LENGTH(g.dates) = 8
+		  AND g.parameter_code = n.parameter_code
 		  ORDER BY s.station_id,
-		    to_date(g.dates,'YYYYMMDD'), g.times
+		    g.dates
 
 		  )
 	</select>
