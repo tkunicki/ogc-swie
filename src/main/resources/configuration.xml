@@ -4,6 +4,7 @@ PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN"
 <configuration>
 	<typeAliases>
 		<typeAlias alias="XMLMap" type="gov.usgs.webservices.ibatis.stax.XMLMapStreamMarshaller"/>
+		<typeAlias alias="DateTimeTypeHandler" type="gov.usgs.webservices.ibatis.DateTimeTypeHandler"/>
 	</typeAliases>
 	<environments default="development">
 		<environment id="development">

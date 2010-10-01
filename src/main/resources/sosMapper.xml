@@ -52,11 +52,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result
 			property="om:member/wml2:WaterMonitoringObservation/om:samplingTime/gml:TimePeriod/gml:beginPosition"
 			column="beginPosition"
-			javaType="string" />
+			typeHandler="DateTimeTypeHandler" />
 		<result
 			property="om:member/wml2:WaterMonitoringObservation/om:samplingTime/gml:TimePeriod/gml:endPosition"
 			column="endPosition"
-			javaType="string" />
+			javaType="DateTimeTypeHandler" />
 		<result
 			property="om:member/wml2:WaterMonitoringObservation/om:procedure#xlink:href=urn:ogc:object:Sensor:usgs-gw:%s"
 			column="station_id"
@@ -116,11 +116,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result
 			property="{om:member/wml2:WaterMonitoringObservation/om:result/wml2:TimeSeries/wml2:domainExtent/gml:TimePeriod/gml:beginPosition"
 			column="beginPosition"
-			javaType="string" />
+			typeHandler="DateTimeTypeHandler" />
 		<result
 			property="om:member/wml2:WaterMonitoringObservation/om:result/wml2:TimeSeries/wml2:domainExtent/gml:TimePeriod/gml:endPosition"
 			column="endPosition"
-			javaType="string" />
+			typeHandler="DateTimeTypeHandler" />
 		<result
 			property="om:member/wml2:WaterMonitoringObservation/om:result/wml2:TimeSeries/wml2:defaultDataType#codeSpace=http://usgs.gov/water/"
 			column="station_id"
@@ -132,7 +132,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result
 			property="om:member/wml2:WaterMonitoringObservation/om:result/wml2:TimeSeries/^wml2:element/wml2:TimeValuePair/wml2:time"
 			column="currentPosition"
-			javaType="string" />
+			javaType="DateTimeTypeHandler" />
 		<result
 			property="om:member/wml2:WaterMonitoringObservation/om:result/wml2:TimeSeries/wml2:element/wml2:TimeValuePair/wml2:value/swe:Quantity/swe:uom"
 			column="units"
@@ -155,9 +155,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<!-- 2010.09.08 reversed based on OGC guidance note, pending discussion with OGC HWG IE folks -->
 			<!-- http://www.ogcnetwork.net/node/491 -->
 		  DEC_LONG_VA||' '||DEC_LAT_VA AS pos,
-		  TO_CHAR(first_date,'YYYY-MM-DD')|| 'T' || TO_CHAR(first_date,'HH24:MI') ||'-05:00' AS beginPosition,
-		  TO_CHAR(last_date,'YYYY-MM-DD')|| 'T' || TO_CHAR(last_date,'HH24:MI') ||'-05:00' AS endPosition,
-		  TO_CHAR(date_desc,'YYYY-MM-DD')|| 'T' || TO_CHAR(date_desc,'HH24:MI') ||'-05:00' AS currentPosition,
+		  TO_CHAR(first_date,'YYYY-MM-DD')|| 'T' || TO_CHAR(first_date,'HH24:MI') || tz_cd AS beginPosition,
+		  TO_CHAR(last_date,'YYYY-MM-DD')|| 'T' || TO_CHAR(last_date,'HH24:MI') || tz_cd AS endPosition,
+		  TO_CHAR(date_desc,'YYYY-MM-DD')|| 'T' || TO_CHAR(date_desc,'HH24:MI') || tz_cd AS currentPosition,
 		  method_ds,
 		  value,
 		  report_units AS units
@@ -173,6 +173,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		    g.method_ds,
 		    g.value,
 		    n.report_units,
+		    t.tz_cd,
 		    g.remark
 		  FROM
 		    (SELECT dwh_site_id,
@@ -209,9 +210,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				)
 		    ) s,
 		    gw_data_portal.gwsi_levels g,
-		    nwis_dwh_star.parmfile_master n
+		    nwis_dwh_star.parmfile_master n,
+		    nwis_dwh_star.sites t
 		  WHERE s.DWH_SITE_ID=g.DWH_SITE_ID
 		  AND g.parameter_code = n.parameter_code
+		  AND g.site_no = t.site_no
 		  ORDER BY s.station_id,
 		    g.dates
 
