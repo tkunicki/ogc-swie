@@ -156,8 +156,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<!-- http://www.ogcnetwork.net/node/491 -->
 		  DEC_LONG_VA||' '||DEC_LAT_VA AS pos,
 		  TO_CHAR(first_date,'YYYY-MM-DD')|| 'T' || TO_CHAR(first_date,'HH24:MI') ||'-05:00' AS beginPosition,
-		  TO_CHAR(last_date,'YYYY-MM-DD')|| 'T' || TO_CHAR(first_date,'HH24:MI') ||'-05:00' AS endPosition,
-		  TO_CHAR(date_desc,'YYYY-MM-DD')|| 'T' || TO_CHAR(first_date,'HH24:MI') ||'-05:00' AS currentPosition,
+		  TO_CHAR(last_date,'YYYY-MM-DD')|| 'T' || TO_CHAR(last_date,'HH24:MI') ||'-05:00' AS endPosition,
+		  TO_CHAR(date_desc,'YYYY-MM-DD')|| 'T' || TO_CHAR(date_desc,'HH24:MI') ||'-05:00' AS currentPosition,
 		  method_ds,
 		  value,
 		  report_units AS units
