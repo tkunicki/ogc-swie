@@ -147,14 +147,17 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="string" />
 	</resultMap>
 	
+	<!-- For a tutorial on analytic functions in Oracle, see http://www.oracle.com/technetwork/issue-archive/2005/05-mar/o25dba-091480.html
+	and http://psoug.org/reference/analytic_functions.html
+	 -->
 	<select id="observationsSelect" parameterType="map" resultMap="observationsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 		SELECT station_id,
 			<!-- 2010.09.08 reversed based on OGC guidance note, pending discussion with OGC HWG IE folks -->
 			<!-- http://www.ogcnetwork.net/node/491 -->
 		  DEC_LONG_VA||' '||DEC_LAT_VA AS pos,
-		  TO_CHAR(first_date,'YYYY-MM-DD HH24:MI') AS beginPosition,
-		  TO_CHAR(last_date,'YYYY-MM-DD HH24:MI') AS endPosition,
-		  TO_CHAR(date_desc,'YYYY-MM-DD HH24:MI') AS currentPosition, 
+		  TO_CHAR(first_date,'YYYY-MM-DD')|| 'T' || TO_CHAR(first_date,'HH24:MI') ||'-05:00' AS beginPosition,
+		  TO_CHAR(last_date,'YYYY-MM-DD')|| 'T' || TO_CHAR(first_date,'HH24:MI') ||'-05:00' AS endPosition,
+		  TO_CHAR(date_desc,'YYYY-MM-DD')|| 'T' || TO_CHAR(first_date,'HH24:MI') ||'-05:00' AS currentPosition,
 		  method_ds,
 		  value,
 		  report_units AS units
