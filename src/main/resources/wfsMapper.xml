@@ -307,7 +307,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			s.WELL_DEPTH_VA,
 			s.NAT_WATER_USE_NAME
 		FROM
-			NWIS_DWH_STAR.SITES_GW_ALL_MVW s
+			gw_data_portal.SITES_GW_ALL_MVW s
 		WHERE 1 = 0
 		<trim prefix="OR (" suffix=")" prefixOverrides="AND">
 			<if test="bBox != null">
@@ -331,9 +331,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			TRIM(g.LITH_TOP_VA)||' '||TRIM(g.LITH_BOTTOM_VA) AS LITH_TOP_BOTTOM,
 			g.LITH_TOP_VA
 		FROM
-			NWIS_DWH_STAR.SITES_GW_ALL_MVW s
+			gw_data_portal.SITES_GW_ALL_MVW s
 		INNER JOIN
-			NWIS_DWH_STAR.GWSI_GEOH_AQFR g ON s.DWH_SITE_ID = g.DWH_SITE_ID
+			gw_data_portal.GWSI_GEOH_AQFR g ON s.DWH_SITE_ID = g.DWH_SITE_ID
 		WHERE 
 			s.SITE_NO = #{site_no}
 		AND
@@ -351,7 +351,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			c.open_top_va,
 			c.open_bottom_va,
 			c.open_material_ds 
-		from NWIS_DWH_STAR.SITES_GW_ALL_MVW s, nwis_dwh_star.gwsi_cons_csng_open_hole c 
+		from gw_data_portal.SITES_GW_ALL_MVW s, gw_data_portal.gwsi_cons_csng_open_hole c 
 		where s.dwh_site_id=c.dwh_site_id
 			and c.open_material_ds is not null
 			and s.site_no = #{site_no}
@@ -369,7 +369,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			s.DISC_SEQ_NU,
 			s.DISC_DT
 		FROM
-			NWIS_DWH_STAR.SITES_GW_MVW_DETAIL s
+			gw_data_portal.SITES_GW_MVW_DETAIL s
 		WHERE
 		 	s.MY_SITEID = #{featureId}
 		AND 
