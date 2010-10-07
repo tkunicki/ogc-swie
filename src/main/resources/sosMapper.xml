@@ -56,7 +56,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result
 			property="om:member/wml2:WaterMonitoringObservation/om:samplingTime/gml:TimePeriod/gml:endPosition"
 			column="endPosition"
-			javaType="ISODateTimeTypeHandler" />
+			typeHandler="ISODateTimeTypeHandler" />
 		<result
 			property="om:member/wml2:WaterMonitoringObservation/om:procedure#xlink:href=urn:ogc:object:Sensor:usgs-gw:%s"
 			column="station_id"
@@ -130,9 +130,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="station_id"
 			javaType="string" />
 		<result
-			property="om:member/wml2:WaterMonitoringObservation/om:result/wml2:TimeSeries/^wml2:element/wml2:TimeValuePair/wml2:time"
+			property="om:member/wml2:WaterMonitoringObservation/om:result/wml2:TimeSeries/wml2:element/^wml2:TimeValuePair/wml2:time"
 			column="currentPosition"
-			javaType="ISODateTimeTypeHandler" />
+			typeHandler="ISODateTimeTypeHandler" />
 		<result
 			property="om:member/wml2:WaterMonitoringObservation/om:result/wml2:TimeSeries/wml2:element/wml2:TimeValuePair/wml2:value/swe:Quantity/swe:uom"
 			column="units"
