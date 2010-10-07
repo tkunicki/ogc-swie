@@ -33,7 +33,34 @@
 				<dt>GetFeature by feature id</dt>
 				<dd><a href="<%=baseURL%>/wfs?request=GetFeature&featureId=USGS.425856089320601&typeName=gwml:WaterWell"><%=baseURL%>/wfs?request=GetFeature&featureId=USGS.425856089320601&typeName=gwml:WaterWell</a></dd>
 			</dl>
-			<!-- TODO: add example with maxFeatures -->
+			<dl>
+				<dt>Ad hoc Query</dt>
+				<dd>
+					<form name="input" action="<%=baseURL%>/wfs" method="post">
+						<textarea name="requestHack" rows="10" cols="60">
+<?xml version="1.0" ?>
+<wfs:GetFeature version="1.1.0" service="WFS"
+	maxFeatures="3"  
+    xmlns:wfs="http://www.opengis.net/wfs" 
+    xmlns:ogc="http://www.opengis.net/ogc" 
+    xmlns:gml="http://www.opengis.net/gml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <wfs:Query typeName="gwml:WaterWell">
+    <ogc:Filter>
+      <ogc:BBOX>
+        <gml:Envelope>
+          <gml:lowerCorner>-89.7 42.8</gml:lowerCorner>
+          <gml:upperCorner>-89.2 43.3</gml:upperCorner>
+        </gml:Envelope>
+      </ogc:BBOX>
+    </ogc:Filter>
+  </wfs:Query>
+</wfs:GetFeature>
+						</textarea>
+						<input type="submit" value="Submit" />
+					</form>
+				</dd>
+			</dl>
 		</li>
 		<li><strong>Sensor Observation Service</strong><br/><%=baseURL%>/sosbbox
 			<dl>
@@ -54,6 +81,15 @@
 			</dl>
 			<dl>
 				<dt>GetObservations POST (Example forthcoming)</dt>
+			</dl>
+			<dl>
+				<dt>Ad hoc Query</dt>
+				<dd>
+					<form name="input" action="<%=baseURL%>/sosbbox" method="post">
+						<textarea name="requestHack" rows="10" cols="60"></textarea>
+						<input type="submit" value="Submit" />
+					</form>
+				</dd>
 			</dl>
 		</li>	
 	</ul>

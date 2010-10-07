@@ -18,6 +18,7 @@ public abstract class OGCBinding {
 			namespaceMap.put("ogc", "http://www.opengis.net/ogc");
 			namespaceMap.put("sa", "http://www.opengis.net/sampling/1.0");
 			namespaceMap.put("sos", "http://www.opengis.net/sos/1.0");
+			namespaceMap.put("wfs", "http://www.opengis.net/wfs");
 		}
 		
 		@Override
