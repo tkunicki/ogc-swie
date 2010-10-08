@@ -120,7 +120,7 @@ public class WFSServlet extends HttpServlet {
 		
 		XPathExpression maxFeaturesExpression =  xpath.compile(XPATH_maxFeatures);
 		String maxFeaturesString = maxFeaturesExpression.evaluate(document);
-		if (!"".equals(maxFeaturesExpression)) {  // optional attribute
+		if (!"".equals(maxFeaturesString)) {  // optional attribute
 			parameterMap.put("maxFeatures", maxFeaturesString);
 		}
 		
