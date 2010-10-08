@@ -38,11 +38,17 @@ import org.w3c.dom.Node;
  * Servlet implementation class WFSServlet
  */
 public class WFSServlet extends HttpServlet {
+	private static final String GWML_TBD = "gwml:TBD";
+
+	private static final String GWML_WATER_WELL = "gwml:WaterWell";
+
 	private static final long serialVersionUID = 1L;
 	
 	private final static String XPATH_request = "local-name(/*)";
 	private final static String XPATH_maxFeatures = "/wfs:GetFeature/@maxFeatures";
-	private final static String XPATH_typeName = "/wfs:GetFeature/wfs:Query/@typeName";
+	private final static String XPATH_GetFeature_typeName = "/wfs:GetFeature/wfs:Query/@typeName";
+	
+	private final static String XPATH_DescribeFeatureType_TypeName = "/wfs:DescribeFeatureType/wfs:TypeName/text()";
 	
 	// Bounding box XPATH
 	private final static String XPATH_Envelope = "/wfs:GetFeature/wfs:Query/ogc:Filter/ogc:BBOX/gml:Envelope";
@@ -118,43 +124,64 @@ public class WFSServlet extends HttpServlet {
 		String requestString = requestExpression.evaluate(document);
 		parameterMap.put("request", requestString);
 		
-		XPathExpression maxFeaturesExpression =  xpath.compile(XPATH_maxFeatures);
-		String maxFeaturesString = maxFeaturesExpression.evaluate(document);
-		if (!"".equals(maxFeaturesString)) {  // optional attribute
-			parameterMap.put("maxFeatures", maxFeaturesString);
-		}
+		WFS_1_1_Operation opType = WFS_1_1_Operation.parse(requestString);
 		
-		XPathExpression typeNameExpression =  xpath.compile(XPATH_typeName);
-		String typeNameString = typeNameExpression.evaluate(document);
-		parameterMap.put("typeName", typeNameString);
-		
-		XPathExpression featureIdExpression =  xpath.compile(XPATH_featureId);
-		String featureIdString = featureIdExpression.evaluate(document);
-		if (!"".equals(featureIdString)) {
-			parameterMap.put("featureId", featureIdString);
-		}
-		
-		XPathExpression envelopeExpression =  xpath.compile(XPATH_Envelope);
-		Object envelopeResult = envelopeExpression.evaluate(document, XPathConstants.NODE);
-		if (envelopeResult != null && envelopeResult instanceof Node) {
-			
-			Node envelopeNode = (Node)envelopeResult;
-			
-			XPathExpression lowerCornerExpression =  xpath.compile(XPATH_cornerLower);
-			XPathExpression upperCornerExpression =  xpath.compile(XPATH_upperCorner);
-			
-			String lowerCornerString = lowerCornerExpression.evaluate(envelopeNode);
-			String upperCornerString = upperCornerExpression.evaluate(envelopeNode);
-			
-			// Parse the coordinates of the bounding box corner parameters
-			if (lowerCornerString != null && upperCornerString != null) {
-				String[] lowerSplit = PATTERN_cornerSplit.split(lowerCornerString.trim());
-				String[] upperSplit = PATTERN_cornerSplit.split(upperCornerString.trim());
+		switch (opType) {
+			case GetFeature:
+				XPathExpression maxFeaturesExpression =  xpath.compile(XPATH_maxFeatures);
+				String maxFeaturesString = maxFeaturesExpression.evaluate(document);
+				if (!"".equals(maxFeaturesString)) {  // optional attribute
+					parameterMap.put("maxFeatures", maxFeaturesString);
+				}
 				
-				// Format to match the bBox passed in as kvp
-				String bBox = lowerSplit[0] + "," + lowerSplit[1] + "," + upperSplit[0] + "," + upperSplit[1];
-				parameterMap.put("bBox", bBox);
-			}
+				XPathExpression gfTypeNameExpression =  xpath.compile(XPATH_GetFeature_typeName);
+				String gfTypeNameString = gfTypeNameExpression.evaluate(document);
+				if (!"".equals(gfTypeNameString)) {
+					parameterMap.put("typeName", gfTypeNameString);
+				}
+				
+				XPathExpression featureIdExpression =  xpath.compile(XPATH_featureId);
+				String featureIdString = featureIdExpression.evaluate(document);
+				if (!"".equals(featureIdString)) {
+					parameterMap.put("featureId", featureIdString);
+				}
+				
+				XPathExpression envelopeExpression =  xpath.compile(XPATH_Envelope);
+				Object envelopeResult = envelopeExpression.evaluate(document, XPathConstants.NODE);
+				if (envelopeResult != null && envelopeResult instanceof Node) {
+					
+					Node envelopeNode = (Node)envelopeResult;
+					
+					XPathExpression lowerCornerExpression =  xpath.compile(XPATH_cornerLower);
+					XPathExpression upperCornerExpression =  xpath.compile(XPATH_upperCorner);
+					
+					String lowerCornerString = lowerCornerExpression.evaluate(envelopeNode);
+					String upperCornerString = upperCornerExpression.evaluate(envelopeNode);
+					
+					// Parse the coordinates of the bounding box corner parameters
+					if (lowerCornerString != null && upperCornerString != null) {
+						String[] lowerSplit = PATTERN_cornerSplit.split(lowerCornerString.trim());
+						String[] upperSplit = PATTERN_cornerSplit.split(upperCornerString.trim());
+						
+						// Format to match the bBox passed in as kvp
+						String bBox = lowerSplit[0] + "," + lowerSplit[1] + "," + upperSplit[0] + "," + upperSplit[1];
+						parameterMap.put("bBox", bBox);
+					}
+				}
+				
+				break;
+			case GetCapabilities:
+				break;
+			case DescribeFeatureType:
+				XPathExpression dftTypeNameExpression =  xpath.compile(XPATH_DescribeFeatureType_TypeName);
+				String dftTypeNameString = dftTypeNameExpression.evaluate(document);
+				if (!"".equals(dftTypeNameString)) {
+					parameterMap.put("typeName", dftTypeNameString);
+				}
+				
+				break;
+			default:
+				throw new IllegalArgumentException("Currently not handling REQUEST=" + opType.name());	 
 		}
 				
 		return parameterMap;
@@ -222,7 +249,7 @@ public class WFSServlet extends HttpServlet {
 		String featureId = (String) params.get("featureId");
 		String maxFeatures = (String) params.get("maxFeatures");
 		
-		if(!"gwml:WaterWell".equals(typeName) && featureId == null) {
+		if(!GWML_WATER_WELL.equals(typeName) && featureId == null) {
 			throw new IllegalArgumentException("TYPENAME missing or invalid");
 		}
 		if(bBox != null) {
@@ -275,6 +302,10 @@ public class WFSServlet extends HttpServlet {
 	
 	private void handleRequest(HttpServletRequest request, OutputStream outputStream, Map<String, Object> parameters, WFS_1_1_Operation opType)
 			throws ServletException, XMLStreamException, IOException {
+		
+		Map<String, String> replacementMap = new HashMap<String, String>();
+		replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
+		
 		switch(opType) {
 			case GetFeature:
 				XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("wfsMapper.wfsSelect", parameters);
@@ -282,20 +313,40 @@ public class WFSServlet extends HttpServlet {
 				XMLStreamUtils.copy(streamReader, streamWriter);
 				break;
 			case GetCapabilities:
-			case DescribeFeatureType:
-
-				Map<String, String> replacementMap = new HashMap<String, String>();
-				replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
-
-				// Just sending back static file for now.
-				String resource = opType == WFS_1_1_Operation.GetCapabilities ?
-					"/ogc/wfs/GetCapabilities.xml" :
-					"/ogc/wfs/DescribeFeatureType.xml";
+			{
+				String resource = "/ogc/wfs/GetCapabilities.xml";
 				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
 
 				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
 						errorMessage);
 				break;
+			}
+			case DescribeFeatureType:
+			{
+				Object typeNameOb = parameters.get("typeName");
+				if (typeNameOb == null) throw new IllegalArgumentException("Missing typeName");
+
+				// TODO: should probably be enforced somewhere else
+				if (!(typeNameOb instanceof String)) throw new IllegalArgumentException("typeName not a string");
+				String typeName = (String) typeNameOb;
+			
+				String resource;
+				if (GWML_WATER_WELL.equals(typeName)) {
+					resource = "/ogc/wfs/DescribeFeatureType.xml";
+				} else if (GWML_TBD.equals(typeName)) {
+					resource = "/ogc/wfs/DescribeFeatureType.xml";
+				} else {
+					throw new IllegalArgumentException("Invalid typeName");
+				}
+
+				// Just sending back static file for now.
+				
+				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
+
+				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
+						errorMessage);
+				break;
+			}
 		}
 	}
 
