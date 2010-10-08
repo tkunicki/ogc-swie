@@ -23,7 +23,7 @@
 			</dl>
 			<dl>
 				<dt>DescribeFeatureType</dt>
-				<dd><a href="<%=baseURL%>/wfs?request=DescribeFeatureType"><%=baseURL%>/wfs?request=DescribeFeatureType</a></dd>
+				<dd><a href="<%=baseURL%>/wfs?request=DescribeFeatureType&typeName=gwml:WaterWell"><%=baseURL%>/wfs?request=DescribeFeatureType&typeName=gwml:WaterWell</a></dd>
 			</dl>
 			<dl>
 				<dt>GetFeature by bounding box</dt>
