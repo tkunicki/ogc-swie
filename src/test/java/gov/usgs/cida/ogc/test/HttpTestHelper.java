@@ -18,13 +18,15 @@ import com.gargoylesoftware.htmlunit.WebResponse;
 
 public class HttpTestHelper extends CharacterizationTestHelper{
 
-protected static final String HOST = "localhost:8088";
+protected static final String HOST = "localhost:8080";
 protected static final String PROTOCOL = "http://";
 protected static final String WEBAPP_CONTEXT = "/ogc-ie"; //"/ogc-ie-old"
-protected static final String SERVICE_ADDRESS = PROTOCOL + HOST + WEBAPP_CONTEXT;
+protected static final String LOCAL_SERVICE_ADDRESS = PROTOCOL + HOST + WEBAPP_CONTEXT;
+protected static final String MAPVIEWER_SERVICE_ADDRESS = "http://infotrek.er.usgs.gov/mapviewer11gr1";
+protected static String SERVICE_ADDRESS = null;
 protected static String SERVICE_NAME = null;
 protected HttpURLConnection httpConn = null;
-protected OgcParams params;
+//protected OgcParams params;
 	
 	public static class Response{
 		public final String content;
@@ -73,8 +75,8 @@ protected OgcParams params;
 	}
 
 	
-	protected boolean connectRESTAndTestContains(String responseRegex)	throws IOException {
-		String url = buildRestUrl();
+	protected boolean connectRESTAndTestContains(String responseRegex, OgcParams params) throws IOException {
+		String url = buildRestUrl(params);
 		BufferedReader reader = readConnection(url);
 		if (reader == null) return false;
 		
@@ -106,8 +108,8 @@ protected OgcParams params;
 		return null;
 	}
 	
-	protected String connectAndGetResultString() throws MalformedURLException, IOException {
-		String queryString = buildRestUrl();
+	protected String connectAndGetResultString(OgcParams params) throws MalformedURLException, IOException {
+		String queryString = buildRestUrl(params);
 		BufferedReader reader = readConnection(queryString);
 		String line;
 		StringBuffer response = new StringBuffer();
@@ -118,8 +120,8 @@ protected OgcParams params;
 		return response.toString();
 	}
 	
-	protected Response call() throws IOException {
-		String queryString = buildRestUrl();
+	protected Response call(OgcParams params) throws IOException {
+		String queryString = buildRestUrl(params);
 		String mimeType = null;
 		int responseCode = 0;
 		BufferedReader reader = null;
@@ -155,10 +157,9 @@ protected OgcParams params;
 		
 	}
 	
-	protected String buildRestUrl() throws UnsupportedEncodingException {
+	protected String buildRestUrl(OgcParams params) throws UnsupportedEncodingException {
 		// TODO extract this business-specific logic
 		return SERVICE_ADDRESS + "/" + SERVICE_NAME + "?" + params.toQueryString();
-
 	}
 	
 	protected int getLastResponseCode() throws IOException {
