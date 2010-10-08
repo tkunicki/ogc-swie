@@ -142,7 +142,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="string" />
 		
 		<association property="UNUSED" column="SITE_NO" select="wfsLogElementSelect" javaType="list" />
-		
+		<association property="UNUSED" column="SITE_NO" select="wfsScreenElementSelect" javaType="list" />
 		<!-- REMOVED due to significant performance impact. Causes GIN download manager to time out even with relative small areas
 		<association property="UNUSED" column="SITE_NO" select="wfsScreenElementSelect" javaType="list" />
 		-->
@@ -350,10 +350,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			s.agency_cd||'.'||s.site_no||'.SCREEN.'||c.open_seq_nu as construction_id,
 			c.open_top_va,
 			c.open_bottom_va,
-			c.open_material_ds 
+			decode(c.open_material_ds, null, 'Screen, Type Not Known', c.open_material_ds) AS open_material_ds
 		from gw_data_portal.SITES_GW_ALL_MVW s, gw_data_portal.gwsi_cons_csng_open_hole c 
 		where s.dwh_site_id=c.dwh_site_id
-			and c.open_material_ds is not null
+            and c.open_top_va is not null
+        <!--and c.open_material_ds is not null-->
 			and s.site_no = #{site_no}
 		order by c.open_top_va, c.open_bottom_va
 	</select>
