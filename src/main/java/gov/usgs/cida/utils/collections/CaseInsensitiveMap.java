@@ -1,6 +1,7 @@
 package gov.usgs.cida.utils.collections;
 
 
+import java.lang.reflect.Array;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -54,6 +55,14 @@ public class CaseInsensitiveMap<T> extends TreeMap<String, T> {
 				result.put(entry.getKey(), null);
 			} else if (value instanceof String[]) {
 				String[] stringArray = (String[]) value;
+				result.put(entry.getKey(), join(stringArray, ","));
+			} else if (value.getClass().isArray()) {
+				int arraySize = Array.getLength(value);
+				String[] stringArray = new String[arraySize];
+				for (int i = 0; i<arraySize; i++) {
+					Object cellValue = Array.get(value, i);
+					stringArray[i] = (cellValue == null)? "": cellValue.toString();
+				}
 				result.put(entry.getKey(), join(stringArray, ","));
 			} else {
 				result.put(entry.getKey(), value.toString());

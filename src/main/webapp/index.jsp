@@ -6,7 +6,7 @@
 <body>
 	<h1>Services Implemented</h1>
 	<ul>
-		<li><strong>Web Mapping Service</strong><br/>
+		<li><strong>Web Mapping Service</strong> at http://infotrek.er.usgs.gov/mapviewer11gr1/wms
 			<dl>
 				<dt>GetCapabilities</dt>
 				<dd><a href="http://infotrek.er.usgs.gov/mapviewer11gr1/wms?REQUEST=GetCapabilities&VERSION=1.1.1&SERVICE=WMS ">http://infotrek.er.usgs.gov/mapviewer11gr1/wms?REQUEST=GetCapabilities&VERSION=1.1.1&SERVICE=WMS</a></dd>
@@ -16,7 +16,7 @@
 				<dd><a href="http://infotrek.er.usgs.gov/mapviewer11gr1/wms?REQUEST=GetMap&VERSION=1.1.1&FORMAT=image/gif&SERVICE=WMS&BBOX=-90,43,-89,44&SRS=EPSG:4326&LAYERS=GW_SITES&WIDTH=580&HEIGHT=500 ">http://infotrek.er.usgs.gov/mapviewer11gr1/wms?REQUEST=GetMap&VERSION=1.1.1&FORMAT=image/gif&SERVICE=WMS&BBOX=-90,43,-89,44&SRS=EPSG:4326&LAYERS=GW_SITES&WIDTH=580&HEIGHT=500 </a></dd>
 			</dl>
 		</li>
-		<li><strong>Web Feature Service</strong><br/>
+		<li><strong>Web Feature Service</strong> at <%=baseURL%>/wfs
 			<dl>
 				<dt>GetCapabilities</dt>
 				<dd><a href="<%=baseURL%>/wfs?request=GetCapabilities"><%=baseURL%>/wfs?request=GetCapabilities</a></dd>
@@ -26,18 +26,27 @@
 				<dd><a href="<%=baseURL%>/wfs?request=DescribeFeatureType&typeName=gwml:WaterWell"><%=baseURL%>/wfs?request=DescribeFeatureType&typeName=gwml:WaterWell</a></dd>
 			</dl>
 			<dl>
-				<dt>GetFeature by bounding box</dt>
-				<dd><a href="<%=baseURL%>/wfs?request=GetFeature&bBox=-89.7,42.8,-89.2,43.3&typeName=gwml:WaterWell"><%=baseURL%>/wfs?request=GetFeature&bBox=-89.7,42.8,-89.2,43.3&typeName=gwml:WaterWell</a></dd>
-			</dl>
-			<dl>
-				<dt>GetFeature by feature id</dt>
-				<dd><a href="<%=baseURL%>/wfs?request=GetFeature&featureId=USGS.425856089320601&typeName=gwml:WaterWell"><%=baseURL%>/wfs?request=GetFeature&featureId=USGS.425856089320601&typeName=gwml:WaterWell</a></dd>
-			</dl>
-			<dl>
-				<dt>Ad hoc Query</dt>
+				<dt>GetFeature examples</dt>
 				<dd>
-					<form name="input" action="<%=baseURL%>/wfs" method="post">
-						<textarea name="requestHack" rows="10" cols="60">
+					<ul>
+						<li>
+							<dl>
+								<dt>GetFeature by bounding box, KVP GET</dt>
+								<dd><a href="<%=baseURL%>/wfs?request=GetFeature&bBox=-89.7,42.8,-89.2,43.3&typeName=gwml:WaterWell"><%=baseURL%>/wfs?request=GetFeature&bBox=-89.7,42.8,-89.2,43.3&typeName=gwml:WaterWell</a></dd>
+							</dl>
+						</li>
+						<li>
+							<dl>
+								<dt>GetFeature by feature id, KVP GET</dt>
+								<dd><a href="<%=baseURL%>/wfs?request=GetFeature&featureId=USGS.425856089320601&typeName=gwml:WaterWell"><%=baseURL%>/wfs?request=GetFeature&featureId=USGS.425856089320601&typeName=gwml:WaterWell</a></dd>
+							</dl>
+						</li>
+						<li>
+							<dl>
+								<dt>GetFeature via XML Form POST using requestHack parameter (nonstandard)</dt>
+								<dd>
+									<form name="input" action="<%=baseURL%>/wfs" method="post">
+										<textarea name="requestHack" rows="10" cols="60">
 <?xml version="1.0" ?>
 <wfs:GetFeature version="1.1.0" service="WFS"
 	maxFeatures="3"  
@@ -56,13 +65,26 @@
     </ogc:Filter>
   </wfs:Query>
 </wfs:GetFeature>
-						</textarea>
-						<input type="submit" value="Submit" />
-					</form>
+										</textarea>
+										<input type="submit" value="Submit" />
+									</form>
+								</dd>
+							</dl>
+						</li>
+						<li>
+							<dl>
+								<dt>GetFeature via XML HTTP body POST (standard)</dt>
+								<dd>
+									Already implemented, example forthcoming
+									<!-- Ask John Hollister how to do this example using JS, might have to involve AJAX? Yuck if so  -->
+								</dd>
+							</dl>
+						</li>
+					</ul>
 				</dd>
 			</dl>
 		</li>
-		<li><strong>Sensor Observation Service</strong><br/><%=baseURL%>/sosbbox
+		<li><strong>Sensor Observation Service</strong> at <%=baseURL%>/sosbbox
 			<dl>
 				<dt>GetCapabilities</dt>
 				<dd><a href="<%=baseURL%>/sosbbox?request=GetCapabilities"><%=baseURL%>/sosbbox?request=GetCapabilities</a></dd>
@@ -72,25 +94,44 @@
 				<dd><a href="<%=baseURL%>/sosbbox?request=DescribeSensor"><%=baseURL%>/sosbbox?request=DescribeSensor</a></dd>
 			</dl>
 			<dl>
-				<dt>nonstandard GetObservations using explicit bounding box KVP</dt>
-				<dd><a href="<%=baseURL%>/sosbbox?request=GetObservation&north=43&south=42.8&east=-89.50&west=-89.70"><%=baseURL%>/sosbbox?request=GetObservation&north=43&south=42.8&east=-89.50&west=-89.70</a></dd>
-			</dl>
-			<dl>
-				<dt>nonstandard GetObservations using feature id</dt>
-				<dd><a href="<%=baseURL%>/sosbbox?request=GetObservation&featureId=USGS.425856089320601"><%=baseURL%>/sosbbox?request=GetObservation&featureId=USGS.425856089320601</a></dd>
-			</dl>
-			<dl>
-				<dt>GetObservations POST (Example forthcoming)</dt>
-			</dl>
-			<dl>
-				<dt>Ad hoc Query</dt>
+				<dt>GetObservation examples</dt>
 				<dd>
-					<form name="input" action="<%=baseURL%>/sosbbox" method="post">
-						<textarea name="requestHack" rows="10" cols="60"></textarea>
-						<input type="submit" value="Submit" />
-					</form>
+					<ul>
+						<li>
+							<dl>
+								<dt>(nonstandard) GetObservation using explicit bounding box KVP GET</dt>
+								<dd><a href="<%=baseURL%>/sosbbox?request=GetObservation&north=43&south=42.8&east=-89.50&west=-89.70"><%=baseURL%>/sosbbox?request=GetObservation&north=43&south=42.8&east=-89.50&west=-89.70</a></dd>
+							</dl>
+						</li>
+						<li>
+							<dl>
+								<dt>(nonstandard) GetObservation using feature id KVP GET</dt>
+								<dd><a href="<%=baseURL%>/sosbbox?request=GetObservation&featureId=USGS.425856089320601"><%=baseURL%>/sosbbox?request=GetObservation&featureId=USGS.425856089320601</a></dd>
+							</dl>
+						</li>
+						<li>
+							<dl>
+								<dt>GetObservations via XML Form POST using requestHack parameter (nonstandard)</dt>
+								<dd>
+									<form name="input" action="<%=baseURL%>/sosbbox" method="post">
+										<textarea name="requestHack" rows="10" cols="60"></textarea>
+										<input type="submit" value="Submit" />
+									</form>
+								</dd>
+							</dl>
+						</li>
+						<li>
+							<dl>
+								<dt>GetObservations via XML HTTP body POST (standard)</dt>
+								<dd>
+									Already implemented, example forthcoming
+									<!-- Ask John Hollister how to do this example using JS, might have to involve AJAX? Yuck if so  -->
+								</dd>
+							</dl>
+						</li>
+					</ul>
 				</dd>
-			</dl>
+			</dl>			
 		</li>	
 	</ul>
 </body>
