@@ -141,8 +141,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="SITE_NO"
 			javaType="string" />
 		
-		<association property="UNUSED" column="SITE_NO" select="wfsLogElementSelect" javaType="list" />
-		<association property="UNUSED" column="SITE_NO" select="wfsScreenElementSelect" javaType="list" />
+		<association property="UNUSED" column="FEATURE_ID" select="wfsLogElementSelect" javaType="list" />
+		<association property="UNUSED" column="FEATURE_ID" select="wfsScreenElementSelect" javaType="list" />
 		<!-- REMOVED due to significant performance impact. Causes GIN download manager to time out even with relative small areas
 		<association property="UNUSED" column="SITE_NO" select="wfsScreenElementSelect" javaType="list" />
 		-->
@@ -314,7 +314,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		AND s.DEC_LONG_VA BETWEEN #{bBox[0]} AND #{bBox[2]} AND s.DEC_LAT_VA BETWEEN #{bBox[1]} AND #{bBox[3]} 
 			</if>
 			<if test="featureId != null">
-        AND s.SITE_NO = #{featureId}
+        AND s.agency_cd||'.'||s.site_no = #{featureId}
 			</if>
 			<if test="maxFeatures != null">
 		AND ROWNUM<![CDATA[ <= ]]> #{maxFeatures}
@@ -335,7 +335,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		INNER JOIN
 			gw_data_portal.GWSI_GEOH_AQFR g ON s.DWH_SITE_ID = g.DWH_SITE_ID
 		WHERE 
-			s.SITE_NO = #{site_no}
+			s.agency_cd||'.'||s.site_no = #{featureId}
 		AND
 			g.LITH_TOP_VA IS NOT NULL
 		AND
@@ -355,7 +355,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		where s.dwh_site_id=c.dwh_site_id
             and c.open_top_va is not null
         <!--and c.open_material_ds is not null-->
-			and s.site_no = #{site_no}
+			and s.agency_cd||'.'||s.site_no = #{featureId}
 		order by c.open_top_va, c.open_bottom_va
 	</select>
 	<!-- 

@@ -173,7 +173,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		    g.method_ds,
 		    g.value,
 		    n.report_units,
-		    t.tz_cd,
+		    s.tz_cd,
 		    g.remark
 		  FROM
 		    (SELECT dwh_site_id,
@@ -181,13 +181,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		      ||'-'
 		      ||SITE_NO station_id,
 		      DEC_LAT_VA,
-		      DEC_LONG_VA
+		      DEC_LONG_VA,
+			  tz_cd
 		    FROM gw_data_portal.SITES_GW_ALL_MVW s
 		    WHERE ( 
 
 		    <choose>
 		    	<when test="featureId != null">
-		    		s.SITE_NO = #{featureId[0]}
+		    		s.agency_cd||'.'||s.site_no = #{featureId[0]}
 		    	</when>
 		    	<otherwise>
 		    		sdo_geom.relate( 
@@ -210,11 +211,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				)
 		    ) s,
 		    gw_data_portal.gwsi_levels g,
-		    nwis_dwh_star.parmfile_master n,
-		    nwis_dwh_star.sites t
+		    nwis_dwh_star.parmfile_master n
 		  WHERE s.DWH_SITE_ID=g.DWH_SITE_ID
 		  AND g.parameter_code = n.parameter_code
-		  AND g.site_no = t.site_no
 		  ORDER BY s.station_id,
 		    g.dates
 

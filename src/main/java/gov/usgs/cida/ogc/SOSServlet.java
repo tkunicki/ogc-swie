@@ -160,12 +160,12 @@ public class SOSServlet extends HttpServlet {
 		String[] featureParam = parameterMap.get("featureId");
 		if (featureParam != null && featureParam[0] != null) {
 			String featureId = featureParam[0];
-			if (featureId.startsWith("USGS.")) {
-				System.out.println(featureId + " - ");
-				featureId = featureId.substring(5);
-				System.out.println(featureId);
-				featureParam[0] = featureId;
-			}
+//			if (featureId.startsWith("USGS.")) {
+//				System.out.println(featureId + " - ");
+//				featureId = featureId.substring(5);
+//				System.out.println(featureId);
+//				featureParam[0] = featureId;
+//			}
 		}
 	}
 

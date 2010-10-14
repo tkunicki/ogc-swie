@@ -279,12 +279,12 @@ public class WFSServlet extends HttpServlet {
 			}
 		}
 		if (featureId != null) {
-			if (featureId.startsWith("USGS.")) {
-				System.out.println(featureId + " - ");
-				featureId = featureId.substring(5);
-				System.out.println(featureId);
-			}
-			result.put("featureId", featureId);
+//			if (featureId.startsWith("USGS.")) {
+//				System.out.println(featureId + " - ");
+//				featureId = featureId.substring(5);
+//				System.out.println(featureId);
+//			}
+//			result.put("featureId", featureId);
 		}
 		if (maxFeatures != null) {
 			try {
