@@ -22,7 +22,7 @@ public class DateTimeTypeHandler implements TypeHandler {
 	}
 	
 	@Override
-	public Object getResult(ResultSet rs, String columnName) throws SQLException {
+	public String getResult(ResultSet rs, String columnName) throws SQLException {
 		String dateString = rs.getString(columnName);
 		String dateTime = dateString.substring(0, 16);
 		int tzOffset = TimeZone.getTimeZone(dateString.substring(16)).getRawOffset();
