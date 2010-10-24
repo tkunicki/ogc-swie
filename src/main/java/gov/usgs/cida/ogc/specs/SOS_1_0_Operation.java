@@ -22,7 +22,8 @@ public enum SOS_1_0_Operation {
 	GetFeatureOfInterestTime("opt", false, null, null),
 	DescribeFeatureOfInterest("opt", false, null, null),
 	DescribeObservationType("opt", false, null, null),
-	DescribeResultModel("opt", false, null, null)
+	DescribeResultModel("opt", false, null, null),
+	GetProfile("ext", false, null, null)
 	;
 	
 	public final String profile;

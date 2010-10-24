@@ -20,7 +20,8 @@ public enum WFS_1_1_Operation {
 	GetFeature(true, new String[] {"request", "typeName", "bBox", "featureId", "maxFeatures"}),
 	Transaction(false, null),
 	LockFeature(false, null),
-	GetFeatureWithLock(false, null)
+	GetFeatureWithLock(false, null),
+	GetProfile(false, null) // This is a tentative GWIE extension
 	;
 	
 	public final boolean isMandatory;

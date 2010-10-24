@@ -34,24 +34,26 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import com.gargoylesoftware.htmlunit.jelly.GetPageTag;
+
 /**
  * Servlet implementation class to handle SOS requests
  */
 public class SOSServlet extends HttpServlet {
-	
+
 	private static final String DEFAULT_ENCODING = "UTF-8";
 
 	private static final long serialVersionUID = 1L;
 
-//	private final static String XPATH_Envelope = "//sos:GetObservation/sos:featureOfInterest/ogc:BBOX[ogc:PropertyName='gml:location']/gml:Envelope";
+	//	private final static String XPATH_Envelope = "//sos:GetObservation/sos:featureOfInterest/ogc:BBOX[ogc:PropertyName='gml:location']/gml:Envelope";
 	private final static String XPATH_Envelope = "//sos:GetObservation/sos:featureOfInterest/ogc:BBOX/gml:Envelope";
 	private final static String XPATH_cornerLower = "gml:lowerCorner/text()";
 	private final static String XPATH_upperCorner = "gml:upperCorner/text()";
-	
+
 	private final static Pattern PATTERN_cornerSplit = Pattern.compile("\\s+");
-	
+
 	private final static XMLOutputFactory2 xmlOutputFactory;
-	
+
 	static {
 		xmlOutputFactory = (XMLOutputFactory2)XMLOutputFactory2.newInstance();
 		xmlOutputFactory.setProperty(XMLOutputFactory2.IS_REPAIRING_NAMESPACES, false);
@@ -86,7 +88,7 @@ public class SOSServlet extends HttpServlet {
 			Document document = ServletHandlingUtils.extractXMLRequestDocument(request);
 			Map<String, String[]> parameterMap = createParameterMapFromDocument(document);
 			queryAndSend(request, response, parameterMap);
-			
+
 		} catch (RequestBodyExceededException rbe) {
 			// If we get errors in the request parsing, then just send the error
 			int errorCode = (rbe.errorCode != null)? rbe.errorCode: 403; // 403 as default value for error code
@@ -101,14 +103,14 @@ public class SOSServlet extends HttpServlet {
 		ServletHandlingUtils.dumpRequestParamsToConsole(parameterMap);
 		// TODO parameterMap may or may not be case-insensitive, depending on path of arrival post or get. Correct this later.
 		SOS_1_0_Operation opType = SOS_1_0_Operation.parse(parameterMap.get("request"));
-		
+
 		ServletOutputStream outputStream = response.getOutputStream();
 		response.setContentType(OGC_WFSConstants.DEFAULT_DESCRIBEFEATURETYPE_OUTPUTFORMAT);
 		response.setCharacterEncoding(DEFAULT_ENCODING);
 		switch (opType) {
 			case GetObservation:
 				cleanFeatureId(parameterMap);
-				
+
 
 				try {
 					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("sosMapper.observationsSelect", parameterMap);
@@ -121,14 +123,17 @@ public class SOSServlet extends HttpServlet {
 				}
 				break;
 			case GetCapabilities:
-				Map<String, String> replacementMap = new HashMap<String, String>();
-				replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
-
-				// Just sending back static file for now.
-				String resource = "/ogc/sos/GetCapabilities.xml";
-				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
-				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
-						errorMessage);
+			case GetProfile:
+				{
+					Map<String, String> replacementMap = new HashMap<String, String>();
+					replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
+	
+					// Just sending back static file for now.
+					String resource = "/ogc/sos/" + opType.name() + ".xml";
+					String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
+					FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
+							errorMessage);
+				}
 				break;
 			case DescribeSensor:
 				BufferedWriter writer = FileResponseUtil.wrapAsBufferedWriter(outputStream);
@@ -139,7 +144,7 @@ public class SOSServlet extends HttpServlet {
 				} finally {
 					outputStream.flush();
 				}
-				
+
 				break;
 			default:
 				writer = FileResponseUtil.wrapAsBufferedWriter(outputStream);
@@ -160,12 +165,12 @@ public class SOSServlet extends HttpServlet {
 		String[] featureParam = parameterMap.get("featureId");
 		if (featureParam != null && featureParam[0] != null) {
 			String featureId = featureParam[0];
-//			if (featureId.startsWith("USGS.")) {
-//				System.out.println(featureId + " - ");
-//				featureId = featureId.substring(5);
-//				System.out.println(featureId);
-//				featureParam[0] = featureId;
-//			}
+			//			if (featureId.startsWith("USGS.")) {
+			//				System.out.println(featureId + " - ");
+			//				featureId = featureId.substring(5);
+			//				System.out.println(featureId);
+			//				featureParam[0] = featureId;
+			//			}
 		}
 	}
 
@@ -175,29 +180,29 @@ public class SOSServlet extends HttpServlet {
 		}
 		// TODO Ask Tom why a LinkedHashMap?
 		Map<String, String[]> parameterMap = new LinkedHashMap<String, String[]>();
-		
+
 		XPathFactory xpathFactory = XPathFactory.newInstance();
 		XPath xpath = xpathFactory.newXPath();
 		xpath.setNamespaceContext(new OGCBinding.GetObservationNamespaceContext());
-		
+
 		// Currently, the only parameter we are handling is the bounding box
-		
+
 		// XPath expressions for the container of the bounding box and the upper and lower corners
 		XPathExpression envelopeExpression =  xpath.compile(XPATH_Envelope);
 		XPathExpression lowerCornerExpression =  xpath.compile(XPATH_cornerLower);
 		XPathExpression upperCornerExpression =  xpath.compile(XPATH_upperCorner);
-		
+
 		Object envelopeResult = envelopeExpression.evaluate(document, XPathConstants.NODE);
 		if (envelopeResult != null && envelopeResult instanceof Node) {
 			// We are necessarily in the GetObservations element, by the expression for XPATH_Envelope
 			{	// bad logic. Refactor out
 				parameterMap.put("request", new String[] {"GetObservation"});
 			}
-			
+
 			Node envelopeNode = (Node)envelopeResult;
 			String lowerCornerString = lowerCornerExpression.evaluate(envelopeNode);
 			String upperCornerString = upperCornerExpression.evaluate(envelopeNode);
-			
+
 			// Parse the coordinates of the bounding box corner parameters
 			if (lowerCornerString != null && upperCornerString != null) {
 				String[] lowerSplit = PATTERN_cornerSplit.split(lowerCornerString.trim());
