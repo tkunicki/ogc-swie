@@ -34,8 +34,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import com.gargoylesoftware.htmlunit.jelly.GetPageTag;
-
 /**
  * Servlet implementation class to handle SOS requests
  */
