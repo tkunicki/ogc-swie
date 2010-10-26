@@ -122,6 +122,7 @@ public class SOSServlet extends HttpServlet {
 				break;
 			case GetCapabilities:
 			case GetProfile:
+			case DescribeSensor:
 				{
 					Map<String, String> replacementMap = new HashMap<String, String>();
 					replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
@@ -133,19 +134,19 @@ public class SOSServlet extends HttpServlet {
 							errorMessage);
 				}
 				break;
-			case DescribeSensor:
-				BufferedWriter writer = FileResponseUtil.wrapAsBufferedWriter(outputStream);
-				try {
-					writer.append("<error>DescribeSensor REQUEST type to be implemented</error>");
-				} catch (Exception e) {
-					// TODO: handle exception
-				} finally {
-					outputStream.flush();
-				}
-
-				break;
+//			case DescribeSensor:
+//				BufferedWriter writer = FileResponseUtil.wrapAsBufferedWriter(outputStream);
+//				try {
+//					writer.append("<error>DescribeSensor REQUEST type to be implemented</error>");
+//				} catch (Exception e) {
+//					// TODO: handle exception
+//				} finally {
+//					outputStream.flush();
+//				}
+//
+//				break;
 			default:
-				writer = FileResponseUtil.wrapAsBufferedWriter(outputStream);
+				BufferedWriter writer = FileResponseUtil.wrapAsBufferedWriter(outputStream);
 				try {
 					writer.append("unrecognized or unhandled REQUEST type = " + opType);
 				} catch (Exception e) {
@@ -177,6 +178,7 @@ public class SOSServlet extends HttpServlet {
 			return null;
 		}
 		// TODO Ask Tom why a LinkedHashMap?
+		// LinkedHashMap retains iteration order, it's Tom's favorite
 		Map<String, String[]> parameterMap = new LinkedHashMap<String, String[]>();
 
 		XPathFactory xpathFactory = XPathFactory.newInstance();
