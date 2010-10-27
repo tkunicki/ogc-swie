@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<% String baseURL = request.getRequestURL().toString().replaceAll("/[^/]*$", "");%>
 <html>
 	<head>
 		<title>OGC GroundWater Interoperability Experiment (USGS node)</title>
+		<script type="text/javascript" language="JavaScript">
+			function httpBodyPost(url, reqTextId) {
+				var reqXML = unescapeHTML(document.getElementById(reqTextId).innerHTML);
+				var xhr = new XMLHttpRequest();
+				xhr.open("POST", url, false);
+				xhr.send(reqXML);
+				// only tested in firefox, probably doesn't work in IE
+				window.location="data:text/xml," + xhr.responseText;
+			}
+	
+			// makes xml not entityized
+			function unescapeHTML(html) {
+				var tmpDiv = document.createElement("DIV");
+				tmpDiv.innerHTML = html;
+				return tmpDiv.textContent;
+			}
+		</script>
 	</head>
-	<% String baseURL = request.getRequestURL().toString().replaceAll("/[^/]*$", "");%>
-	<script type="text/javascript" language="JavaScript">
-		function httpBodyPost(url, reqTextId) {
-			var reqXML = unescapeHTML(document.getElementById(reqTextId).innerHTML);
-			var xhr = new XMLHttpRequest();
-			xhr.open("POST", url, false);
-			xhr.send(reqXML);
-			// only tested in firefox, probably doesn't work in IE
-			window.location="data:text/xml," + xhr.responseText;
-		}
-
-		// makes xml not entityized
-		function unescapeHTML(html) {
-			var tmpDiv = document.createElement("DIV");
-			tmpDiv.innerHTML = html;
-			return tmpDiv.textContent;
-		}
-	</script>
 	<body>
-			<h1>Services Implemented</h1>
+		<h1>Services Implemented</h1>
 			<ul>
 				<li><strong>Web Mapping Service</strong> at http://infotrek.er.usgs.gov/mapviewer11gr1/wms
 					<dl>
 						<dt>GetCapabilities</dt>
-						<dd><a href="http://infotrek.er.usgs.gov/mapviewer11gr1/wms?REQUEST=GetCapabilities&VERSION=1.1.1&SERVICE=WMS ">http://infotrek.er.usgs.gov/mapviewer11gr1/wms?REQUEST=GetCapabilities&VERSION=1.1.1&SERVICE=WMS</a></dd>
+						<dd><a href="http://infotrek.er.usgs.gov/mapviewer11gr1/wms?REQUEST=GetCapabilities&VERSION=1.1.1&SERVICE=WMS">http://infotrek.er.usgs.gov/mapviewer11gr1/wms?REQUEST=GetCapabilities&VERSION=1.1.1&SERVICE=WMS</a></dd>
 					</dl>
 					<dl>
 						<dt>GetMap</dt>
-						<dd><a href="http://infotrek.er.usgs.gov/mapviewer11gr1/wms?REQUEST=GetMap&VERSION=1.1.1&FORMAT=image/gif&SERVICE=WMS&BBOX=-90,43,-89,44&SRS=EPSG:4326&LAYERS=GW_SITES&WIDTH=580&HEIGHT=500 ">http://infotrek.er.usgs.gov/mapviewer11gr1/wms?REQUEST=GetMap&VERSION=1.1.1&FORMAT=image/gif&SERVICE=WMS&BBOX=-90,43,-89,44&SRS=EPSG:4326&LAYERS=GW_SITES&WIDTH=580&HEIGHT=500 </a></dd>
+						<dd><a href="http://infotrek.er.usgs.gov/mapviewer11gr1/wms?REQUEST=GetMap&VERSION=1.1.1&FORMAT=image/gif&SERVICE=WMS&BBOX=-90,43,-89,44&SRS=EPSG:4326&LAYERS=GW_SITES&WIDTH=580&HEIGHT=500">http://infotrek.er.usgs.gov/mapviewer11gr1/wms?REQUEST=GetMap&VERSION=1.1.1&FORMAT=image/gif&SERVICE=WMS&BBOX=-90,43,-89,44&SRS=EPSG:4326&LAYERS=GW_SITES&WIDTH=580&HEIGHT=500 </a></dd>
 					</dl>
 				</li>
 				<li><strong>Web Feature Service</strong> at <%=baseURL%>/wfs
@@ -126,6 +126,10 @@
 					<dl>
 						<dt>GetCapabilities</dt>
 						<dd><a href="<%=baseURL%>/sosbbox?request=GetCapabilities"><%=baseURL%>/sosbbox?request=GetCapabilities</a></dd>
+					</dl>
+					<dl>
+						<dt>GetProfile (tentative extension of OWS)</dt>
+						<dd><a href="<%=baseURL%>/sosbbox?request=GetProfile"><%=baseURL%>/sosbbox?request=GetProfile</a></dd>
 					</dl>
 					<dl>
 						<dt>DescribeSensor</dt>
