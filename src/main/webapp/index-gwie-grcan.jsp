@@ -12,6 +12,10 @@
 					<dt>GetCapabilities</dt>
 					<dd><a href="http://ngwd-bdnes.cits.nrcan.gc.ca/service/gin/sos/gin?REQUEST=GetCapabilities">http://ngwd-bdnes.cits.nrcan.gc.ca/service/gin/sos/gin?REQUEST=GetCapabilities</a></dd>
 				</dl>
+				<dl>
+					<dt>SOS Form Testing Page</dt>
+					<dd><a href="http://ngwd-bdnes.cits.nrcan.gc.ca/service/api_ngwds/en/sosform.html">http://ngwd-bdnes.cits.nrcan.gc.ca/service/api_ngwds/en/sosform.html</a></dd>
+				</dl>
 			</li>
 		</ul>
 
@@ -23,6 +27,21 @@
 				</dl>
 			</li>
 		</ul>
+		
+		
+		<ul>
+			<li><strong>Pass-through WFS to USGS</strong>
+				<dl>
+					<dt>GetFeature (modified to return html, so not a pass-through</dt>
+					<dd><a href="http://ngwd-bdnes.cits.nrcan.gc.ca/service/gin/wfs/gw_usgs?request=GetFeature&FID=USGS.662135147232502&typeName=gwml:WaterWell&INFO_FORMAT=text/html">http://ngwd-bdnes.cits.nrcan.gc.ca/service/gin/wfs/gw_usgs?request=GetFeature&FID=USGS.662135147232502&typeName=gwml:WaterWell&INFO_FORMAT=text/html</a></dd>
+				</dl>
+				<dl>
+					<dt>GetFeature (returns xml)</dt>
+					<dd><a href="http://ngwd-bdnes.cits.nrcan.gc.ca/service/gin/wfs/gw_usgs?request=GetFeature&FID=USGS.662135147232502&typeName=gwml:WaterWell&INFO_FORMAT=text/xml">http://ngwd-bdnes.cits.nrcan.gc.ca/service/gin/wfs/gw_usgs?request=GetFeature&FID=USGS.662135147232502&typeName=gwml:WaterWell&INFO_FORMAT=text/xml</a></dd>
+				</dl>
+			</li>
+		</ul>
+		
 
 </body>
 </html>

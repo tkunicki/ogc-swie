@@ -16,26 +16,46 @@
 
 	 -->
 	<propGroup name="GWIE_SOS_Implementation_Profile" version="0.1" prefix="net.opengis.sos.1_0.profile.gwie" extends="">
-		<prop name="req.01.useSos_1_0" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseSos">true</prop>
-		<prop name="req.02.useHttpURI" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseHttpURI">planned</prop>
-		<prop name="req.02.useHttpURI.resolvable" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseHttpURI">planned</prop>
-		<prop name="req.02.useHttpURI.negotiated" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseHttpURI">false</prop>
-		<prop name="req.02.useHttpURI.wfs" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseHttpURI">planned</prop>
-		<prop name="req.03.useSingleCollection" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseSingleCollection">in discussion, consolidate Eric B. nested featureCollection with Dave B's derivedOffering</prop>
-		<prop name="req.04.useWaterML2" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseWaterML2">planned</prop>
-		<prop name="req.04.useWaterML2.schema" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseWaterML2">planned</prop>
-		<prop name="req.04.useWaterML2.profile" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseWaterML2">planned</prop>
-		<prop name="req.05.useBothCoverageAndSweCommon" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseBothCoverageAndSweCommon">maybe</prop>
-		<prop name="req.05.useBothCoverageAndSweCommon.sweCommon" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseBothCoverageAndSweCommon">maybe</prop>
-		<prop name="req.05.useBothCoverageAndSweCommon.coverage" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseBothCoverageAndSweCommon">true</prop>
-		<prop name="req.06.useTimeSeries" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseTimeSeries">planned</prop>
-		<prop name="req.07.useFOIReference" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseFOIReference">planned</prop>
-		<prop name="req.08.useReturnFOINotCollection" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseReturnFOINotCollection">not yet implemented</prop>
-		<prop name="req.09.useEPSGPattern" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseEPSGPattern">in progress</prop>
-		<prop name="req.10.useEPSGAxisOrder" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseEPSGAxisOrder">in progress</prop>
-		<prop name="req.11.useOMParameter" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseOMParameter">still working out what this means</prop>
-		<prop name="req.12.useSpatialAndTemporalFilter" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseSpatialAndTemporalFilter">under discussion</prop>
-		<prop name="req.13.useIntelligentLocation" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseIntelligentLocation">need to figure out details</prop>
+		<prop name="req.01.useSos_1_0" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseSos" 
+			commentRef="${base.url}/sosProfileImplementationStatus.htm#UseSos">true</prop>
+		<prop name="req.02.useHttpURI" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseHttpURI"
+			commentRef="${base.url}/sosProfileImplementationStatus.htm#UseHttpURI">planned</prop>
+		<prop name="req.02.useHttpURI.resolvable" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseHttpURI" 
+			commentRef="">planned</prop>
+		<prop name="req.02.useHttpURI.negotiated" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseHttpURI" 
+			commentRef="">false</prop>
+		<prop name="req.02.useHttpURI.wfs" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseHttpURI" 
+			commentRef="">planned</prop>
+		<prop name="req.03.useSingleCollection" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseSingleCollection" 
+			commentRef="">in discussion, consolidate Eric B. nested featureCollection with Dave B's derivedOffering</prop>
+		<prop name="req.04.useWaterML2" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseWaterML2" 
+			commentRef="">planned</prop>
+		<prop name="req.04.useWaterML2.schema" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseWaterML2" 
+			commentRef="">planned</prop>
+		<prop name="req.04.useWaterML2.profile" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseWaterML2" 
+			commentRef="">planned</prop>
+		<prop name="req.05.useBothCoverageAndSweCommon" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseBothCoverageAndSweCommon" 
+			commentRef="">maybe</prop>
+		<prop name="req.05.useBothCoverageAndSweCommon.sweCommon" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseBothCoverageAndSweCommon" 
+			commentRef="">maybe</prop>
+		<prop name="req.05.useBothCoverageAndSweCommon.coverage" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseBothCoverageAndSweCommon" 
+			commentRef="">true</prop>
+		<prop name="req.06.useTimeSeries" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseTimeSeries" 
+			commentRef="">planned</prop>
+		<prop name="req.07.useFOIReference" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseFOIReference" 
+			commentRef="">planned</prop>
+		<prop name="req.08.useReturnFOINotCollection" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseReturnFOINotCollection" 
+			commentRef="">not yet implemented</prop>
+		<prop name="req.09.useEPSGPattern" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseEPSGPattern" 
+			commentRef="">in progress</prop>
+		<prop name="req.10.useEPSGAxisOrder" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseEPSGAxisOrder" 
+			commentRef="">in progress</prop>
+		<prop name="req.11.useOMParameter" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseOMParameter" 
+			commentRef="">true</prop>
+		<prop name="req.12.useSpatialAndTemporalFilter" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseSpatialAndTemporalFilter" 
+			commentRef="">under discussion</prop>
+		<prop name="req.13.useIntelligentLocation" docRef="http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/GwIeSOSProfile#UseIntelligentLocation" 
+			commentRef="${base.url}/sosProfileImplementationStatus.htm#useIntelligentLocation">true</prop>
 		<!-- 
 		
 		<prop name="req.14." docRef=""></prop>
