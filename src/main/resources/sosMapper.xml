@@ -10,7 +10,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    	column="%ROOT_ELEMENT"
 			javaType="string" />
 	    <result
-	    	property="xmlns:gml=http://www.opengis.net/gml"
+	    	property="xmlns:gml=http://www.opengis.net/gml/3.2"
 	    	column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
 	    <result
@@ -65,11 +65,16 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			property="om:member/wml2:WaterMonitoringObservation/om:observedProperty#xlink:href=urn:ogc:def:property:OGC:GroundWaterLevel"
 			column="station_id"
 			javaType="string" />
+			<!--property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint#gml:id=usgs:%s"-->
 		<result
-			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint#gml:id=usgs:%s"
+			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest#gml:id=usgs:%s"
 			column="station_id"
 			javaType="string" />
 		<result
+			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest#xlink:href=http://infotrek.er.usgs.gov/ogc-ie/wfs"
+			column="station_id"
+			javaType="string" />
+		<!--result
 			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint/^gml:name#codeSpace=urn:ietf:rfc:2141"
 			column="station_id"
 			javaType="string" />
@@ -86,7 +91,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="station_id"
 			javaType="string" />
 		<result
-			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint/gml:boundedBy/gml:Envelope#srsName=EPSG:4326"
+			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint/gml:boundedBy/gml:Envelope#srsName=urn:ogc:def:crs:EPSG:4326"
 			column="station_id"
 			javaType="string" />
 		<result
@@ -106,13 +111,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="pos"
 			javaType="string" />
 		<result
-			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint/sa:position/gml:Point#srsName=EPSG:4326"
+			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint/sa:position/gml:Point#srsName=urn:ogc:def:crs:EPSG:4326"
 			column="station_id"
 			javaType="string" />
 		<result
 			property="}om:member/wml2:WaterMonitoringObservation/om:featureOfInterest/wml2:WaterObservationPoint/sa:position/gml:Point/gml:pos"
 			column="pos"
-			javaType="string" />
+			javaType="string" /-->
 		<result
 			property="{om:member/wml2:WaterMonitoringObservation/om:result/wml2:TimeSeries/wml2:domainExtent/gml:TimePeriod/gml:beginPosition"
 			column="beginPosition"
@@ -154,7 +159,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		SELECT station_id,
 			<!-- 2010.09.08 reversed based on OGC guidance note, pending discussion with OGC HWG IE folks -->
 			<!-- http://www.ogcnetwork.net/node/491 -->
-		  DEC_LONG_VA||' '||DEC_LAT_VA AS pos,
+		  DEC_LAT_VA||' '||DEC_LONG_VA AS pos,
 		  TO_CHAR(first_date,'YYYY-MM-DD')|| 'T' || TO_CHAR(first_date,'HH24:MI') || tz_cd AS beginPosition,
 		  TO_CHAR(last_date,'YYYY-MM-DD')|| 'T' || TO_CHAR(last_date,'HH24:MI') || tz_cd AS endPosition,
 		  TO_CHAR(date_desc,'YYYY-MM-DD')|| 'T' || TO_CHAR(date_desc,'HH24:MI') || tz_cd AS currentPosition,
@@ -207,13 +212,20 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 						sdo_dim_element('Y', -90, 90, .005) ) ) = 'TRUE'
 		    	</otherwise>
 		    </choose>  
-
 				)
 		    ) s,
 		    gw_data_portal.gwsi_levels g,
 		    nwis_dwh_star.parmfile_master n
 		  WHERE s.DWH_SITE_ID=g.DWH_SITE_ID
 		  AND g.parameter_code = n.parameter_code
+		  <!--trim prefix="AND (" suffix=")" prefixOverrides="AND"-->
+			  <if test="beginPosition != null">
+				AND g.dates <![CDATA[ >= ]]> to_date(#{beginPosition[0]}, 'MM/DD/YYYY')
+			  </if>
+			  <if test="endPosition != null">
+				AND g.dates <![CDATA[ <= ]]> to_date(#{endPosition[0]}, 'MM/DD/YYYY')
+			  </if>
+		  <!--/trim-->
 		  ORDER BY s.station_id,
 		    g.dates
 
