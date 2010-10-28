@@ -15,7 +15,7 @@
 	<xsl:template match="propGroup">
 		<table border="1">
 		<caption><b><xsl:value-of select="@name"/></b> 
-			<xsl:if test="@version"> <xsl:value-of select="@version"/></xsl:if>, 
+			<xsl:if test="@version"> v<xsl:value-of select="@version"/></xsl:if>, 
 			<xsl:if test="@prefix">prefix = <xsl:value-of select="@prefix"/>, </xsl:if>
 			<xsl:if test="@extends">extends <xsl:value-of select="@extends"/></xsl:if></caption>
 		<xsl:if test="prop">

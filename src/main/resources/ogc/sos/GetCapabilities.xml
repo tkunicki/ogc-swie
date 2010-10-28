@@ -170,7 +170,7 @@
 			<sos:ObservationOffering gml:id="usgs.water.gwie.waterLevels">
 				<gml:description/>
 				<gml:boundedBy>
-					<gml:Envelope srsName="urn:ogc:def:crs:EPSG:6.5:4326">
+					<gml:Envelope srsName="urn:ogc:def:crs:EPSG:4326">
 						<gml:lowerCorner>-125 24</gml:lowerCorner>
 						<gml:upperCorner>-66 123</gml:upperCorner>
 					</gml:Envelope>

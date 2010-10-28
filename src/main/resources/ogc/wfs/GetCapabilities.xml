@@ -105,7 +105,7 @@
 			</ows:Parameter>
 			<!-- 
 			<ows:Parameter name="srsName">
-				<ows:Value>EPSG:4326</ows:Value>
+				<ows:Value>urn:ogc:def:crs:EPSG:4326</ows:Value>
 			</ows:Parameter>
 			<ows:Constraint name="DefaultMaxFeatures">
 				<ows:Value>50</ows:Value>

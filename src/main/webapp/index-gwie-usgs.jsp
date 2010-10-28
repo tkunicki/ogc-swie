@@ -65,7 +65,7 @@
 										<dt>GetFeature via XML Form POST using requestHack parameter (nonstandard)</dt>
 										<dd>
 											<form name="input" action="<%=baseURL%>/wfs" method="post">
-												<textarea name="requestHack" rows="10" cols="60">
+												<textarea name="requestHack" rows="10" cols="90">
 <?xml version="1.0" ?>
 <wfs:GetFeature version="1.1.0" service="WFS"
 	maxFeatures="3"  
@@ -84,7 +84,7 @@
     </ogc:Filter>
   </wfs:Query>
 </wfs:GetFeature>
-												</textarea>
+												</textarea><br></br>
 												<input type="submit" value="Submit" />
 											</form>
 										</dd>
@@ -94,7 +94,7 @@
 									<dl>
 										<dt>GetFeature via XML HTTP body POST (standard)</dt>
 										<dd>
-											<textarea name="stdWFS" id="stdWFS" rows="10" cols="60">
+											<textarea name="stdWFS" id="stdWFS" rows="10" cols="90">
 <?xml version="1.0" ?>
 <wfs:GetFeature version="1.1.0" service="WFS"
 	maxFeatures="3"
@@ -113,7 +113,7 @@
     </ogc:Filter>
   </wfs:Query>
 </wfs:GetFeature>
-												</textarea>
+												</textarea><br></br>
 											<input type="button" name="submit" value="Submit" onclick="httpBodyPost('<%=baseURL%>/wfs', 'stdWFS');" />
 										</dd>
 									</dl>
@@ -156,9 +156,9 @@
 										<dt>GetObservations via XML Form POST using requestHack parameter (nonstandard)</dt>
 										<dd>
 											<form name="input" action="<%=baseURL%>/sosbbox" method="post">
-												<textarea name="requestHack" rows="10" cols="60">
+												<textarea name="requestHack" rows="10" cols="90">
 <?xml version="1.0" ?>
-<sos:GetObservation version="1.0.0" service="SOS" srsName="EPSG:4326"
+<sos:GetObservation version="1.0.0" service="SOS" srsName="urn:ogc:def:crs:EPSG:4326"
     xmlns:sos="http://www.opengis.net/sos/1.0"
     xmlns:ogc="http://www.opengis.net/ogc"
     xmlns:gml="http://www.opengis.net/gml"
@@ -176,7 +176,7 @@
   </sos:featureOfInterest>
   <sos:responseFormat>text/xml; subtype="om/1.0.0"</sos:responseFormat>
 </sos:GetObservation>
-												</textarea>
+												</textarea><br></br>
 												<input type="submit" value="Submit" />
 											</form>
 										</dd>
@@ -186,9 +186,9 @@
 									<dl>
 										<dt>GetObservations via XML HTTP body POST (standard)</dt>
 										<dd>
-											<textarea name="stdSOS" id="stdSOS" rows="10" cols="60">
+											<textarea name="stdSOS" id="stdSOS" rows="10" cols="90">
 <?xml version="1.0" ?>
-<sos:GetObservation version="1.0.0" service="SOS" srsName="EPSG:4326"
+<sos:GetObservation version="1.0.0" service="SOS" srsName="urn:ogc:def:crs:EPSG:4326"
     xmlns:sos="http://www.opengis.net/sos/1.0"
     xmlns:ogc="http://www.opengis.net/ogc"
     xmlns:gml="http://www.opengis.net/gml"
@@ -207,6 +207,7 @@
   <sos:responseFormat>text/xml; subtype="om/1.0.0"</sos:responseFormat>
 </sos:GetObservation>
 											</textarea>
+											<br></br>
 											<input type="button" name="submit" value="Submit" onclick="httpBodyPost('<%=baseURL%>/sosbbox', 'stdSOS');" />
 										</dd>
 									</dl>
