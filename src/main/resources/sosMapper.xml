@@ -71,7 +71,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="station_id"
 			javaType="string" />
 		<result
-			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest#xlink:href=http://infotrek.er.usgs.gov/ogc-ie/wfs"
+			property="om:member/wml2:WaterMonitoringObservation/om:featureOfInterest#xlink:href=http://infotrek.er.usgs.gov/ogc-ie/wfs?request=GetFeature&amp;featureId=%s&amp;typeName=gwml:WaterWell"
 			column="station_id"
 			javaType="string" />
 		<!--result

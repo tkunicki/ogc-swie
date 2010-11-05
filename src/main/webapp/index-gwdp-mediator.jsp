@@ -2,9 +2,12 @@
 <head>
 	<title>GRCAN GWDP OGC Services</title>
 </head>
-<% String baseURL = request.getRequestURL().toString().replaceAll("/[^/]*$", ""); %>
+<% 	String baseURL = request.getRequestURL().toString().replaceAll("/[^/]*$", ""); 
+	String baseDomain = request.getRequestURL().toString().replaceAll("//([^/]*)/[^/]$", "//\\1"); 
+%>
 <body>
-	<h1>Example Services</h1>
+	<h2>domain=<%=baseDomain%></h2>
+	<h1>Example Mediated Services</h1>
 		<ul>
 			<li><strong>Simple WFS GetFeature against well registry</strong>
 				<dl>
@@ -26,10 +29,10 @@
 			<li><strong>ogc-ie wfs GetFeature</strong>
 				<dl>
 					<dt>GetFeature</dt>
-					<dd>/wfs?request=GetFeature&featureId=USGS.425856089320601&typeName=gwml:WaterWell
-					<%=baseURL%>
+					<dd><%=baseURL%>/wfs?request=GetFeature&featureId=USGS.425856089320601&typeName=gwml:WaterWell
+					
 						<a href="http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/wfs?request=GetFeature&typeName=gsml:GeologicUnit">http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/wfs?request=GetFeature&typeName=gsml:GeologicUnit</a><br/>
-						mediated, <a href="http://localhost:8088/cocoon/gin/wfs/gw_usgs?request=GetFeature&FID=USGS.662135147232502&typeName=gwml:WaterWell&INFO_FORMAT=text/xml">http://localhost:8088/cocoon/gin/wfs/gw_usgs?request=GetFeature&FID=USGS.662135147232502&typeName=gwml:WaterWell&INFO_FORMAT=text/xml</a>
+						mediated, <a href="<%=baseURL%>/cocoon/gin/wfs/gw_usgs?request=GetFeature&FID=USGS.662135147232502&typeName=gwml:WaterWell&INFO_FORMAT=text/xml">http://localhost:8088/cocoon/gin/wfs/gw_usgs?request=GetFeature&FID=USGS.662135147232502&typeName=gwml:WaterWell&INFO_FORMAT=text/xml</a>
 					</dd>
 				</dl>
 			</li>

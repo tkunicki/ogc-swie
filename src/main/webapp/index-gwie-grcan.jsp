@@ -7,7 +7,7 @@
 	
 	<h1>Services Implemented</h1>
 		<ul>
-			<li><strong>Sensor Observation Service</strong>
+			<li><strong>Sensor Observation Service 1</strong>
 				<dl>
 					<dt>GetCapabilities</dt>
 					<dd><a href="http://ngwd-bdnes.cits.nrcan.gc.ca/service/gin/sos/gin?REQUEST=GetCapabilities">http://ngwd-bdnes.cits.nrcan.gc.ca/service/gin/sos/gin?REQUEST=GetCapabilities</a></dd>
@@ -42,6 +42,14 @@
 			</li>
 		</ul>
 		
+		<ul>
+			<li><strong>Sensor Observation Service 2</strong>
+				<dl>
+					<dt>SOS 2 Form Testing Page</dt>
+					<dd><a href="http://ngwd-bdnes.cits.nrcan.gc.ca/service/gin/sos2/page/sos.html">http://ngwd-bdnes.cits.nrcan.gc.ca/service/gin/sos2/page/sos.html</a></dd>
+				</dl>
+			</li>
+		</ul>
 
 </body>
 </html>
