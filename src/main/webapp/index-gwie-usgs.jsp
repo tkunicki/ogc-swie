@@ -148,7 +148,9 @@
 								<li>
 									<dl>
 										<dt>(nonstandard) GetObservation using feature id KVP GET</dt>
-										<dd><a href="<%=baseURL%>/sosbbox?request=GetObservation&featureId=USGS.425856089320601"><%=baseURL%>/sosbbox?request=GetObservation&featureId=USGS.425856089320601</a></dd>
+										<dd><a href="<%=baseURL%>/sosbbox?request=GetObservation&featureId=USGS.425856089320601"><%=baseURL%>/sosbbox?request=GetObservation&featureId=USGS.425856089320601</a>
+											<br/><a href="<%=baseURL%>/sosbbox?request=GetObservation&featureId=USGS.425958089321601"><%=baseURL%>/sosbbox?request=GetObservation&featureId=USGS.425958089321601</a>
+										</dd>
 									</dl>
 								</li>
 								<li>
