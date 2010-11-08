@@ -14,7 +14,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    	column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
 	    <result
-	    	property="xmlns:om=http://www.opengis.net/om/1.0"
+	    	property="xmlns:om=http://www.opengis.net/om/2.0"
 	    	column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
 	    <result
@@ -22,13 +22,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    	column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
 		<result
-    		property="xmlns:swe=http://www.opengis.net/swe/1.0.1"
+    		property="xmlns:swe=http://www.opengis.net/swe/2.0"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
+			<!-- 
 		<result
     		property="xsi:schemaLocation=http://www.opengis.net/om/1.0 http://schemas.opengis.net/om/1.0.0/om.xsd"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
+			 -->
 		<result
     		property="xmlns:xlink=http://www.w3.org/1999/xlink"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
@@ -41,7 +43,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     		property="xmlns:wml2=http://www.wron.net.au/waterml2"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
-			
+		<result
+    		property="xmlns:md=http://www.isotc211.org/2005/gmd"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+		<result
+    		property="xmlns:gco=http://www.isotc211.org/2005/gco"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
 	</resultMap>
 	
 	<resultMap id="observationsResultMap" type="XMLMap" extends="sosResultMap">
@@ -49,6 +58,23 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	 		property="^!{om:member"
 	 		column="station_id"
 			javaType="string" />
+			<!-- TODO: add wml2:WaterMonitoringObservation/@gml:id -->
+		<result
+			property="om:member/wml2:WaterMonitoringObservation/om:metadata/wml2:ObservationMetadata/wml2:intendedSamplingInterval/gml:beginPosition"
+			column="beginPosition"
+			typeHandler="ISODateTimeTypeHandler" />
+		<result
+			property="om:member/wml2:WaterMonitoringObservation/om:metadata/wml2:ObservationMetadata/wml2:intendedSamplingInterval/gml:endPosition"
+			column="endPosition"
+			typeHandler="ISODateTimeTypeHandler" />
+		<result
+			property="om:member/wml2:WaterMonitoringObservation/om:phenomenonTime/gml:TimePeriod/gml:beginPosition"
+			column="beginPosition"
+			typeHandler="ISODateTimeTypeHandler" />
+		<result
+			property="om:member/wml2:WaterMonitoringObservation/om:phenomenonTime/gml:TimePeriod/gml:endPosition"
+			column="endPosition"
+			typeHandler="ISODateTimeTypeHandler" />
 		<result
 			property="om:member/wml2:WaterMonitoringObservation/om:samplingTime/gml:TimePeriod/gml:beginPosition"
 			column="beginPosition"
@@ -60,6 +86,19 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result
 			property="om:member/wml2:WaterMonitoringObservation/om:procedure#xlink:href=urn:ogc:object:Sensor:usgs-gw:%s"
 			column="station_id"
+			javaType="string" />
+			
+		<result
+			property="om:member/wml2:WaterMonitoringObservation/om:parameter/om:NamedValue/om:name#xlink:href=http://www.opengis.net/req/omxml/2.0/data/samplingGeometry"
+			column="pos"
+			javaType="string" />
+		<result
+			property="om:member/wml2:WaterMonitoringObservation/om:parameter/om:NamedValue/om:value/gml:Point#srsName=urn:ogc:def:crs:EPSG:4326"
+			column="pos"
+			javaType="string" />
+		<result
+			property="om:member/wml2:WaterMonitoringObservation/om:parameter/om:NamedValue/om:value/gml:Point/gml:pos"
+			column="pos"
 			javaType="string" />
 		<result
 			property="om:member/wml2:WaterMonitoringObservation/om:observedProperty#xlink:href=urn:ogc:def:property:OGC:GroundWaterLevel"
