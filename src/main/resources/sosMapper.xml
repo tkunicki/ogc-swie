@@ -215,7 +215,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				)
 		    ) s,
 		    gw_data_portal.gwsi_levels g,
-		    nwis_dwh_star.parmfile_master n
+		    gw_data_portal.parmfile_master n
 		  WHERE s.DWH_SITE_ID=g.DWH_SITE_ID
 		  AND g.parameter_code = n.parameter_code
 		  <!--trim prefix="AND (" suffix=")" prefixOverrides="AND"-->
