@@ -143,9 +143,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		
 		<association property="UNUSED" column="FEATURE_ID" select="wfsLogElementSelect" javaType="list" />
 		<association property="UNUSED" column="FEATURE_ID" select="wfsScreenElementSelect" javaType="list" />
-		<!-- REMOVED due to significant performance impact. Causes GIN download manager to time out even with relative small areas
-		<association property="UNUSED" column="SITE_NO" select="wfsScreenElementSelect" javaType="list" />
-		-->
 	</resultMap>
 	
 	<resultMap id="wfsRelatedObservationResultMap" type="XMLMap">

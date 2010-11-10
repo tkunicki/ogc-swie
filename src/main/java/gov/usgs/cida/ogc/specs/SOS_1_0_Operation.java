@@ -20,6 +20,7 @@ public enum SOS_1_0_Operation {
 	GetResult("opt", false, null, null),
 	GetFeatureOfInterest("opt", false, null, null),
 	GetFeatureOfInterestTime("opt", false, null, null),
+	GetObservationById("opt", false, null, null),
 	DescribeFeatureOfInterest("opt", false, null, null),
 	DescribeObservationType("opt", false, null, null),
 	DescribeResultModel("opt", false, null, null),
