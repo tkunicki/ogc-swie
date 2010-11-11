@@ -48,6 +48,7 @@ public class SOSServlet extends HttpServlet {
 	private final static String XPATH_Envelope = "//sos:GetObservation/sos:featureOfInterest/ogc:BBOX/gml:Envelope";
 	private final static String XPATH_cornerLower = "gml:lowerCorner/text()";
 	private final static String XPATH_upperCorner = "gml:upperCorner/text()";
+	private final static String XPATH_filter = "//ogc:Filter";
 	private final static String XPATH_featureId = "//ogc:FeatureId/@fid";
 
 	private final static Pattern PATTERN_cornerSplit = Pattern.compile("\\s+");
@@ -130,28 +131,28 @@ public class SOSServlet extends HttpServlet {
 			case GetCapabilities:
 			case GetProfile:
 			case DescribeSensor:
-				{
-					Map<String, String> replacementMap = new HashMap<String, String>();
-					replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
-	
-					// Just sending back static file for now.
-					String resource = "/ogc/sos/" + opType.name() + ".xml";
-					String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
-					FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
-							errorMessage);
-				}
-				break;
-//			case DescribeSensor:
-//				BufferedWriter writer = FileResponseUtil.wrapAsBufferedWriter(outputStream);
-//				try {
-//					writer.append("<error>DescribeSensor REQUEST type to be implemented</error>");
-//				} catch (Exception e) {
-//					// TODO: handle exception
-//				} finally {
-//					outputStream.flush();
-//				}
-//
-//				break;
+			{
+				Map<String, String> replacementMap = new HashMap<String, String>();
+				replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
+
+				// Just sending back static file for now.
+				String resource = "/ogc/sos/" + opType.name() + ".xml";
+				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
+				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
+						errorMessage);
+			}
+			break;
+			//			case DescribeSensor:
+			//				BufferedWriter writer = FileResponseUtil.wrapAsBufferedWriter(outputStream);
+			//				try {
+			//					writer.append("<error>DescribeSensor REQUEST type to be implemented</error>");
+			//				} catch (Exception e) {
+			//					// TODO: handle exception
+			//				} finally {
+			//					outputStream.flush();
+			//				}
+			//
+			//				break;
 			default:
 				BufferedWriter writer = FileResponseUtil.wrapAsBufferedWriter(outputStream);
 				try {
@@ -166,12 +167,15 @@ public class SOSServlet extends HttpServlet {
 
 	}
 
-	private void cleanFeatureId(
-			Map<String, String[]> parameterMap) {
+	private void cleanFeatureId(Map<String, String[]> parameterMap) {
 		String[] featureParam = parameterMap.get("featureId");
 		if (featureParam != null && featureParam[0] != null) {
 			String featureId = featureParam[0];
-
+			if (featureId.startsWith("obs.")) {
+				// Parsing out the id we're currently putting into wml2:WaterMonitoringObservation/gml:identifier
+				featureId = featureId.substring(4);
+				featureParam[0] = featureId;
+			}
 			if (featureId.startsWith("USGS")) {
 				// We don't really care whether the delimiter is USGS- or USGS.
 				featureId = "USGS." + featureId.substring(5);
@@ -184,10 +188,10 @@ public class SOSServlet extends HttpServlet {
 		if (document == null) {
 			return null;
 		}
-		// TODO Ask Tom why a LinkedHashMap?
-		// LinkedHashMap retains iteration order, it's Tom's favorite
+
+		// LinkedHashMap retains iteration order, useful for diffing debug output. It's Tom's favorite
 		Map<String, String[]> parameterMap = new LinkedHashMap<String, String[]>();
-		
+
 		XPathFactory xpathFactory = XPathFactory.newInstance();
 		XPath xpath = xpathFactory.newXPath();
 		xpath.setNamespaceContext(new OGCBinding.GetObservationNamespaceContext());
@@ -200,7 +204,7 @@ public class SOSServlet extends HttpServlet {
 
 		Object envelopeResult = envelopeExpression.evaluate(document, XPathConstants.NODE);
 		if (envelopeResult != null && envelopeResult instanceof Node) {
-			
+
 			// We are necessarily in the GetObservations element, by the expression for XPATH_Envelope
 			{	// bad logic. Refactor out
 				parameterMap.put("request", new String[] {"GetObservation"});
@@ -210,20 +214,111 @@ public class SOSServlet extends HttpServlet {
 		} else {
 			System.out.println(XPATH_Envelope + " : not found.");
 		}
-		
-		// Handle feature ID
-		XPathExpression featureIdExpression = xpath.compile(XPATH_featureId);
-		Object featureIDResult = featureIdExpression.evaluate(document, XPathConstants.NODE);
-		if (featureIDResult != null && featureIDResult instanceof Node) {
-			Node featureIdNode = (Node)featureIDResult;
-			String featureId = featureIdNode.getTextContent();
-			parameterMap.put("featureId", new String[] {featureId});
+		{
+			// Handle feature ID
+			XPathExpression featureIdExpression = xpath.compile(XPATH_featureId);
+			Object featureIDResult = featureIdExpression.evaluate(document, XPathConstants.NODE);
+			if (featureIDResult != null && featureIDResult instanceof Node) {
+				Node featureIdNode = (Node)featureIDResult;
+				String featureId = featureIdNode.getTextContent();
+				parameterMap.put("featureId", new String[] {featureId});
+			}
+		}
+
+		{
+			//Handle Filter
+			XPathExpression filterExpression = xpath.compile(XPATH_filter);
+			Object filterResult = filterExpression.evaluate(document, XPathConstants.NODE);
+			Map<String, String[]> filters = parseOGCFilter(xpath, filterResult);
+			parameterMap.putAll(filters);
 		}
 		return parameterMap;
 	}
 
+	/**
+	 * Parsing the temporal elements of OGC:Filter. Note that this is far from a
+	 * complete implementation of parsing for Filter Encoding specification.
+	 * Currently, it only parses three of the four temporal filters, ignoring
+	 * properties and other aspects.
+	 * 
+	 * @param xpath
+	 * @param filterResult
+	 * @return
+	 * @throws XPathExpressionException
+	 */
+	private Map<String, String[]> parseOGCFilter(XPath xpath, Object filterResult) throws XPathExpressionException {
+		Map<String, String[]> filters = new LinkedHashMap<String, String[]>();
+		// TODO: Indicate/record the property that the filter is working on.
+		// Will need a different structure than the simple map. We don't care at
+		// the moment because all of our data times are the same
+		if (filterResult != null && filterResult instanceof Node) {
+			Node filterNode = (Node) filterResult;
+			
+			// Look for TM_DURING
+			XPathExpression tmDuringExpression = xpath.compile("//ogc:TM_During");
+			Object tmDuringResult = tmDuringExpression.evaluate(filterNode,XPathConstants.NODE);
+			if (tmDuringResult != null && tmDuringResult instanceof Node) {
+				
+				Node tmDuringNode = (Node) tmDuringResult;
+				
+				XPathExpression beginPositionExpression = xpath.compile("//gml:beginPosition");
+				String beginPosition = beginPositionExpression.evaluate(tmDuringNode);
+				XPathExpression endPositionExpression = xpath.compile("//gml:endPosition");
+				String endPosition = endPositionExpression.evaluate(tmDuringNode);
+				
+				// TODO, change this parsing to include time of day
+				filters.put("beginPosition", new String[] {truncateTimeOfDay(beginPosition)});
+				filters.put("endPosition", new String[] {truncateTimeOfDay(endPosition)});
+			}
+			
+			// Look for TM_After
+			XPathExpression tmAfterExpression = xpath.compile("//ogc:TM_After");
+			Object tmAfterResult = tmAfterExpression.evaluate(filterNode,XPathConstants.NODE);
+			if (tmAfterResult != null && tmAfterResult instanceof Node) {
+				Node tmAfterNode = (Node) tmAfterResult;
+				
+				XPathExpression tmPositionExpression = xpath.compile("//gml:timePosition");
+				String timePosition = tmPositionExpression.evaluate(tmAfterNode);
+				
+				filters.put("beginPosition", new String[] {truncateTimeOfDay(timePosition)});
+			}
+			
+			// Look for TM_Before
+			XPathExpression tmBeforeExpression = xpath.compile("//ogc:TM_Before");
+			Object tmBeforeResult = tmAfterExpression.evaluate(filterNode,XPathConstants.NODE);
+			if (tmBeforeResult != null && tmBeforeResult instanceof Node) {
+				Node tmBeforeNode = (Node) tmBeforeResult;
+				
+				XPathExpression tmPositionExpression = xpath.compile("//gml:timePosition");
+				String timePosition = tmPositionExpression.evaluate(tmBeforeNode);
+				
+				filters.put("endPosition", new String[] {truncateTimeOfDay(timePosition)});
+			}
+			
+			// We're not looking for TM_Equal (or is it TM_Equals)
+
+//
+//			String featureId = filterNode.getTextContent();
+//			filters.put("featureId", new String[] {featureId});
+		}
+		return filters;
+	}
+
+	/**
+	 * Remove time of day, leaving only date, from time expressions of the form 2008-04-01T17:47:00+02
+	 * @param beginPosition
+	 * @return
+	 */
+	private String truncateTimeOfDay(String beginPosition) {
+		if (beginPosition == null) return null;
+		if (beginPosition.length() >= 11 && beginPosition.charAt(10) == 'T') {
+			return beginPosition.substring(0,10);
+		}
+		return null; // unrecognized time format
+	}
+
 	protected void extractBBox(Map<String, String[]> parameterMap, XPath xpath, Node envelopeNode)
-			throws XPathExpressionException {
+	throws XPathExpressionException {
 		XPathExpression lowerCornerExpression =  xpath.compile(XPATH_cornerLower);
 		XPathExpression upperCornerExpression =  xpath.compile(XPATH_upperCorner);
 

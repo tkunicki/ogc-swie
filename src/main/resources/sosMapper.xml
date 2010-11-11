@@ -63,6 +63,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="station_id"
 			javaType="string" />
 		<result
+			property="om:member/wml2:WaterMonitoringObservation/gml:identifier=obs.%s"
+			column="station_id"
+			javaType="string" />
+		<result
 			property="om:member/wml2:WaterMonitoringObservation/om:metadata/wml2:ObservationMetadata/md:contact#xlink:href=http://cida.usgs.gov"
 			column="dateStamp"
 			javaType="string" />
@@ -233,7 +237,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	 -->
 	<select id="observationsSelect" parameterType="map" resultMap="observationsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 		SELECT station_id,
-			TO_CHAR(sysdate,'YYYY-MM-DD') as dateStamp,ROWNUM,
+			TO_CHAR(sysdate,'YYYY-MM-DD') as dateStamp,
 			<!-- 2010.09.08 reversed based on OGC guidance note, pending discussion with OGC HWG IE folks -->
 			<!-- http://www.ogcnetwork.net/node/491 -->
 		  DEC_LAT_VA||' '||DEC_LONG_VA AS pos,
@@ -296,11 +300,16 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		  WHERE s.DWH_SITE_ID=g.DWH_SITE_ID
 		  AND g.parameter_code = n.parameter_code
 		  <!--trim prefix="AND (" suffix=")" prefixOverrides="AND"-->
+		  <!-- date format example 2008-03-01T17:44:15+00 
+		  to_date(#{beginPosition[0]}, 'MM/DD/YYYY')
+		  to_date(#{beginPosition[0]}, 'YYYY-MM-DD')
+		  TODO: make this a timeStamp
+		  -->
 			  <if test="beginPosition != null">
-				AND g.dates <![CDATA[ >= ]]> to_date(#{beginPosition[0]}, 'MM/DD/YYYY')
+				AND g.dates <![CDATA[ >= ]]> to_date(#{beginPosition[0]}, 'YYYY-MM-DD')
 			  </if>
 			  <if test="endPosition != null">
-				AND g.dates <![CDATA[ <= ]]> to_date(#{endPosition[0]}, 'MM/DD/YYYY')
+				AND g.dates <![CDATA[ <= ]]> to_date(#{endPosition[0]}, 'YYYY-MM-DD')
 			  </if>
 		  <!--/trim-->
 		  ORDER BY s.station_id,
