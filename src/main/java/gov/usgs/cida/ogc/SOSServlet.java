@@ -40,6 +40,10 @@ import org.w3c.dom.Node;
  */
 public class SOSServlet extends HttpServlet {
 
+	private static final String OBSERVATION_ID = "observationId";
+
+	private static final String FEATURE_ID = "featureId";
+
 	private static final String DEFAULT_ENCODING = "UTF-8";
 
 	private static final long serialVersionUID = 1L;
@@ -49,11 +53,15 @@ public class SOSServlet extends HttpServlet {
 	private final static String XPATH_cornerLower = "gml:lowerCorner/text()";
 	private final static String XPATH_upperCorner = "gml:upperCorner/text()";
 	private final static String XPATH_filter = "//ogc:Filter";
+	private final static String XPATH_eventTime = "//sos:eventTime";
 	private final static String XPATH_featureId = "//ogc:FeatureId/@fid";
-
+	private static final String XPATH_observationId = "//sos:ObservationId";
+	
 	private final static Pattern PATTERN_cornerSplit = Pattern.compile("\\s+");
 
 	private final static XMLOutputFactory2 xmlOutputFactory;
+
+
 
 	static {
 		xmlOutputFactory = (XMLOutputFactory2)XMLOutputFactory2.newInstance();
@@ -113,9 +121,16 @@ public class SOSServlet extends HttpServlet {
 		response.setContentType(OGC_WFSConstants.DEFAULT_DESCRIBEFEATURETYPE_OUTPUTFORMAT);
 		response.setCharacterEncoding(DEFAULT_ENCODING);
 		switch (opType) {
-			case GetObservation:
+			
 			case GetObservationById:
-				cleanFeatureId(parameterMap);
+				parameterMap = cleanObservationId(parameterMap);
+				if (parameterMap.get(FEATURE_ID) == null) {
+					// for us, the observationId is really the featureId
+					parameterMap.put(FEATURE_ID, parameterMap.get(OBSERVATION_ID));
+				}
+				// intentional fall through to GetObservation
+			case GetObservation:
+				parameterMap = cleanFeatureId(parameterMap);
 
 
 				try {
@@ -167,21 +182,30 @@ public class SOSServlet extends HttpServlet {
 
 	}
 
-	private void cleanFeatureId(Map<String, String[]> parameterMap) {
-		String[] featureParam = parameterMap.get("featureId");
+	private Map<String, String[]> cleanFeatureId(Map<String, String[]> parameterMap) {
+		String[] featureParam = parameterMap.get(FEATURE_ID);
 		if (featureParam != null && featureParam[0] != null) {
 			String featureId = featureParam[0];
-			if (featureId.startsWith("obs.")) {
-				// Parsing out the id we're currently putting into wml2:WaterMonitoringObservation/gml:identifier
-				featureId = featureId.substring(4);
-				featureParam[0] = featureId;
-			}
 			if (featureId.startsWith("USGS")) {
 				// We don't really care whether the delimiter is USGS- or USGS.
 				featureId = "USGS." + featureId.substring(5);
 				featureParam[0] = featureId;
 			}
 		}
+		return parameterMap;
+	}
+	
+	private Map<String, String[]> cleanObservationId(Map<String, String[]> parameterMap) {
+		String[] obsParam = parameterMap.get(OBSERVATION_ID);
+		if (obsParam != null && obsParam[0] != null) {
+			String obsId = obsParam[0];
+			if (obsId.startsWith("obs.")) {
+				// Parsing out the id we're currently putting into wml2:WaterMonitoringObservation/gml:identifier
+				obsId = obsId.substring(4);
+				obsParam[0] = obsId;
+			}
+		}
+		return parameterMap;
 	}
 
 	private Map<String, String[]> createParameterMapFromDocument(Document document) throws Exception {
@@ -196,12 +220,15 @@ public class SOSServlet extends HttpServlet {
 		XPath xpath = xpathFactory.newXPath();
 		xpath.setNamespaceContext(new OGCBinding.GetObservationNamespaceContext());
 
-		// Currently, the only parameter we are handling is the bounding box
+		{ // parse service
+			XPathExpression serviceExpression = xpath.compile("/*");
+			Node serviceNode = (Node) serviceExpression.evaluate(document, XPathConstants.NODE);
+			parameterMap.put("request", new String[] {serviceNode.getLocalName()});
+		}
+
 
 		// XPath expressions for the container of the bounding box and the upper and lower corners
 		XPathExpression envelopeExpression =  xpath.compile(XPATH_Envelope);
-
-
 		Object envelopeResult = envelopeExpression.evaluate(document, XPathConstants.NODE);
 		if (envelopeResult != null && envelopeResult instanceof Node) {
 
@@ -215,21 +242,32 @@ public class SOSServlet extends HttpServlet {
 			System.out.println(XPATH_Envelope + " : not found.");
 		}
 		{
+			// Handle observation ID
+			XPathExpression obsIdExpression = xpath.compile(XPATH_observationId);
+			Object obsIDResult = obsIdExpression.evaluate(document, XPathConstants.NODE);
+			if (obsIDResult != null && obsIDResult instanceof Node) {
+				Node obsIdNode = (Node)obsIDResult;
+				String obsId = obsIdNode.getTextContent();
+				parameterMap.put("observationId", new String[] {obsId});
+			}
+		}
+		
+		{
 			// Handle feature ID
 			XPathExpression featureIdExpression = xpath.compile(XPATH_featureId);
 			Object featureIDResult = featureIdExpression.evaluate(document, XPathConstants.NODE);
 			if (featureIDResult != null && featureIDResult instanceof Node) {
 				Node featureIdNode = (Node)featureIDResult;
 				String featureId = featureIdNode.getTextContent();
-				parameterMap.put("featureId", new String[] {featureId});
+				parameterMap.put(FEATURE_ID, new String[] {featureId});
 			}
 		}
 
 		{
 			//Handle Filter
-			XPathExpression filterExpression = xpath.compile(XPATH_filter);
+			XPathExpression filterExpression = xpath.compile(XPATH_eventTime);
 			Object filterResult = filterExpression.evaluate(document, XPathConstants.NODE);
-			Map<String, String[]> filters = parseOGCFilter(xpath, filterResult);
+			Map<String, String[]> filters = parseOGCTemporalFilter(xpath, filterResult);
 			parameterMap.putAll(filters);
 		}
 		return parameterMap;
@@ -246,7 +284,7 @@ public class SOSServlet extends HttpServlet {
 	 * @return
 	 * @throws XPathExpressionException
 	 */
-	private Map<String, String[]> parseOGCFilter(XPath xpath, Object filterResult) throws XPathExpressionException {
+	private Map<String, String[]> parseOGCTemporalFilter(XPath xpath, Object filterResult) throws XPathExpressionException {
 		Map<String, String[]> filters = new LinkedHashMap<String, String[]>();
 		// TODO: Indicate/record the property that the filter is working on.
 		// Will need a different structure than the simple map. We don't care at

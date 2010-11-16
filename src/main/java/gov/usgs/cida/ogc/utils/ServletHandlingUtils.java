@@ -19,7 +19,7 @@ import org.xml.sax.SAXException;
 
 public class ServletHandlingUtils {
 	public static final int BUFFER_CAPACITY = 128 << 10;
-	public static final String SPECIAL_XML_POST_VARIABLE = "requestHack";
+	public static final String SPECIAL_XML_POST_VARIABLE = "xml";
 	
 	public static Document extractXMLRequestDocument(HttpServletRequest request) throws IOException, RequestBodyExceededException,
 			UnsupportedEncodingException, ParserConfigurationException,

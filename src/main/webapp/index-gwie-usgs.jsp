@@ -65,7 +65,7 @@
 										<dt>GetFeature via XML Form POST using requestHack parameter (nonstandard)</dt>
 										<dd>
 											<form name="input" action="<%=baseURL%>/wfs" method="post">
-												<textarea name="requestHack" rows="10" cols="90">
+												<textarea name="xml" rows="10" cols="90">
 <?xml version="1.0" ?>
 <wfs:GetFeature version="1.1.0" service="WFS"
 	maxFeatures="3"  
@@ -158,7 +158,7 @@
 										<dt>GetObservations via XML Form POST using requestHack parameter (nonstandard)</dt>
 										<dd>
 											<form name="input" action="<%=baseURL%>/sosbbox" method="post">
-												<textarea name="requestHack" rows="10" cols="90">
+												<textarea name="xml" rows="10" cols="90">
 <?xml version="1.0" ?>
 <sos:GetObservation version="1.0.0" service="SOS" srsName="urn:ogc:def:crs:EPSG:4326"
     xmlns:sos="http://www.opengis.net/sos/1.0"

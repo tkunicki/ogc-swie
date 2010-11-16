@@ -276,7 +276,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		    	<when test="featureId != null">
 		    		s.agency_cd||'.'||s.site_no = #{featureId[0]}
 		    	</when>
-		    	<otherwise>
+		    	<when test="west != null">
 		    		sdo_geom.relate( 
 		        		s.geom, sdo_dim_array( 
 							sdo_dim_element('X', -180, 180, .005),
@@ -291,6 +291,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 						sdo_dim_array(
 							sdo_dim_element('X', -180, 180, .005),
 						sdo_dim_element('Y', -90, 90, .005) ) ) = 'TRUE'
+		    	</when>
+		    	<otherwise>
+		    		1=1
 		    	</otherwise>
 		    </choose>  
 				)
