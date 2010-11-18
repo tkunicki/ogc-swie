@@ -187,15 +187,16 @@ public class WFSServlet extends HttpServlet {
 		return parameterMap;
 	}
 	
-	private void queryAndSend(HttpServletRequest request, HttpServletResponse response, CaseInsensitiveMap<String> parmeterMap) throws IOException {
+	private void queryAndSend(HttpServletRequest request, HttpServletResponse response, CaseInsensitiveMap<String> parameterMap) throws IOException {
 		
 		// request pre-processing
-		WFS_1_1_Operation opType = WFS_1_1_Operation.parse(parmeterMap.get("request"));
+		WFS_1_1_Operation opType = WFS_1_1_Operation.parse(parameterMap.get("request"));
+		//parameterMap = SOSServlet.cleanFeatureId(parameterMap);
 		
 		Map<String, Object> parameters = null;
 		switch(opType) {
 			case GetFeature:
-				parameters = applyGetFeatureBusinessRulesScrubbing(parmeterMap);
+				parameters = applyGetFeatureBusinessRulesScrubbing(parameterMap);
 				break;
 			case GetCapabilities:
 			case DescribeFeatureType:
@@ -219,7 +220,7 @@ public class WFSServlet extends HttpServlet {
 				 * ignore outputFormat values that they do not recognize.
 				 */
 				parameters = new CaseInsensitiveMap<Object>();
-				parameters.putAll(parmeterMap);
+				parameters.putAll(parameterMap);
 				// Note that we don't actually do anything with the parameters at the moment.
 				break;
 			default:
@@ -248,6 +249,9 @@ public class WFSServlet extends HttpServlet {
 		String bBox = (String) params.get("bBox");
 		String featureId = (String) params.get("featureId");
 		String maxFeatures = (String) params.get("maxFeatures");
+		
+		// handle featureId
+		result.put("featureId", USGS_OGC_BusinessRules.cleanFeatureId(featureId));
 		
 		if(!GWML_WATER_WELL.equals(typeName) && featureId == null) {
 			throw new IllegalArgumentException("TYPENAME missing or invalid");
@@ -278,14 +282,9 @@ public class WFSServlet extends HttpServlet {
 				throw new IllegalArgumentException("BBOX invalid argument count");
 			}
 		}
-		if (featureId != null) {
-//			if (featureId.startsWith("USGS.")) {
-//				System.out.println(featureId + " - ");
-//				featureId = featureId.substring(5);
-//				System.out.println(featureId);
-//			}
-//			result.put("featureId", featureId);
-		}
+		
+		
+
 		if (maxFeatures != null) {
 			try {
 				int maxFeaturesI = Integer.parseInt(maxFeatures);

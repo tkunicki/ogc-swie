@@ -17,5 +17,6 @@ PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN"
 	<mappers>
 		<mapper resource="sosMapper.xml" />
 		<mapper resource="wfsMapper.xml" />
+		<mapper resource="sosFeaturesMapper.xml" />
 	</mappers>
 </configuration>

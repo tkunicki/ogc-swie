@@ -11,6 +11,7 @@ import gov.usgs.webservices.stax.XMLStreamUtils;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -38,9 +39,11 @@ import org.w3c.dom.Node;
 /**
  * Servlet implementation class to handle SOS requests
  */
-public class SOSServlet extends HttpServlet {
+public class SOSFeaturesServlet extends HttpServlet {
 
 	private static final String OBSERVATION_ID = "observationId";
+
+	private static final String FEATURE_ID = "featureId";
 
 	private static final String DEFAULT_ENCODING = "UTF-8";
 
@@ -59,7 +62,7 @@ public class SOSServlet extends HttpServlet {
 
 	private final static XMLOutputFactory2 xmlOutputFactory;
 
-
+	public enum Options{features, MasterFeatureList,none};
 
 	static {
 		xmlOutputFactory = (XMLOutputFactory2)XMLOutputFactory2.newInstance();
@@ -70,7 +73,7 @@ public class SOSServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public SOSServlet() {
+	public SOSFeaturesServlet() {
 		super();
 	}
 
@@ -81,8 +84,60 @@ public class SOSServlet extends HttpServlet {
 	@Override
 	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Map<String, String[]> parameterMap = new CaseInsensitiveMap<String[]>(request.getParameterMap());
-		queryAndSend(request, response, parameterMap);
+		// TODO:
+		// process individual state request features list, using a mapper file
+
+		// TODO: all this path parsing stuff is very much dependent on the 
+		// web.xml configuration. Make this more robust
+		String path = request.getPathInfo();
+		path = path.split("\\.")[0];
+		Options op = Options.none;
+		try {
+			// remove the leading "/" from path
+			op = Options.valueOf(path.substring(1));
+		} catch (Exception e) {
+			// invalid path value
+			e.printStackTrace();
+		}
+		
+		//PrintWriter writer = response.getWriter();
+		Map<String, String> replacementMap = new HashMap<String, String>();
+		replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
+		ServletOutputStream outputStream = response.getOutputStream();
+		Map<String, String[]> parameterMap = new CaseInsensitiveMap<String[]>();
+		parameterMap.putAll(request.getParameterMap());
+		
+		switch (op) {
+			case features:
+				try {
+
+					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("sosFeaturesMapper.featuresSelect", parameterMap);
+					XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
+					XMLStreamUtils.copy(streamReader, streamWriter);
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					outputStream.flush();
+				}
+				break;
+			case MasterFeatureList:
+				// Just sending back static file for now.
+				String resource = "/ogc/sos/features/" + op.name() + ".xml";
+				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
+				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
+						errorMessage);
+				break;
+			default:
+				PrintWriter writer = new PrintWriter(outputStream);
+				writer.write(path);
+				writer.write(path);
+				writer.write("\n");
+				writer.write(op.toString());
+				writer.flush();
+				writer.close();
+		}
+		
+
 	}
 
 	/**
@@ -122,13 +177,13 @@ public class SOSServlet extends HttpServlet {
 
 			case GetObservationById:
 				parameterMap = cleanObservationId(parameterMap);
-				if (parameterMap.get(OGCBusinessRules.FEATURE_ID) == null) {
+				if (parameterMap.get(FEATURE_ID) == null) {
 					// for us, the observationId is really the featureId
-					parameterMap.put(OGCBusinessRules.FEATURE_ID, parameterMap.get(OBSERVATION_ID));
+					parameterMap.put(FEATURE_ID, parameterMap.get(OBSERVATION_ID));
 				}
 				// intentional fall through to GetObservation
 			case GetObservation:
-				parameterMap = USGS_OGC_BusinessRules.cleanFeatureId(parameterMap);
+				parameterMap = cleanFeatureId(parameterMap);
 
 
 				try {
@@ -155,6 +210,17 @@ public class SOSServlet extends HttpServlet {
 						errorMessage);
 			}
 			break;
+			//			case DescribeSensor:
+			//				BufferedWriter writer = FileResponseUtil.wrapAsBufferedWriter(outputStream);
+			//				try {
+			//					writer.append("<error>DescribeSensor REQUEST type to be implemented</error>");
+			//				} catch (Exception e) {
+			//					// TODO: handle exception
+			//				} finally {
+			//					outputStream.flush();
+			//				}
+			//
+			//				break;
 			default:
 				BufferedWriter writer = FileResponseUtil.wrapAsBufferedWriter(outputStream);
 				try {
@@ -167,6 +233,19 @@ public class SOSServlet extends HttpServlet {
 				break;
 		}
 
+	}
+
+	private Map<String, String[]> cleanFeatureId(Map<String, String[]> parameterMap) {
+		String[] featureParam = parameterMap.get(FEATURE_ID);
+		if (featureParam != null && featureParam[0] != null) {
+			String featureId = featureParam[0];
+			if (featureId.startsWith("USGS")) {
+				// We don't really care whether the delimiter is USGS- or USGS.
+				featureId = "USGS." + featureId.substring(5);
+				featureParam[0] = featureId;
+			}
+		}
+		return parameterMap;
 	}
 
 	private Map<String, String[]> cleanObservationId(Map<String, String[]> parameterMap) {
@@ -233,7 +312,7 @@ public class SOSServlet extends HttpServlet {
 			if (featureIDResult != null && featureIDResult instanceof Node) {
 				Node featureIdNode = (Node)featureIDResult;
 				String featureId = featureIdNode.getTextContent();
-				parameterMap.put(OGCBusinessRules.FEATURE_ID, new String[] {featureId});
+				parameterMap.put(FEATURE_ID, new String[] {featureId});
 			}
 		}
 

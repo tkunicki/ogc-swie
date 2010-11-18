@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -76,9 +78,16 @@ public class ServletHandlingUtils {
 		}
 	}
 
+	static Pattern baseURLPattern = Pattern.compile("^([^/]+//[^/]+/[^/]+)/");
 	public static String parseBaseURL(HttpServletRequest request) {
-		String baseURL = request.getRequestURL().toString().replaceFirst(request.getServletPath() + "$", "");
-		return baseURL;
+		//String baseURL = request.getRequestURL().toString().replaceFirst(request.getServletPath() + "$", "");
+		//String servletPath = request.getServletPath();
+		String requestURL = request.getRequestURL().toString();
+		Matcher matcher = baseURLPattern.matcher(requestURL);
+		return (matcher.find())? matcher.group(1): requestURL;
+//		int index = requestURL.indexOf(servletPath);
+//		String baseURL = (index > 0)?  requestURL.substring(0, index + servletPath.length()): requestURL;
+//		return baseURL;
 	}
 
 	/**

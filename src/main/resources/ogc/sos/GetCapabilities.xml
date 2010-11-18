@@ -1,13 +1,4 @@
-<sos:Capabilities 
-	xmlns:sos="http://www.opengis.net/sos/1.0" 
-	xmlns:oost="http://www.oostethys.org/schemas/0.1.0/oostethys" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:ows="http://www.opengis.net/ows/1.1" 
-	xmlns:xlink="http://www.w3.org/1999/xlink" 
-	xmlns:gml="http://www.opengis.net/gml" 
-	xmlns:swe="http://www.opengis.net/swe/1.0.1" 
-	xsi:schemaLocation="http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosGetCapabilities.xsd" 
-	version="1.0.0">
+<sos:Capabilities xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:oost="http://www.oostethys.org/schemas/0.1.0/oostethys" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:ogc="http://www.opengis.net/ogc" xsi:schemaLocation="http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosGetCapabilities.xsd" version="1.0.0">
 	<ows:ServiceIdentification>
 		<ows:Title>USGS Groundwater Interoperability Experiment Sensor Observation Service</ows:Title>
 		<ows:Abstract>This is a minimal implementation of SOS 1.0.0, in progress, based on USGS NWIS data</ows:Abstract>
@@ -21,6 +12,7 @@
 			<ows:Keyword>NWIS</ows:Keyword>
 			<ows:Keyword>Water</ows:Keyword>
 			<ows:Keyword>Wells</ows:Keyword>
+			<ows:Keyword>water level</ows:Keyword>
 		</ows:Keywords>
 		<ows:ServiceType codeSpace="http://opengeospatial.net">OGC:SOS</ows:ServiceType>
 		<ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
@@ -115,22 +107,97 @@
 					<ows:Post xlink:href="${base.url}/sosbbox/sos"/>
 				</ows:HTTP>
 			</ows:DCP>
-			<!-- 
-			<ows:Parameter name="offering">
+			<ows:Parameter name="version">
 				<ows:AllowedValues>
-					<ows:Value>observationOffering3</ows:Value>
+					<ows:Value>1.0.0</ows:Value>
 				</ows:AllowedValues>
 			</ows:Parameter>
-			<ows:Parameter name="observedProperty">
+			<ows:Parameter name="service">
 				<ows:AllowedValues>
-					<ows:Value>http://mmisw.org/ont/cf/parameter/sea_water_temperature</ows:Value>
-					<ows:Value>http://mmisw.org/ont/cf/parameter/conductivity</ows:Value>
-					<ows:Value>http://mmisw.org/ont/cf/parameter/sea_water_salinity</ows:Value>
+					<ows:Value>SOS</ows:Value>
 				</ows:AllowedValues>
 			</ows:Parameter>
-			 -->
+			<ows:Parameter name="request">
+				<ows:AllowedValues>
+					<ows:Value>GetObservation</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+			<ows:Parameter name="responseFormat">
+				<ows:AllowedValues>
+					<ows:Value/>
+					<ows:Value>text/xml;subtype="om/1.0.0"</ows:Value>
+					<!-- TODO: implement this
+					<ows:Value>text/xml;subtype="om/2.0.0";enc=block</ows:Value>
+					-->
+				</ows:AllowedValues>
+			</ows:Parameter>
+			<ows:Parameter name="resultType">
+				<ows:AllowedValues>
+					<ows:Value>inline</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+			<ows:Parameter name="bbox">
+				<ows:AnyValue/>
+			</ows:Parameter>
+			<ows:Parameter name="featureId">
+				<ows:AnyValue/>
+			</ows:Parameter>
+			<ows:Parameter name="beginPosition">
+				<ows:AnyValue/>
+			</ows:Parameter>
+			<ows:Parameter name="endPosition">
+				<ows:AnyValue/>
+			</ows:Parameter>
 		</ows:Operation>
-		<!-- 
+		<ows:Operation name="GetObservationById">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Get xlink:href="${base.url}/sosbbox/sos"/>
+					<ows:Post xlink:href="${base.url}/sosbbox/sos"/>
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="version">
+				<ows:AllowedValues>
+					<ows:Value>1.0.0</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+			<ows:Parameter name="service">
+				<ows:AllowedValues>
+					<ows:Value>SOS</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+			<ows:Parameter name="request">
+				<ows:AllowedValues>
+					<ows:Value>GetObservationById</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+			<ows:Parameter name="responseFormat">
+				<ows:AllowedValues>
+					<ows:Value/>
+					<ows:Value>text/xml;subtype="om/1.0.0"</ows:Value>
+					<!-- TODO: implement this
+					<ows:Value>text/xml;subtype="om/2.0.0";enc=block</ows:Value>
+					-->
+				</ows:AllowedValues>
+			</ows:Parameter>
+			<ows:Parameter name="resultType">
+				<ows:AllowedValues>
+					<ows:Value>inline</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+			<ows:Parameter name="bbox">
+				<ows:AnyValue/>
+			</ows:Parameter>
+			<ows:Parameter name="observationId">
+				<ows:AnyValue/>
+			</ows:Parameter>
+			<ows:Parameter name="beginPosition">
+				<ows:AnyValue/>
+			</ows:Parameter>
+			<ows:Parameter name="endPosition">
+				<ows:AnyValue/>
+			</ows:Parameter>
+		</ows:Operation>
 		<ows:Operation name="DescribeSensor">
 			<ows:DCP>
 				<ows:HTTP>
@@ -148,12 +215,17 @@
 					<ows:Value>SOS</ows:Value>
 				</ows:AllowedValues>
 			</ows:Parameter>
+			<ows:Parameter name="request">
+				<ows:AllowedValues>
+					<ows:Value>DescribeSensor</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+			<!--
 			<ows:Parameter name="outputFormat">
 				<ows:AllowedValues>
 					<ows:Value>text/xml;subtype="sensorML/1.0.1"</ows:Value>
 				</ows:AllowedValues>
 			</ows:Parameter>
-			
 			<ows:Parameter name="procedure">
 				<ows:AllowedValues>
 					<ows:Value>urn:mbari:org</ows:Value>
@@ -161,14 +233,56 @@
 					<ows:Value>urn:mbari:org:device:1455</ows:Value>
 				</ows:AllowedValues>
 			</ows:Parameter>
-			 
+-->
 		</ows:Operation>
-		-->
 	</ows:OperationsMetadata>
+	<sos:Filter_Capabilities>
+		<ogc:Spatial_Capabilities>
+			<ogc:GeometryOperands>
+				<ogc:GeometryOperand>gml:Envelope</ogc:GeometryOperand>
+			</ogc:GeometryOperands>
+			<ogc:SpatialOperators>
+				<ogc:SpatialOperator name="BBOX"/>
+			</ogc:SpatialOperators>
+		</ogc:Spatial_Capabilities>
+		<ogc:Temporal_Capabilities>
+			<ogc:TemporalOperands>
+				<ogc:TemporalOperand>gml:TimePeriod</ogc:TemporalOperand>
+				<ogc:TemporalOperand>gml:timeInterval</ogc:TemporalOperand>
+				<ogc:TemporalOperand>gml:TimeInstant</ogc:TemporalOperand>
+				<ogc:TemporalOperand>gml:timePosition</ogc:TemporalOperand>
+			</ogc:TemporalOperands>
+			<ogc:TemporalOperators>
+				<ogc:TemporalOperator name="TM_During"/>
+				<ogc:TemporalOperator name="TM_After"/>
+				<ogc:TemporalOperator name="TM_Before"/>
+			</ogc:TemporalOperators>
+		</ogc:Temporal_Capabilities>
+		<ogc:Scalar_Capabilities>
+			<ogc:LogicalOperators/>
+			<!-- TODO: implement these
+			<ogc:ComparisonOperators>
+				
+				<ogc:ComparisonOperator>LessThan</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>LessThanEqualTo</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>Between</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>GreaterThan</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>GreaterThanEqualTo</ogc:ComparisonOperator>
+			</ogc:ComparisonOperators>
+		 -->
+		</ogc:Scalar_Capabilities>
+		<!-- What the hell is this? Can't find any documentation for this -->
+		<ogc:Id_Capabilities>
+			<ogc:EID/>
+			<ogc:FID/>
+		</ogc:Id_Capabilities>
+	</sos:Filter_Capabilities>
 	<sos:Contents>
 		<sos:ObservationOfferingList>
 			<sos:ObservationOffering gml:id="usgs.water.gwie.waterLevels">
-				<gml:description/>
+				<gml:description>
+					GroundWater Wells water levels in the continental U.S.
+				</gml:description>
 				<gml:boundedBy>
 					<gml:Envelope srsName="urn:ogc:def:crs:EPSG:4326">
 						<gml:lowerCorner>-125 24</gml:lowerCorner>
@@ -179,12 +293,12 @@
 					<gml:TimePeriod gml:id="timePeriod3">
 						<gml:beginPosition>1900-01-01T12:00:00Z</gml:beginPosition>
 						<!-- TODO make the end time dynamic -->
-						<gml:endPosition>2010-10-01T12:00:00Z</gml:endPosition>
+						<gml:endPosition>2011-01-01T12:00:00Z</gml:endPosition>
 					</gml:TimePeriod>
 				</sos:time>
 				<sos:procedure xlink:href="http://nemi.usgs.gov/water/procedure/unknown"/>
 				<sos:observedProperty xlink:href="http://usgs.gov/water/parameter/water_level"/>
-				<sos:featureOfInterest xlink:href="http://usgs.gov/water/groundwater_wells"/>
+				<sos:featureOfInterest xlink:href="${base.url}/sosFeatures/MasterFeatureList.xml"/>
 				<sos:responseFormat>text/xml; subtype="om/1.0.0"</sos:responseFormat>
 				<sos:responseMode>inline</sos:responseMode>
 			</sos:ObservationOffering>

@@ -63,6 +63,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="station_id"
 			javaType="string" />
 		<result
+			property="om:member/wml2:WaterMonitoringObservation/gml:identifier#codeSpace=urn:x-usgs:wellname"
+			column="station_id"
+			javaType="string" />
+		<result
 			property="om:member/wml2:WaterMonitoringObservation/gml:identifier=obs.%s"
 			column="station_id"
 			javaType="string" />
@@ -105,15 +109,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			typeHandler="ISODateTimeTypeHandler" />
 			
 		<result
-			property="om:member/wml2:WaterMonitoringObservation/om:resultTime/gml:TimePeriod#gml:id=invalid.rt.%s"
+			property="om:member/wml2:WaterMonitoringObservation/om:resultTime/gml:TimeInstant#gml:id=invalid.rt.%s"
 			column="station_id"
 			javaType="string" />		
 		<result
-			property="om:member/wml2:WaterMonitoringObservation/om:resultTime/gml:TimePeriod/gml:beginPosition"
+			property="om:member/wml2:WaterMonitoringObservation/om:resultTime/gml:TimeInstant/gml:beginPosition"
 			column="beginPosition"
 			typeHandler="ISODateTimeTypeHandler" />
 		<result
-			property="om:member/wml2:WaterMonitoringObservation/om:resultTime/gml:TimePeriod/gml:endPosition"
+			property="om:member/wml2:WaterMonitoringObservation/om:resultTime/gml:TimeInstant/gml:endPosition"
 			column="endPosition"
 			typeHandler="ISODateTimeTypeHandler" />
 			
@@ -215,7 +219,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="station_id"
 			javaType="string" />
 		<result
-			property="om:member/wml2:WaterMonitoringObservation/om:result/wml2:TimeSeries/wml2:element/^wml2:TimeValuePair/wml2:time"
+			property="om:member/wml2:WaterMonitoringObservation/om:result/wml2:TimeSeries/^wml2:element/wml2:TimeValuePair/wml2:time"
 			column="currentPosition"
 			typeHandler="ISODateTimeTypeHandler" />
 		<result
