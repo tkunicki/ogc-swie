@@ -13,9 +13,11 @@ public abstract class USGS_OGC_BusinessRules {
 	}
 
 	public static String cleanFeatureId(String value) {
-		if (value != null && value.startsWith("USGS")) {
-			// We don't really care whether the delimiter is USGS- or USGS.
-			return "USGS." + value.substring(5);
+		if (value != null){
+			// arbitrarily limiting the prefix to between 3 and 7 characters, inclusive
+			if (value.indexOf('-')> 2 && value.indexOf('-')< 7){
+				return value.replaceFirst("-", ".");
+			}
 		}
 		return value;
 	}

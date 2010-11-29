@@ -136,6 +136,10 @@
 						<dd><a href="<%=baseURL%>/sosbbox?request=DescribeSensor"><%=baseURL%>/sosbbox?request=DescribeSensor</a></dd>
 					</dl>
 					<dl>
+						<dt>GetObservationById</dt>
+						<dd><a href="<%=baseURL%>/sosbbox?request=GetObservationById&observationId=obs.MN040-474641090343501"><%=baseURL%>/sosbbox?request=GetObservationById&observationId=obs.MN040-474641090343501</a></dd>
+					</dl>
+					<dl>
 						<dt>GetObservation examples</dt>
 						<dd>
 							<ul>
