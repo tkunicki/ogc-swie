@@ -1,7 +1,7 @@
 package gov.usgs.cida.ogc.specs.exceptions;
 
 public abstract class OGCException extends Exception {
-	
+	private static final long serialVersionUID = -5731571112109990650L;
 	public abstract String getReferenceDocumentNumber();
 
 	public abstract String getReferenceDocumentName();

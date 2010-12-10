@@ -1,6 +1,7 @@
 package gov.usgs.cida.ogc.specs.exceptions;
 
 public class FormatException extends OGCException {
+	private static final long serialVersionUID = -6371297360053617572L;
 
 	@Override
 	public String getReferenceDocumentName() {

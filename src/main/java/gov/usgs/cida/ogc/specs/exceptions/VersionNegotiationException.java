@@ -1,6 +1,7 @@
 package gov.usgs.cida.ogc.specs.exceptions;
 
 public class VersionNegotiationException extends OGCException {
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public String getReferenceDocumentName() {

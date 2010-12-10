@@ -1,6 +1,7 @@
 package gov.usgs.cida.ogc.specs.exceptions;
 
 public class InvalidEncodingTypeException extends OGCException {
+	private static final long serialVersionUID = 70603506414815093L;
 
 	@Override
 	public String getReferenceDocumentName() {

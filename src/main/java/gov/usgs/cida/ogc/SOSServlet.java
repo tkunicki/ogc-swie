@@ -50,7 +50,7 @@ public class SOSServlet extends HttpServlet {
 	private final static String XPATH_Envelope = "//sos:GetObservation/sos:featureOfInterest/ogc:BBOX/gml:Envelope";
 	private final static String XPATH_cornerLower = "gml:lowerCorner/text()";
 	private final static String XPATH_upperCorner = "gml:upperCorner/text()";
-	private final static String XPATH_filter = "//ogc:Filter";
+	//private final static String XPATH_filter = "//ogc:Filter";
 	private final static String XPATH_eventTime = "//sos:eventTime";
 	private final static String XPATH_featureId = "//ogc:FeatureId/@fid";
 	private static final String XPATH_observationId = "//sos:ObservationId";
@@ -329,7 +329,7 @@ public class SOSServlet extends HttpServlet {
 
 			// Look for TM_Before
 			XPathExpression tmBeforeExpression = xpath.compile("//ogc:TM_Before");
-			Object tmBeforeResult = tmAfterExpression.evaluate(filterNode,XPathConstants.NODE);
+			Object tmBeforeResult = tmBeforeExpression.evaluate(filterNode,XPathConstants.NODE);
 			if (tmBeforeResult != null && tmBeforeResult instanceof Node) {
 				Node tmBeforeNode = (Node) tmBeforeResult;
 
