@@ -6,9 +6,9 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>gov.usgs.cida</groupId>
-	<artifactId>ogc-ie</artifactId>
+	<artifactId>ogc-swie</artifactId>
 	<packaging>war</packaging>
-	<name>OGC HWG IE Web Service</name>
+	<name>OGC HWG Surface Water IE Web Service</name>
 	<version>0.0.1-SNAPSHOT</version>
 	
 	<properties>
@@ -82,7 +82,7 @@
 	</dependencies>
 	
 	<build>
-		<finalName>ogc-ie</finalName>
+		<finalName>ogc-swie</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.cargo</groupId>
