@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="wfsMapper_NWIS">
+
+	<resultMap id="wfsBaseMap" type="XMLMap">
+		<result
+	    	property="wfs:FeatureCollection"
+	    	column="%ROOT_ELEMENT"
+			javaType="string" />
+	    <result
+	    	property="xmlns:wfs=http://www.opengis.net/wfs"
+	    	column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+	    <result
+	    	property="xmlns:gml=http://www.opengis.net/gml"
+	    	column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+		<result
+	    	property="xmlns:gsml=urn:cgi:xmlns:CGI:GeoSciML:2.0"
+	    	column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+	    <result
+	    	property="xmlns:gwml=http://www.nrcan.gc.ca/xml/gwml/1"
+	    	column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+		<result
+	    	property="xmlns:om=http://www.opengis.net/om/1.0"
+	    	column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+		<result
+	    	property="xmlns:sa=http://www.opengis.net/sampling/1.0"
+	    	column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+		<result
+    		property="xmlns:xlink=http://www.w3.org/1999/xlink"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+		<result
+    		property="xmlns:xs=http://www.w3.org/2001/XMLSchema"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+		<result
+    		property="xmlns:xsi=http://www.w3.org/2001/XMLSchema-instance"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+		<result
+    		property="xsi:schemaLocation=http://www.opengis.net/om/1.0 http://schemas.opengis.net/om/1.0.0/om.xsd"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+	</resultMap>
+	
+	<resultMap id="wfsResultMap" type="XMLMap" extends="wfsBaseMap">
+		<result
+			property="gml:featureMember/gwml:WaterWell/gml:name"
+			column="station_nm"
+			javaType="string" />
+	</resultMap>
+	
+	<resultMap id="wfsLogElementResultMap" type="XMLMap">
+		<id
+			property="gml:featureMember/gwml:WaterWell/^gwml:logElement/gsml:MappedInterval/gsml:observationMethod/gsml:CGI_TermValue/gsml:value#codeSpace=urn:x-ngwd:classifier:GIN:ObservationMethod"
+			column="station_nm"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:logElement/gsml:MappedInterval/gsml:observationMethod/gsml:CGI_TermValue/gsml:value=borehole"
+			column="station_nm"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/^gwml:logElement/gsml:MappedInterval/gsml:specification/gwml:HydrostratigraphicUnit#gml:id"
+			column="HYDROSTRUNIT_ID"
+			javaType="string" />
+	</resultMap>
+	
+	<select id="wfsSelect_nwis" parameterType="map" resultMap="wfsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
+		select station_nm AS station_nm,
+		dec_lat_va AS HYDROSTRUNIT_ID
+		from nwisweb.SITEFILE 
+		where site_no IN (
+			'01427207','01427510','01434000')
+	</select>
+
+
+</mapper> 
+

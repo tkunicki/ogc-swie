@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?> <!DOCTYPE configuration
+PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias alias="XMLMap" type="gov.usgs.webservices.ibatis.stax.XMLMapStreamMarshaller"/>
+		<typeAlias alias="ISODateTimeTypeHandler" type="gov.usgs.webservices.ibatis.ISODateTimeTypeHandler"/>
+	</typeAliases>
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="JNDI">
+				<property name="data_source" value="java:/comp/env/jdbc/ogc_ieNWIS" />
+			</dataSource>
+		</environment>
+	</environments>
+	<mappers>
+		<mapper resource="wfsMapper_NWIS.xml" />
+		<mapper resource="sosMapper_NWIS.xml" />
+	</mappers>
+</configuration>
