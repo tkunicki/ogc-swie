@@ -52,33 +52,146 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<resultMap id="wfsResultMap" type="XMLMap" extends="wfsBaseMap">
+	 	<id
+	 		property="^!{gml:featureMember"
+	 		column="FEATURE_ID"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell#gml:id"
+			column="FEATURE_ID"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/^gml:name#codeSpace=urn:gov.usgs.nwis.station_nm"
+			column="STATION_NM"
+			javaType="string" />
 		<result
 			property="gml:featureMember/gwml:WaterWell/gml:name"
-			column="station_nm"
+			column="STATION_NM"
 			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/^gml:name#codeSpace=urn:gov.usgs.nwis.agency_cd_site_no"
+			column="FEATURE_ID"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gml:name"
+			column="FEATURE_ID"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope#srsName=EPSG:4326"
+			column="LON_LAT"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope/gml:pos#srsDimension=2"
+			column="LON_LAT"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope/gml:pos"
+			column="LON_LAT"
+			javaType="string" />
+
+        <!-- removed per NLB 05.24.2010, will be put back in later but still needs output validation... -->
+		<!--<association property="UNUSED" column="FEATURE_ID" select="wfsRelatedObservationSelect" javaType="list" />-->
+			
+		<result
+			property="gml:featureMember/gwml:WaterWell/sa:position/gml:Point#srsName=EPSG:4326"
+			column="LON_LAT_ALT"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/sa:position/gml:Point/gml:pos"
+			column="LON_LAT_ALT"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:referenceElevation#uom=urn:ogc:def:uom:UCUM:ft_i"
+			column="ALT"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:referenceElevation"
+			column="ALT"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/^gwml:wellDepth/gsml:CGI_NumericValue/gsml:principalValue#uom=urn:ogc:def:uom:UCUM:ft_i"
+			column="WELL_DEPTH_VA"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:wellDepth/gsml:CGI_NumericValue/gsml:principalValue"
+			column="WELL_DEPTH_VA"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/^gwml:wellStatus/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.alt_datum_cd"
+			column="ALT_DATUM_CD"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:wellStatus/gsml:CGI_TermValue/gsml:value"
+			column="ALT_DATUM_CD"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/^gwml:wellType/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.nat_water_use_cd"
+			column="NAT_WATER_USE_CD"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:wellType/gsml:CGI_TermValue/gsml:value"
+			column="NAT_WATER_USE_CD"
+			javaType="string" />
+		<result
+			property="gml:featureMember/gwml:WaterWell/gwml:onlineResource#xlink:href=http://waterdata.usgs.gov/nwis/inventory?search_site_no=%s&amp;search_site_no_match_type=exact&amp;sort_key=site_no&amp;group_key=NONE&amp;sitefile_output_format=html_table&amp;column_name=agency_cd&amp;column_name=site_no&amp;column_name=station_nm&amp;format=station_manuscript&amp;list_of_search_criteria=search_site_no"
+			column="SITE_NO"
+			javaType="string" />
+		<result
+			property="}gml:featureMember/gwml:WaterWell/gwml:onlineResource#xlink:title=USGS NWIS Database"
+			column="SITE_NO"
+			javaType="string" />
+		
+		<!-- association property="UNUSED" column="FEATURE_ID" select="wfsLogElementSelect" javaType="list" />
+		<association property="UNUSED" column="FEATURE_ID" select="wfsScreenElementSelect" javaType="list" /-->
 	</resultMap>
 	
-	<resultMap id="wfsLogElementResultMap" type="XMLMap">
-		<id
-			property="gml:featureMember/gwml:WaterWell/^gwml:logElement/gsml:MappedInterval/gsml:observationMethod/gsml:CGI_TermValue/gsml:value#codeSpace=urn:x-ngwd:classifier:GIN:ObservationMethod"
-			column="station_nm"
-			javaType="string" />
-		<result
-			property="gml:featureMember/gwml:WaterWell/gwml:logElement/gsml:MappedInterval/gsml:observationMethod/gsml:CGI_TermValue/gsml:value=borehole"
-			column="station_nm"
-			javaType="string" />
-		<result
-			property="gml:featureMember/gwml:WaterWell/^gwml:logElement/gsml:MappedInterval/gsml:specification/gwml:HydrostratigraphicUnit#gml:id"
-			column="HYDROSTRUNIT_ID"
-			javaType="string" />
-	</resultMap>
 	
 	<select id="wfsSelect_nwis" parameterType="map" resultMap="wfsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
-		select station_nm AS station_nm,
-		dec_lat_va AS HYDROSTRUNIT_ID
-		from nwisweb.SITEFILE 
-		where site_no IN (
-			'01427207','01427510','01434000')
+		SELECT a.site_no AS SITE_NO, 
+		a.agency_cd,
+		CONCAT(a.agency_cd,'.', a.site_no) as FEATURE_ID,
+		a.station_nm AS STATIOM_NM,
+		CONCAT(CONVERT(a.dec_lat_va,CHAR),' ',CONVERT(a.dec_long_va,CHAR)) AS LON_LAT, 
+		CONCAT(CONVERT(a.dec_lat_va,CHAR),' ',CONVERT(a.dec_long_va,CHAR),' ',CONVERT(a.alt_va,CHAR)) AS LON_LAT_ALT,
+		a.alt_va AS ALT,
+		a.ALT_DATUM_CD,
+		a.WELL_DEPTH_VA,
+		a.NAT_WATER_USE_CD
+		
+		FROM nwisweb.SITEFILE a
+		
+		<!--  WHERE 1 = 0 -->
+		WHERE a.site_no IN (
+		'01427207','01427510','01434000','01438500','01440200','01446500','01446775',
+		'01446776','01446995','01457500','01460200','01462000','01463500','01467200','01474703','01477050','01482800',
+		'04073365','04073500','04082400','04084445','040851385','05543830','05545750','05551000','05551001','05551540',
+		'05552500','05548500','05549500','05550000','05391000','05395000','05398000','05404000','05407000',
+		'05344500','05378500','05386400','05389500','05411500','05587450','07020500','05420400','05420500','05501600',
+		'07010000','07020850','07022000','05587060','05568615','05543500','05558300','05585500','05568500','05586100', '13532')
+  		<!--  
+		<choose>
+		    	<when test="featureId != null">
+		    		CONCAT(a.agency_cd,'.',a.site_no) = #{featureId[0]}
+		    	</when>
+		    	<otherwise>
+		    		1=1
+		    	</otherwise>
+		 </choose> 
+-->
+		<trim prefix="OR (" suffix=")" prefixOverrides="AND">
+			<if test="bBox != null">
+		AND a.DEC_LONG_VA BETWEEN #{bBox[0]} AND #{bBox[2]} AND a.DEC_LAT_VA BETWEEN #{bBox[1]} AND #{bBox[3]} 
+			</if>
+			<if test="featureId != null">
+        AND CONCAT(a.agency_cd,'.',a.site_no) = #{featureId}
+			</if>
+			<if test="maxFeatures != null">
+		AND ROWNUM<![CDATA[ <= ]]> #{maxFeatures}
+			</if>
+		</trim>	
+	    ORDER BY
+			STATION_NM
+		
 	</select>
 
 
