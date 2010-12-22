@@ -146,11 +146,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	
-	<select id="wfsSelect_nwis" parameterType="map" resultMap="wfsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
+	<select id="wfsSelect_NWIS" parameterType="map" resultMap="wfsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 		SELECT a.site_no AS SITE_NO, 
 		a.agency_cd,
 		CONCAT(a.agency_cd,'.', a.site_no) as FEATURE_ID,
-		a.station_nm AS STATIOM_NM,
+		a.station_nm AS STATION_NM,
 		CONCAT(CONVERT(a.dec_lat_va,CHAR),' ',CONVERT(a.dec_long_va,CHAR)) AS LON_LAT, 
 		CONCAT(CONVERT(a.dec_lat_va,CHAR),' ',CONVERT(a.dec_long_va,CHAR),' ',CONVERT(a.alt_va,CHAR)) AS LON_LAT_ALT,
 		a.alt_va AS ALT,
@@ -162,23 +162,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		
 		<!--  WHERE 1 = 0 -->
 		WHERE a.site_no IN (
-		'01427207','01427510','01434000','01438500','01440200','01446500','01446775',
-		'01446776','01446995','01457500','01460200','01462000','01463500','01467200','01474703','01477050','01482800',
-		'04073365','04073500','04082400','04084445','040851385','05543830','05545750','05551000','05551001','05551540',
-		'05552500','05548500','05549500','05550000','05391000','05395000','05398000','05404000','05407000',
-		'05344500','05378500','05386400','05389500','05411500','05587450','07020500','05420400','05420500','05501600',
-		'07010000','07020850','07022000','05587060','05568615','05543500','05558300','05585500','05568500','05586100', '13532')
-  		<!--  
-		<choose>
-		    	<when test="featureId != null">
-		    		CONCAT(a.agency_cd,'.',a.site_no) = #{featureId[0]}
-		    	</when>
-		    	<otherwise>
-		    		1=1
-		    	</otherwise>
-		 </choose> 
--->
-		<trim prefix="OR (" suffix=")" prefixOverrides="AND">
+		'01427207','01427510','01434000','01438500','01440200','01446500','01446775')
+
+<!--		<trim prefix="OR (" suffix=")" prefixOverrides="AND">
 			<if test="bBox != null">
 		AND a.DEC_LONG_VA BETWEEN #{bBox[0]} AND #{bBox[2]} AND a.DEC_LAT_VA BETWEEN #{bBox[1]} AND #{bBox[3]} 
 			</if>
@@ -188,7 +174,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="maxFeatures != null">
 		AND ROWNUM<![CDATA[ <= ]]> #{maxFeatures}
 			</if>
-		</trim>	
+		</trim>	-->
 	    ORDER BY
 			STATION_NM
 		
