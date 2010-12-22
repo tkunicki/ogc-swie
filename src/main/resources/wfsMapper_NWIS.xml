@@ -160,9 +160,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		
 		FROM nwisweb.SITEFILE a
 		
-		<!--  WHERE 1 = 0 -->
 		WHERE a.site_no IN (
-		'01427207','01427510','01434000','01438500','01440200','01446500','01446775')
+		'01427207','01427510')
 
 <!--		<trim prefix="OR (" suffix=")" prefixOverrides="AND">
 			<if test="bBox != null">
@@ -175,11 +174,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		AND ROWNUM<![CDATA[ <= ]]> #{maxFeatures}
 			</if>
 		</trim>	-->
-	    ORDER BY
-			STATION_NM
+	    <!--   ORDER BY
+			STATION_NM-->
 		
 	</select>
-
-
 </mapper> 
 
