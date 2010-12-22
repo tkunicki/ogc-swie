@@ -28,7 +28,7 @@
 		<p>NWIS Test</p>
 		<a href="<%=baseURL%>/wfsnwis?request=GetFeature&typename=gwml:WaterWell"><%=baseURL%>/wfsnwis?request=GetFeature&typename=gwml:WaterWell</a>
 		<p></p>
-		<a href="<%=baseURL%>/sosnwis?request=GetObservation&featureId=USGS.425958089321601"><%=baseURL%>/sosnwis</a>
+		<a href="<%=baseURL%>/sosnwis?request=GetObservation&featureId=01446500"><%=baseURL%>/sosnwis?request=GetObservation&featureId=01446500</a>
 			<!--ul>
 				<li><strong>Web Mapping Service</strong> at http://infotrek.er.usgs.gov/mapviewer11gr1/wms
 					<dl>
