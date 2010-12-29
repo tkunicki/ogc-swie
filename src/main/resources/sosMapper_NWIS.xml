@@ -263,24 +263,32 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		    WHERE (
 		    
 		    <choose>
+		    
 		        <when test="featureId != null">
 		        			b.site_no IN ( #{featureId[0]})
 				    		<!--   CONCAT(b.agency_cd,'.',b.site_no) = #{featureId[0]}-->
-		        </when>
-		        
-		        <when test="west != null">
+		        </when>		        
+<!-- 			<when test="west != null">
 				    		SDO_FILTER(s.geom, 
 								SDO_GEOMETRY(2003, 8307, NULL, 
 									SDO_ELEM_INFO_ARRAY(1,1003,3), 
 									SDO_ORDINATE_ARRAY(#{west[0]},#{south[0]},#{east[0]},#{north[0]})
 								)
 				 			) = 'TRUE'
-		        </when>
+		        </when>		--> 
 		        
 		        <otherwise>
 				    		b.site_no ='01427207'
 				</otherwise>
 		    </choose> 
+		<!--  Need to work on this  -->    
+		    <if test="beginPosition != null">
+				AND a.result_dt <![CDATA[ >= ]]> to_date(#{beginPosition[0]}, 'YYYY-MM-DD')
+			</if>
+			  	
+			<if test="endPosition != null">
+				AND a.result_dt <![CDATA[ <= ]]> to_date(#{endPosition[0]}, 'YYYY-MM-DD')
+			</if>
 		    
 		    )        
 		    and a.site_id = b.site_id
