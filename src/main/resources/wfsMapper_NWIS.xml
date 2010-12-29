@@ -22,7 +22,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    	column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
 	    <result
-	    	property="xmlns:gwml=http://www.nrcan.gc.ca/xml/gwml/1"
+	    	property="xmlns:swml=http://www.nrcan.gc.ca/xml/swml/1"
 	    	column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
 		<result
@@ -57,35 +57,35 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	 		column="FEATURE_ID"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell#gml:id"
+			property="gml:featureMember/swml:Discharge#gml:id"
 			column="FEATURE_ID"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/^gml:name#codeSpace=urn:gov.usgs.nwis.station_nm"
+			property="gml:featureMember/swml:Discharge/^gml:name#codeSpace=urn:gov.usgs.nwis.station_nm"
 			column="STATION_NM"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/gml:name"
+			property="gml:featureMember/swml:Discharge/gml:name"
 			column="STATION_NM"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/^gml:name#codeSpace=urn:gov.usgs.nwis.agency_cd_site_no"
+			property="gml:featureMember/swml:Discharge/^gml:name#codeSpace=urn:gov.usgs.nwis.agency_cd_site_no"
 			column="FEATURE_ID"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/gml:name"
+			property="gml:featureMember/swml:Discharge/gml:name"
 			column="FEATURE_ID"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope#srsName=EPSG:4326"
+			property="gml:featureMember/swml:Discharge/gml:boundedBy/gml:envelope#srsName=EPSG:4326"
 			column="LON_LAT"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope/gml:pos#srsDimension=2"
+			property="gml:featureMember/swml:Discharge/gml:boundedBy/gml:envelope/gml:pos#srsDimension=2"
 			column="LON_LAT"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/gml:boundedBy/gml:envelope/gml:pos"
+			property="gml:featureMember/swml:Discharge/gml:boundedBy/gml:envelope/gml:pos"
 			column="LON_LAT"
 			javaType="string" />
 
@@ -93,51 +93,51 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<!--<association property="UNUSED" column="FEATURE_ID" select="wfsRelatedObservationSelect" javaType="list" />-->
 			
 		<result
-			property="gml:featureMember/gwml:WaterWell/sa:position/gml:Point#srsName=EPSG:4326"
+			property="gml:featureMember/swml:Discharge/sa:position/gml:Point#srsName=EPSG:4326"
 			column="LON_LAT_ALT"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/sa:position/gml:Point/gml:pos"
+			property="gml:featureMember/swml:Discharge/sa:position/gml:Point/gml:pos"
 			column="LON_LAT_ALT"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/gwml:referenceElevation#uom=urn:ogc:def:uom:UCUM:ft_i"
+			property="gml:featureMember/swml:Discharge/swml:referenceElevation#uom=urn:ogc:def:uom:UCUM:ft_i"
 			column="ALT"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/gwml:referenceElevation"
+			property="gml:featureMember/swml:Discharge/swml:referenceElevation"
 			column="ALT"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/^gwml:wellDepth/gsml:CGI_NumericValue/gsml:principalValue#uom=urn:ogc:def:uom:UCUM:ft_i"
+			property="gml:featureMember/swml:Discharge/^swml:wellDepth/gsml:CGI_NumericValue/gsml:principalValue#uom=urn:ogc:def:uom:UCUM:ft_i"
 			column="WELL_DEPTH_VA"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/gwml:wellDepth/gsml:CGI_NumericValue/gsml:principalValue"
+			property="gml:featureMember/swml:Discharge/swml:wellDepth/gsml:CGI_NumericValue/gsml:principalValue"
 			column="WELL_DEPTH_VA"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/^gwml:wellStatus/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.alt_datum_cd"
+			property="gml:featureMember/swml:Discharge/^swml:wellStatus/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.alt_datum_cd"
 			column="ALT_DATUM_CD"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/gwml:wellStatus/gsml:CGI_TermValue/gsml:value"
+			property="gml:featureMember/swml:Discharge/swml:wellStatus/gsml:CGI_TermValue/gsml:value"
 			column="ALT_DATUM_CD"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/^gwml:wellType/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.nat_water_use_cd"
+			property="gml:featureMember/swml:Discharge/^swml:wellType/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.nat_water_use_cd"
 			column="NAT_WATER_USE_CD"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/gwml:wellType/gsml:CGI_TermValue/gsml:value"
+			property="gml:featureMember/swml:Discharge/swml:wellType/gsml:CGI_TermValue/gsml:value"
 			column="NAT_WATER_USE_CD"
 			javaType="string" />
 		<result
-			property="gml:featureMember/gwml:WaterWell/gwml:onlineResource#xlink:href=http://waterdata.usgs.gov/nwis/inventory?search_site_no=%s&amp;search_site_no_match_type=exact&amp;sort_key=site_no&amp;group_key=NONE&amp;sitefile_output_format=html_table&amp;column_name=agency_cd&amp;column_name=site_no&amp;column_name=station_nm&amp;format=station_manuscript&amp;list_of_search_criteria=search_site_no"
+			property="gml:featureMember/swml:Discharge/swml:onlineResource#xlink:href=http://waterdata.usgs.gov/nwis/inventory?search_site_no=%s&amp;search_site_no_match_type=exact&amp;sort_key=site_no&amp;group_key=NONE&amp;sitefile_output_format=html_table&amp;column_name=agency_cd&amp;column_name=site_no&amp;column_name=station_nm&amp;format=station_manuscript&amp;list_of_search_criteria=search_site_no"
 			column="SITE_NO"
 			javaType="string" />
 		<result
-			property="}gml:featureMember/gwml:WaterWell/gwml:onlineResource#xlink:title=USGS NWIS Database"
+			property="}gml:featureMember/swml:Discharge/swml:onlineResource#xlink:title=USGS NWIS Database"
 			column="SITE_NO"
 			javaType="string" />
 		
@@ -159,24 +159,34 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		a.NAT_WATER_USE_CD
 		
 		FROM nwisweb.SITEFILE a
-		
-		WHERE a.site_no IN (
-		'01427207','01427510')
+               <!-- WHERE 1 = 0-->
 
-<!--		<trim prefix="OR (" suffix=")" prefixOverrides="AND">
+              <choose>
+                    <when test="featureId != null">
+                        WHERE #{featureId} = a.site_no
+                    </when>
+                    <otherwise>
+                        WHERE a.site_no IN (
+                        '01427207','01427510','01434000','01438500','01446775','01446776',
+                        '01457500','01463500','04073365','04073500','04082400','04084445','040851385',
+                        '05344500','05378500','05389500','05391000','05395000','05404000','05407000',
+                        '05420500','05543500','05543830','05545750','05551540','05552500','05558300',
+                        '05568500','05585500','05586100','07010000','07020500','07022000')
+                    </otherwise>
+                </choose>
+
+<!---		<trim prefix="OR (" suffix=")" prefixOverrides="AND">
 			<if test="bBox != null">
-		AND a.DEC_LONG_VA BETWEEN #{bBox[0]} AND #{bBox[2]} AND a.DEC_LAT_VA BETWEEN #{bBox[1]} AND #{bBox[3]} 
+                            AND a.DEC_LONG_VA BETWEEN #{bBox[0]} AND #{bBox[2]} AND a.DEC_LAT_VA BETWEEN #{bBox[1]} AND #{bBox[3]}
 			</if>
 			<if test="featureId != null">
-        AND CONCAT(a.agency_cd,'.',a.site_no) = #{featureId}
+                            AND a.site_no = #{featureId[0]}
 			</if>
 			<if test="maxFeatures != null">
-		AND ROWNUM<![CDATA[ <= ]]> #{maxFeatures}
+                            AND ROWNUM<![CDATA[ <= ]]> #{maxFeatures}
 			</if>
-		</trim>	-->
-	    <!--   ORDER BY
-			STATION_NM-->
-		
+		</trim>
+-->
 	</select>
 </mapper> 
 
