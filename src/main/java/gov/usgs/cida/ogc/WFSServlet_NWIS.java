@@ -38,9 +38,9 @@ import org.w3c.dom.Node;
  * Servlet implementation class WFSServlet_NWIS
  */
 public class WFSServlet_NWIS extends HttpServlet {
-	private static final String GWML_TBD = "gwml:TBD";
+	private static final String SWML_TBD = "swml:TBD";
 
-	private static final String GWML_WATER_WELL = "gwml:WaterWell";
+	private static final String SWML_DISCHARGE = "swml:Discharge";
 
 	private static final long serialVersionUID = 1L;
 	
@@ -253,7 +253,7 @@ public class WFSServlet_NWIS extends HttpServlet {
 		// handle featureId
 		result.put("featureId", USGS_OGC_BusinessRules.cleanFeatureId(featureId));
 		
-		if(!GWML_WATER_WELL.equals(typeName) && featureId == null) {
+		if(!SWML_DISCHARGE.equals(typeName) && featureId == null) {
 			throw new IllegalArgumentException("TYPENAME missing or invalid");
 		}
 		if(bBox != null) {
@@ -330,9 +330,9 @@ public class WFSServlet_NWIS extends HttpServlet {
 				String typeName = (String) typeNameOb;
 			
 				String resource;
-				if (GWML_WATER_WELL.equals(typeName)) {
+				if (SWML_DISCHARGE.equals(typeName)) {
 					resource = "/ogc/wfs/DescribeFeatureType.xml";
-				} else if (GWML_TBD.equals(typeName)) {
+				} else if (SWML_TBD.equals(typeName)) {
 					resource = "/ogc/wfs/DescribeFeatureType.xml";
 				} else {
 					throw new IllegalArgumentException("Invalid typeName");
