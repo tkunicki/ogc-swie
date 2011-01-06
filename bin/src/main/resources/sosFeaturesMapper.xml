@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="sosFeaturesMapper">
+
+	<resultMap id="sosFeaturesMap" type="XMLMap">
+		<result
+	    	property="gml:FeatureCollection"
+	    	column="%ROOT_ELEMENT"
+			javaType="string" />
+	    <result
+	    	property="xmlns:gml=http://www.opengis.net/gml/3.2"
+	    	column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+	    <result
+	    	property="xmlns:om=http://www.opengis.net/om/2.0"
+	    	column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+	    <result
+	    	property="xmlns:sa=http://www.opengis.net/sampling/2.0"
+	    	column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+		<result
+    		property="xmlns:swe=http://www.opengis.net/swe/2.0"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+			<!-- 
+		<result
+    		property="xsi:schemaLocation=http://www.opengis.net/om/1.0 http://schemas.opengis.net/om/1.0.0/om.xsd"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+			 -->
+		<result
+    		property="xmlns:xlink=http://www.w3.org/1999/xlink"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+		<result
+    		property="xmlns:xsi=http://www.w3.org/2001/XMLSchema-instance"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+		<result
+    		property="xmlns:wml2=http://www.wron.net.au/waterml2"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+		<result
+    		property="xmlns:md=http://www.isotc211.org/2005/gmd"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+		<result
+    		property="xmlns:gco=http://www.isotc211.org/2005/gco"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+
+	</resultMap>
+	
+	<resultMap id="FeaturesMap" type="XMLMap" extends="sosFeaturesMap">
+		<result
+			property="gml:FeatureCollection#gml:id=usgs.waterwellnetwork.%s"
+			column="STATE_NAME"
+			javaType="string" />
+		<result
+			property="gml:FeatureCollection/gml:description=Features in the state of %s"
+			column="STATE_NAME"
+			javaType="string" />
+		<result
+			property="gml:FeatureCollection/gml:name=usgs:nwis:groundwater:wells.%s"
+			column="STATE_NAME"
+			javaType="string" />
+		<!--  TODO: gml:boundedBy and time period
+			<gml:boundedBy>
+		<gml:EnvelopeWithTimePeriod srsName="urn:ogc:def:crs:EPSG:4326">
+			<gml:lowerCorner>-125 24</gml:lowerCorner>
+			<gml:upperCorner>-66 123</gml:upperCorner>
+			<gml:timePosition frame="#ISO-8601">1899-05-16T00:00:00.0</gml:timePosition>
+			<gml:timePosition frame="#ISO-8601">2011-01-01T00:00:00.0</gml:timePosition>
+		</gml:EnvelopeWithTimePeriod>
+	</gml:boundedBy>
+		
+		   <gml:EnvelopeWithTimePeriod srsName="urn:ogc:def:crs:EPSG:4326">
+      <gml:lowerCorner>-95.19 41.6</gml:lowerCorner>
+      <gml:upperCorner>-74.19 56.92</gml:upperCorner>
+      <gml:timePosition frame="#ISO-8601">1899-05-16T00:00:00.0</gml:timePosition>
+      <gml:timePosition frame="#ISO-8601">2009-12-30T00:00:00.0</gml:timePosition>
+   </gml:EnvelopeWithTimePeriod>
+		
+		 -->
+		<result
+			property="^gml:featureMember#xlink:href=http://infotrek.er.usgs.gov/ogc-ie/wfs?request=GetFeature&amp;featureId=%s&amp;typeName=gwml:WaterWell"
+			column="feature_id"
+			javaType="string" />
+	</resultMap>
+	<!--
+	<resultMap id="FeaturesMap" type="XMLMap" extends="sosFeaturesMap">
+		<result
+			property="gml:FeatureCollection/gml:featureMember#xlink:href=%s"
+			column="feature_id"
+			javaType="string" />
+	</resultMap>
+	 -->
+	
+
+	 <select id="featuresSelect" parameterType="map" resultMap="FeaturesMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
+		SELECT agency_cd, site_no, state_cd, agency_cd || '.' || site_no as feature_id
+		FROM gw_data_portal.sites_gw_all_mvw
+		WHERE state_cd = #{state_cd[0]}
+		GROUP BY agency_cd, site_no, state_cd
+	 </select>
+	 
+</mapper> 

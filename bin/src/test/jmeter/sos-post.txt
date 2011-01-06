@@ -1,0 +1,16 @@
+<sos:GetObservation xmlns:om="http://www.opengis.net/om/1.0" xmlns:ogc="http://www.opengis.net/ogc" xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:fn="http://www.w3.org/2005/xpath-functions" service="SOS" version="1.0.0" srsName="EPSG:4326">
+		 <sos:offering>urn:GIN:offering:groundwaterLevel:1</sos:offering>
+		 <sos:observedProperty>urn:ogc:def:property:OGC:GroundWaterLevel</sos:observedProperty>
+		 <sos:featureOfInterest>
+		 		 <ogc:BBOX>
+		 		 		 <ogc:PropertyName>gml:location</ogc:PropertyName>
+		 		 		 <gml:Envelope>
+		 		 		 		 <gml:lowerCorner>-89.7264 45.9584</gml:lowerCorner>
+		 		 		 		 <gml:upperCorner>-89.6624 46.022400000000008</gml:upperCorner>
+		 		 		 </gml:Envelope>
+		 		 </ogc:BBOX>
+		 </sos:featureOfInterest>
+		 <sos:responseFormat>text/xml; subtype="om/1.0.0"</sos:responseFormat>
+		 <sos:resultModel xmlns:wml="http://www.wron.net.au/waterml2">wml:WaterMonitoringObservation</sos:resultModel>
+		 <sos:responseMode>inline</sos:responseMode>
+</sos:GetObservation>
