@@ -23,7 +23,7 @@
 		</script>
 	</head>
 	<body>
-		<h1>Services Implemented</h1>
+		<h1>Services Implemented - GWIE</h1>
 			<ul>
 				<li><strong>Web Mapping Service</strong> at http://infotrek.er.usgs.gov/mapviewer11gr1/wms
 					<dl>

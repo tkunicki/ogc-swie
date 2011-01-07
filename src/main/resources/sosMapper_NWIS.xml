@@ -243,10 +243,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		select f.station_nm,
 		STR_TO_DATE(SYSDATE(),'%Y-%m-%d') as dateStamp,
 		CONCAT(CONVERT(f.DEC_LAT_VA,CHAR),' ',CONVERT(f.DEC_LONG_VA,CHAR)) AS pos,
+                CONCAT(CONVERT(DATE_FORMAT(s.startTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS beginPosition,
+                CONCAT(CONVERT(DATE_FORMAT(s.endTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS endPosition,
+                <!--CONCAT(STR_TO_DATE(s.startTime,'%Y-%m-%dT%H:%i'),f.tz_cd) AS beginPosition,
+                CONCAT(STR_TO_DATE(s.endTime,'%Y-%m-%dT%H:%i'),f.tz_cd) AS endPosition,-->
 		s.FEATURE_ID,
-		s.beginPosition,
-		s.endPosition,
 		CONCAT(CONVERT(DATE_FORMAT(g.result_dt,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) as currentPosition,
+                <!--CONCAT(STR_TO_DATE(g.result_dt,'%Y-%m-%dT%H:%i'),f.tz_cd) as currentPosition,-->
 		g.result_va as value,
 		d.parameter_units as units,
 		d.parameter_nm
@@ -254,44 +257,42 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		FROM
 		    (select b.site_id,
 		    CONCAT(b.agency_cd,'.', b.site_no) as FEATURE_ID,
-		    CONCAT(CONVERT(DATE_FORMAT(MIN(a.result_dt),'%Y-%m-%dT%H:%i'),CHAR),b.tz_cd) as beginPosition,
-		    CONCAT(CONVERT(DATE_FORMAT(MAX(a.result_dt),'%Y-%m-%dT%H:%i'),CHAR),b.tz_cd) as endPosition
-		    
+		    MIN(a.result_dt) as startTime,
+                    MAX(a.result_dt) as endTime
+                    
 		    FROM nwisweb.UV a,
 		    nwisweb.SITEFILE b
 		    
-		    
-		    
-		    <choose>
-		    
-		        <when test="featureId != null">
-		        	WHERE #{featureId} = b.site_no
-				    		<!--   CONCAT(b.agency_cd,'.',b.site_no) = #{featureId[0]}-->
-		        </when>		        
-<!-- 			<when test="west != null">
+		    <!--WHERE b.site_no ='01427207'-->
+              <choose>
+                    <when test="featureId != null">
+                        WHERE b.site_no IN (#{featureId[0]})
+                    </when>
+                    <!--  I'm not sure this is a good idea
+                    <when test="west != null">
 				WHERE SDO_FILTER(s.geom,
-						SDO_GEOMETRY(2003, 8307, NULL, 
-							SDO_ELEM_INFO_ARRAY(1,1003,3), 
+						SDO_GEOMETRY(2003, 8307, NULL,
+							SDO_ELEM_INFO_ARRAY(1,1003,3),
 							SDO_ORDINATE_ARRAY(#{west[0]},#{south[0]},#{east[0]},#{north[0]})
                                                             )
 				 		) = 'TRUE'
-		        </when>		--> 
-		        
-		        <otherwise>
-				WHERE b.site_no ='01427207'
-			</otherwise>
-		    </choose> 
-		<!--  Need to work on this  -->    
-		    <if test="beginPosition != null">
-				AND a.result_dt <![CDATA[ >= ]]> to_date(#{beginPosition[0]}, 'YYYY-MM-DD')
-			</if>
-			  	
-			<if test="endPosition != null">
-				AND a.result_dt <![CDATA[ <= ]]> to_date(#{endPosition[0]}, 'YYYY-MM-DD')
-			</if>
-		    
-		            
-		    and a.site_id = b.site_id
+		    </when>	-->
+
+                    <otherwise>
+                        WHERE b.site_no IN ('01427207')
+                    </otherwise>
+
+                </choose>
+
+                <if test="beginPosition != null">
+                        AND a.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{beginPosition[0]}, '%Y-%m-%d')
+		</if>
+
+                <if test="endPosition != null">
+			AND a.result_dt <![CDATA[ <= ]]> STR_TO_DATE(#{endPosition[0]}, '%Y-%m-%d')
+                </if>
+
+		    AND a.site_id = b.site_id
 		    GROUP BY a.site_id) s,    
 		    
 		nwisweb.UV g,
@@ -300,7 +301,17 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		nwisweb.SITEFILE f
 		
 		WHERE s.site_id = g.site_id and f.site_id = s.site_id and e.site_id = s.site_id
-		and d.parameter_cd = e.parameter_cd and e.dd_nu = g.dd_nu and e.parameter_cd = '00060'
+		AND d.parameter_cd = e.parameter_cd and e.dd_nu = g.dd_nu and e.parameter_cd = '00060'
+
+                <if test="beginPosition != null">
+                        AND g.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{beginPosition[0]}, '%Y-%m-%d')
+		</if>
+
+                <if test="endPosition != null">
+			AND g.result_dt <![CDATA[ <= ]]> STR_TO_DATE(#{endPosition[0]}, '%Y-%m-%d')
+                </if>
+
+
 		ORDER BY f.station_nm, currentPosition DESC
 		
 		  <!--trim prefix="AND (" suffix=")" prefixOverrides="AND"-->
@@ -309,17 +320,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		  to_date(#{beginPosition[0]}, 'YYYY-MM-DD')
 		  TODO: make this a timeStamp
 		  -->
-			  <if test="beginPosition != null">
-				AND g.dates <![CDATA[ >= ]]> to_date(#{beginPosition[0]}, 'YYYY-MM-DD')
-			  </if>
-			  <if test="endPosition != null">
-				AND g.dates <![CDATA[ <= ]]> to_date(#{endPosition[0]}, 'YYYY-MM-DD')
-			  </if>
+
 		  <!--/trim-->
 		  <!--  ORDER BY s.station_id,
 		    g.dates-->		  
 	</select>
-	<!-- Jessica asked that LENGTH(g.dates) = 8 gets taken out. -->
 
 </mapper> 
 

@@ -124,6 +124,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			property="gml:featureMember/swml:Discharge/swml:wellStatus/gsml:CGI_TermValue/gsml:value"
 			column="ALT_DATUM_CD"
 			javaType="string" />
+                <result
+			property="gml:featureMember/swml:Discharge/^swml:wellStatus/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.state_cd"
+			column="STATE_CD"
+			javaType="string" />
+		<result
+			property="gml:featureMember/swml:Discharge/swml:wellStatus/gsml:CGI_TermValue/gsml:state_cd"
+			column="STATE_CD"
+			javaType="string" />
 		<result
 			property="gml:featureMember/swml:Discharge/^swml:wellType/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.nat_water_use_cd"
 			column="NAT_WATER_USE_CD"
@@ -140,6 +148,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			property="}gml:featureMember/swml:Discharge/swml:onlineResource#xlink:title=USGS NWIS Database"
 			column="SITE_NO"
 			javaType="string" />
+
 		
 		<!-- association property="UNUSED" column="FEATURE_ID" select="wfsLogElementSelect" javaType="list" />
 		<association property="UNUSED" column="FEATURE_ID" select="wfsScreenElementSelect" javaType="list" /-->
@@ -156,7 +165,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		a.alt_va AS ALT,
 		a.ALT_DATUM_CD,
 		a.WELL_DEPTH_VA,
-		a.NAT_WATER_USE_CD
+		a.NAT_WATER_USE_CD,
+                a.STATE_CD
+
 		
 		FROM nwisweb.SITEFILE a
                <!-- WHERE 1 = 0-->
@@ -165,6 +176,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                     <when test="featureId != null">
                         WHERE #{featureId} = a.site_no
                     </when>
+                    
+                    <when test="bBox != null">
+                        WHERE a.dec_long_va BETWEEN #{bBox[0]} AND #{bBox[2]} AND a.dec_lat_va BETWEEN #{bBox[1]} AND #{bBox[3]} 
+                    </when>
+
                     <otherwise>
                         WHERE a.site_no IN (
                         '01427207','01427510','01434000','01438500','01446775','01446776',
