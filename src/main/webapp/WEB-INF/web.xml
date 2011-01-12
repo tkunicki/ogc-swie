@@ -16,7 +16,7 @@
 	<listener>
 		<listener-class>gov.usgs.webservices.util.PermGenCleanupListener</listener-class>
 	</listener>
-	
+<!--
 	<servlet>
 		<servlet-name>SOSServlet</servlet-name>
 		<display-name>SOSServlet</display-name>
@@ -34,7 +34,8 @@
 		<display-name>SOSFeaturesServlet</display-name>
 		<description>Handler for OGC SOS large collections</description>
 		<servlet-class>gov.usgs.cida.ogc.SOSFeaturesServlet</servlet-class>
-	</servlet>	
+	</servlet>
+-->
 	<servlet>
 		<servlet-name>SOSServlet_NWIS</servlet-name>
 		<display-name>SOSServlet_NWIS</display-name>
@@ -47,7 +48,7 @@
 		<description>Handler for OGC WFS service</description>
 		<servlet-class>gov.usgs.cida.ogc.WFSServlet_NWIS</servlet-class>
 	</servlet>
-	
+<!--
 	<servlet-mapping>
 		<servlet-name>SOSServlet</servlet-name>
 		<url-pattern>/sosbbox</url-pattern>
@@ -60,6 +61,7 @@
 		<servlet-name>SOSFeaturesServlet</servlet-name>
 		<url-pattern>/sosFeatures/*</url-pattern>
 	</servlet-mapping>
+-->
 	<servlet-mapping>
 		<servlet-name>SOSServlet_NWIS</servlet-name>
 		<url-pattern>/sosnwis</url-pattern>

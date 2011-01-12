@@ -1,18 +1,17 @@
 <sos:Capabilities xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:oost="http://www.oostethys.org/schemas/0.1.0/oostethys" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:ogc="http://www.opengis.net/ogc" xsi:schemaLocation="http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosGetCapabilities.xsd" version="1.0.0">
 	<ows:ServiceIdentification>
-		<ows:Title>USGS Groundwater Interoperability Experiment Sensor Observation Service</ows:Title>
+		<ows:Title>USGS Surface Water Interoperability Experiment Sensor Observation Service</ows:Title>
 		<ows:Abstract>This is a minimal implementation of SOS 1.0.0, in progress, based on USGS NWIS data</ows:Abstract>
 		<ows:Keywords>
 			<ows:Keyword>WFS</ows:Keyword>
-			<ows:Keyword>Groundwater</ows:Keyword>
+			<ows:Keyword>Surface Water</ows:Keyword>
 			<ows:Keyword>USGS</ows:Keyword>
 			<ows:Keyword>Interoperability</ows:Keyword>
 			<ows:Keyword>Experiment</ows:Keyword>
 			<ows:Keyword>CIDA</ows:Keyword>
 			<ows:Keyword>NWIS</ows:Keyword>
-			<ows:Keyword>Water</ows:Keyword>
-			<ows:Keyword>Wells</ows:Keyword>
-			<ows:Keyword>water level</ows:Keyword>
+			<ows:Keyword>Discharge</ows:Keyword>
+			<ows:Keyword>Water Level</ows:Keyword>
 		</ows:Keywords>
 		<ows:ServiceType codeSpace="http://opengeospatial.net">OGC:SOS</ows:ServiceType>
 		<ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
@@ -103,8 +102,8 @@
 		<ows:Operation name="GetObservation">
 			<ows:DCP>
 				<ows:HTTP>
-					<ows:Get xlink:href="${base.url}/sosbbox/sos"/>
-					<ows:Post xlink:href="${base.url}/sosbbox/sos"/>
+					<ows:Get xlink:href="${base.url}/sosnwis/sos"/>
+					<ows:Post xlink:href="${base.url}/sosnwis/sos"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="version">
@@ -152,8 +151,8 @@
 		<ows:Operation name="GetObservationById">
 			<ows:DCP>
 				<ows:HTTP>
-					<ows:Get xlink:href="${base.url}/sosbbox/sos"/>
-					<ows:Post xlink:href="${base.url}/sosbbox/sos"/>
+					<ows:Get xlink:href="${base.url}/sosnwis/sos"/>
+					<ows:Post xlink:href="${base.url}/sosnwis/sos"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="version">
@@ -201,8 +200,8 @@
 		<ows:Operation name="DescribeSensor">
 			<ows:DCP>
 				<ows:HTTP>
-					<ows:Get xlink:href="${base.url}/sosbbox/sos"/>
-					<ows:Post xlink:href="${base.url}/sosbbox/sos"/>
+					<ows:Get xlink:href="${base.url}/sosnwis/sos"/>
+					<ows:Post xlink:href="${base.url}/sosnwis/sos"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="version">
@@ -281,7 +280,7 @@
 		<sos:ObservationOfferingList>
 			<sos:ObservationOffering gml:id="usgs.water.gwie.waterLevels">
 				<gml:description>
-					GroundWater Wells water levels in the continental U.S.
+					Surface water levels in the continental U.S.
 				</gml:description>
 				<gml:boundedBy>
 					<gml:Envelope srsName="urn:ogc:def:crs:EPSG:4326">

@@ -3,7 +3,7 @@
 "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
-
+<!--
     <bean id="sqlSessionFactoryBuilder" class="org.apache.ibatis.session.SqlSessionFactoryBuilder" />
     
     <bean id="sqlSessionFactory" class="org.apache.ibatis.session.SqlSessionFactory" factory-bean="sqlSessionFactoryBuilder" factory-method="build">
@@ -17,7 +17,9 @@
     <bean id="xmlStreamReaderDAO" class="gov.usgs.webservices.ibatis.XMLStreamReaderDAO">
         <constructor-arg ref="sqlSessionFactory" />
     </bean>
-    
+-->
+    <bean id="sqlSessionFactoryBuilder" class="org.apache.ibatis.session.SqlSessionFactoryBuilder" />
+
     <bean id="sqlSessionFactory_mysql" class="org.apache.ibatis.session.SqlSessionFactory" factory-bean="sqlSessionFactoryBuilder" factory-method="build">
     	<constructor-arg type="java.io.Reader">
     		<bean class="org.apache.ibatis.io.Resources" factory-method="getResourceAsReader">

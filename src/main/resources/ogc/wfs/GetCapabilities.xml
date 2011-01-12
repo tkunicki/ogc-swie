@@ -16,22 +16,20 @@
 	<!-- omitted due to compatibility issues with @version=1.1.0 
 	xsi:schemaLocation="http://www.opengis.net/wfs http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/schemas/wfs/1.0.0/WFS-capabilities.xsd" -->
 	<ows:ServiceIdentification>
-		<ows:Title>USGS Groundwater Interoperability Experiment Web Feature Service</ows:Title>
+		<ows:Title>USGS Surface Water Interoperability Experiment Web Feature Service</ows:Title>
 		<ows:Abstract>This is a minimal implementation of WFS 1.1.0, in progress, based on USGS NWIS data</ows:Abstract>
 		<ows:Keywords>
 			<ows:Keyword>WFS</ows:Keyword>
-			<ows:Keyword>Groundwater</ows:Keyword>
+			<ows:Keyword>Surface Water</ows:Keyword>
 			<ows:Keyword>USGS</ows:Keyword>
 			<ows:Keyword>Interoperability</ows:Keyword>
 			<ows:Keyword>Experiment</ows:Keyword>
 			<ows:Keyword>CIDA</ows:Keyword>
 			<ows:Keyword>NWIS</ows:Keyword>
-			<ows:Keyword>Water</ows:Keyword>
-			<ows:Keyword>Wells</ows:Keyword>
 		</ows:Keywords>
 		<ows:ServiceType>WFS</ows:ServiceType>
 		<ows:ServiceTypeVersion>1.1.0</ows:ServiceTypeVersion>
-		<ows:OnlineResource>${base.url}/wfs</ows:OnlineResource>
+		<ows:OnlineResource>${base.url}/wfsnwis</ows:OnlineResource>
 		<ows:Fees>None</ows:Fees>
 		<ows:AccessConstraints>None</ows:AccessConstraints>
 	</ows:ServiceIdentification>
@@ -80,6 +78,27 @@
 				<ows:ContactInstructions>9h30-16h30 GMT-5</ows:ContactInstructions>
 			</ows:ContactInfo>
 			<ows:Role>USGS OGC GroundWater Interoperability Experiment Project Lead</ows:Role>
+		</ows:ServiceContact>
+                <ows:ServiceContact>
+			<ows:IndividualName>Laura De Cicco</ows:IndividualName>
+			<ows:PositionName>Project Assistant</ows:PositionName>
+			<ows:ContactInfo>
+				<ows:Phone>
+					<ows:Voice>608-821-3900</ows:Voice>
+				</ows:Phone>
+				<ows:Address>
+					<ows:DeliveryPoint>8505 Research Way</ows:DeliveryPoint>
+					<ows:City>Middleton</ows:City>
+					<ows:AdministrativeArea>WI</ows:AdministrativeArea>
+					<ows:PostalCode>53562</ows:PostalCode>
+					<ows:Country>U.S.A.</ows:Country>
+					<ows:ElectronicMailAddress>tkunicki@usgs.gov</ows:ElectronicMailAddress>
+				</ows:Address>
+				<ows:OnlineResource xlink:href="${base.url}/wfs"/>
+				<ows:HoursOfService>24x7</ows:HoursOfService>
+				<ows:ContactInstructions>9h30-16h30 GMT-5</ows:ContactInstructions>
+			</ows:ContactInfo>
+			<ows:Role>USGS OGC Surface Water Interoperability Experiment Project Lead</ows:Role>
 		</ows:ServiceContact>
 	</ows:ServiceProvider>
 	<ows:OperationsMetadata xmlns:ows="http://www.opengis.net/ows">
@@ -163,11 +182,11 @@
 			</Operations>
 	 -->
 		<wfs:FeatureType>
-			<wfs:Name>gwml:WaterWell</wfs:Name>
+			<wfs:Name>swml:Discharge</wfs:Name>
 			<wfs:Title>Alaska Western Hemisphere Water wells</wfs:Title>
 			<wfs:Abstract>Water wells information extracted from USGS services</wfs:Abstract>
 			<ows:Keywords>
-				<ows:Keyword>GWML Water Wells groundwater USGS NWIS</ows:Keyword>
+				<ows:Keyword>SWML Water Wells groundwater USGS NWIS</ows:Keyword>
 			</ows:Keywords>
 			<wfs:DefaultSRS>EPSG:4326</wfs:DefaultSRS>
 			<wfs:OtherSRS>EPSG:4326</wfs:OtherSRS>
@@ -199,11 +218,11 @@
 			</ows:WGS84BoundingBox>
 		</wfs:FeatureType>
 		<wfs:FeatureType>
-			<wfs:Name>gwml:WaterWell</wfs:Name>
+			<wfs:Name>swml:Discharge</wfs:Name>
 			<wfs:Title>Continental United States Hemisphere Water wells</wfs:Title>
 			<wfs:Abstract>Water wells information extracted from USGS services</wfs:Abstract>
 			<ows:Keywords>
-				<ows:Keyword>GWML Water Wells groundwater USGS NWIS</ows:Keyword>
+				<ows:Keyword>SWML Water Wells groundwater USGS NWIS</ows:Keyword>
 			</ows:Keywords>
 			<wfs:DefaultSRS>EPSG:4326</wfs:DefaultSRS>
 			<wfs:OtherSRS>EPSG:4326</wfs:OtherSRS>
@@ -216,11 +235,11 @@
 			</ows:WGS84BoundingBox>
 		</wfs:FeatureType>
 		<wfs:FeatureType>
-			<wfs:Name>gwml:WaterWell</wfs:Name>
+			<wfs:Name>swml:Discharge</wfs:Name>
 			<wfs:Title>Hawaii Water wells</wfs:Title>
 			<wfs:Abstract>Water wells information extracted from USGS services</wfs:Abstract>
 			<ows:Keywords>
-				<ows:Keyword>GWML Water Wells groundwater USGS NWIS</ows:Keyword>
+				<ows:Keyword>SWML Water Wells groundwater USGS NWIS</ows:Keyword>
 			</ows:Keywords>
 			<wfs:DefaultSRS>EPSG:4326</wfs:DefaultSRS>
 			<wfs:OtherSRS>EPSG:4326</wfs:OtherSRS>
