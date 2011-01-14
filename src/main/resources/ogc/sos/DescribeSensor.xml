@@ -6,9 +6,11 @@
 	xsi:schemaLocation="http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd"
 	version="1.0.1">
 	<sml:member xlink:role="urn:ogc:def:role:OGC:sensorSystem">
-		<sml:System gml:id="WaterWellNetwork">
+		<sml:System gml:id="Flow">
 		<gml:description>Description of the procedure to get water level (just a place holder for now)</gml:description>
-			<gml:name codeSpace="urn:x-ngwd:GIN">urn:GIN:feature:WaterWellNetwork</gml:name>
+                        <gml:name codeSpace="urn:x-nwis:NWIS">urn:NWIS:feature:Discharge</gml:name>
+			<!-- this is for Canada's groundwater network:  need to get info for SWIE
+                        <gml:name codeSpace="urn:x-ngwd:GIN">urn:GIN:feature:WaterWellNetwork</gml:name>-->
 		</sml:System>
 	</sml:member>
 </sml:SensorML>
