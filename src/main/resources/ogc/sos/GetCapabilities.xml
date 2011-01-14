@@ -42,38 +42,12 @@
 			</ows:ContactInfo>
 			<ows:Role>USGS OGC PointOfContact</ows:Role>
 		</ows:ServiceContact>
-		<!-- Only one ServiceContact allowed in this version of schema
-		<ows:ServiceContact>
-			<ows:IndividualName>Thomas Kunicki</ows:IndividualName>
-			<ows:PositionName>Project Lead</ows:PositionName>
-			<ows:ContactInfo>
-				<ows:Phone>
-					<ows:Voice>608-821-3851</ows:Voice>
-				</ows:Phone>
-				<ows:Address>
-					<ows:DeliveryPoint>8505 Research Way</ows:DeliveryPoint>
-					<ows:City>Middleton</ows:City>
-					<ows:AdministrativeArea>WI</ows:AdministrativeArea>
-					<ows:PostalCode>53562</ows:PostalCode>
-					<ows:Country>U.S.A.</ows:Country>
-					<ows:ElectronicMailAddress>tkunicki@usgs.gov</ows:ElectronicMailAddress>
-				</ows:Address>
-				<ows:OnlineResource xlink:href="${base.url}/wfs"/>
-				<ows:HoursOfService>24x7</ows:HoursOfService>
-				<ows:ContactInstructions>9h30-16h30 GMT-5</ows:ContactInstructions>
-			</ows:ContactInfo>
-			<ows:Role>USGS OGC GroundWater Interoperability Experiment Project Lead</ows:Role>
-		</ows:ServiceContact>
-		 -->
 	</ows:ServiceProvider>
 	<ows:OperationsMetadata>
 		<ows:Operation name="GetCapabilities">
 			<ows:DCP>
 				<ows:HTTP>
-					<ows:Get xlink:href="${base.url}/sosbbox?"/>
-					<!-- 
-					<ows:Post xlink:href="${base.url}/wfs"/>
-					 -->
+					<ows:Get xlink:href="${base.url}/sosnwis?"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="service">
@@ -270,9 +244,8 @@
 			</ogc:ComparisonOperators>
 		 -->
 		</ogc:Scalar_Capabilities>
-		<!-- What the hell is this? Can't find any documentation for this -->
 		<ogc:Id_Capabilities>
-			<ogc:EID/>
+                        <ogc:EID/>
 			<ogc:FID/>
 		</ogc:Id_Capabilities>
 	</sos:Filter_Capabilities>
@@ -284,15 +257,15 @@
 				</gml:description>
 				<gml:boundedBy>
 					<gml:Envelope srsName="urn:ogc:def:crs:EPSG:4326">
-						<gml:lowerCorner>-125 24</gml:lowerCorner>
-						<gml:upperCorner>-66 123</gml:upperCorner>
+						<gml:lowerCorner>-120 30</gml:lowerCorner>
+						<gml:upperCorner>-66 47</gml:upperCorner>
 					</gml:Envelope>
 				</gml:boundedBy>
 				<sos:time>
 					<gml:TimePeriod gml:id="timePeriod3">
 						<gml:beginPosition>1900-01-01T12:00:00Z</gml:beginPosition>
 						<!-- TODO make the end time dynamic -->
-						<gml:endPosition>2011-01-01T12:00:00Z</gml:endPosition>
+						<gml:endPosition indeterminatePosition='unknown'/>
 					</gml:TimePeriod>
 				</sos:time>
 				<sos:procedure xlink:href="http://nemi.usgs.gov/water/procedure/unknown"/>
