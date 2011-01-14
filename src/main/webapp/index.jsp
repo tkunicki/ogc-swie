@@ -75,12 +75,19 @@
 				    </dl>
 
                                     <dt>GetFeature</dt>
+                                    <dl>
                                         <dd>All features:<br />
                                         <a href="<%=baseURL%>/wfsnwis?request=GetFeature&typename=swml:Discharge"><%=baseURL%>/wfsnwis?request=GetFeature&typename=swml:Discharge</a>
                                         </dd>
+                                        <p></p>
+                                    </dl>
+                                    <dl>
                                         <dd>GetFeature by feature ID:<br />
                                         <a href="<%=baseURL%>/wfsnwis?request=GetFeature&typename=swml:Discharge&featureId=01446500"><%=baseURL%>/wfsnwis?request=GetFeature&typename=swml:Discharge&featureId=01446500</a>
                                         </dd>
+                                        <p></p>
+                                    </dl>
+                                    <dl>
                                         <dd>GetFeature by via XML HTTP body POST:<br />
 
                                         <form name="input" action="<%=baseURL%>/wfsnwis?request=GetFeature&typename=swml:Discharge" method="post">
@@ -107,6 +114,7 @@
                                             <input type="submit" value="Submit" />
                                         </form>
                                         </dd>
+                                    </dl>
                                     <p></p>
                                 </li>
 
@@ -120,13 +128,24 @@
 						<dt>DescribeSensor<i> ...work in progress</i></dt>
 						<dd><a href="<%=baseURL%>/sosnwis?request=DescribeSensor"><%=baseURL%>/sosnwis?request=DescribeSensor</a></dd>
 				    </dl>
-                                    <dt>GetObservations</dt>
-                                    <dd>GetObservation by feature ID:<br />
-                                        <a href="<%=baseURL%>/sosnwis?request=GetObservation&featureId=01446500"><%=baseURL%>/sosnwis?request=GetObservation&featureId=01446500</a>
-                                    </dd>
+                                    <dl>
+                                        <dt>GetObservations</dt>
+                                        <dd>GetObservation by feature ID:<br />
+                                            <a href="<%=baseURL%>/sosnwis?request=GetObservation&featureId=01446500"><%=baseURL%>/sosnwis?request=GetObservation&featureId=01446500</a>
+                                        </dd>
+                                    </dl>
                                     <p></p>
                                 </li>
 
+                                <li><strong>WaterML2 Service</strong> at <%=baseURL%>/wml2
+                                    <p></p>
+                                    <dl>
+                                        <dt>WaterMoniteringObservation</dt>
+                                        <dd>WaterMoniteringObservation by feature ID:<br />
+                                            <a href="<%=baseURL%>/wml2?request=GetObservation&featureId=01446500"><%=baseURL%>/wml2?request=GetObservation&featureId=01446500</a>
+                                        </dd>
+                                    </dl>
+                                </li>
                     </ul>
 
 
