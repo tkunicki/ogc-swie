@@ -29,7 +29,7 @@
 		</ows:Keywords>
 		<ows:ServiceType>WFS</ows:ServiceType>
 		<ows:ServiceTypeVersion>1.1.0</ows:ServiceTypeVersion>
-		<ows:OnlineResource>${base.url}/wfsnwis</ows:OnlineResource>
+		<ows:OnlineResource>${base.url}/wfs</ows:OnlineResource>
 		<ows:Fees>None</ows:Fees>
 		<ows:AccessConstraints>None</ows:AccessConstraints>
 	</ows:ServiceIdentification>
@@ -92,7 +92,7 @@
 					<ows:AdministrativeArea>WI</ows:AdministrativeArea>
 					<ows:PostalCode>53562</ows:PostalCode>
 					<ows:Country>U.S.A.</ows:Country>
-					<ows:ElectronicMailAddress>tkunicki@usgs.gov</ows:ElectronicMailAddress>
+					<ows:ElectronicMailAddress>lkranendonk@usgs.gov</ows:ElectronicMailAddress>
 				</ows:Address>
 				<ows:OnlineResource xlink:href="${base.url}/wfs"/>
 				<ows:HoursOfService>24x7</ows:HoursOfService>
@@ -200,7 +200,7 @@
 			</ows:WGS84BoundingBox>
 		</wfs:FeatureType>
 		<wfs:FeatureType>
-			<wfs:Name>gwml:WaterWell</wfs:Name>
+			<wfs:Name>swml:Discharge</wfs:Name>
 			<wfs:Title>Alaska Eastern Hemisphere Water wells</wfs:Title>
 			<wfs:Abstract>Water wells information extracted from USGS services</wfs:Abstract>
 			<ows:Keywords>

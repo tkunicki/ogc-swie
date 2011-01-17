@@ -47,7 +47,7 @@
 		<ows:Operation name="GetCapabilities">
 			<ows:DCP>
 				<ows:HTTP>
-					<ows:Get xlink:href="${base.url}/sosnwis?"/>
+					<ows:Get xlink:href="${base.url}/sos?"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="service">
@@ -76,8 +76,8 @@
 		<ows:Operation name="GetObservation">
 			<ows:DCP>
 				<ows:HTTP>
-					<ows:Get xlink:href="${base.url}/sosnwis/sos"/>
-					<ows:Post xlink:href="${base.url}/sosnwis/sos"/>
+					<ows:Get xlink:href="${base.url}/sos?/sos"/>
+					<ows:Post xlink:href="${base.url}/sos?/sos"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="version">
@@ -125,8 +125,8 @@
 		<ows:Operation name="GetObservationById">
 			<ows:DCP>
 				<ows:HTTP>
-					<ows:Get xlink:href="${base.url}/sosnwis/sos"/>
-					<ows:Post xlink:href="${base.url}/sosnwis/sos"/>
+					<ows:Get xlink:href="${base.url}/sos/sos"/>
+					<ows:Post xlink:href="${base.url}/sos/sos"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="version">

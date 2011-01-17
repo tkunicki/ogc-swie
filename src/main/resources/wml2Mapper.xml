@@ -47,7 +47,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="string" />
 
             <result
-    		property="gml:id=Sample_Example"
+    		property="gml:id=Simple_Example"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
 
@@ -72,15 +72,24 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 	<resultMap id="observationsResultMap" type="XMLMap" extends="wml2ResultMap">
 
 		<result
-			property="^!{gml:name#codeSpace=http://www.opengis.net/waterml/2.0/examples"
+			property="^!{gml:name"
+			column="station_nm"
+			javaType="string" />
+		<result
+			property="gml:name#codeSpace=http://www.opengis.net/waterml/2.0/examples"
 			column="station_nm"
 			javaType="string" />
 		<result
 			property="gml:name"
 			column="station_nm"
 			javaType="string" />
+
 		<result
-			property="^!{om:metadata/wml2:ObservationMetadata/md:contact#xlink:href=http://cida.usgs.gov"
+			property="^!{om:metadata/wml2:ObservationMetadata/md:contact"
+			column="station_nm"
+			javaType="string" />
+		<result
+			property="om:metadata/wml2:ObservationMetadata/md:contact#xlink:href=http://cida.usgs.gov"
 			column="station_nm"
 			javaType="string" />
 		<result
@@ -124,13 +133,18 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="pos"
 			javaType="string" />
 		<result
+			property="om:parameter/om:NamedValue/om:value/gml:Point#gml:id=%s"
+			column="FEATURE_ID"
+			javaType="string" />
+		<result
 			property="om:parameter/om:NamedValue/om:value/gml:Point#srsName=urn:ogc:def:crs:EPSG:4326"
 			column="pos"
 			javaType="string" />
-		<result
+<!--		<result
 			property="om:parameter/om:NamedValue/om:value/gml:Point#gml:id=invalid.loc.%s"
 			column="station_nm"
 			javaType="string" />
+-->
 		<result
 			property="om:parameter/om:NamedValue/om:value/gml:Point/gml:pos"
 			column="pos"
@@ -160,8 +174,8 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="station_nm"
 			javaType="string" />
 		<result
-			property="om:featureOfInterest#xlink:href=http://infotrek.er.usgs.gov/ogc-ie/wfs?request=GetFeature&amp;featureId=%s&amp;typeName=swml:Discharge"
-			column="station_nm"
+			property="om:featureOfInterest#xlink:href=http://infotrek.er.usgs.gov/ogc-swie/wfs?request=GetFeature&amp;featureId=%s&amp;typeName=swml:Discharge"
+			column="site_no"
 			javaType="string" />
 		<result
 			property="om:featureOfInterest"
@@ -210,6 +224,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 	 -->
 	<select id="observationsSelect" parameterType="map" resultMap="observationsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 		select f.station_nm,
+                f.site_no,
 		STR_TO_DATE(SYSDATE(),'%Y-%m-%d') as dateStamp,
                 SYSDATE() as currentTimeStamp,
 		CONCAT(CONVERT(f.DEC_LAT_VA,CHAR),' ',CONVERT(f.DEC_LONG_VA,CHAR)) AS pos,
