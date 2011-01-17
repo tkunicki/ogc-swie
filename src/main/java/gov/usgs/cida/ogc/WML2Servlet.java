@@ -1,7 +1,7 @@
 package gov.usgs.cida.ogc;
 
 import gov.usgs.cida.ogc.specs.OGC_WFSConstants;
-import gov.usgs.cida.ogc.specs.SOS_1_0_Operation;
+import gov.usgs.cida.ogc.specs.WML_1_0_Operation;
 import gov.usgs.cida.ogc.utils.FileResponseUtil;
 import gov.usgs.cida.ogc.utils.ServletHandlingUtils;
 import gov.usgs.cida.ogc.utils.ServletHandlingUtils.RequestBodyExceededException;
@@ -36,7 +36,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 /**
- * Servlet implementation class to handle SOS requests
+ * Servlet implementation class to handle WML requests
  */
 public class WML2Servlet extends HttpServlet {
 
@@ -47,13 +47,13 @@ public class WML2Servlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	//	private final static String XPATH_Envelope = "//sos:GetObservation/sos:featureOfInterest/ogc:BBOX[ogc:PropertyName='gml:location']/gml:Envelope";
-	private final static String XPATH_Envelope = "//sos:GetObservation/sos:featureOfInterest/ogc:BBOX/gml:Envelope";
+	private final static String XPATH_Envelope = "//wml:GetObservation/wml:featureOfInterest/ogc:BBOX/gml:Envelope";
 	private final static String XPATH_cornerLower = "gml:lowerCorner/text()";
 	private final static String XPATH_upperCorner = "gml:upperCorner/text()";
 	//private final static String XPATH_filter = "//ogc:Filter";
-	private final static String XPATH_eventTime = "//sos:eventTime";
+	private final static String XPATH_eventTime = "//wml:eventTime";
 	private final static String XPATH_featureId = "//ogc:FeatureId/@fid";
-	private static final String XPATH_observationId = "//sos:ObservationId";
+	private static final String XPATH_observationId = "//wml:ObservationId";
 
 	private final static Pattern PATTERN_cornerSplit = Pattern.compile("\\s+");
 
@@ -96,7 +96,7 @@ public class WML2Servlet extends HttpServlet {
 			Map<String, String[]> parameterMap = createParameterMapFromDocument(document);
 			// we're going to treat this as a GetObservation by default if not specified
 			if (parameterMap.get("request") == null) {
-				parameterMap.put("request", new String[] {SOS_1_0_Operation.GetObservation.name()});
+				parameterMap.put("request", new String[] {WML_1_0_Operation.GetObservation.name()});
 			}
 			queryAndSend(request, response, parameterMap);
 
@@ -113,7 +113,7 @@ public class WML2Servlet extends HttpServlet {
 	private void queryAndSend(HttpServletRequest request, HttpServletResponse response, Map<String, String[]> parameterMap) throws IOException {
 		ServletHandlingUtils.dumpRequestParamsToConsole(parameterMap);
 		// TODO parameterMap may or may not be case-insensitive, depending on path of arrival post or get. Correct this later.
-		SOS_1_0_Operation opType = SOS_1_0_Operation.parse(parameterMap.get("request"));
+		WML_1_0_Operation opType = WML_1_0_Operation.parse(parameterMap.get("request"));
 
 		ServletOutputStream outputStream = response.getOutputStream();
 		response.setContentType(OGC_WFSConstants.DEFAULT_DESCRIBEFEATURETYPE_OUTPUTFORMAT);
@@ -143,19 +143,152 @@ public class WML2Servlet extends HttpServlet {
 				break;
 			case GetCapabilities:
 			case GetProfile:
+
 			case DescribeSensor:
 			{
 				Map<String, String> replacementMap = new HashMap<String, String>();
 				replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
 
 				// Just sending back static file for now.
-				String resource = "/ogc/sos/" + opType.name() + ".xml";
+				String resource = "/ogc/wml/" + opType.name() + ".xml";
+				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
+				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
+						errorMessage);
+			}
+                        break;
+                        case WaterML2:
+			{
+				Map<String, String> replacementMap = new HashMap<String, String>();
+				replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
+
+				// Just sending back static file for now.
+				String resource = "/ogc/wml/" + opType.name() + ".xsd";
 				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
 				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
 						errorMessage);
 			}
 			break;
-			default:
+                        case waterSampling:
+			{
+				Map<String, String> replacementMap = new HashMap<String, String>();
+				replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
+
+				// Just sending back static file for now.
+				String resource = "/ogc/wml/" + opType.name() + ".xsd";
+				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
+				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
+						errorMessage);
+			}
+			break;
+                        case waterResultsCoverage:
+			{
+				Map<String, String> replacementMap = new HashMap<String, String>();
+				replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
+
+				// Just sending back static file for now.
+				String resource = "/ogc/wml/" + opType.name() + ".xsd";
+				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
+				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
+						errorMessage);
+			}
+			break;
+                        case waterProperty:
+			{
+				Map<String, String> replacementMap = new HashMap<String, String>();
+				replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
+
+				// Just sending back static file for now.
+				String resource = "/ogc/wml/" + opType.name() + ".xsd";
+				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
+				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
+						errorMessage);
+			}
+			break;
+                        case waterProcedure:
+			{
+				Map<String, String> replacementMap = new HashMap<String, String>();
+				replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
+
+				// Just sending back static file for now.
+				String resource = "/ogc/wml/" + opType.name() + ".xsd";
+				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
+				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
+						errorMessage);
+			}
+			break;
+                        case waterObservation:
+			{
+				Map<String, String> replacementMap = new HashMap<String, String>();
+				replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
+
+				// Just sending back static file for now.
+				String resource = "/ogc/wml/" + opType.name() + ".xsd";
+				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
+				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
+						errorMessage);
+			}
+			break;
+                        case WaterCollection:
+			{
+				Map<String, String> replacementMap = new HashMap<String, String>();
+				replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
+
+				// Just sending back static file for now.
+				String resource = "/ogc/wml/" + opType.name() + ".xsd";
+				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
+				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
+						errorMessage);
+			}
+			break;
+                        case observation:
+			{
+				Map<String, String> replacementMap = new HashMap<String, String>();
+				replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
+
+				// Just sending back static file for now.
+				String resource = "/ogc/wml/" + opType.name() + ".xsd";
+				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
+				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
+						errorMessage);
+			}
+			break;
+                        case samplingFeature:
+			{
+				Map<String, String> replacementMap = new HashMap<String, String>();
+				replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
+
+				// Just sending back static file for now.
+				String resource = "/ogc/wml/" + opType.name() + ".xsd";
+				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
+				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
+						errorMessage);
+			}
+			break;
+                        case spatialSamplingFeature:
+			{
+				Map<String, String> replacementMap = new HashMap<String, String>();
+				replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
+
+				// Just sending back static file for now.
+				String resource = "/ogc/wml/" + opType.name() + ".xsd";
+				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
+				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
+						errorMessage);
+			}
+			break;
+                        case timeseriesLite:
+			{
+				Map<String, String> replacementMap = new HashMap<String, String>();
+				replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
+
+				// Just sending back static file for now.
+				String resource = "/ogc/wml/" + opType.name() + ".xsd";
+				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
+				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
+						errorMessage);
+			}
+			break;
+                        default:
 				BufferedWriter writer = FileResponseUtil.wrapAsBufferedWriter(outputStream);
 				try {
 					writer.append("unrecognized or unhandled REQUEST type = " + opType);
