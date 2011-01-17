@@ -70,25 +70,25 @@
 -->
 	<servlet-mapping>
 		<servlet-name>SOSServlet_NWIS</servlet-name>
-		<url-pattern>/sosnwis</url-pattern>
+		<url-pattern>/sos</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>
 		<servlet-name>WFSServlet_NWIS</servlet-name>
-		<url-pattern>/wfsnwis</url-pattern>
+		<url-pattern>/wfs</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>
 		<servlet-name>WML2Servlet</servlet-name>
 		<url-pattern>/wml2</url-pattern>
 	</servlet-mapping>
-
+<!--
         <resource-ref>
             <res-ref-name>jdbc/ogc_ieDS</res-ref-name>
             <res-type>javax.sql.DataSource</res-type>
             <res-auth>Container</res-auth>
         </resource-ref>
-
+-->
         <resource-ref>
             <res-ref-name>jdbc/ogc_ieNWIS</res-ref-name>
             <res-type>javax.sql.DataSource</res-type>

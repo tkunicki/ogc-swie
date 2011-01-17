@@ -63,34 +63,34 @@
                                     <p></p>
 				</li>
 
-                                <li><strong>Web Feature Service</strong> at <%=baseURL%>/wfsnwis
+                                <li><strong>Web Feature Service</strong> at <%=baseURL%>/wfs
                                     <p></p>
                                     <dl>
 						<dt>GetCapabilities<i> ...work in progress</i></dt>
-						<dd><a href="<%=baseURL%>/wfsnwis?request=GetCapabilities"><%=baseURL%>/wfsnwis?request=GetCapabilities</a></dd>
+						<dd><a href="<%=baseURL%>/wfs?request=GetCapabilities"><%=baseURL%>/wfs?request=GetCapabilities</a></dd>
 				    </dl>
                                     <dl>
 						<dt>DescribeFeatureType<i> ...work in progress</i></dt>
-						<dd><a href="<%=baseURL%>/wfsnwis?request=DescribeFeatureType&typeName=swml:Discharge"><%=baseURL%>/wfsnwis?request=DescribeFeatureType&typeName=swml:Discharge</a></dd>
+						<dd><a href="<%=baseURL%>/wfs?request=DescribeFeatureType&typeName=swml:Discharge"><%=baseURL%>/wfs?request=DescribeFeatureType&typeName=swml:Discharge</a></dd>
 				    </dl>
 
                                     <dt>GetFeature</dt>
                                     <dl>
                                         <dd>All features:<br />
-                                        <a href="<%=baseURL%>/wfsnwis?request=GetFeature&typename=swml:Discharge"><%=baseURL%>/wfsnwis?request=GetFeature&typename=swml:Discharge</a>
+                                        <a href="<%=baseURL%>/wfs?request=GetFeature&typename=swml:Discharge"><%=baseURL%>/wfs?request=GetFeature&typename=swml:Discharge</a>
                                         </dd>
                                         <p></p>
                                     </dl>
                                     <dl>
                                         <dd>GetFeature by feature ID:<br />
-                                        <a href="<%=baseURL%>/wfsnwis?request=GetFeature&typename=swml:Discharge&featureId=01446500"><%=baseURL%>/wfsnwis?request=GetFeature&typename=swml:Discharge&featureId=01446500</a>
+                                        <a href="<%=baseURL%>/wfs?request=GetFeature&typename=swml:Discharge&featureId=01446500"><%=baseURL%>/wfs?request=GetFeature&typename=swml:Discharge&featureId=01446500</a>
                                         </dd>
                                         <p></p>
                                     </dl>
                                     <dl>
                                         <dd>GetFeature by via XML HTTP body POST:<br />
 
-                                        <form name="input" action="<%=baseURL%>/wfsnwis?request=GetFeature&typename=swml:Discharge" method="post">
+                                        <form name="input" action="<%=baseURL%>/wfs?request=GetFeature&typename=swml:Discharge" method="post">
 						<textarea name="xml" rows="10" cols="90">
 <?xml version="1.0" ?>
 <wfs:GetFeature version="1.1.0" service="WFS"
@@ -118,20 +118,25 @@
                                     <p></p>
                                 </li>
 
-                                <li><strong>Sensor Observation Service</strong> at <%=baseURL%>/sosnwis
+                                <li><strong>Sensor Observation Service</strong> at <%=baseURL%>/sos
                                     <p></p>
                                     <dl>
 						<dt>GetCapabilities<i> ...work in progress</i></dt>
-						<dd><a href="<%=baseURL%>/sosnwis?request=GetCapabilities"><%=baseURL%>/sosnwis?request=GetCapabilities</a></dd>
+						<dd><a href="<%=baseURL%>/sos?request=GetCapabilities"><%=baseURL%>/sos?request=GetCapabilities</a></dd>
 				    </dl>
                                     <dl>
 						<dt>DescribeSensor<i> ...work in progress</i></dt>
-						<dd><a href="<%=baseURL%>/sosnwis?request=DescribeSensor"><%=baseURL%>/sosnwis?request=DescribeSensor</a></dd>
+						<dd><a href="<%=baseURL%>/sos?request=DescribeSensor"><%=baseURL%>/sos?request=DescribeSensor</a></dd>
 				    </dl>
                                     <dl>
                                         <dt>GetObservations</dt>
                                         <dd>GetObservation by feature ID:<br />
-                                            <a href="<%=baseURL%>/sosnwis?request=GetObservation&featureId=01446500"><%=baseURL%>/sosnwis?request=GetObservation&featureId=01446500</a>
+                                            <a href="<%=baseURL%>/sos?request=GetObservation&featureId=01446500"><%=baseURL%>/sos?request=GetObservation&featureId=01446500</a>
+                                        </dd>
+                                    </dl>
+                                    <dl>
+                                        <dd>GetObservation by feature ID with beginPosition:<br />
+                                            <a href="<%=baseURL%>/sos?request=GetObservation&featureId=01446500&beginPosition=2011-01-13"><%=baseURL%>/sos?request=GetObservation&featureId=01446500&beginPosition=2011-01-13</a>
                                         </dd>
                                     </dl>
                                     <p></p>
@@ -145,10 +150,12 @@
                                             <a href="<%=baseURL%>/wml2?request=GetObservation&featureId=01446500"><%=baseURL%>/wml2?request=GetObservation&featureId=01446500</a>
                                         </dd>
                                     </dl>
+                                    <dl>
+                                        <dd>WaterMoniteringObservation by feature ID with beginTime:<br />
+                                            <a href="<%=baseURL%>/wml2?request=GetObservation&featureId=01446500&beginPosition=2011-01-13"><%=baseURL%>/wml2?request=GetObservation&featureId=01446500&beginPosition=2011-01-13</a>
+                                        </dd>
+                                    </dl>
                                 </li>
                     </ul>
-
-
-
 	</body>
 </html>

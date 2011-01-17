@@ -26,7 +26,7 @@
     			<constructor-arg value="configuration_mysql.xml" />
     		</bean>
     	</constructor-arg>
-   	</bean>
+   </bean>
     
     <bean id="xmlStreamReaderDAO_mysql" class="gov.usgs.webservices.ibatis.XMLStreamReaderDAO">
         <constructor-arg ref="sqlSessionFactory_mysql" />

@@ -132,7 +132,7 @@ public class WML2Servlet extends HttpServlet {
 
 
 				try {
-					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("wml2Mapper.observationsSelect_NWIS", parameterMap);
+					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("wml2Mapper.observationsSelect", parameterMap);
 					XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
 					XMLStreamUtils.copy(streamReader, streamWriter);
 				} catch (Exception e) {
