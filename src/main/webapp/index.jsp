@@ -59,43 +59,34 @@
                                         </dd>
                                     </dl>
                                     <p></p>
-                                    <dt>WaterML 2.0 Schemas: </dt>
+                                    <dl>
+                                        Required Schemas<br />
                                         <dd>
-                                            <a href="<%=baseURL%>/schemas/waterml2.xsd">WaterML2.xsd</a>
+                                            <a href="WaterML2_Schemas.jsp">WaterML2 Schemas</a>
                                         </dd>
-                                        <dd>
-                                            <a href="<%=baseURL%>/schemas/waterSampling.xsd">waterSampling.xsd</a>
-                                        </dd>
-                                        <dd>
-                                            <a href="<%=baseURL%>/schemas/waterResultsCoverage.xsd">waterResultsCoverage.xsd</a>
-                                        </dd>
-                                        <dd>
-                                            <a href="<%=baseURL%>/schemas/waterProperty.xsd">waterProperty.xsd</a>
-                                        </dd>
-                                        <dd>
-                                            <a href="<%=baseURL%>/schemas/waterProcedure.xsd">waterProcedure.xsd</a>
-                                        </dd>
-                                        <dd>
-                                            <a href="<%=baseURL%>/schemas/waterObservation.xsd">waterObservation.xsd</a>
-                                        </dd>
-                                        <dd>
-                                            <a href="<%=baseURL%>/schemas/WaterCollection.xsd">WaterCollection.xsd</a>
-                                        </dd>
-                                        <dd>
-                                            <a href="<%=baseURL%>/schemas/timeseriesLite.xsd">timeseriesLite.xsd</a>
-                                        </dd>
-                                        <dt>Additional externally required schemas:</dt>
-                                        <dd>
-                                            <a href="<%=baseURL%>/schemas/observation.xsd">observation.xsd</a>
-                                        </dd>
-                                        <dd>
-                                            <a href="<%=baseURL%>/schemas/samplingFeature.xsd">samplingFeature.xsd</a>
-                                        </dd>
-                                        <dd>
-                                            <a href="<%=baseURL%>/schemas/spatialSamplingFeature.xsd">spatialSamplingFeature.xsd</a>
-                                        </dd>
-                                        <p></p>
-                                </li>
+                                    </dl>
+                                    <p></p>
+
+                                        
+                                <li><strong>Web Mapping Service</strong> at http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/wms
+                                    <p></p>
+                                    <dl>
+						<dt>GetFeature</dt>
+                                                <dd>All features:<br />
+                                                    <a href="http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=upload:SWIE_SITES&maxFeatures=50 ">http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=upload:SWIE_SITES&maxFeatures=50 </a></dd>
+                                    </dl>
+				    <dl>
+						<dt>GetMap 1 </dt>
+						<dd><a href="http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/wms?service=WMS&version=1.1.0&request=GetMap&layers=upload:SWIE_SITES&styles=&bbox=-92.8,37.216,-74.697,45.831&width=693&height=330&srs=EPSG:4269&format=application/openlayers
+">  http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/wms?service=WMS&version=1.1.0&request=GetMap&layers=upload:SWIE_SITES&styles=&bbox=-92.8,37.216,-74.697,45.831&width=693&height=330&srs=EPSG:4269&format=application/openlayers
+ </a></dd>
+                                    </dl>
+                                    <dl>
+                                                <dt>GetMap Google (currently doesn't work in IE)</dt>
+                                                <dd><a href="<%=baseURL%>/Google Map/GoogleMap.html">Google Map</a></dd>
+                                    </dl>
+                                    <p></p>
+				</li>
                                         
                                 <li><strong>Web Feature Service</strong> at <%=baseURL%>/wfs
                                     <p></p>
@@ -152,28 +143,6 @@
                                     <p></p>
                                 </li>
 
-                                <li><strong>Web Mapping Service</strong> at http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/wms
-                                    <p></p>
-                                    <dl>
-						<dt>GetFeature</dt>
-                                                <dd>All features:<br />
-                                                    <a href="http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=upload:SWIE_SITES&maxFeatures=50 ">http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=upload:SWIE_SITES&maxFeatures=50 </a></dd>
-                                                <!--
-                                                <dd>One feature: <i>not working yet....</i><br />
-                                                <a href="http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/ows?FILTER%3D%3CFilter%20xmlns%3D%22http%3A//www.opengis.net/ogc%22%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Eupload%3ASITE_NO%3C/PropertyName%3E%3CLiteral%3E01427207%3C/Literal%3E%3C/PropertyIsEqualTo%3E%3C/Filter%3E&INFO_FORMAT=text/xml&service=WFS&version=1.0.0&request=GetFeature&typeName=upload:SWIE_SITES& ">http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/ows?FILTER%3D%3CFilter%20xmlns%3D%22http%3A//www.opengis.net/ogc%22%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Eupload%3ASITE_NO%3C/PropertyName%3E%3CLiteral%3E01427207%3C/Literal%3E%3C/PropertyIsEqualTo%3E%3C/Filter%3E&INFO_FORMAT=text/xml&service=WFS&version=1.0.0&request=GetFeature&typeName=upload:SWIE_SITES&  </a></dd>
-                                    -->
-                                    </dl>
-				    <dl>
-						<dt>GetMap</dt>
-						<dd><a href="http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/wms?service=WMS&version=1.1.0&request=GetMap&layers=upload:SWIE_SITES&styles=&bbox=-92.8,37.216,-74.697,45.831&width=693&height=330&srs=EPSG:4269&format=application/openlayers
-">  http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/wms?service=WMS&version=1.1.0&request=GetMap&layers=upload:SWIE_SITES&styles=&bbox=-92.8,37.216,-74.697,45.831&width=693&height=330&srs=EPSG:4269&format=application/openlayers
- </a></dd>
-                                    </dl>
-                                    <p></p>
-				</li>
-
-      
-
                                 <li><strong>Sensor Observation Service</strong> at <%=baseURL%>/sos
                                     <p></p>
                                     <dl>
@@ -184,19 +153,6 @@
 						<dt>DescribeSensor<i> ...work in progress</i></dt>
 						<dd><a href="<%=baseURL%>/sos?request=DescribeSensor"><%=baseURL%>/sos?request=DescribeSensor</a></dd>
 				    </dl>
- <!--
-                                    <dl>
-                                        <dt>GetObservations</dt>
-                                        <dd>GetObservation by feature ID:<br />
-                                            <a href="<%=baseURL%>/sos?request=GetObservation&featureId=01446500"><%=baseURL%>/sos?request=GetObservation&featureId=01446500</a>
-                                        </dd>
-                                    </dl>
-                                    <dl>
-                                        <dd>GetObservation by feature ID with beginPosition:<br />
-                                            <a href="<%=baseURL%>/sos?request=GetObservation&featureId=01446500&beginPosition=2011-01-13"><%=baseURL%>/sos?request=GetObservation&featureId=01446500&beginPosition=2011-01-13</a>
-                                        </dd>
-                                    </dl>
- -->
                                     <p></p>
                                 </li>
 

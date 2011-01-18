@@ -25,6 +25,7 @@ public enum WML_1_0_Operation {
         samplingFeature("core", true, new String[] {"service", "version", "request", "SensorId", "outputFormat"}, null),
         spatialSamplingFeature("core", true, new String[] {"service", "version", "request", "SensorId", "outputFormat"}, null),
         timeseriesLite("core", true, new String[] {"service", "version", "request", "SensorId", "outputFormat"}, null),
+        GetMap("core", true, new String[] {"service", "version", "request", "SensorId", "outputFormat"}, null),
 	GetObservation("core", true, null, null),
 	RegisterSensor("trans", false, null, null),
 	InsertObservation("opt", false, null, null),
