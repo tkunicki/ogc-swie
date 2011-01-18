@@ -83,7 +83,7 @@
                                     </dl>
                                     <dl>
                                                 <dt>GetMap Google (currently doesn't work in IE)</dt>
-                                                <dd><a href="<%=baseURL%>/Google Map/GoogleMap.html">Google Map</a></dd>
+                                                <dd><a href="<%=baseURL%>/Google Map/GoogleMap.jsp">Google Map</a></dd>
                                     </dl>
                                     <p></p>
 				</li>
