@@ -61,38 +61,38 @@
                                     <p></p>
                                     <dt>WaterML 2.0 Schemas: </dt>
                                         <dd>
-                                            <a href="<%=baseURL%>/wml2?request=WaterML2">WaterML2.xsd</a>
+                                            <a href="<%=baseURL%>/schemas/waterml2.xsd">WaterML2.xsd</a>
                                         </dd>
                                         <dd>
-                                            <a href="<%=baseURL%>/wml2?request=waterSampling">waterSampling.xsd</a>
+                                            <a href="<%=baseURL%>/schemas/waterSampling.xsd">waterSampling.xsd</a>
                                         </dd>
                                         <dd>
-                                            <a href="<%=baseURL%>/wml2?request=waterResultsCoverage">waterResultsCoverage.xsd</a>
+                                            <a href="<%=baseURL%>/schemas/waterResultsCoverage.xsd">waterResultsCoverage.xsd</a>
                                         </dd>
                                         <dd>
-                                            <a href="<%=baseURL%>/wml2?request=waterProperty">waterProperty.xsd</a>
+                                            <a href="<%=baseURL%>/schemas/waterProperty.xsd">waterProperty.xsd</a>
                                         </dd>
                                         <dd>
-                                            <a href="<%=baseURL%>/wml2?request=waterProcedure">waterProcedure.xsd</a>
+                                            <a href="<%=baseURL%>/schemas/waterProcedure.xsd">waterProcedure.xsd</a>
                                         </dd>
                                         <dd>
-                                            <a href="<%=baseURL%>/wml2?request=waterObservation">waterObservation.xsd</a>
+                                            <a href="<%=baseURL%>/schemas/waterObservation.xsd">waterObservation.xsd</a>
                                         </dd>
                                         <dd>
-                                            <a href="<%=baseURL%>/wml2?request=WaterCollection">WaterCollection.xsd</a>
+                                            <a href="<%=baseURL%>/schemas/WaterCollection.xsd">WaterCollection.xsd</a>
                                         </dd>
                                         <dd>
-                                            <a href="<%=baseURL%>/wml2?request=timeseriesLite">timeseriesLite.xsd</a>
+                                            <a href="<%=baseURL%>/schemas/timeseriesLite.xsd">timeseriesLite.xsd</a>
                                         </dd>
                                         <dt>Additional externally required schemas:</dt>
                                         <dd>
-                                            <a href="<%=baseURL%>/wml2?request=observation">observation.xsd</a>
+                                            <a href="<%=baseURL%>/schemas/observation.xsd">observation.xsd</a>
                                         </dd>
                                         <dd>
-                                            <a href="<%=baseURL%>/wml2?request=samplingFeature">samplingFeature.xsd</a>
+                                            <a href="<%=baseURL%>/schemas/samplingFeature.xsd">samplingFeature.xsd</a>
                                         </dd>
                                         <dd>
-                                            <a href="<%=baseURL%>/wml2?request=spatialSamplingFeature">spatialSamplingFeature.xsd</a>
+                                            <a href="<%=baseURL%>/schemas/spatialSamplingFeature.xsd">spatialSamplingFeature.xsd</a>
                                         </dd>
                                         <p></p>
                                 </li>
@@ -184,6 +184,7 @@
 						<dt>DescribeSensor<i> ...work in progress</i></dt>
 						<dd><a href="<%=baseURL%>/sos?request=DescribeSensor"><%=baseURL%>/sos?request=DescribeSensor</a></dd>
 				    </dl>
+ <!--
                                     <dl>
                                         <dt>GetObservations</dt>
                                         <dd>GetObservation by feature ID:<br />
@@ -195,6 +196,7 @@
                                             <a href="<%=baseURL%>/sos?request=GetObservation&featureId=01446500&beginPosition=2011-01-13"><%=baseURL%>/sos?request=GetObservation&featureId=01446500&beginPosition=2011-01-13</a>
                                         </dd>
                                     </dl>
+ -->
                                     <p></p>
                                 </li>
 
