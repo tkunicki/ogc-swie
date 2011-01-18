@@ -240,6 +240,20 @@ public class WML2Servlet extends HttpServlet {
 						errorMessage);
 			}
 			break;
+                        case GetMap:
+			{
+
+                                /*Map<String, String> replacementMap = new HashMap<String, String>();
+				replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
+
+				// Just sending back static file for now.
+				String resource = "/ogc/wml/" + opType.name() + ".xsd";
+				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
+				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
+						errorMessage);
+                                */
+			}
+			break;
                         case observation:
 			{
 				Map<String, String> replacementMap = new HashMap<String, String>();
