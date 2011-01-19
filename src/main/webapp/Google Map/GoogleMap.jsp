@@ -305,15 +305,17 @@
 	        i++;
 	    }
 
+            var base = '<%=baseURL%>';
+            var test = base.length - 13;    // Gets rid of /Google Map/ from baseURL
+            var base_url = base.substring(0,test);
+
 	    for (j = 0; j < (i - 1); j++) {
 	        if (latitude[j] == latitude[j + 1] & longitude[j] == longitude[j + 1] & timeDate[j] == timeDate[j + 1]) {
-
-                    var WML2_link = '<a href = http://localhost:8080/ogc-swie/wml2?request=GetObservation&featureId=' + siteCode[j] + '>GetObservation of this feature</a>';
-                    // need to get rid of /Google Map/ from baseURL
-                    //var WML2_link = '<a href = <%=baseURL%>/wml2?request=GetObservation&featureId=' + siteCode[j] + '>GetObservation of this feature</a>';
+                    var WML2_link = '<a href =' + base_url + '/wml2?request=GetObservation&featureId=' + siteCode[j] + '>GetObservation from this site</a>';
 	            var USGS_link = '<a href = "http://waterdata.usgs.gov/' + State_code[j] + '/nwis/uv/?site_no=' + siteCode[j] + '&PARAmeter_cd=00065,00060" >' + siteCode[j] + '</a>';
-	            var Data_link = '<img src = "http://waterdata.usgs.gov/nwisweb/graph?site_no=' + siteCode[j] + '&parm_cd=00060" width="576" height="400" alt="USGS Water-data graph"/>';
-	            var information = (WML2_link + '<br>USGS Station: ' + USGS_link + '<br>' + siteName[j] + '<br>' + Data_link);
+	            var wfs_link = '<a href =' + base_url + '/wfs?request=GetFeature&featureId=' + siteCode[j] + '&typename=swml:Discharge>GetFeature from this site</a>';
+                    var Data_link = '<img src = "http://waterdata.usgs.gov/nwisweb/graph?site_no=' + siteCode[j] + '&parm_cd=00060" width="576" height="400" alt="USGS Water-data graph"/>';
+	            var information = (WML2_link + '<br>' + wfs_link + '<br>USGS Station: ' + USGS_link + '<br>' + siteName[j] + '<br>' + Data_link);
 	            var point = new GLatLng(latitude[j], longitude[j]);
 
 	            var data_tab_next = value[j + 1] + ' ' + variableName[j + 1] + '<br>';
@@ -324,13 +326,12 @@
 	            j++;
 	        }
 	        else {
-	            var WML2_link = '<a href = http://localhost:8080/ogc-swie/wml2?request=GetObservation&featureId=' + siteCode[j] + '>GetObservation of this feature</a>';
-                    // need to get rid of /Google Map/ from baseURL
-                    //var WML2_link = '<a href = <%=baseURL%>/wml2?request=GetObservation&featureId=' + siteCode[j] + '>GetObservation of this feature</a>';
+                    var WML2_link = '<a href =' + base_url + '/wml2?request=GetObservation&featureId=' + siteCode[j] + '>GetObservation from this site</a>';
+                    var wfs_link = '<a href =' + base_url + '/wfs?request=GetFeature&featureId=' + siteCode[j] + '&typename=swml:Discharge>GetFeature from this site</a>';
                     var USGS_link = '<a href = "http://waterdata.usgs.gov/' + State_code[j] + '/nwis/uv/?site_no=' + siteCode[j] + '&PARAmeter_cd=00065,00060" >' + siteCode[j] + '</a>';
 	            var Data_link = '<img src = "http://waterdata.usgs.gov/nwisweb/graph?site_no=' + siteCode[j] + '&parm_cd=00060" width="576" height="400" alt="USGS Water-data graph"/>';
 
-	            var information = (WML2_link + '<br>USGS Station: ' + USGS_link + '<br>' + siteName[j] + '<br>' + Data_link);
+	            var information = (WML2_link + '<br>' + wfs_link + '<br>USGS Station: ' + USGS_link + '<br>' + siteName[j] + '<br>' + Data_link);
 	            var point = new GLatLng(latitude[j], longitude[j]);
 
 	            var data_tab = value[j] + ' ' + variableName[j] + '<br>' + timeDate[j] + '<br>';
