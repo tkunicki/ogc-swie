@@ -178,8 +178,8 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			javaType="string" />
 		<result
 			property="om:featureOfInterest/wml2:WaterMonitoringPoint/wml2:timeZone/wml2:TimeZone/wml2:zoneOffset"
-			column="zoneOffset"
-			javaType="string" />
+			column="beginPosition"
+			typeHandler="TimeZoneTypeHandler" />
                 <result
 			property="om:featureOfInterest/wml2:WaterMonitoringPoint/wml2:timeZone/wml2:TimeZone/wml2:zoneAbbreviation"
 			column="zoneAbbreviation"
@@ -255,23 +255,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 'P15M' as aggregationDuration,
                 f.site_no,
                 f.tz_cd as zoneAbbreviation,
-                (CASE f.tz_cd
-                        WHEN 'EST' THEN '-05:00'
-                        WHEN 'CST' THEN '-06:00'
-                        WHEN 'CDT' THEN '-05:00'
-                        WHEN 'EDT' THEN '-04:00'
-                        WHEN 'ADT' THEN '-03:00'
-                        WHEN 'AST' THEN '-04:00'
-                        WHEN 'MDT' THEN '-06:00'
-                        WHEN 'MST' THEN '-07:00'
-                        WHEN 'PDT' THEN '-07:00'
-                        WHEN 'PST' THEN '-08:00'
-                        WHEN 'AKDT' THEN '-08:00'
-                        WHEN 'AKST' THEN '-09:00'
-                        WHEN 'HADT' THEN '-09:00'
-                        WHEN 'HAST' THEN '-10:00'
-                        ELSE '00:00'
-                    END) zoneOffset,
+                f.state_cd,
 		STR_TO_DATE(SYSDATE(),'%Y-%m-%d') as dateStamp,
                 SYSDATE() as currentTimeStamp,
 		CONCAT(CONVERT(f.DEC_LAT_VA,CHAR),' ',CONVERT(f.DEC_LONG_VA,CHAR)) AS pos,
@@ -348,7 +332,6 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 <if test="endPosition != null">
 			AND g.result_dt <![CDATA[ <= ]]> STR_TO_DATE(#{endPosition[0]}, '%Y-%m-%d')
                 </if>
-
 
 		ORDER BY f.station_nm, currentPosition DESC
 	  
