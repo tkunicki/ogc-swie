@@ -30,7 +30,7 @@
   </head>
 
   <body onunload="GUnload()">
-
+    <h1>Surface Water Interoperability Experiment UGSG Gauge Sites</h1>
 <!-- you can use tables or divs for the overall layout -->
 
 <!===============================Create Table=========================================>
@@ -207,8 +207,10 @@
       	    }
       	    else {
       	        xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                // This needs work...
       	    }
-      	    xhttp.open("GET", dname, false);
+      	    //xhttp = new XMLHttpRequest();
+            xhttp.open("GET", dname, false);
       	    xhttp.send("");
 
       	    return xhttp.responseXML;
