@@ -51,20 +51,24 @@
                                 <li><strong>Web Mapping Service</strong> at http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/wms
                                     <p></p>
                                     <dl>
-						<dt>GetFeature</dt>
-                                                <dd>All features:<br />
+                                                <dt>GetMap Google (currently doesn't work in IE, uses a static XML file)</dt>
+                                                <dd><a href="<%=baseURL%>/GoogleMap/GoogleMap.jsp">Google Map</a></dd>
+                                    </dl>
+                                    <p></p>
+                                    <dl> GeoServer data:</dl>
+
+                                    <dl>
+                                                <dd>GetFeature: All features:<br />
                                                     <a href="http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=upload:SWIE_SITES&maxFeatures=50 ">http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=upload:SWIE_SITES&maxFeatures=50 </a></dd>
                                     </dl>
+
 				    <dl>
-						<dt>GetMap 1 </dt>
-						<dd><a href="http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/wms?service=WMS&version=1.1.0&request=GetMap&layers=upload:SWIE_SITES&styles=&bbox=-92.8,37.216,-74.697,45.831&width=693&height=330&srs=EPSG:4269&format=application/openlayers
+						<dd>GetMap<br />
+                                                    <a href="http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/wms?service=WMS&version=1.1.0&request=GetMap&layers=upload:SWIE_SITES&styles=&bbox=-92.8,37.216,-74.697,45.831&width=693&height=330&srs=EPSG:4269&format=application/openlayers
 ">  http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/wms?service=WMS&version=1.1.0&request=GetMap&layers=upload:SWIE_SITES&styles=&bbox=-92.8,37.216,-74.697,45.831&width=693&height=330&srs=EPSG:4269&format=application/openlayers
  </a></dd>
                                     </dl>
-                                    <dl>
-                                                <dt>GetMap Google (currently doesn't work in IE)</dt>
-                                                <dd><a href="<%=baseURL%>/GoogleMap/GoogleMap.jsp">Google Map</a></dd>
-                                    </dl>
+
                                     <p></p>
 				</li>
                                         
