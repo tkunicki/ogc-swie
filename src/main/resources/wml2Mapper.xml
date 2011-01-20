@@ -153,8 +153,8 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 <!-- TODO: make this an actual website, which needs the state code, might have to do down below -->
                 <result
                         property="om:featureOfInterest/wml2:WaterMonitoringPoint/sf:sampledFeature#xlink:href=%s"
- 			column="USGS_URL"
-			javaType="string" />
+ 			column="state_site"
+			typeHandler="StateCodeTypeHandler" />
                 <result
                         property="om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/gml:Point#gml:id=st1p"
  			column="station_nm"
@@ -225,12 +225,6 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="}om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:processing#xlink:title=As measured data"
 			column="station_nm"
 			javaType="string" />
-<!--
-                <result
-			property="}om:result/wml2:Timeseries/wml2:defaultDataType=InstVal"
-			column="station_nm"
-			javaType="string" />
-                        -->
 		<result
 			property="om:result/wml2:Timeseries/^wml2:point/wml2:TimeValuePair/^wml2:time"
 			column="currentPosition"
@@ -255,14 +249,14 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 'P15M' as aggregationDuration,
                 f.site_no,
                 f.tz_cd as zoneAbbreviation,
-                f.state_cd,
+                CONCAT(f.state_cd,'.',f.site_no) as state_site,
 		STR_TO_DATE(SYSDATE(),'%Y-%m-%d') as dateStamp,
                 SYSDATE() as currentTimeStamp,
 		CONCAT(CONVERT(f.DEC_LAT_VA,CHAR),' ',CONVERT(f.DEC_LONG_VA,CHAR)) AS pos,
                 CONCAT(CONVERT(DATE_FORMAT(s.startTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS beginPosition,
                 CONCAT(CONVERT(DATE_FORMAT(s.endTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS endPosition,
 		CONCAT(CONVERT(DATE_FORMAT(g.result_dt,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) as currentPosition,
-                CONCAT('http://waterdata.usgs.gov/',s.state_postal_nm,'/nwis/uv/?site_no=',CONVERT(f.site_no,CHAR)) AS USGS_URL,
+                <!--CONCAT('http://waterdata.usgs.gov/',s.state_postal_nm,'/nwis/uv/?site_no=',CONVERT(f.site_no,CHAR)) AS USGS_URL,-->
 		g.result_va as value,
 		d.parameter_units as units,
 		d.parameter_nm
@@ -270,9 +264,9 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		FROM
 		    (select b.site_id,
 		    MIN(a.result_dt) as startTime,
-                    MAX(a.result_dt) as endTime,
+                    MAX(a.result_dt) as endTime
                     <!-- This is not good enough, try to set up a TypeHandler, could convert all states, and fix time zone issue too-->
-                    (CASE b.state_cd
+                    <!--(CASE b.state_cd
                         WHEN '55' THEN 'WI'
                         WHEN '42' THEN 'PA'
                         WHEN '34' THEN 'NJ'
@@ -280,7 +274,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                         WHEN '19' THEN 'IA'
                         WHEN '29' THEN 'MO'
                         ELSE 'IL'
-                    END) state_postal_nm
+                    END) state_postal_nm-->
                     
 		    FROM nwisweb.UV a,
 		    nwisweb.SITEFILE b
