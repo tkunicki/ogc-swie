@@ -17,19 +17,6 @@ public class StateCodeTypeHandler implements TypeHandler {
     public StateCodeTypeHandler() {
     }
 
-    /**
-     * ISO 8601 iso-date-time
-     * http://tools.ietf.org/html/rfc3339
-     *
-     * Timestamp as input must be 16 characters with Timezone appended
-     * i.e. YYYY-MM-DDTHH:mmTZ
-     *
-     * Output is similar, but with TZ replaced with offset from UTC
-     * i.e.	YYYY-MM-DDTHH:mm[+/-]HH:mm
-     *
-     * To generalize this, regular expressions can be employed to capture
-     * different possible inputs
-     */
     @Override
     public String getResult(ResultSet rs, String columnName) throws SQLException {
         String state_cd = rs.getString(columnName);
@@ -43,16 +30,14 @@ public class StateCodeTypeHandler implements TypeHandler {
             "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "PR", "RI",
             "SC", "SD", "TN", "TX", "UT", "VT", "VA", "VI", "WA", "WV", "WI", "WY", "PR", "VI" };
 
-        int i = Integer.parseInt(state_cd.trim());
+        String delims = "[.]";
+        String[] state_site = state_cd.split(delims);
+        String state = state_site[0];
+        String site = state_site[1];
+        int i = Integer.parseInt(state.trim())-1;
         String postal_nm = state_nm[i];
-        //String dateTime = dateString.substring(0, 16);
-        //int tzOffset = TimeZone.getTimeZone(dateString.substring(16)).getRawOffset();
-        //String plusOrMinus = (tzOffset >= 0) ? "+" : "-";
-        //float hoursOffset = Math.abs(tzOffset / 1000 / 60 / 60);
-        //int hours = (int) hoursOffset;
-        //int minutes = (int) (60 * (hoursOffset - hours));
-        //return String.format("%s%s%02d:%02d", dateTime, plusOrMinus, hours, minutes);
-        return postal_nm;
+        String url = "http://waterdata.usgs.gov/".concat(postal_nm).concat("/nwis/uv/?site_no=").concat(site);
+        return url;
     }
 
     @Override
