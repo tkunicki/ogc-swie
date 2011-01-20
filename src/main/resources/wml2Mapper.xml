@@ -120,7 +120,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="om:phenomenonTime/gml:TimePeriod/gml:endPosition"
 			column="endPosition"
 			typeHandler="ISODateTimeTypeHandler" />
-   <!-- ResultTime "describes when the results were available", I'm not sure if this should be now, or endPosition-->
+<!-- ResultTime "describes when the results were available", I'm not sure if this should be now, or endPosition-->
 		<result
 			property="om:resultTime/gml:TimeInstant#gml:id=result_time"
 			column="station_nm"
