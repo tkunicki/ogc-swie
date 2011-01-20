@@ -192,7 +192,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="om:result/wml2:Timeseries/wml2:domainExtent#xlink:href=ts_period"
 			column="station_nm"
 			javaType="string" />
-<!-- TODO: add something relavent to this one, or take it out-->
+<!-- TODO: figure out if this should be something from the database, if not, either take it out or figure out a better way to put in a constant -->
                 <result
 			property="om:result/wml2:Timeseries/wml2:aggregationDuration"
 			column="aggregationDuration"
@@ -256,7 +256,6 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 CONCAT(CONVERT(DATE_FORMAT(s.startTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS beginPosition,
                 CONCAT(CONVERT(DATE_FORMAT(s.endTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS endPosition,
 		CONCAT(CONVERT(DATE_FORMAT(g.result_dt,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) as currentPosition,
-                <!--CONCAT('http://waterdata.usgs.gov/',s.state_postal_nm,'/nwis/uv/?site_no=',CONVERT(f.site_no,CHAR)) AS USGS_URL,-->
 		g.result_va as value,
 		d.parameter_units as units,
 		d.parameter_nm
@@ -265,17 +264,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		    (select b.site_id,
 		    MIN(a.result_dt) as startTime,
                     MAX(a.result_dt) as endTime
-                    <!-- This is not good enough, try to set up a TypeHandler, could convert all states, and fix time zone issue too-->
-                    <!--(CASE b.state_cd
-                        WHEN '55' THEN 'WI'
-                        WHEN '42' THEN 'PA'
-                        WHEN '34' THEN 'NJ'
-                        WHEN '27' THEN 'MN'
-                        WHEN '19' THEN 'IA'
-                        WHEN '29' THEN 'MO'
-                        ELSE 'IL'
-                    END) state_postal_nm-->
-                    
+              
 		    FROM nwisweb.UV a,
 		    nwisweb.SITEFILE b
 		    
