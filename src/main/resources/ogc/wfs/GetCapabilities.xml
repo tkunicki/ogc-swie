@@ -1,23 +1,20 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<wfs:WFS_Capabilities 
-	xmlns:wfs="http://www.opengis.net/wfs" 
-	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-	xmlns:xlink="http://www.w3.org/1999/xlink" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:gsml="urn:cgi:xmlns:CGI:GeoSciML:2.0" 
-	xmlns:proc="urn:x-lcnp:proc" 
-	xmlns:fn="http://www.w3.org/2005/xpath-functions" 
-	xmlns:gml="http://www.opengis.net/gml" 
-	xmlns:ogc="http://www.opengis.net/ogc" 
-	xmlns:ows="http://www.opengis.net/ows"
-	xmlns="urn:x-lcnp:proc" 
-	
-	updateSequence="0" version="1.1.0">
-	<!-- omitted due to compatibility issues with @version=1.1.0 
-	xsi:schemaLocation="http://www.opengis.net/wfs http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/schemas/wfs/1.0.0/WFS-capabilities.xsd" -->
+<?xml version="1.0"?>
+<wfs:WFS_Capabilities
+version="2.0.0" 
+xmlns:wfs="http://www.opengis.net/wfs/2.0"
+xmlns:gml="http://www.opengis.net/gml/3.2"
+xmlns:fes="http://www.opengis.net/fes/2.0"
+xmlns:xlink="http://www.w3.org/1999/xlink"
+xmlns:ows="http://www.opengis.net/ows/1.1"
+xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.opengis.net/wfs/2.0
+                       http://schemas.opengis.net/wfs/2.0/wfs.xsd
+                       http://www.opengis.net/ows/1.1
+                       http://schemas.opengis.net/ows/1.1.0/owsAll.xsd">
 	<ows:ServiceIdentification>
 		<ows:Title>USGS Surface Water Interoperability Experiment Web Feature Service</ows:Title>
-		<ows:Abstract>This is a minimal implementation of WFS 1.1.0, in progress, based on USGS NWIS data</ows:Abstract>
+		<ows:Abstract>This is a minimal implementation of WFS 2.0.0, in progress, based on USGS NWIS data</ows:Abstract>
 		<ows:Keywords>
 			<ows:Keyword>WFS</ows:Keyword>
 			<ows:Keyword>Surface Water</ows:Keyword>
@@ -29,13 +26,13 @@
 		</ows:Keywords>
 		<ows:ServiceType>WFS</ows:ServiceType>
 		<ows:ServiceTypeVersion>1.1.0</ows:ServiceTypeVersion>
-		<ows:OnlineResource>${base.url}/wfs</ows:OnlineResource>
+		<ows:ServiceTypeVersion>2.0.0</ows:ServiceTypeVersion>
 		<ows:Fees>None</ows:Fees>
 		<ows:AccessConstraints>None</ows:AccessConstraints>
 	</ows:ServiceIdentification>
 	<ows:ServiceProvider>
 		<ows:ProviderName>USGS Center for Integrated Data Analytics (CIDA)</ows:ProviderName>
-		<!-- TODO: replace temporary site with more specific permanent site -->
+	<!-- TODO: replace temporary site with more specific permanent site -->
 		<ows:ProviderSite xlink:href="http://cida.usgs.gov"/>
 		<ows:ServiceContact>
 			<ows:IndividualName>Nate Booth</ows:IndividualName>
@@ -58,71 +55,25 @@
 			</ows:ContactInfo>
 			<ows:Role>USGS OGC PointOfContact</ows:Role>
 		</ows:ServiceContact>
-		<ows:ServiceContact>
-			<ows:IndividualName>Thomas Kunicki</ows:IndividualName>
-			<ows:PositionName>Project Lead</ows:PositionName>
-			<ows:ContactInfo>
-				<ows:Phone>
-					<ows:Voice>608-821-3851</ows:Voice>
-				</ows:Phone>
-				<ows:Address>
-					<ows:DeliveryPoint>8505 Research Way</ows:DeliveryPoint>
-					<ows:City>Middleton</ows:City>
-					<ows:AdministrativeArea>WI</ows:AdministrativeArea>
-					<ows:PostalCode>53562</ows:PostalCode>
-					<ows:Country>U.S.A.</ows:Country>
-					<ows:ElectronicMailAddress>tkunicki@usgs.gov</ows:ElectronicMailAddress>
-				</ows:Address>
-				<ows:OnlineResource xlink:href="${base.url}/wfs"/>
-				<ows:HoursOfService>24x7</ows:HoursOfService>
-				<ows:ContactInstructions>9h30-16h30 GMT-5</ows:ContactInstructions>
-			</ows:ContactInfo>
-			<ows:Role>USGS OGC GroundWater Interoperability Experiment Project Lead</ows:Role>
-		</ows:ServiceContact>
-                <ows:ServiceContact>
-			<ows:IndividualName>Laura De Cicco</ows:IndividualName>
-			<ows:PositionName>Project Assistant</ows:PositionName>
-			<ows:ContactInfo>
-				<ows:Phone>
-					<ows:Voice>608-821-3900</ows:Voice>
-				</ows:Phone>
-				<ows:Address>
-					<ows:DeliveryPoint>8505 Research Way</ows:DeliveryPoint>
-					<ows:City>Middleton</ows:City>
-					<ows:AdministrativeArea>WI</ows:AdministrativeArea>
-					<ows:PostalCode>53562</ows:PostalCode>
-					<ows:Country>U.S.A.</ows:Country>
-					<ows:ElectronicMailAddress>lkranendonk@usgs.gov</ows:ElectronicMailAddress>
-				</ows:Address>
-				<ows:OnlineResource xlink:href="${base.url}/wfs"/>
-				<ows:HoursOfService>24x7</ows:HoursOfService>
-				<ows:ContactInstructions>9h30-16h30 GMT-5</ows:ContactInstructions>
-			</ows:ContactInfo>
-			<ows:Role>USGS OGC Surface Water Interoperability Experiment Project Lead</ows:Role>
-		</ows:ServiceContact>
 	</ows:ServiceProvider>
-	<ows:OperationsMetadata xmlns:ows="http://www.opengis.net/ows">
+	<ows:OperationsMetadata>
 		<ows:Operation name="GetFeature">
 			<ows:DCP>
 				<ows:HTTP>
 					<ows:Get xlink:href="${base.url}/wfs?"/>
-					<!-- 
-					<ows:Post xlink:href="${base.url}/wfs"/>
-					 -->
 				</ows:HTTP>
 			</ows:DCP>
-
 			<ows:Parameter name="resultType">
-				<ows:Value>results</ows:Value>
-				<!-- <ows:Value>hits</ows:Value> 
-					TODO: implement hits
-				-->
+				<ows:AllowedValues>
+					<ows:Value>hits</ows:Value>
+				</ows:AllowedValues>
 			</ows:Parameter>
-
 			<ows:Parameter name="outputFormat">
-				<ows:Value>text/xml; subtype=gml/3.1.1</ows:Value>
+				<ows:AllowedValues>
+					<ows:Value>text/xml; subtype=gml/3.1.1</ows:Value>
+				</ows:AllowedValues>
 			</ows:Parameter>
-			<!-- 
+			<!--
 			<ows:Parameter name="srsName">
 				<ows:Value>urn:ogc:def:crs:EPSG:4326</ows:Value>
 			</ows:Parameter>
@@ -139,7 +90,9 @@
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="outputFormat">
-				<ows:Value>text/xml; subtype=gml/3.1.1</ows:Value>
+				<ows:AllowedValues>
+					<ows:Value>text/xml; subtype=gml/3.1.1</ows:Value>
+				</ows:AllowedValues>
 			</ows:Parameter>
 		</ows:Operation>
 		<ows:Operation name="GetCapabilities">
@@ -149,12 +102,19 @@
 					<ows:Post xlink:href="${base.url}/wfs"/>
 				</ows:HTTP>
 			</ows:DCP>
+
 			<ows:Parameter name="AcceptVersions">
-				<ows:Value>1.1.0</ows:Value>
+				<ows:AllowedValues>
+					<ows:Value>1.1.0</ows:Value>
+				</ows:AllowedValues>
 			</ows:Parameter>
+
 			<ows:Parameter name="AcceptFormats">
-				<ows:Value>text/xml</ows:Value>
+				<ows:AllowedValues>
+					<ows:Value>text/xml</ows:Value>
+				</ows:AllowedValues>
 			</ows:Parameter>
+
 			<!-- TODO: need to implement this if we advertise it here
 			<ows:Parameter name="Sections">
 				<ows:Value>ServiceIdentification</ows:Value>
@@ -167,29 +127,19 @@
 			</ows:Parameter>
 			 -->
 		</ows:Operation>
-
-
 	</ows:OperationsMetadata>
-	<!-- OK, using GRCan's trick to not overload. TODO change to something more satisfactory-->
+
 	<wfs:FeatureTypeList>
-	<!-- 
-			<Operations>
-				<Operation>Query</Operation>
-				<Operation>Insert</Operation>
-				<Operation>Update</Operation>
-				<Operation>Delete</Operation>
-				<Operation>Lock</Operation>
-			</Operations>
-	 -->
-		<wfs:FeatureType>
+<!-- TODO: figure out what the namespace should actually be-->
+                <wfs:FeatureType xmlns:swml="${base.url}">
 			<wfs:Name>swml:Discharge</wfs:Name>
-			<wfs:Title>Alaska Western Hemisphere Water wells</wfs:Title>
-			<wfs:Abstract>Water wells information extracted from USGS services</wfs:Abstract>
+			<wfs:Title>Alaska Western Hemisphere River Levels</wfs:Title>
+			<wfs:Abstract>River level information extracted from USGS services</wfs:Abstract>
 			<ows:Keywords>
-				<ows:Keyword>SWML Water Wells groundwater USGS NWIS</ows:Keyword>
+				<ows:Keyword>SWML USGS NWIS</ows:Keyword>
 			</ows:Keywords>
-			<wfs:DefaultSRS>EPSG:4326</wfs:DefaultSRS>
-			<wfs:OtherSRS>EPSG:4326</wfs:OtherSRS>
+			<wfs:DefaultCRS>EPSG:4326</wfs:DefaultCRS>
+			<wfs:OtherCRS>EPSG:4326</wfs:OtherCRS>
 			<wfs:OutputFormats>
 				<wfs:Format>text/xml; subtype=gml/3.1.1</wfs:Format>
 			</wfs:OutputFormats>
@@ -199,15 +149,16 @@
 				<ows:UpperCorner>-130 72</ows:UpperCorner>
 			</ows:WGS84BoundingBox>
 		</wfs:FeatureType>
-		<wfs:FeatureType>
+
+		<wfs:FeatureType xmlns:swml="${base.url}">
 			<wfs:Name>swml:Discharge</wfs:Name>
-			<wfs:Title>Alaska Eastern Hemisphere Water wells</wfs:Title>
-			<wfs:Abstract>Water wells information extracted from USGS services</wfs:Abstract>
+			<wfs:Title>Alaska Eastern Hemisphere River Levels</wfs:Title>
+			<wfs:Abstract>River level information extracted from USGS services</wfs:Abstract>
 			<ows:Keywords>
-				<ows:Keyword>GWML Water Wells groundwater USGS NWIS</ows:Keyword>
+				<ows:Keyword>SWML USGS NWIS</ows:Keyword>
 			</ows:Keywords>
-			<wfs:DefaultSRS>EPSG:4326</wfs:DefaultSRS>
-			<wfs:OtherSRS>EPSG:4326</wfs:OtherSRS>
+			<wfs:DefaultCRS>EPSG:4326</wfs:DefaultCRS>
+			<wfs:OtherCRS>EPSG:4326</wfs:OtherCRS>
 			<wfs:OutputFormats>
 				<wfs:Format>text/xml; subtype=gml/3.1.1</wfs:Format>
 			</wfs:OutputFormats>
@@ -217,15 +168,16 @@
 				<ows:UpperCorner>180 72</ows:UpperCorner>
 			</ows:WGS84BoundingBox>
 		</wfs:FeatureType>
-		<wfs:FeatureType>
+
+		<wfs:FeatureType xmlns:swml="${base.url}">
 			<wfs:Name>swml:Discharge</wfs:Name>
-			<wfs:Title>Continental United States Hemisphere Water wells</wfs:Title>
-			<wfs:Abstract>Water wells information extracted from USGS services</wfs:Abstract>
+			<wfs:Title>Continental United States Water Discharge</wfs:Title>
+			<wfs:Abstract>River level information extracted from USGS services</wfs:Abstract>
 			<ows:Keywords>
-				<ows:Keyword>SWML Water Wells groundwater USGS NWIS</ows:Keyword>
+				<ows:Keyword>SWML USGS NWIS</ows:Keyword>
 			</ows:Keywords>
-			<wfs:DefaultSRS>EPSG:4326</wfs:DefaultSRS>
-			<wfs:OtherSRS>EPSG:4326</wfs:OtherSRS>
+			<wfs:DefaultCRS>EPSG:4326</wfs:DefaultCRS>
+			<wfs:OtherCRS>EPSG:4326</wfs:OtherCRS>
 			<wfs:OutputFormats>
 				<wfs:Format>text/xml; subtype=gml/3.1.1</wfs:Format>
 			</wfs:OutputFormats>
@@ -234,15 +186,16 @@
 				<ows:UpperCorner>-66 123</ows:UpperCorner>
 			</ows:WGS84BoundingBox>
 		</wfs:FeatureType>
-		<wfs:FeatureType>
+
+		<wfs:FeatureType xmlns:swml="${base.url}">
 			<wfs:Name>swml:Discharge</wfs:Name>
-			<wfs:Title>Hawaii Water wells</wfs:Title>
-			<wfs:Abstract>Water wells information extracted from USGS services</wfs:Abstract>
+			<wfs:Title>Hawaii River Levels</wfs:Title>
+			<wfs:Abstract>River level information extracted from USGS services</wfs:Abstract>
 			<ows:Keywords>
-				<ows:Keyword>SWML Water Wells groundwater USGS NWIS</ows:Keyword>
+				<ows:Keyword>SWML USGS NWIS</ows:Keyword>
 			</ows:Keywords>
-			<wfs:DefaultSRS>EPSG:4326</wfs:DefaultSRS>
-			<wfs:OtherSRS>EPSG:4326</wfs:OtherSRS>
+			<wfs:DefaultCRS>EPSG:4326</wfs:DefaultCRS>
+			<wfs:OtherCRS>EPSG:4326</wfs:OtherCRS>
 			<wfs:OutputFormats>
 				<wfs:Format>text/xml; subtype=gml/3.1.1</wfs:Format>
 			</wfs:OutputFormats>
@@ -252,12 +205,12 @@
 			</ows:WGS84BoundingBox>
 		</wfs:FeatureType>
 		<!-- TODO: add bounding boxes for U.S. Territories
-		<wfs:FeatureType>
-			<wfs:Name>gwml:WaterWell</wfs:Name>
-			<wfs:Title>US Territories Water wells</wfs:Title>
-			<wfs:Abstract>Water wells information extracted from USGS services</wfs:Abstract>
+		<wfs:FeatureType xmlns:swml="${base.url}">
+			<wfs:Name>swml:Discharge</wfs:Name>
+			<wfs:Title>US Territories River Levels</wfs:Title>
+			<wfs:Abstract>River level information extracted from USGS services</wfs:Abstract>
 			<ows:Keywords xmlns:ows="http://www.opengis.net/ows">
-				<ows:Keyword>GWML Water Wells groundwater USGS NWIS</ows:Keyword>
+				<ows:Keyword>SWML USGS NWIS</ows:Keyword>
 			</ows:Keywords>
 			<wfs:DefaultSRS>EPSG:4326</wfs:DefaultSRS>
 			<wfs:OtherSRS>EPSG:4326</wfs:OtherSRS>
@@ -269,11 +222,9 @@
 				<ows:UpperCorner>-50 90</ows:UpperCorner>
 			</ows:WGS84BoundingBox>
 		</wfs:FeatureType>
-			 -->	
+			 -->
 	</wfs:FeatureTypeList>
-	 
-	<ogc:Filter_Capabilities />
-	<!-- 
+	<!--
 	<ogc:Filter_Capabilities>
 		<ogc:Spatial_Capabilities>
 			<ogc:GeometryOperands>

@@ -10,27 +10,28 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    	column="%ROOT_ELEMENT"
 			javaType="string" />
 	    <result
-	    	property="xmlns:wfs=http://www.opengis.net/wfs"
+	    	property="xmlns:wfs=http://www.opengis.net/wfs/2.0"
 	    	column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
 	    <result
-	    	property="xmlns:gml=http://www.opengis.net/gml"
+	    	property="xmlns:gml=http://www.opengis.net/gml/3.2"
 	    	column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
 		<result
 	    	property="xmlns:gsml=urn:cgi:xmlns:CGI:GeoSciML:2.0"
 	    	column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
-	    <result
+<!-- Not sure what should go here yet-->
+            <result
 	    	property="xmlns:swml=http://www.nrcan.gc.ca/xml/swml/1"
 	    	column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
 		<result
-	    	property="xmlns:om=http://www.opengis.net/om/1.0"
+	    	property="xmlns:om=http://www.opengis.net/om/2.0"
 	    	column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
 		<result
-	    	property="xmlns:sa=http://www.opengis.net/sampling/1.0"
+	    	property="xmlns:sa=http://www.opengis.net/sampling/2.0"
 	    	column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
 		<result
@@ -45,116 +46,208 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     		property="xmlns:xsi=http://www.w3.org/2001/XMLSchema-instance"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
-		<result
+            <result
+    		property="xmlns:wml2=http://www.opengis.net/waterml/2.0"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+            <result
+    		property="xmlns:sf=http://www.opengis.net/sampling/2.0"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+            <result
+    		property="xmlns:sams=http://www.opengis.net/samplingSpatial/2.0"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+<!-- Dynamic Root attributes? -->
+                <result
+    		property="timeStamp=2011-11-11"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+  <!--              <result
+    		property="timeStamp=%s"
+    		column="currentPosition"
+			javaType="string" />
+ -->
+                <result
+    		property="numberMatched=1"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+                <result
+    		property="numberReturned=1"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+
+                <result
+    		property="xsi:schemaLocation= http://www.opengis.net/om/2.0 ../observation.xsd
+http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd
+http://www.opengis.net/sampling/2.0 ../samplingFeature.xsd
+http://www.opengis.net/waterml/2.0 ../waterml2.xsd
+http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+<!--
+                <result
     		property="xsi:schemaLocation=http://www.opengis.net/om/1.0 http://schemas.opengis.net/om/1.0.0/om.xsd"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
+-->
 	</resultMap>
 	
 	<resultMap id="wfsResultMap" type="XMLMap" extends="wfsBaseMap">
-	 	<id
-	 		property="^!{gml:featureMember"
+ <!--
+                 <id
+	 		property="^!{wfs:boundedBy"
 	 		column="FEATURE_ID"
 			javaType="string" />
-		<result
-			property="gml:featureMember/swml:Discharge#gml:id"
-			column="FEATURE_ID"
+-->
+                <result
+			property="^!{wfs:boundedBy/gml:Envelope#srsName=urn:ogc:def:crs:EPSG::4326"
+			column="Constant"
+			javaType="string" />
+
+<!-- TODO: get a dynamic bounding box-->
+                <result
+			property="wfs:boundedBy/gml:Envelope/gml:lowerCorner"
+			column="LON_LAT"
 			javaType="string" />
 		<result
-			property="gml:featureMember/swml:Discharge/^gml:name#codeSpace=urn:gov.usgs.nwis.station_nm"
+			property="wfs:boundedBy/gml:Envelope/gml:upperCorner"
+			column="LON_LAT"
+			javaType="string" />
+		<result
+			property="^!{wfs:member/om:featureOfInterest/gml:name"
+			column="station_nm"
+			javaType="string" />
+		<result
+			property="wfs:member/om:featureOfInterest/gml:name"
+			column="station_nm"
+			javaType="string" />
+		<result
+			property="wfs:member/om:featureOfInterest/wml2:WaterMonitoringPoint#gml:id=%s"
+			column="site_no"
+			javaType="string" />
+		<result
+			property="wfs:member/om:featureOfInterest/wml2:WaterMonitoringPoint/sf:sampledFeature#xlink:ref=%s"
+			column="state_site"
+			typeHandler="StateCodeTypeHandler" />
+		<result
+			property="wfs:member/om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/gml:Point#gml:id=st1p"
 			column="STATION_NM"
 			javaType="string" />
 		<result
-			property="gml:featureMember/swml:Discharge/gml:name"
-			column="STATION_NM"
+			property="wfs:member/om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/gml:Point/gml:pos#srsName=urn:ogc:def:crs:EPSG:4326"
+			column="LON_LAT"
 			javaType="string" />
 		<result
-			property="gml:featureMember/swml:Discharge/^gml:name#codeSpace=urn:gov.usgs.nwis.agency_cd_site_no"
+			property="wfs:member/om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/gml:Point/gml:pos"
+			column="LON_LAT"
+			javaType="string" />
+		<result
+			property="wfs:member/om:featureOfInterest/wml2:WaterMonitoringPoint/wml2:descriptionReference#xlink:href=http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/SurfacewaterInteroperabilityExperiment#Use_Case_2"
 			column="FEATURE_ID"
 			javaType="string" />
 		<result
-			property="gml:featureMember/swml:Discharge/gml:name"
+			property="wfs:member/om:featureOfInterest/wml2:WaterMonitoringPoint/wml2:descriptionReference#xlink:title=This wiki page describes the IE"
 			column="FEATURE_ID"
 			javaType="string" />
 		<result
-			property="gml:featureMember/swml:Discharge/gml:boundedBy/gml:envelope#srsName=EPSG:4326"
-			column="LON_LAT"
-			javaType="string" />
+			property="wfs:member/om:featureOfInterest/wml2:timeZone/wml2:TimeZone/wml2:zoneOffset"
+			column="currentPosition"
+			typeHandler="TimeZoneTypeHandler" />
 		<result
-			property="gml:featureMember/swml:Discharge/gml:boundedBy/gml:envelope/gml:pos#srsDimension=2"
-			column="LON_LAT"
-			javaType="string" />
-		<result
-			property="gml:featureMember/swml:Discharge/gml:boundedBy/gml:envelope/gml:pos"
-			column="LON_LAT"
+			property="wfs:member/om:featureOfInterest/wml2:timeZone/wml2:TimeZone/wml2:zoneAbbreviation"
+			column="tz_cd"
 			javaType="string" />
 
         <!-- removed per NLB 05.24.2010, will be put back in later but still needs output validation... -->
 		<!--<association property="UNUSED" column="FEATURE_ID" select="wfsRelatedObservationSelect" javaType="list" />-->
-			
+<!--
 		<result
-			property="gml:featureMember/swml:Discharge/sa:position/gml:Point#srsName=EPSG:4326"
+			property="wfs:member/om:featureOfInterest/sa:position/gml:Point#srsName=EPSG:4326"
 			column="LON_LAT_ALT"
 			javaType="string" />
 		<result
-			property="gml:featureMember/swml:Discharge/sa:position/gml:Point/gml:pos"
+			property="wfs:member/om:featureOfInterest/sa:position/gml:Point/gml:pos"
 			column="LON_LAT_ALT"
 			javaType="string" />
 		<result
-			property="gml:featureMember/swml:Discharge/swml:referenceElevation#uom=urn:ogc:def:uom:UCUM:ft_i"
+			property="wfs:member/om:featureOfInterest/swml:referenceElevation#uom=urn:ogc:def:uom:UCUM:ft_i"
 			column="ALT"
 			javaType="string" />
 		<result
-			property="gml:featureMember/swml:Discharge/swml:referenceElevation"
+			property="wfs:member/om:featureOfInterest/swml:referenceElevation"
 			column="ALT"
 			javaType="string" />
 		<result
-			property="gml:featureMember/swml:Discharge/^swml:wellDepth/gsml:CGI_NumericValue/gsml:principalValue#uom=urn:ogc:def:uom:UCUM:ft_i"
+			property="wfs:member/om:featureOfInterest/^swml:wellDepth/gsml:CGI_NumericValue/gsml:principalValue#uom=urn:ogc:def:uom:UCUM:ft_i"
 			column="WELL_DEPTH_VA"
 			javaType="string" />
 		<result
-			property="gml:featureMember/swml:Discharge/swml:wellDepth/gsml:CGI_NumericValue/gsml:principalValue"
+			property="wfs:member/om:featureOfInterest/swml:wellDepth/gsml:CGI_NumericValue/gsml:principalValue"
 			column="WELL_DEPTH_VA"
 			javaType="string" />
 		<result
-			property="gml:featureMember/swml:Discharge/^swml:wellStatus/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.alt_datum_cd"
+			property="wfs:member/om:featureOfInterest/^swml:wellStatus/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.alt_datum_cd"
 			column="ALT_DATUM_CD"
 			javaType="string" />
 		<result
-			property="gml:featureMember/swml:Discharge/swml:wellStatus/gsml:CGI_TermValue/gsml:value"
+			property="wfs:member/om:featureOfInterest/swml:wellStatus/gsml:CGI_TermValue/gsml:value"
 			column="ALT_DATUM_CD"
 			javaType="string" />
                 <result
-			property="gml:featureMember/swml:Discharge/^swml:wellStatus/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.state_cd"
+			property="wfs:member/om:featureOfInterest/^swml:wellStatus/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.state_cd"
 			column="STATE_CD"
 			javaType="string" />
 		<result
-			property="gml:featureMember/swml:Discharge/swml:wellStatus/gsml:CGI_TermValue/gsml:state_cd"
+			property="wfs:member/om:featureOfInterest/swml:wellStatus/gsml:CGI_TermValue/gsml:state_cd"
 			column="STATE_CD"
 			javaType="string" />
 		<result
-			property="gml:featureMember/swml:Discharge/^swml:wellType/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.nat_water_use_cd"
+			property="wfs:member/om:featureOfInterest/^swml:wellType/gsml:CGI_TermValue/gsml:value#codeSpace=urn:gov.usgs.nwis.nat_water_use_cd"
 			column="NAT_WATER_USE_CD"
 			javaType="string" />
 		<result
-			property="gml:featureMember/swml:Discharge/swml:wellType/gsml:CGI_TermValue/gsml:value"
+			property="wfs:member/om:featureOfInterest/swml:wellType/gsml:CGI_TermValue/gsml:value"
 			column="NAT_WATER_USE_CD"
 			javaType="string" />
 		<result
-			property="gml:featureMember/swml:Discharge/swml:onlineResource#xlink:href=http://waterdata.usgs.gov/nwis/inventory?search_site_no=%s&amp;search_site_no_match_type=exact&amp;sort_key=site_no&amp;group_key=NONE&amp;sitefile_output_format=html_table&amp;column_name=agency_cd&amp;column_name=site_no&amp;column_name=station_nm&amp;format=station_manuscript&amp;list_of_search_criteria=search_site_no"
-			column="SITE_NO"
-			javaType="string" />
+			property="wfs:member/om:featureOfInterest/swml:onlineResource#xlink:href=%s"
+			column="state_site"
+			typeHandler="StateCodeTypeHandler" />
 		<result
-			property="}gml:featureMember/swml:Discharge/swml:onlineResource#xlink:title=USGS NWIS Database"
-			column="SITE_NO"
+			property="}wfs:member/om:featureOfInterest/swml:onlineResource#xlink:title=USGS NWIS Database"
+			column="state_site"
 			javaType="string" />
-
+-->
 		
 		<!-- association property="UNUSED" column="FEATURE_ID" select="wfsLogElementSelect" javaType="list" />
 		<association property="UNUSED" column="FEATURE_ID" select="wfsScreenElementSelect" javaType="list" /-->
 	</resultMap>
-	
-	
+<!--
+	<select id="wfsSelect_NWIS" parameterType="map" resultMap="wfsBaseMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
+                SELECT CONCAT(DATE_FORMAT(SYSDATE(),'%Y-%m-%dT%H:%i'),a.tz_cd) as currentPosition,
+                a.tz_cd
+                FROM nwisweb.SITEFILE a
+                <choose>
+                    <when test="featureId != null">
+                        WHERE #{featureId} = a.site_no
+                    </when>
+
+                    <when test="bBox != null">
+                        WHERE a.dec_long_va BETWEEN #{bBox[0]} AND #{bBox[2]} AND a.dec_lat_va BETWEEN #{bBox[1]} AND #{bBox[3]}
+                    </when>
+
+                    <otherwise>
+                        WHERE a.site_no IN (
+                        '01427207','01427510','01434000','01438500','01446775','01446776',
+                        '01457500','01463500','04073365','04073500','04082400','04084445','040851385',
+                        '05344500','05378500','05389500','05391000','05395000','05404000','05407000',
+                        '05420500','05543500','05543830','05545750','05551540','05552500','05558300',
+                        '05568500','05585500','05586100','07010000','07020500','07022000')
+                    </otherwise>
+                </choose>
+        </select>
+-->
 	<select id="wfsSelect_NWIS" parameterType="map" resultMap="wfsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 		SELECT a.site_no AS SITE_NO, 
 		a.agency_cd,
@@ -166,9 +259,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		a.ALT_DATUM_CD,
 		a.WELL_DEPTH_VA,
 		a.NAT_WATER_USE_CD,
-                a.STATE_CD
+                a.STATE_CD,
+                CONCAT(a.state_cd,'.',a.site_no) as state_site,
+                CONCAT(DATE_FORMAT(SYSDATE(),'%Y-%m-%dT%H:%i'),a.tz_cd) as currentPosition,
+                'test' as Constant,
+                a.tz_cd
 
-		
 		FROM nwisweb.SITEFILE a
                <!-- WHERE 1 = 0-->
 

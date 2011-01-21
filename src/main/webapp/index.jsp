@@ -28,7 +28,7 @@
                                 <li><strong>WaterML2 Service</strong> at <%=baseURL%>/wml2
                                     <p></p>
                                     <dl>
-                                        <dt>WaterMoniteringObservation</dt>
+                                        <dt>WaterMoniteringObservation<i> ...validates, but might not make sense</i></dt>
                                         <dd>WaterMoniteringObservation by feature ID:<br />
                                             <a href="<%=baseURL%>/wml2?request=GetObservation&featureId=01446500"><%=baseURL%>/wml2?request=GetObservation&featureId=01446500</a>
                                         </dd>
@@ -75,7 +75,7 @@
                                 <li><strong>Web Feature Service</strong> at <%=baseURL%>/wfs
                                     <p></p>
                                     <dl>
-						<dt>GetCapabilities<i> ...work in progress</i></dt>
+						<dt>GetCapabilities<i> ...validates, but might not make sense</i></dt>
 						<dd><a href="<%=baseURL%>/wfs?request=GetCapabilities"><%=baseURL%>/wfs?request=GetCapabilities</a></dd>
 				    </dl>
                                     <dl>
@@ -83,7 +83,7 @@
 						<dd><a href="<%=baseURL%>/wfs?request=DescribeFeatureType&typeName=swml:Discharge"><%=baseURL%>/wfs?request=DescribeFeatureType&typeName=swml:Discharge</a></dd>
 				    </dl>
 
-                                    <dt>GetFeature</dt>
+                                    <dt>GetFeature <i>could use some guidance</i></dt>
                                     <dl>
                                         <dd>All features:<br />
                                         <a href="<%=baseURL%>/wfs?request=GetFeature&typename=swml:Discharge"><%=baseURL%>/wfs?request=GetFeature&typename=swml:Discharge</a>
