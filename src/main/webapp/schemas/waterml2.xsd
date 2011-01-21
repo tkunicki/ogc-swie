@@ -15,8 +15,8 @@ The OGC discussion paper 09-124 - "Harmonisation standards for water observation
 </documentation>
     </annotation>
     <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
-    <import namespace="http://www.opengis.net/om/2.0"  schemaLocation="file:///C:/OGC/SCHEMAS_OPENGIS_NET/om/2.0/observation.xsd"/>
-    <import namespace="http://www.opengis.net/swe/2.0" schemaLocation="file:///C:/OGC/SCHEMAS_OPENGIS_NET/sweCommon/2.0/swe.xsd"/>
+    <import namespace="http://www.opengis.net/om/2.0"  schemaLocation="http://services.iwis.csiro.au/WaterML2Validation/schemas/externalSchemas/SCHEMAS_OPENGIS_NET/om/2.0/observation.xsd"/>
+    <import namespace="http://www.opengis.net/swe/2.0" schemaLocation="http://services.iwis.csiro.au/WaterML2Validation/schemas/externalSchemas/SCHEMAS_OPENGIS_NET/sweCommon/2.0/swe.xsd"/>
     <include schemaLocation="timeseriesLite.xsd"/>
     <include schemaLocation="waterSampling.xsd"/>
     <include schemaLocation="WaterCollection.xsd"/>

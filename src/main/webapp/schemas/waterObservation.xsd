@@ -24,7 +24,7 @@
     <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
     <import namespace="http://www.isotc211.org/2005/gmd" schemaLocation="http://schemas.opengis.net/iso/19139/20070417/gmd/gmd.xsd"/>
     <import namespace="http://www.isotc211.org/2005/gco" schemaLocation="http://schemas.opengis.net/iso/19139/20070417/gco/gco.xsd"/>
-    <import namespace="http://www.opengis.net/om/2.0" schemaLocation="file:///C:/OGC/SCHEMAS_OPENGIS_NET/om/2.0/observation.xsd"/>
+    <import namespace="http://www.opengis.net/om/2.0" schemaLocation="http://services.iwis.csiro.au/WaterML2Validation/schemas/externalSchemas/SCHEMAS_OPENGIS_NET/om/2.0/observation.xsd"/>
     <include schemaLocation="waterml2.xsd"/>
     <include schemaLocation="waterResultsCoverage.xsd"/>
     <element name="WaterMonitoringObservation" substitutionGroup="om:OM_Observation" type="wml2:WaterMonitoringObservationType">

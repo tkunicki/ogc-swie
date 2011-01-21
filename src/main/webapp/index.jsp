@@ -80,7 +80,7 @@
 				    </dl>
                                     <dl>
 						<dt>DescribeFeatureType<i> ...work in progress</i></dt>
-						<dd><a href="<%=baseURL%>/wfs?request=DescribeFeatureType&typeName=swml:Discharge"><%=baseURL%>/wfs?request=DescribeFeatureType&typeName=swml:Discharge</a></dd>
+						<dd><a href="<%=baseURL%>/wfs?request=DescribeFeatureType"><%=baseURL%>/wfs?request=DescribeFeatureType</a></dd>
 				    </dl>
 
                                     <dt>GetFeature <i>could use some guidance</i></dt>

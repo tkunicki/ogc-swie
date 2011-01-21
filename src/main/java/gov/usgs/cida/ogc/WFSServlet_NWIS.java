@@ -222,7 +222,7 @@ public class WFSServlet_NWIS extends HttpServlet {
 				parameters = new CaseInsensitiveMap<Object>();
 				parameters.putAll(parameterMap);
 				// Note that we don't actually do anything with the parameters at the moment.
-				break;
+				break;          
 			default:
 				throw new IllegalArgumentException("Currently not handling REQUEST=" + opType.name());		
 		}
@@ -322,6 +322,7 @@ public class WFSServlet_NWIS extends HttpServlet {
 			}
 			case DescribeFeatureType:
 			{
+                            /*
 				Object typeNameOb = parameters.get("typeName");
 				if (typeNameOb == null) throw new IllegalArgumentException("Missing typeName");
 
@@ -330,6 +331,7 @@ public class WFSServlet_NWIS extends HttpServlet {
 				String typeName = (String) typeNameOb;
 			
 				String resource;
+                                
 				if (SWML_DISCHARGE.equals(typeName)) {
 					resource = "/ogc/wfs/DescribeFeatureType.xml";
 				} else if (SWML_TBD.equals(typeName)) {
@@ -337,7 +339,8 @@ public class WFSServlet_NWIS extends HttpServlet {
 				} else {
 					throw new IllegalArgumentException("Invalid typeName");
 				}
-
+                                */
+                                String resource = "/ogc/wfs/DescribeFeatureType.xml";
 				// Just sending back static file for now.
 				
 				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";

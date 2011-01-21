@@ -194,8 +194,8 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			javaType="string" />
 <!-- TODO: figure out if this should be something from the database, if not, either take it out or figure out a better way to put in a constant -->
                 <result
-			property="om:result/wml2:Timeseries/wml2:aggregationDuration"
-			column="aggregationDuration"
+			property="om:result/wml2:Timeseries/wml2:aggregationDuration=P15M"
+			column="station_nm"
 			javaType="string" />
 		<result
 			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:unitOfMeasure#xlink:href=%s"
@@ -246,7 +246,6 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 	 -->
 	<select id="observationsSelect" parameterType="map" resultMap="observationsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 		select f.station_nm,
-                'P15M' as aggregationDuration,
                 f.site_no,
                 f.tz_cd as zoneAbbreviation,
                 CONCAT(f.state_cd,'.',f.site_no) as state_site,

@@ -4,8 +4,8 @@
         <documentation>Specialized sampling features for water</documentation>
     </annotation>
     <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
-    <import namespace="http://www.opengis.net/sampling/2.0" schemaLocation="file:///C:/OGC/SCHEMAS_OPENGIS_NET/sampling/2.0/samplingFeature.xsd"/>
-    <import namespace="http://www.opengis.net/samplingSpatial/2.0" schemaLocation="file:///C:/OGC/SCHEMAS_OPENGIS_NET/samplingSpatial/2.0/spatialSamplingFeature.xsd"/>
+    <import namespace="http://www.opengis.net/sampling/2.0" schemaLocation="http://services.iwis.csiro.au/WaterML2Validation/schemas/externalSchemas/SCHEMAS_OPENGIS_NET//sampling/2.0/samplingFeature.xsd"/>
+    <import namespace="http://www.opengis.net/samplingSpatial/2.0" schemaLocation="http://services.iwis.csiro.au/WaterML2Validation/schemas/externalSchemas/SCHEMAS_OPENGIS_NET//samplingSpatial/2.0/spatialSamplingFeature.xsd"/>
     <include schemaLocation="waterml2.xsd"/>
     <element name="WaterMonitoringPoint" substitutionGroup="sams:SF_SpatialSamplingFeature" type="wml2:WaterMonitoringPointType">
         <annotation>
