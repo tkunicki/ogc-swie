@@ -2,7 +2,7 @@
  <!DOCTYPE mapper
 PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-<mapper namespace="wfsMapper_NWIS">
+<mapper namespace="wfsMapper">
 
 	<resultMap id="wfsBaseMap" type="XMLMap">
 		<result
@@ -224,7 +224,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		<association property="UNUSED" column="FEATURE_ID" select="wfsScreenElementSelect" javaType="list" /-->
 	</resultMap>
 
-	<select id="wfsSelect_NWIS" parameterType="map" resultMap="wfsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
+	<select id="wfsSelect" parameterType="map" resultMap="wfsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 		SELECT a.site_no AS SITE_NO, 
 		a.agency_cd,
 		CONCAT(a.agency_cd,'.', a.site_no) as FEATURE_ID,

@@ -18,16 +18,16 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j
 
 
     <servlet>
-        <servlet-name>SOSServlet_NWIS</servlet-name>
+        <servlet-name>SOSServlet</servlet-name>
 <!--        <display-name>SOSServlet_NWIS</display-name>-->
 <!--        <description>Handler for OGC SOS service</description>-->
-        <servlet-class>gov.usgs.cida.ogc.SOSServlet_NWIS</servlet-class>
+        <servlet-class>gov.usgs.cida.ogc.SOSServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>WFSServlet_NWIS</servlet-name>
+        <servlet-name>WFSServlet</servlet-name>
 <!--        <display-name>WFSServlet_NWIS</display-name>-->
 <!--        <description>Handler for OGC WFS service</description>-->
-        <servlet-class>gov.usgs.cida.ogc.WFSServlet_NWIS</servlet-class>
+        <servlet-class>gov.usgs.cida.ogc.WFSServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>WML2Servlet</servlet-name>
@@ -37,12 +37,12 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>SOSServlet_NWIS</servlet-name>
+        <servlet-name>SOSServlet</servlet-name>
         <url-pattern>/sos</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
-        <servlet-name>WFSServlet_NWIS</servlet-name>
+        <servlet-name>WFSServlet</servlet-name>
         <url-pattern>/wfs</url-pattern>
     </servlet-mapping>
 

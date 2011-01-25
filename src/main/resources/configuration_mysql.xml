@@ -22,8 +22,8 @@ PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN"
 	</environments>
 
 	<mappers>
-		<mapper resource="wfsMapper_NWIS.xml" />
-		<mapper resource="sosMapper_NWIS.xml" />
+		<mapper resource="wfsMapper.xml" />
+		<mapper resource="sosMapper.xml" />
                 <mapper resource="wml2Mapper.xml" />
 	</mappers>
 </configuration>

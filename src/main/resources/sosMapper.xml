@@ -2,7 +2,7 @@
  <!DOCTYPE mapper
 PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-<mapper namespace="sosMapper_NWIS">
+<mapper namespace="sosMapper">
 
 	<resultMap id="sosResultMap" type="XMLMap">
 		<result
@@ -239,7 +239,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<!-- For a tutorial on analytic functions in Oracle, see http://www.oracle.com/technetwork/issue-archive/2005/05-mar/o25dba-091480.html
 	and http://psoug.org/reference/analytic_functions.html
 	 -->
-	<select id="observationsSelect_NWIS" parameterType="map" resultMap="observationsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
+	<select id="observationsSelect" parameterType="map" resultMap="observationsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 		select f.station_nm,
 		STR_TO_DATE(SYSDATE(),'%Y-%m-%d') as dateStamp,
 		CONCAT(CONVERT(f.DEC_LAT_VA,CHAR),' ',CONVERT(f.DEC_LONG_VA,CHAR)) AS pos,

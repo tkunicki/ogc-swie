@@ -20,7 +20,7 @@
 -->
     <bean id="sqlSessionFactoryBuilder" class="org.apache.ibatis.session.SqlSessionFactoryBuilder" />
 
-    <bean id="sqlSessionFactory_mysql" class="org.apache.ibatis.session.SqlSessionFactory" factory-bean="sqlSessionFactoryBuilder" factory-method="build">
+    <bean id="sqlSessionFactory" class="org.apache.ibatis.session.SqlSessionFactory" factory-bean="sqlSessionFactoryBuilder" factory-method="build">
     	<constructor-arg type="java.io.Reader">
     		<bean class="org.apache.ibatis.io.Resources" factory-method="getResourceAsReader">
     			<constructor-arg value="configuration_mysql.xml" />
@@ -29,7 +29,7 @@
    </bean>
     
     <bean id="xmlStreamReaderDAO_mysql" class="gov.usgs.webservices.ibatis.XMLStreamReaderDAO">
-        <constructor-arg ref="sqlSessionFactory_mysql" />
+        <constructor-arg ref="sqlSessionFactory" />
     </bean>
     
 </beans>

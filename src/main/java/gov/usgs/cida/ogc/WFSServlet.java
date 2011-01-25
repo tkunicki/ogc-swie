@@ -36,9 +36,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 /**
- * Servlet implementation class WFSServlet_NWIS
+ * Servlet implementation class WFSServlet
  */
-public class WFSServlet_NWIS extends HttpServlet {
+public class WFSServlet extends HttpServlet {
 	private static final String SWML_TBD = "swml:TBD";
 
 	private static final String SWML_DISCHARGE = "swml:Discharge";
@@ -73,7 +73,7 @@ public class WFSServlet_NWIS extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public WFSServlet_NWIS() {
+    public WFSServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -308,7 +308,7 @@ public class WFSServlet_NWIS extends HttpServlet {
 		
 		switch(opType) {
 			case GetFeature:
-				XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("wfsMapper_NWIS.wfsSelect_NWIS", parameters);
+				XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("wfsMapper.wfsSelect", parameters);
 				XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
 				XMLStreamUtils.copy(streamReader, streamWriter);
 				break;

@@ -39,7 +39,7 @@ import org.w3c.dom.Node;
 /**
  * Servlet implementation class to handle SOS requests
  */
-public class SOSServlet_NWIS extends HttpServlet {
+public class SOSServlet extends HttpServlet {
 
 	private static final String OBSERVATION_ID = "observationId";
 
@@ -71,7 +71,7 @@ public class SOSServlet_NWIS extends HttpServlet {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public SOSServlet_NWIS() {
+	public SOSServlet() {
 		super();
 	}
 
@@ -133,7 +133,7 @@ public class SOSServlet_NWIS extends HttpServlet {
 
 
 				try {
-					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("sosMapper_NWIS.observationsSelect_NWIS", parameterMap);
+					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("sosMapper.observationsSelect", parameterMap);
 					XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
 					XMLStreamUtils.copy(streamReader, streamWriter);
 				} catch (Exception e) {
@@ -413,7 +413,7 @@ public class SOSServlet_NWIS extends HttpServlet {
 		XMLStreamReaderDAO xmlStreamReaderDAO = null;
 		ApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
 		if (ac != null) {
-			Object o = ac.getBean("xmlStreamReaderDAO_mysql");
+			Object o = ac.getBean("xmlStreamReaderDAO");
 			if (o != null && o instanceof XMLStreamReaderDAO) {
 				xmlStreamReaderDAO = (XMLStreamReaderDAO)o;
 			}
