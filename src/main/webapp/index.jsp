@@ -85,7 +85,7 @@
 
                                     <dt>GetFeature <i>could use some guidance</i></dt>
                                     <dl>
-                                        <dd>All features:<br />
+                                        <dd>All features related to SWIE:<br />
                                         <a href="<%=baseURL%>/wfs?request=GetFeature&typename=swml:Discharge"><%=baseURL%>/wfs?request=GetFeature&typename=swml:Discharge</a>
                                         </dd>
                                         <p></p>

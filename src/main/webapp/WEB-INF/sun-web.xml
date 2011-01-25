@@ -1,34 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sun-web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Sun ONE Application Server 7.0 Servlet 2.3//EN" "http://www.sun.com/software/appserver/dtds/sun-web-app_2_3-0.dtd">
+<!DOCTYPE sun-web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Application Server 8.1 Servlet 2.4//EN" "http://www.sun.com/software/appserver/dtds/sun-web-app_2_4-1.dtd">
 <sun-web-app error-url="">
+  <context-root>/ogc-swie</context-root>
   <class-loader delegate="true"/>
   <jsp-config>
     <property name="keepgenerated" value="true">
       <description>Keep a copy of the generated servlet class' java code.</description>
     </property>
-    <!--
-    <property name="valve_1" value="org.glassfish.extension.Valve"/>
-    <property name="listener_1" value="org.glassfish.extension.MyLifecycleListener"/>
-    -->
-<!--
-    <resource-ref>
-      <res-ref-name>jdbc/ogc_ieDS</res-ref-name>
-      <jndi-name>java:/comp/env/jdbc/ogc_ieDS</jndi-name>
-      <res-type>javax.sql.DataSource</res-type>
-      <res-auth>Container</res-auth>
-    </resource-ref>
--->
-  <resource-ref>
-      <res-ref-name>jdbc/ogc_ieNWIS</res-ref-name>
-      <jndi-name>java:/comp/env/jdbc/ogc_ieNWIS</jndi-name>
-      <res-type>javax.sql.DataSource</res-type>
-      <res-auth>Container</res-auth>
-    </resource-ref>
-
-
-
-
-    --&gt;
-
   </jsp-config>
 </sun-web-app>

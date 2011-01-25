@@ -1,98 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
-<web-app>
-	<display-name>OGC GWIE {Owner: NB, Coder: TK}</display-name>
-	<description>OGC GWIE</description>
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+<!--    <display-name>OGC SWIE {Owner: NB, Coder: TK}</display-name>-->
+    <description>OGC SWIE</description>
 
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/**/*Context.xml</param-value>
-	</context-param>
-	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
-	<listener>
-		<listener-class>gov.usgs.webservices.util.PermGenCleanupListener</listener-class>
-	</listener>
-<!--
-	<servlet>
-		<servlet-name>SOSServlet</servlet-name>
-		<display-name>SOSServlet</display-name>
-		<description>Handler for OGC SOS service</description>
-		<servlet-class>gov.usgs.cida.ogc.SOSServlet</servlet-class>
-	</servlet>
-	<servlet>
-		<servlet-name>WFSServlet</servlet-name>
-		<display-name>WFSServlet</display-name>
-		<description>Handler for OGC WFS service</description>
-		<servlet-class>gov.usgs.cida.ogc.WFSServlet</servlet-class>
-	</servlet>
-	<servlet>
-		<servlet-name>SOSFeaturesServlet</servlet-name>
-		<display-name>SOSFeaturesServlet</display-name>
-		<description>Handler for OGC SOS large collections</description>
-		<servlet-class>gov.usgs.cida.ogc.SOSFeaturesServlet</servlet-class>
-	</servlet>
--->
-	<servlet>
-		<servlet-name>SOSServlet_NWIS</servlet-name>
-		<display-name>SOSServlet_NWIS</display-name>
-		<description>Handler for OGC SOS service</description>
-		<servlet-class>gov.usgs.cida.ogc.SOSServlet_NWIS</servlet-class>
-	</servlet>
-	<servlet>
-		<servlet-name>WFSServlet_NWIS</servlet-name>
-		<display-name>WFSServlet_NWIS</display-name>
-		<description>Handler for OGC WFS service</description>
-		<servlet-class>gov.usgs.cida.ogc.WFSServlet_NWIS</servlet-class>
-	</servlet>
-        <servlet>
-		<servlet-name>WML2Servlet</servlet-name>
-		<display-name>WML2Servlet</display-name>
-		<description>Handler for OGC WaterML 2 service</description>
-		<servlet-class>gov.usgs.cida.ogc.WML2Servlet</servlet-class>
-	</servlet>
-<!--
-	<servlet-mapping>
-		<servlet-name>SOSServlet</servlet-name>
-		<url-pattern>/sosbbox</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>WFSServlet</servlet-name>
-		<url-pattern>/wfs</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>SOSFeaturesServlet</servlet-name>
-		<url-pattern>/sosFeatures/*</url-pattern>
-	</servlet-mapping>
--->
-	<servlet-mapping>
-		<servlet-name>SOSServlet_NWIS</servlet-name>
-		<url-pattern>/sos</url-pattern>
-	</servlet-mapping>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/**/*Context.xml</param-value>
+    </context-param>
 
-	<servlet-mapping>
-		<servlet-name>WFSServlet_NWIS</servlet-name>
-		<url-pattern>/wfs</url-pattern>
-	</servlet-mapping>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>gov.usgs.webservices.util.PermGenCleanupListener</listener-class>
+    </listener>
 
-	<servlet-mapping>
-		<servlet-name>WML2Servlet</servlet-name>
-		<url-pattern>/wml2</url-pattern>
-	</servlet-mapping>
-<!--
-        <resource-ref>
-            <res-ref-name>jdbc/ogc_ieDS</res-ref-name>
-            <res-type>javax.sql.DataSource</res-type>
-            <res-auth>Container</res-auth>
-        </resource-ref>
--->
-        <resource-ref>
-            <res-ref-name>jdbc/ogc_ieNWIS</res-ref-name>
-            <res-type>javax.sql.DataSource</res-type>
-            <res-auth>Container</res-auth>
-        </resource-ref>
+
+    <servlet>
+        <servlet-name>SOSServlet_NWIS</servlet-name>
+<!--        <display-name>SOSServlet_NWIS</display-name>-->
+<!--        <description>Handler for OGC SOS service</description>-->
+        <servlet-class>gov.usgs.cida.ogc.SOSServlet_NWIS</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>WFSServlet_NWIS</servlet-name>
+<!--        <display-name>WFSServlet_NWIS</display-name>-->
+<!--        <description>Handler for OGC WFS service</description>-->
+        <servlet-class>gov.usgs.cida.ogc.WFSServlet_NWIS</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>WML2Servlet</servlet-name>
+<!--        <display-name>WML2Servlet</display-name>-->
+<!--        <description>Handler for OGC WaterML 2 service</description>-->
+        <servlet-class>gov.usgs.cida.ogc.WML2Servlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SOSServlet_NWIS</servlet-name>
+        <url-pattern>/sos</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>WFSServlet_NWIS</servlet-name>
+        <url-pattern>/wfs</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>WML2Servlet</servlet-name>
+        <url-pattern>/wml2</url-pattern>
+    </servlet-mapping>
+
+    <resource-ref>
+        <res-ref-name>jdbc/wsdb01</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+    </resource-ref>
 	
 </web-app>

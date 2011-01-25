@@ -9,11 +9,10 @@
 	<artifactId>ogc-swie</artifactId>
 	<packaging>war</packaging>
 	<name>OGC HWG Surface Water IE Web Service</name>
-	<version>0.0.1-SNAPSHOT</version>
-	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	 <netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
+	 <netbeans.hint.deploy.server>J2EE</netbeans.hint.deploy.server>
 	</properties>
 
 	<dependencies>
@@ -81,7 +80,7 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<finalName>ogc-swie</finalName>
 		<plugins>
@@ -161,5 +160,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
+    <version>1</version>
 </project>

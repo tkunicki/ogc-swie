@@ -1,5 +1,6 @@
 package gov.usgs.cida.ogc;
 
+import com.ctc.wstx.stax.WstxOutputFactory;
 import gov.usgs.cida.ogc.specs.OGC_WFSConstants;
 import gov.usgs.cida.ogc.specs.SOS_1_0_Operation;
 import gov.usgs.cida.ogc.utils.FileResponseUtil;
@@ -65,7 +66,7 @@ public class SOSFeaturesServlet extends HttpServlet {
 	public enum Options{features, MasterFeatureList,none};
 
 	static {
-		xmlOutputFactory = (XMLOutputFactory2)XMLOutputFactory2.newInstance();
+		xmlOutputFactory = new WstxOutputFactory();
 		xmlOutputFactory.setProperty(XMLOutputFactory2.IS_REPAIRING_NAMESPACES, false);
 		xmlOutputFactory.configureForSpeed();
 	}

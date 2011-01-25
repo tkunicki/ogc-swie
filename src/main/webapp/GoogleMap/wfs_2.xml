@@ -1,0 +1,2760 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns1:timeSeriesResponse xsi:schemaLocation="http://www.cuahsi.org/waterML/1.1/ http://waterservices.usgs.gov/WaterML-1.1.xsd" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<ns1:queryInfo xmlns:ns2="http://www.cuahsi.org/waterML/1.1/">
+    <ns2:creationTime>2011-01-25T11:27:02</ns2:creationTime>
+    <ns2:queryURL>http://waterservices.usgs.gov/nwis/iv</ns2:queryURL>
+    <ns2:criteria>
+        <ns2:locationParam>[ALL:01427207, ALL:01427510, ALL:01434000, ALL:01438500, ALL:01446775, ALL:01446776, ALL:01457500, ALL:01463500, ALL:04073365, ALL:04073500, ALL:04082400, ALL:04084445, ALL:040851385, ALL:05344500, ALL:05378500, ALL:05389500, ALL:05391000, ALL:05395000, ALL:05404000, ALL:05407000, ALL:05420500, ALL:05543500, ALL:05543830, ALL:05545750, ALL:05551540, ALL:05552500, ALL:05558300, ALL:05568500, ALL:05585500, ALL:05586100, ALL:07010000, ALL:07020500, ALL:07022000, ALL:05030500, ALL:05046000, ALL:05046475, ALL:05049000, ALL:05050000, ALL:05051300, ALL:05051500, ALL:05054000, ALL:05061000, ALL:05061500, ALL:05062000, ALL:05062500, ALL:05063398, ALL:05064000, ALL:05064500, ALL:05067500, ALL:05069000, ALL:05074500, ALL:05075000, ALL:05076000, ALL:05078000, ALL:05078230, ALL:05078500, ALL:05078720, ALL:05078770, ALL:05079000, ALL:05080000, ALL:05082500, ALL:05083500, ALL:05085450, ALL:05087500, ALL:05092000, ALL:05094000, ALL:05104500, ALL:05106000, ALL:05107500, ALL:05112000]</ns2:locationParam>
+        <ns2:variableParam>[00065]</ns2:variableParam>
+    </ns2:criteria>
+    <ns2:note title="filter:sites">[ALL:01427207, ALL:01427510, ALL:01434000, ALL:01438500, ALL:01446775, ALL:01446776, ALL:01457500, ALL:01463500, ALL:04073365, ALL:04073500, ALL:04082400, ALL:04084445, ALL:040851385, ALL:05344500, ALL:05378500, ALL:05389500, ALL:05391000, ALL:05395000, ALL:05404000, ALL:05407000, ALL:05420500, ALL:05543500, ALL:05543830, ALL:05545750, ALL:05551540, ALL:05552500, ALL:05558300, ALL:05568500, ALL:05585500, ALL:05586100, ALL:07010000, ALL:07020500, ALL:07022000, ALL:05030500, ALL:05046000, ALL:05046475, ALL:05049000, ALL:05050000, ALL:05051300, ALL:05051500, ALL:05054000, ALL:05061000, ALL:05061500, ALL:05062000, ALL:05062500, ALL:05063398, ALL:05064000, ALL:05064500, ALL:05067500, ALL:05069000, ALL:05074500, ALL:05075000, ALL:05076000, ALL:05078000, ALL:05078230, ALL:05078500, ALL:05078720, ALL:05078770, ALL:05079000, ALL:05080000, ALL:05082500, ALL:05083500, ALL:05085450, ALL:05087500, ALL:05092000, ALL:05094000, ALL:05104500, ALL:05106000, ALL:05107500, ALL:05112000]</ns2:note>
+    <ns2:note title="filter:timeRange">[mode=LATEST, modifiedSince=null]</ns2:note>
+    <ns2:note title="filter:methodId">methodIds=[[ALL]]</ns2:note>
+    <ns2:note title="requestDT">2011-01-25T16:27:02.242Z</ns2:note>
+    <ns2:note title="requestId">f0555470-289f-11e0-ab47-0003ba0b4227</ns2:note>
+    <ns2:note title="disclaimer">Provisional data subject to revision. Go to http://waterdata.usgs.gov/nwis/help/?provisional for more information.</ns2:note>
+    <ns2:note title="server">sdas01</ns2:note>
+</ns1:queryInfo>
+<ns1:timeSeries name="USGS:01427207:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>DELAWARE RIVER AT LORDVILLE NY</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">01427207</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>41.8673099</ns1:latitude>
+                <ns1:longitude>-75.21378279</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">02040101</ns1:note>
+        <ns1:note title="stateCd">42</ns1:note>
+        <ns1:note title="countyCd">42127</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T10:45:00.000-05:00">6.60</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::4</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:01427510:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>DELAWARE RIVER AT CALLICOON NY</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">01427510</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>41.75675495</ns1:latitude>
+                <ns1:longitude>-75.05738968</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">02040101</ns1:note>
+        <ns1:note title="stateCd">42</ns1:note>
+        <ns1:note title="countyCd">42127</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T10:30:00.000-05:00">3.40</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::2</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:01434000:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>DELAWARE RIVER AT PORT JERVIS NY</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">01434000</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>41.3706493</ns1:latitude>
+                <ns1:longitude>-74.6973853</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">02040104</ns1:note>
+        <ns1:note title="stateCd">42</ns1:note>
+        <ns1:note title="countyCd">42103</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T10:30:00.000-05:00">3.19</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::2</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:01438500:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>Delaware River at Montague NJ</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">01438500</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>41.30916667</ns1:latitude>
+                <ns1:longitude>-74.79527778</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">02040104</ns1:note>
+        <ns1:note title="stateCd">42</ns1:note>
+        <ns1:note title="countyCd">42103</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T11:00:00.000-05:00">5.95</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::5</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:01446775:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>Bushkill Creek ab Rt 33 bridge at Tatamy, PA</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">01446775</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>40.7489862</ns1:latitude>
+                <ns1:longitude>-75.2651783</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">02040105</ns1:note>
+        <ns1:note title="stateCd">42</ns1:note>
+        <ns1:note title="countyCd">42095</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T10:15:00.000-05:00">7.30</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::1</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:01446776:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>Bushkill Creek bl SR2017 bridge at Tatamy, PA</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">01446776</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>40.74870845</ns1:latitude>
+                <ns1:longitude>-75.2610116</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">02040105</ns1:note>
+        <ns1:note title="stateCd">42</ns1:note>
+        <ns1:note title="countyCd">42095</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2010-12-15T11:45:00.000-05:00">4.86</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::1</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:01457500:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>Delaware River at Riegelsville NJ</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">01457500</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>40.5947222</ns1:latitude>
+                <ns1:longitude>-75.1897222</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">02040105</ns1:note>
+        <ns1:note title="stateCd">34</ns1:note>
+        <ns1:note title="countyCd">34041</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T10:30:00.000-05:00">3.52</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::3</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:01463500:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>Delaware River at Trenton NJ</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">01463500</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>40.22166667</ns1:latitude>
+                <ns1:longitude>-74.7780556</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">02040105</ns1:note>
+        <ns1:note title="stateCd">34</ns1:note>
+        <ns1:note title="countyCd">34021</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T10:15:00.000-05:00">12.48</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::12</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:04073365:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>FOX RIVER AT PRINCETON, WI</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">04073365</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>43.8510911</ns1:latitude>
+                <ns1:longitude>-89.1334497</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">04030201</ns1:note>
+        <ns1:note title="stateCd">55</ns1:note>
+        <ns1:note title="countyCd">55047</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T10:00:00.000-06:00">5.62</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="1">
+            <ns1:methodDescription>sensor:DCP:1</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:04073500:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>FOX RIVER AT BERLIN, WI</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">04073500</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>43.9538698</ns1:latitude>
+                <ns1:longitude>-88.9526145</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">04030201</ns1:note>
+        <ns1:note title="stateCd">55</ns1:note>
+        <ns1:note title="countyCd">55047</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-24T14:15:00.000-06:00">9.82</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::2</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:04082400:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>FOX RIVER AT OSHKOSH, WI</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">04082400</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>44.013595</ns1:latitude>
+                <ns1:longitude>-88.5409472</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">04030201</ns1:note>
+        <ns1:note title="stateCd">55</ns1:note>
+        <ns1:note title="countyCd">55139</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T10:00:00.000-06:00">5.21</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::1</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:04084445:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>FOX RIVER AT APPLETON, WI</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">04084445</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>44.24804205</ns1:latitude>
+                <ns1:longitude>-88.4231629</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">04030204</ns1:note>
+        <ns1:note title="stateCd">55</ns1:note>
+        <ns1:note title="countyCd">55087</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-24T14:00:00.000-06:00">5.66</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::1</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:040851385:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>FOX RIVER AT OIL TANK DEPOT AT GREEN BAY, WI</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">040851385</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>44.52860355</ns1:latitude>
+                <ns1:longitude>-88.0101039</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">04030204</ns1:note>
+        <ns1:note title="stateCd">55</ns1:note>
+        <ns1:note title="countyCd">55009</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-24T08:00:00.000-06:00">577.16</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::2</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05030500:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>OTTER TAIL RIVER NEAR ELIZABETH, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05030500</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>46.3694039</ns1:latitude>
+                <ns1:longitude>-96.0175556</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020103</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27111</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T09:30:00.000-06:00">8.64</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::2</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05046000:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>OTTER TAIL RIVER BL ORWELL D NR FERGUS FALLS, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05046000</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>46.20968199</ns1:latitude>
+                <ns1:longitude>-96.1850614</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020103</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27111</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T10:00:00.000-06:00">4.35</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::3</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05046475:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>OTTER TAIL RIVER DIVERSION AT BRECKENRIDGE, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05046475</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>46.2824591</ns1:latitude>
+                <ns1:longitude>-96.5825733</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020103</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27167</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P Ice" dateTime="2011-01-25T10:00:00.000-06:00">-999999</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:qualifier qualifierID="1" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>Ice</ns1:qualifierCode>
+            <ns1:qualifierDescription>Ice affected</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::2</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05049000:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>MUSTINKA RIVER ABOVE WHEATON, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05049000</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>45.820794</ns1:latitude>
+                <ns1:longitude>-96.4906218</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020102</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27155</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T10:00:00.000-06:00">77.64</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::4</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05050000:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>BOIS DE SIOUX RIVER NEAR WHITE ROCK, SD</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05050000</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>45.86246018</ns1:latitude>
+                <ns1:longitude>-96.573958</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020101</ns1:note>
+        <ns1:note title="stateCd">46</ns1:note>
+        <ns1:note title="countyCd">46109</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T10:00:00.000-06:00">6.65</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::14</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05051300:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>BOIS DE SIOUX RIVER NEAR DORAN, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05051300</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>46.1521813</ns1:latitude>
+                <ns1:longitude>-96.5792389</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020101</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27167</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P Eqp" dateTime="2011-01-25T09:30:00.000-06:00">-999999</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:qualifier qualifierID="1" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>Eqp</ns1:qualifierCode>
+            <ns1:qualifierDescription>Equipment malfunction</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="2">
+            <ns1:methodDescription>sensor:WELL:1</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T09:30:00.000-06:00">10.32</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::14</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05051500:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>RED RIVER OF THE NORTH AT WAHPETON, ND</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05051500</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>46.26607</ns1:latitude>
+                <ns1:longitude>-96.5986848</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020104</ns1:note>
+        <ns1:note title="stateCd">38</ns1:note>
+        <ns1:note title="countyCd">38077</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T09:30:00.000-06:00">8.33</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::3</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05054000:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>RED RIVER OF THE NORTH AT FARGO, ND</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05054000</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>46.861075</ns1:latitude>
+                <ns1:longitude>-96.7836924</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020104</ns1:note>
+        <ns1:note title="stateCd">38</ns1:note>
+        <ns1:note title="countyCd">38017</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T09:15:00.000-06:00">15.92</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::7</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05061000:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>BUFFALO RIVER NEAR HAWLEY, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05061000</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>46.84995979</ns1:latitude>
+                <ns1:longitude>-96.3295093</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020106</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27027</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P Eqp" dateTime="2011-01-25T09:45:00.000-06:00">-999999</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:qualifier qualifierID="1" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>Eqp</ns1:qualifierCode>
+            <ns1:qualifierDescription>Equipment malfunction</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::8</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T09:45:00.000-06:00">4.64</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="2">
+            <ns1:methodDescription>sensor:From H-310:10</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05061500:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>SOUTH BRANCH BUFFALO RIVER AT SABIN, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05061500</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>46.7755175</ns1:latitude>
+                <ns1:longitude>-96.6281318</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020106</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27027</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T09:45:00.000-06:00">7.75</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::9</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05062000:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>BUFFALO RIVER NEAR DILWORTH, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05062000</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>46.9610736</ns1:latitude>
+                <ns1:longitude>-96.661465</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020106</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27027</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:method methodID="1">
+            <ns1:methodDescription>sensor:BACKUP - EDL:7</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T09:30:00.000-06:00">7.23</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::10</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05062500:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>WILD RICE RIVER AT TWIN VALLEY, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05062500</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>47.26662928</ns1:latitude>
+                <ns1:longitude>-96.2447803</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020108</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27107</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T06:00:00.000-06:00">4.33</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::3</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05063398:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>S. BR. WILD RICE RIVER AT CO. RD. 27 NR FELTON, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05063398</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>47.1133333</ns1:latitude>
+                <ns1:longitude>-96.3858333</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020108</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27027</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T09:30:00.000-06:00">5.20</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::1</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-18T11:30:00.000-06:00">5.70</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="1">
+            <ns1:methodDescription>sensor:RADAR:13</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05064000:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>WILD RICE RIVER AT HENDRUM, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05064000</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>47.26802728</ns1:latitude>
+                <ns1:longitude>-96.7975783</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020108</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27107</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T07:00:00.000-06:00">7.79</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::5</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05064500:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>RED RIVER OF THE NORTH AT HALSTAD, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05064500</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>47.351918</ns1:latitude>
+                <ns1:longitude>-96.843691</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020107</ns1:note>
+        <ns1:note title="stateCd">38</ns1:note>
+        <ns1:note title="countyCd">38097</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T09:30:00.000-06:00">10.99</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::5</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05067500:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>MARSH RIVER NEAR SHELLY, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05067500</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>47.41247148</ns1:latitude>
+                <ns1:longitude>-96.764244</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020107</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27107</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P Ssn" dateTime="2011-01-25T09:30:00.000-06:00">-999999</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:qualifier qualifierID="1" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>Ssn</ns1:qualifierCode>
+            <ns1:qualifierDescription>Parameter monitored seasonally</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::3</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05069000:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>SAND HILL RIVER AT CLIMAX, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05069000</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>47.61191807</ns1:latitude>
+                <ns1:longitude>-96.8147998</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020301</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27119</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T10:00:00.000-06:00">5.60</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::3</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05074500:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>RED LAKE RIVER NEAR RED LAKE, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05074500</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>47.9574572</ns1:latitude>
+                <ns1:longitude>-95.2766714</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020302</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27029</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P Eqp" dateTime="2011-01-25T09:00:00.000-06:00">-999999</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:qualifier qualifierID="1" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>Eqp</ns1:qualifierCode>
+            <ns1:qualifierDescription>Equipment malfunction</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::4</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05075000:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>RED LAKE RIVER AT HIGH LANDING NR GOODRIDGE, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05075000</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>48.04857277</ns1:latitude>
+                <ns1:longitude>-95.8086296</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020303</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27113</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T10:00:00.000-06:00">8.03</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::3</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05076000:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>THIEF RIVER NEAR THIEF RIVER FALLS, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05076000</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>48.1855249</ns1:latitude>
+                <ns1:longitude>-96.1700335</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020304</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27089</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P Eqp" dateTime="2011-01-25T10:15:00.000-06:00">-999999</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:qualifier qualifierID="1" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>Eqp</ns1:qualifierCode>
+            <ns1:qualifierDescription>Equipment malfunction</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::3</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T10:15:00.000-06:00">5.19</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="1">
+            <ns1:methodDescription>sensor:From H-310:15</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05078000:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>CLEARWATER RIVER AT PLUMMER, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05078000</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>47.9232974</ns1:latitude>
+                <ns1:longitude>-96.0464226</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020305</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27125</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T10:15:00.000-06:00">4.16</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="2">
+            <ns1:methodDescription>sensor:H-310:1</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+    <ns1:values>
+        <ns1:value qualifiers="P Eqp" dateTime="2011-01-25T06:26:00.000-06:00">-999999</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:qualifier qualifierID="1" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>Eqp</ns1:qualifierCode>
+            <ns1:qualifierDescription>Equipment malfunction</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="1">
+            <ns1:methodDescription>sensor:BACKUP:3</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T10:15:00.000-06:00">4.18</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::5</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05078230:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>LOST RIVER AT OKLEE, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05078230</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>47.84301627</ns1:latitude>
+                <ns1:longitude>-95.8586369</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020305</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27125</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T03:30:00.000-06:00">4.95</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="1">
+            <ns1:methodDescription>sensor:BACKUP:3</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T09:30:00.000-06:00">4.90</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::5</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05078500:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>CLEARWATER RIVER AT RED LAKE FALLS, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05078500</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>47.8874678</ns1:latitude>
+                <ns1:longitude>-96.2739364</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020305</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27125</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T10:00:00.000-06:00">3.85</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::2</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T10:00:00.000-06:00">3.87</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="2">
+            <ns1:methodDescription>sensor:BACKUP - ORIFICE:4</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05078720:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>CO DITCH 140 ABV BR-6 IMP NR TILDEN JCT, MN (SW8)</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05078720</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>47.6672222</ns1:latitude>
+                <ns1:longitude>-96.3386111</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST-DCH</ns1:note>
+        <ns1:note title="hucCd">09020303</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27119</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-16T19:15:00.000-06:00">2.19</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::1</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05078770:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>JUDICIAL DITCH 66 NEAR MARCOUX CORNERS, MN (SW6)</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05078770</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>47.7819444</ns1:latitude>
+                <ns1:longitude>-96.3313889</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST-DCH</ns1:note>
+        <ns1:note title="hucCd">09020303</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27125</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-15T09:00:00.000-06:00">0.28</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::1</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05079000:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>RED LAKE RIVER AT CROOKSTON, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05079000</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>47.77552716</ns1:latitude>
+                <ns1:longitude>-96.6095101</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020303</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27119</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T10:00:00.000-06:00">7.42</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::5</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05080000:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>RED LAKE RIVER AT FISHER, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05080000</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>47.8002519</ns1:latitude>
+                <ns1:longitude>-96.8089627</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020303</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27119</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T09:30:00.000-06:00">14.90</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::1</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+    <ns1:values>
+        <ns1:value qualifiers="P Ice" dateTime="2011-01-25T09:30:00.000-06:00">-999999</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:qualifier qualifierID="1" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>Ice</ns1:qualifierCode>
+            <ns1:qualifierDescription>Ice affected</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="1">
+            <ns1:methodDescription>sensor:RADAR:13</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05082500:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>RED RIVER OF THE NORTH AT GRAND FORKS, ND</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05082500</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>47.9269234</ns1:latitude>
+                <ns1:longitude>-97.0292435</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020301</ns1:note>
+        <ns1:note title="stateCd">38</ns1:note>
+        <ns1:note title="countyCd">38035</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P Eqp" dateTime="2011-01-25T09:30:00.000-06:00">-999999</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:qualifier qualifierID="1" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>Eqp</ns1:qualifierCode>
+            <ns1:qualifierDescription>Equipment malfunction</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::5</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05083500:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>RED RIVER OF THE NORTH AT OSLO, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05083500</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>48.19387265</ns1:latitude>
+                <ns1:longitude>-97.140628</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020306</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27089</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T09:15:00.000-06:00">13.25</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::4</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05085450:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>SNAKE RIVER ABOVE WARREN, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05085450</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>48.2097222</ns1:latitude>
+                <ns1:longitude>-96.7180556</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020309</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27089</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T09:45:00.000-06:00">60.83</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::1</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05087500:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>MIDDLE RIVER AT ARGYLE, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05087500</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>48.3402552</ns1:latitude>
+                <ns1:longitude>-96.8164502</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020309</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27089</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T08:30:00.000-06:00">4.99</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::3</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+    <ns1:values>
+        <ns1:method methodID="1">
+            <ns1:methodDescription>sensor:BACKUP:6</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05092000:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>RED RIVER OF THE NORTH AT DRAYTON, ND</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05092000</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>48.5722064</ns1:latitude>
+                <ns1:longitude>-97.1475697</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020311</ns1:note>
+        <ns1:note title="stateCd">38</ns1:note>
+        <ns1:note title="countyCd">38067</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P Ice" dateTime="2011-01-25T09:45:00.000-06:00">-999999</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:qualifier qualifierID="1" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>Ice</ns1:qualifierCode>
+            <ns1:qualifierDescription>Ice affected</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::6</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+    <ns1:values>
+        <ns1:value qualifiers="P Eqp" dateTime="2011-01-25T09:45:00.000-06:00">-999999</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:qualifier qualifierID="1" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>Eqp</ns1:qualifierCode>
+            <ns1:qualifierDescription>Equipment malfunction</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="2">
+            <ns1:methodDescription>sensor:Secondary Sensor:20</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05094000:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>SOUTH BRANCH TWO RIVERS AT LAKE BRONSON, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05094000</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>48.7324786</ns1:latitude>
+                <ns1:longitude>-96.6675444</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020312</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27069</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T10:00:00.000-06:00">4.60</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="1">
+            <ns1:methodDescription>sensor:Backup sensor:2</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05104500:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>ROSEAU RIVER BELOW SOUTH FORK NEAR MALUNG, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05104500</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>48.79470197</ns1:latitude>
+                <ns1:longitude>-95.7424885</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020314</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27135</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T09:30:00.000-06:00">4.74</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="2">
+            <ns1:methodDescription>sensor:ORIFICE:1</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2010-12-15T04:00:00.000-06:00">4.99</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="1">
+            <ns1:methodDescription>sensor:BACKUP - EDL:3</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2010-10-01T00:00:00.000-05:00">10.18</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::6</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T09:30:00.000-06:00">4.70</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="3">
+            <ns1:methodDescription>sensor:SUB1:16</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05106000:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>SPRAGUE CREEK NEAR SPRAGUE, MANITOBA, CANADA</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05106000</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>48.99248859</ns1:latitude>
+                <ns1:longitude>-95.6621992</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020314</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27135</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P Eqp" dateTime="2011-01-25T09:30:00.000-06:00">-999999</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:qualifier qualifierID="1" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>Eqp</ns1:qualifierCode>
+            <ns1:qualifierDescription>Equipment malfunction</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::2</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T09:30:00.000-06:00">2.93</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="1">
+            <ns1:methodDescription>sensor:BACKUP - WELL:13</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05107500:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>ROSEAU RIVER AT ROSS, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05107500</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>48.9102603</ns1:latitude>
+                <ns1:longitude>-95.9219402</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020314</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27135</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P Eqp" dateTime="2011-01-25T09:30:00.000-06:00">-999999</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:qualifier qualifierID="1" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>Eqp</ns1:qualifierCode>
+            <ns1:qualifierDescription>Equipment malfunction</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::3</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T09:30:00.000-06:00">3.71</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="2">
+            <ns1:methodDescription>sensor:SUB1:13</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05112000:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>ROSEAU RIVER BELOW STATE DITCH 51 NR CARIBOU, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05112000</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>48.98164829</ns1:latitude>
+                <ns1:longitude>-96.4630804</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">09020314</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27069</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T09:30:00.000-06:00">3.14</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::5</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05344500:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>MISSISSIPPI RIVER AT PRESCOTT, WI</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05344500</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>44.74580095</ns1:latitude>
+                <ns1:longitude>-92.8002026</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">07040001</ns1:note>
+        <ns1:note title="stateCd">55</ns1:note>
+        <ns1:note title="countyCd">55093</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T09:00:00.000-06:00">26.25</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::4</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05378500:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>MISSISSIPPI RIVER AT WINONA, MN</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05378500</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>44.0555186</ns1:latitude>
+                <ns1:longitude>-91.6376487</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">07040003</ns1:note>
+        <ns1:note title="stateCd">27</ns1:note>
+        <ns1:note title="countyCd">27169</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T09:00:00.000-06:00">6.33</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::10</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05389500:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>Mississippi River at McGregor, IA</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05389500</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>43.02701224</ns1:latitude>
+                <ns1:longitude>-91.1726298</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">07060001</ns1:note>
+        <ns1:note title="stateCd">19</ns1:note>
+        <ns1:note title="countyCd">19043</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T08:00:00.000-06:00">16.35</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="1">
+            <ns1:methodDescription>sensor:auxiliary:8</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T09:00:00.000-06:00">9.35</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::9</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05391000:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>WISCONSIN RIVER @ RAINBOW LAKE NR LAKE TOMAHAWK,WI</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05391000</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>45.8305086</ns1:latitude>
+                <ns1:longitude>-89.55236359</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">07070001</ns1:note>
+        <ns1:note title="stateCd">55</ns1:note>
+        <ns1:note title="countyCd">55085</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-24T14:15:00.000-06:00">2.66</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::2</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05395000:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>WISCONSIN RIVER AT MERRILL, WI</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05395000</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>45.17830007</ns1:latitude>
+                <ns1:longitude>-89.6817923</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">07070002</ns1:note>
+        <ns1:note title="stateCd">55</ns1:note>
+        <ns1:note title="countyCd">55069</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-24T14:00:00.000-06:00">4.91</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::2</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05404000:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>WISCONSIN RIVER NEAR WISCONSIN DELLS, WI</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05404000</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>43.60497997</ns1:latitude>
+                <ns1:longitude>-89.7567912</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">07070003</ns1:note>
+        <ns1:note title="stateCd">55</ns1:note>
+        <ns1:note title="countyCd">55111</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T10:00:00.000-06:00">5.81</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::2</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05407000:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>WISCONSIN RIVER AT MUSCODA, WI</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05407000</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>43.198042</ns1:latitude>
+                <ns1:longitude>-90.4434585</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">07070005</ns1:note>
+        <ns1:note title="stateCd">55</ns1:note>
+        <ns1:note title="countyCd">55043</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T10:00:00.000-06:00">3.34</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::6</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05420500:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>Mississippi River at Clinton, IA</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05420500</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>41.78058635</ns1:latitude>
+                <ns1:longitude>-90.252073</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">07080101</ns1:note>
+        <ns1:note title="stateCd">19</ns1:note>
+        <ns1:note title="countyCd">19045</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T09:30:00.000-06:00">10.41</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::5</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05543500:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>ILLINOIS RIVER AT MARSEILLES, IL</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05543500</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>41.32697786</ns1:latitude>
+                <ns1:longitude>-88.7175739</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">07120005</ns1:note>
+        <ns1:note title="stateCd">17</ns1:note>
+        <ns1:note title="countyCd">17099</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T09:00:00.000-06:00">11.22</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::4</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05543830:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>FOX RIVER AT WAUKESHA, WI</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05543830</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>43.004734</ns1:latitude>
+                <ns1:longitude>-88.2437038</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">07120006</ns1:note>
+        <ns1:note title="stateCd">55</ns1:note>
+        <ns1:note title="countyCd">55133</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-24T14:15:00.000-06:00">2.89</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::2</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05545750:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>FOX RIVER NEAR NEW MUNSTER, WI</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05545750</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>42.61085116</ns1:latitude>
+                <ns1:longitude>-88.225923</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">07120006</ns1:note>
+        <ns1:note title="stateCd">55</ns1:note>
+        <ns1:note title="countyCd">55059</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-24T14:15:00.000-06:00">7.16</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::1</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05551540:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>FOX RIVER AT MONTGOMERY, IL</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05551540</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>41.7336111</ns1:latitude>
+                <ns1:longitude>-88.3333333</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">07120007</ns1:note>
+        <ns1:note title="stateCd">17</ns1:note>
+        <ns1:note title="countyCd">17089</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T09:00:00.000-06:00">11.41</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::1</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05552500:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>FOX RIVER AT DAYTON, IL</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05552500</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>41.38447735</ns1:latitude>
+                <ns1:longitude>-88.7892423</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">07120007</ns1:note>
+        <ns1:note title="stateCd">17</ns1:note>
+        <ns1:note title="countyCd">17099</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T08:45:00.000-06:00">6.49</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::4</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05558300:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>ILLINOIS RIVER AT HENRY, IL</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05558300</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>41.1072222</ns1:latitude>
+                <ns1:longitude>-89.3561111</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">07130001</ns1:note>
+        <ns1:note title="stateCd">17</ns1:note>
+        <ns1:note title="countyCd">17123</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T08:30:00.000-06:00">14.95</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::28</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05568500:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>ILLINOIS RIVER AT KINGSTON MINES, IL</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05568500</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>40.5530943</ns1:latitude>
+                <ns1:longitude>-89.77733</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">07130003</ns1:note>
+        <ns1:note title="stateCd">17</ns1:note>
+        <ns1:note title="countyCd">17143</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T08:00:00.000-06:00">3.71</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::22</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05585500:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>ILLINOIS RIVER AT MEREDOSIA, IL</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05585500</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>39.8233801</ns1:latitude>
+                <ns1:longitude>-90.568182</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">07130011</ns1:note>
+        <ns1:note title="stateCd">17</ns1:note>
+        <ns1:note title="countyCd">17137</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T09:00:00.000-06:00">4.15</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::32</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:05586100:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>ILLINOIS RIVER AT VALLEY CITY, IL</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">05586100</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>39.7033802</ns1:latitude>
+                <ns1:longitude>-90.6454047</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">07130011</ns1:note>
+        <ns1:note title="stateCd">17</ns1:note>
+        <ns1:note title="countyCd">17171</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T09:00:00.000-06:00">3.67</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::17</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:07010000:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>Mississippi River at St. Louis, MO</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">07010000</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>38.629</ns1:latitude>
+                <ns1:longitude>-90.1797778</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">07140101</ns1:note>
+        <ns1:note title="stateCd">29</ns1:note>
+        <ns1:note title="countyCd">29510</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T10:00:00.000-06:00">4.54</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::2</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:07020500:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>Mississippi River at Chester, IL</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">07020500</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>37.90375</ns1:latitude>
+                <ns1:longitude>-89.8355556</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">07140105</ns1:note>
+        <ns1:note title="stateCd">17</ns1:note>
+        <ns1:note title="countyCd">17157</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T10:00:00.000-06:00">8.22</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::2</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+<ns1:timeSeries name="USGS:07022000:00065" xmlns:ns1="http://www.cuahsi.org/waterML/1.1/">
+    <ns1:sourceInfo xsi:type="ns1:SiteInfoType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:siteName>Mississippi River at Thebes, IL</ns1:siteName>
+        <ns1:siteCode network="NWIS" agencyCode="USGS">07022000</ns1:siteCode>
+        <ns1:geoLocation>
+            <ns1:geogLocation xsi:type="ns1:LatLonPointType" srs="EPSG:4326">
+                <ns1:latitude>37.2164722</ns1:latitude>
+                <ns1:longitude>-89.4675833</ns1:longitude>
+            </ns1:geogLocation>
+        </ns1:geoLocation>
+        <ns1:note title="siteTypeCd">ST</ns1:note>
+        <ns1:note title="hucCd">07140105</ns1:note>
+        <ns1:note title="stateCd">17</ns1:note>
+        <ns1:note title="countyCd">17003</ns1:note>
+    </ns1:sourceInfo>
+    <ns1:variable ns1:oid="0">
+        <ns1:variableCode network="NWIS" vocabulary="NWIS:UnitValues" default="true" variableID="0">00065</ns1:variableCode>
+        <ns1:variableName>Gage height, ft</ns1:variableName>
+        <ns1:variableDescription>UNKNOWN</ns1:variableDescription>
+        <ns1:valueType>00065</ns1:valueType>
+        <ns1:unit>
+            <ns1:unitCode>UNKNOWN</ns1:unitCode>
+        </ns1:unit>
+        <ns1:noDataValue>-999999.0</ns1:noDataValue>
+    </ns1:variable>
+    <ns1:values>
+        <ns1:value qualifiers="P" dateTime="2011-01-25T10:00:00.000-06:00">11.49</ns1:value>
+        <ns1:qualifier qualifierID="0" ns1:network="NWIS" ns1:vocabulary="uv_rmk_cd">
+            <ns1:qualifierCode>P</ns1:qualifierCode>
+            <ns1:qualifierDescription>Provisional data subject to revision.</ns1:qualifierDescription>
+        </ns1:qualifier>
+        <ns1:method methodID="0">
+            <ns1:methodDescription>sensor::2</ns1:methodDescription>
+        </ns1:method>
+    </ns1:values>
+</ns1:timeSeries>
+</ns1:timeSeriesResponse>

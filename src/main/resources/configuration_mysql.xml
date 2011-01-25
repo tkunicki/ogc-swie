@@ -8,14 +8,19 @@ PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN"
                 <typeAlias alias="TimeZoneTypeHandler" type="gov.usgs.webservices.ibatis.TimeZoneTypeHandler"/>
                 <typeAlias alias="StateCodeTypeHandler" type="gov.usgs.webservices.ibatis.StateCodeTypeHandler"/>
 	</typeAliases>
+
 	<environments default="development">
 		<environment id="development">
 			<transactionManager type="JDBC" />
 			<dataSource type="JNDI">
-				<property name="data_source" value="java:/comp/env/jdbc/ogc_ieNWIS" />
+<!--				 Tomcat :-->
+                                <property name="data_source" value="java:comp/env/jdbc/wsdb01" />
+<!--                               Glassfish:-->
+<!--                               <property name="data_source" value="jdbc/wsdb01" />-->
 			</dataSource>
 		</environment>
 	</environments>
+
 	<mappers>
 		<mapper resource="wfsMapper_NWIS.xml" />
 		<mapper resource="sosMapper_NWIS.xml" />

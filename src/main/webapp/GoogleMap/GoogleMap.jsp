@@ -30,8 +30,7 @@
   </head>
 
   <body onunload="GUnload()">
-    <h1>Surface Water Interoperability Experiment UGSG Gauge Sites</h1>
-<!-- you can use tables or divs for the overall layout -->
+    <h1>Surface Water Inter-Operability Experiment UGSG Gauge Sites</h1>
 
 <!===============================Create Table=========================================>
     <table border=1>
@@ -43,24 +42,20 @@
            <div id="side_bar" style="overflow:auto; height:640px;">></div>
         </td>
       </tr>
-      <tr>
-        <td>
-            <div id="test_stuff" style="overflow:auto; height:20px;">></div>
-        </td>
-      </tr>
-
     </table>
 
 <! ===========================Create Check Boxes==================================>
     <form action="#">
 
-      WI Rivers: <input type="checkbox" id="wibox" onclick="boxclick(this,'wi')" />&nbsp;&nbsp;
-      PA Rivers: <input type="checkbox" id="pabox" onclick="boxclick(this,'pa')" />&nbsp;&nbsp;
-      NJ Rivers: <input type="checkbox" id="njbox" onclick="boxclick(this,'nj')" /><br />
-      MN Rivers: <input type="checkbox" id="mnbox" onclick="boxclick(this,'mn')" />&nbsp;&nbsp;
-      MO Rivers: <input type="checkbox" id="mobox" onclick="boxclick(this,'mo')" />&nbsp;&nbsp;
-      IL Rivers: <input type="checkbox" id="ilbox" onclick="boxclick(this,'il')" />&nbsp;&nbsp;
-      IA Rivers: <input type="checkbox" id="iabox" onclick="boxclick(this,'ia')" /><br />
+      WI Rivers: <input type="checkbox" id="WIbox" onclick="boxclick(this,'WI')" />&nbsp;&nbsp;
+      PA Rivers: <input type="checkbox" id="PAbox" onclick="boxclick(this,'PA')" />&nbsp;&nbsp;
+      NJ Rivers: <input type="checkbox" id="NJbox" onclick="boxclick(this,'NJ')" /><br />
+      MN Rivers: <input type="checkbox" id="MNbox" onclick="boxclick(this,'MN')" />&nbsp;&nbsp;
+      MO Rivers: <input type="checkbox" id="MObox" onclick="boxclick(this,'MO')" />&nbsp;&nbsp;
+      IL Rivers: <input type="checkbox" id="ILbox" onclick="boxclick(this,'IL')" />&nbsp;&nbsp;
+      IA Rivers: <input type="checkbox" id="IAbox" onclick="boxclick(this,'IA')" /><br />
+      ND Rivers: <input type="checkbox" id="NDbox" onclick="boxclick(this,'ND')" />&nbsp;&nbsp;
+      SD Rivers: <input type="checkbox" id="SDbox" onclick="boxclick(this,'SD')" />&nbsp;&nbsp;
     </form>
 
 <! ==========================Message if JavaScript is not enabled=======================>
@@ -77,43 +72,24 @@
     <script type="text/javascript">
 
     if (GBrowserIsCompatible()) {
-
       var gmarkers = [];
 
 
-// ======================= Create an associative array of GIcons() =======================
+// ======================= Create an associative array of GIcons() =====================
       var gicons = [];
-      gicons["wi"] = new GIcon(G_DEFAULT_ICON, "red_MarkerA.png");
-      gicons["pa"] = new GIcon(G_DEFAULT_ICON, "blue_MarkerA.png");
-      gicons["nj"] = new GIcon(G_DEFAULT_ICON, "darkgreen_MarkerA.png");
-      gicons["mo"] = new GIcon(G_DEFAULT_ICON, "orange_MarkerA.png");
-      gicons["il"] = new GIcon(G_DEFAULT_ICON, "green_MarkerA.png");
-      gicons["mn"] = new GIcon(G_DEFAULT_ICON, "paleblue_MarkerA.png");
-      gicons["ia"] = new GIcon(G_DEFAULT_ICON, "yellow_MarkerA.png");
-      gicons["ca01"] = new GIcon(G_DEFAULT_ICON, "blue_MarkerB.png");
-
-// ========================Create a tabbed marker============================================
-      // A function to create a tabbed marker and set up the event window
-
-      function createTabbedMarker(point,html1,html2,name,category)
-      {
-		var marker = new GMarker(point, gicons[category]);
-        	marker.mycategory = category;
-        	marker.myname = name;
-        	var label1 = 'Information';
-		var label2 = 'Data';
-
-		    GEvent.addListener(marker, "click", function()
-		        {
-		        marker.openInfoWindowTabsHtml([new GInfoWindowTab(label1,html1), new GInfoWindowTab(label2,html2)]);
-                });
-
-        gmarkers.push(marker);
-        return marker;
-    }
+      gicons["WI"] = new GIcon(G_DEFAULT_ICON, "red_MarkerA.png");
+      gicons["PA"] = new GIcon(G_DEFAULT_ICON, "blue_MarkerA.png");
+      gicons["NJ"] = new GIcon(G_DEFAULT_ICON, "darkgreen_MarkerA.png");
+      gicons["MO"] = new GIcon(G_DEFAULT_ICON, "orange_MarkerA.png");
+      gicons["IL"] = new GIcon(G_DEFAULT_ICON, "green_MarkerA.png");
+      gicons["MN"] = new GIcon(G_DEFAULT_ICON, "paleblue_MarkerA.png");
+      gicons["IA"] = new GIcon(G_DEFAULT_ICON, "yellow_MarkerA.png");
+      gicons["ND"] = new GIcon(G_DEFAULT_ICON, "purple_MarkerA.png");
+      gicons["SD"] = new GIcon(G_DEFAULT_ICON, "brown_MarkerA.png");
+    //Should figure out a default marker
+      //gicons["ca01"] = new GIcon(G_DEFAULT_ICON, "blue_MarkerB.png");
 
 // ========================Create a marker============================================
-    // A function to create a marker and set up the event window
 
     function createMarker(point, html, name, category) {
 
@@ -129,7 +105,7 @@
         return marker;
     }
 
-// ===================================== Shows markers=================================
+// ===================================== Shows markers =================================
       function show(category) {
         for (var i=0; i<gmarkers.length; i++) {
           if (gmarkers[i].mycategory == category) {
@@ -139,7 +115,7 @@
         document.getElementById(category+"box").checked = true;
       }
 
-// ===================================== Hides markers===================================
+// ===================================== Hides markers ===================================
       function hide(category) {
         for (var i=0; i<gmarkers.length; i++) {
           if (gmarkers[i].mycategory == category) {
@@ -177,29 +153,6 @@
         document.getElementById("side_bar").innerHTML = html;
       }
 
-//==========================================Create the map================================
-      	var map = new GMap2(document.getElementById("map"));
-      	map.addControl(new GLargeMapControl());
-      	map.addControl(new GMapTypeControl());
-      	map.addMapType(G_PHYSICAL_MAP);
-      	map.setCenter(new GLatLng(44.55972222, -90.613888889), 7, G_PHYSICAL_MAP);
-      	map.enableScrollWheelZoom();
-
-      	//var html2 = 'test';
-
-//======================================test_stuff=====================================
-      	function makeBottom() {
-      	    var currentTime = new Date()
-      	    var month = currentTime.getMonth() + 1
-      	    var day = currentTime.getDate() + 1
-      	    var year = currentTime.getFullYear()
-      	    //document.write(month + "/" + day + "/" + year)
-      	    var week_ago = day - 8;
-
-      	    var html = year + "-" + month + "-" + week_ago + "." + year + "-" + month + "-" + day;
-      	    document.getElementById("test_stuff").innerHTML = html;
-      	}
-
 //==========================================Load XML file================================
       	function loadXMLDoc(dname) {
       	    if (window.XMLHttpRequest) {
@@ -216,141 +169,135 @@
       	    return xhttp.responseXML;
       	}
 
+//=============================== Convert state codes to postal name=====================
+        function stateCD_conversion(state_cd) {
+            var state_nm = [];
+            state_nm = ["AL","AK","AS","AZ", "AR", "CA", "XX", "CO", "CT", "DE", "DC", "FL", "GA", "GU",
+            "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO",
+            "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "PR", "RI",
+            "SC", "SD", "TN", "TX", "UT", "VT", "VA", "VI", "WA", "WV", "WI", "WY", "PR", "VI" ];
+            var postal_nm = state_nm[(state_cd-1)];
+            return postal_nm;
+        }
+
+//==========================================Create the map================================
+      	var map = new GMap2(document.getElementById("map"));
+      	map.addControl(new GLargeMapControl());
+      	map.addControl(new GMapTypeControl());
+      	map.addMapType(G_PHYSICAL_MAP);
+      	map.setCenter(new GLatLng(44.55972222, -90.613888889), 5, G_PHYSICAL_MAP);
+      	map.enableScrollWheelZoom();
+
 // ====================================Read the data from xxxx.xml=========================
-      	makeBottom();
 
-	    xml = loadXMLDoc("SurfaceWaterIE_Sites2.xml");
+        xml = loadXMLDoc("wfs_2.xml");
 
-	    var length = xml.length;
+        var length = xml.length;
 
-	    var path = [];
-	    path[1] = "//*[local-name()='latitude']"
-	    path[2] = "//*[local-name()='longitude']"
-	    path[3] = "//*[local-name()='siteName']"
-	    path[4] = "//*[local-name()='siteCode']"
-	    path[5] = "//*[local-name()='variableName']"
-	    path[6] = "//*[local-name()='value']"
-	    path[7] = "//*[local-name()='note'][@title='stateCd']"
+        var path = [];
+        path[1] = "//*[local-name()='latitude']"
+        path[2] = "//*[local-name()='longitude']"
+        path[3] = "//*[local-name()='siteName']"
+        path[4] = "//*[local-name()='siteCode']"
+        path[5] = "//*[local-name()='variableName']"
+        path[6] = "//*[local-name()='value']"
+        path[7] = "//*[local-name()='note'][@title='stateCd']"
 
-	    var latitude = [];
-	    var longitude = [];
-	    var siteCode = [];
-	    var siteName = [];
-	    var variableName = [];
-	    var value = [];
-	    var timeDate = [];
-	    var note = [];
-	    var State_code = [];
-	    var value2 = [];
+        var latitude = [];
+        var longitude = [];
+        var siteCode = [];
+        var siteName = [];
+        var variableName = [];
+        var value = [];
+        var timeDate = [];
+        var note = [];
+        var State_code = [];
+        var value2 = [];
 
-	    // code for IE..................................Doesn't work, don't care
+        var nodes_lat = xml.evaluate(path[1], xml, null, XPathResult.ANY_TYPE, null);
+        var nodes_long = xml.evaluate(path[2], xml, null, XPathResult.ANY_TYPE, null);
+        var nodes_siteName = xml.evaluate(path[3], xml, null, XPathResult.ANY_TYPE, null);
+        var nodes_siteCode = xml.evaluate(path[4], xml, null, XPathResult.ANY_TYPE, null);
+        var nodes_variableName = xml.evaluate(path[5], xml, null, XPathResult.ANY_TYPE, null);
+        var nodes_value = xml.evaluate(path[6], xml, null, XPathResult.ANY_TYPE, null);
+        var nodes_note = xml.evaluate(path[7], xml, null, XPathResult.ANY_TYPE, null);
 
-	    // code for Mozilla, Firefox, Opera, etc.
+        var result_lat = nodes_lat.iterateNext();
+        var result_long = nodes_long.iterateNext();
+        var result_siteName = nodes_siteName.iterateNext();
+        var result_siteCode = nodes_siteCode.iterateNext();
+        var result_variableName = nodes_variableName.iterateNext();
+        var result_value = nodes_value.iterateNext();
+        var result_note = nodes_note.iterateNext();
 
-	    var nodes_lat = xml.evaluate(path[1], xml, null, XPathResult.ANY_TYPE, null);
-	    var nodes_long = xml.evaluate(path[2], xml, null, XPathResult.ANY_TYPE, null);
-	    var nodes_siteName = xml.evaluate(path[3], xml, null, XPathResult.ANY_TYPE, null);
-	    var nodes_siteCode = xml.evaluate(path[4], xml, null, XPathResult.ANY_TYPE, null);
-	    var nodes_variableName = xml.evaluate(path[5], xml, null, XPathResult.ANY_TYPE, null);
-	    var nodes_value = xml.evaluate(path[6], xml, null, XPathResult.ANY_TYPE, null);
-	    var nodes_note = xml.evaluate(path[7], xml, null, XPathResult.ANY_TYPE, null);
+        var i = 0;
+        while (result_lat) {
+            latitude[i] = result_lat.childNodes[0].nodeValue;
+            longitude[i] = result_long.childNodes[0].nodeValue;
+            siteName[i] = result_siteName.childNodes[0].nodeValue;
+            siteCode[i] = result_siteCode.childNodes[0].nodeValue;
+            timeDate[i] = result_value.getAttribute("dateTime");
+            value[i] = result_value.childNodes[0].nodeValue;
+            variableName[i] = result_variableName.childNodes[0].nodeValue;
+            var note = result_note.childNodes[0].nodeValue;
+            State_code[i] = stateCD_conversion(note);
 
-	    var result_lat = nodes_lat.iterateNext();
-	    var result_long = nodes_long.iterateNext();
-	    var result_siteName = nodes_siteName.iterateNext();
-	    var result_siteCode = nodes_siteCode.iterateNext();
-	    var result_variableName = nodes_variableName.iterateNext();
-	    var result_value = nodes_value.iterateNext();
-	    var result_note = nodes_note.iterateNext();
+            result_note = nodes_note.iterateNext();
+            result_variableName = nodes_variableName.iterateNext();
+            result_value = nodes_value.iterateNext();
+            result_siteName = nodes_siteName.iterateNext();
+            result_siteCode = nodes_siteCode.iterateNext();
+            result_lat = nodes_lat.iterateNext();
+            result_long = nodes_long.iterateNext();
 
-	    var i = 0;
-	    while (result_lat) {
-	        latitude[i] = result_lat.childNodes[0].nodeValue;
-	        longitude[i] = result_long.childNodes[0].nodeValue;
-	        siteName[i] = result_siteName.childNodes[0].nodeValue;
-	        siteCode[i] = result_siteCode.childNodes[0].nodeValue;
-	        timeDate[i] = result_value.getAttribute("dateTime");
-	        value[i] = result_value.childNodes[0].nodeValue;
-	        variableName[i] = result_variableName.childNodes[0].nodeValue;
-	        var note = result_note.childNodes[0].nodeValue;
+            i++;
+        }
 
-	        if (note == '55') {
-	            State_code[i] = "wi";
-	        }
-	        else if (note == '42') {
-	            State_code[i] = "pa";
-	        }
-	        else if (note == '34') {
-	            State_code[i] = "nj";
-	        }
-	        else if (note == '27') {
-	            State_code[i] = "mn";
-	        }
-	        else if (note == '19') {
-	            State_code[i] = "ia";
-	        }
-	        else if (note == '29') {
-	            State_code[i] = "mo";
-	        }
-	        else {
-	            State_code[i] = "il";
-	        }
+        var base = '<%=baseURL%>';
+        var test = base.length - 10;    // Gets rid of /GoogleMap/ from baseURL
+        var base_url = base.substring(0,test);
 
-	        result_note = nodes_note.iterateNext();
-	        result_variableName = nodes_variableName.iterateNext();
-	        result_value = nodes_value.iterateNext();
-	        result_siteName = nodes_siteName.iterateNext();
-	        result_siteCode = nodes_siteCode.iterateNext();
-	        result_lat = nodes_lat.iterateNext();
-	        result_long = nodes_long.iterateNext();
+        for (j = 0; j < (i - 1); j++) {
+            if (latitude[j] == latitude[j + 1] & longitude[j] == longitude[j + 1] & timeDate[j] == timeDate[j + 1]) {
+                var WML2_link = '<a href =' + base_url + '/wml2?request=GetObservation&featureId=' + siteCode[j] + '>GetObservation from this site</a>';
+                var USGS_link = '<a href = "http://waterdata.usgs.gov/' + State_code[j] + '/nwis/uv/?site_no=' + siteCode[j] + '&PARAmeter_cd=00065" >' + siteCode[j] + '</a>';
+                var wfs_link = '<a href =' + base_url + '/wfs?request=GetFeature&featureId=' + siteCode[j] + '&typename=swml:Discharge>GetFeature from this site</a>';
+                var Data_link = '<img src = "http://waterdata.usgs.gov/nwisweb/graph?site_no=' + siteCode[j] + '&parm_cd=00065" width="576" height="400" alt="USGS Water-data graph"/>';
+                var information = (WML2_link + '<br>' + wfs_link + '<br>USGS Station: ' + USGS_link + '<br>' + siteName[j] + '<br>' + Data_link);
+                var point = new GLatLng(latitude[j], longitude[j]);
 
-	        i++;
-	    }
+                var data_tab_next = value[j + 1] + ' ' + variableName[j + 1] + '<br>';
+                var data_tab = data_tab_next + value[j] + ' ' + variableName[j] + '<br>' + timeDate[j];
 
-            var base = '<%=baseURL%>';
-            var test = base.length - 10;    // Gets rid of /GoogleMap/ from baseURL
-            var base_url = base.substring(0,test);
-            //var base_url = ${base.url}
+                var marker_PA = createMarker(point, information, siteName[j], State_code[j]);
+                map.addOverlay(marker_PA);
+                j++;
+            }
+            else {
+                var WML2_link = '<a href =' + base_url + '/wml2?request=GetObservation&featureId=' + siteCode[j] + '>GetObservation from this site</a>';
+                var wfs_link = '<a href =' + base_url + '/wfs?request=GetFeature&featureId=' + siteCode[j] + '&typename=swml:Discharge>GetFeature from this site</a>';
+                var USGS_link = '<a href = "http://waterdata.usgs.gov/' + State_code[j] + '/nwis/uv/?site_no=' + siteCode[j] + '&PARAmeter_cd=00065" >' + siteCode[j] + '</a>';
+                var Data_link = '<img src = "http://waterdata.usgs.gov/nwisweb/graph?site_no=' + siteCode[j] + '&parm_cd=00065" width="576" height="400" alt="USGS Water-data graph"/>';
 
-	    for (j = 0; j < (i - 1); j++) {
-	        if (latitude[j] == latitude[j + 1] & longitude[j] == longitude[j + 1] & timeDate[j] == timeDate[j + 1]) {
-                    var WML2_link = '<a href =' + base_url + '/wml2?request=GetObservation&featureId=' + siteCode[j] + '>GetObservation from this site</a>';
-                    var USGS_link = '<a href = "http://waterdata.usgs.gov/' + State_code[j] + '/nwis/uv/?site_no=' + siteCode[j] + '&PARAmeter_cd=00065,00060" >' + siteCode[j] + '</a>';
-	            var wfs_link = '<a href =' + base_url + '/wfs?request=GetFeature&featureId=' + siteCode[j] + '&typename=swml:Discharge>GetFeature from this site</a>';
-                    var Data_link = '<img src = "http://waterdata.usgs.gov/nwisweb/graph?site_no=' + siteCode[j] + '&parm_cd=00060" width="576" height="400" alt="USGS Water-data graph"/>';
-	            var information = (WML2_link + '<br>' + wfs_link + '<br>USGS Station: ' + USGS_link + '<br>' + siteName[j] + '<br>' + Data_link);
-	            var point = new GLatLng(latitude[j], longitude[j]);
+                var information = (WML2_link + '<br>' + wfs_link + '<br>USGS Station: ' + USGS_link + '<br>' + siteName[j] + '<br>' + Data_link);
+                var point = new GLatLng(latitude[j], longitude[j]);
 
-	            var data_tab_next = value[j + 1] + ' ' + variableName[j + 1] + '<br>';
-	            var data_tab = data_tab_next + value[j] + ' ' + variableName[j] + '<br>' + timeDate[j];
+                var data_tab = value[j] + ' ' + variableName[j] + '<br>' + timeDate[j] + '<br>';
 
-	            var marker_PA = createMarker(point, information, siteName[j], State_code[j]);
-	            map.addOverlay(marker_PA);
-	            j++;
-	        }
-	        else {
-                    var WML2_link = '<a href =' + base_url + '/wml2?request=GetObservation&featureId=' + siteCode[j] + '>GetObservation from this site</a>';
-                    var wfs_link = '<a href =' + base_url + '/wfs?request=GetFeature&featureId=' + siteCode[j] + '&typename=swml:Discharge>GetFeature from this site</a>';
-                    var USGS_link = '<a href = "http://waterdata.usgs.gov/' + State_code[j] + '/nwis/uv/?site_no=' + siteCode[j] + '&PARAmeter_cd=00065,00060" >' + siteCode[j] + '</a>';
-	            var Data_link = '<img src = "http://waterdata.usgs.gov/nwisweb/graph?site_no=' + siteCode[j] + '&parm_cd=00060" width="576" height="400" alt="USGS Water-data graph"/>';
-
-	            var information = (WML2_link + '<br>' + wfs_link + '<br>USGS Station: ' + USGS_link + '<br>' + siteName[j] + '<br>' + Data_link);
-	            var point = new GLatLng(latitude[j], longitude[j]);
-
-	            var data_tab = value[j] + ' ' + variableName[j] + '<br>' + timeDate[j] + '<br>';
-
-	            var marker_PA = createMarker(point, information, siteName[j], State_code[j]);
-	            map.addOverlay(marker_PA);
-	        }
-	    }
-	    show("wi");
-	    show("nj");
-	    show("pa");
-	    show("mn");
-	    show("mo");
-	    show("il");
-	    show("ia");
-	    makeSidebar();
+                var marker_PA = createMarker(point, information, siteName[j], State_code[j]);
+                map.addOverlay(marker_PA);
+            }
+        }
+        show("WI");
+        show("NJ");
+        show("PA");
+        show("MN");
+        show("MO");
+        show("IL");
+        show("IA");
+        show("ND");
+        show("SD");
+        makeSidebar();
 
 }   // goes with compatiblity check
 
