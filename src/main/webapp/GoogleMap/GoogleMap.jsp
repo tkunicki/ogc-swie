@@ -30,7 +30,7 @@
   </head>
 
   <body onunload="GUnload()">
-    <h1>Surface Water Inter-Operability Experiment UGSG Gauge Sites</h1>
+    <h1>Surface Water Interoperability Experiment UGSG Gauge Sites</h1>
 
 <!===============================Create Table=========================================>
     <table border=1>
