@@ -13,10 +13,7 @@ PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN"
 		<environment id="development">
 			<transactionManager type="JDBC" />
 			<dataSource type="JNDI">
-<!--				 Tomcat :-->
                                 <property name="data_source" value="java:comp/env/jdbc/wsdb01" />
-<!--                               Glassfish:-->
-<!--                               <property name="data_source" value="jdbc/wsdb01" />-->
 			</dataSource>
 		</environment>
 	</environments>

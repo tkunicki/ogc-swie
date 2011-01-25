@@ -362,7 +362,7 @@ public class WFSServlet extends HttpServlet {
 		XMLStreamReaderDAO xmlStreamReaderDAO = null;
 		ApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
 		if (ac != null) {
-			Object o = ac.getBean("xmlStreamReaderDAO_mysql");
+			Object o = ac.getBean("xmlStreamReaderDAO");
 			if (o != null && o instanceof XMLStreamReaderDAO) {
 				xmlStreamReaderDAO = (XMLStreamReaderDAO)o;
 			}

@@ -28,7 +28,7 @@
     	</constructor-arg>
    </bean>
     
-    <bean id="xmlStreamReaderDAO_mysql" class="gov.usgs.webservices.ibatis.XMLStreamReaderDAO">
+    <bean id="xmlStreamReaderDAO" class="gov.usgs.webservices.ibatis.XMLStreamReaderDAO">
         <constructor-arg ref="sqlSessionFactory" />
     </bean>
     
