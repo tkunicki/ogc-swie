@@ -129,7 +129,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		<result
 			property="wfs:member/om:featureOfInterest/wml2:WaterMonitoringPoint/^sf:sampledFeature#xlink:ref=%s"
 			column="state_site"
-			typeHandler="StateCodeTypeHandler" />
+			typeHandler="USGS_URL_TypeHandler" />
 		<result
 			property="wfs:member/om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/^gml:Point#gml:id=st1p"
 			column="STATION_NM"

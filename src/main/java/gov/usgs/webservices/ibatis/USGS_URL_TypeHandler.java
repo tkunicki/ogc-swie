@@ -12,18 +12,18 @@ import java.util.TimeZone;
  *
  * @author lkranendonk
  */
-public class StateCodeTypeHandler implements TypeHandler {
+public class USGS_URL_TypeHandler implements TypeHandler {
 
-    public StateCodeTypeHandler() {
+    public USGS_URL_TypeHandler() {
     }
 
     @Override
     public String getResult(ResultSet rs, String columnName) throws SQLException {
         String state_cd = rs.getString(columnName);
-        return getPostalCodeFromSQL(state_cd);
+        return getURLFromSQL(state_cd);
     }
 
-    public static String getPostalCodeFromSQL(String state_cd) {
+    public static String getURLFromSQL(String state_cd) {
 
         String[] state_nm = {"AL","AK","AS","AZ", "AR", "CA", "XX", "CO", "CT", "DE", "DC", "FL", "GA", "GU",
             "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO",

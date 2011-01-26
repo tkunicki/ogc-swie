@@ -34,7 +34,7 @@
 
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <title>USGS Gauges</title>
+    <title>OGC Services SWIE</title>
     <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAPDUET0Qt7p2VcSk6JNU1sBSM5jMcmVqUpI7aqV44cW1cEECiThQYkcZUPRJn9vy_TWxWvuLoOfSFBw" type="text/javascript"></script>
     <script type="text/javascript" src="jquery-1.4.4.js">
         function httpBodyPost(url, reqTextId) {
@@ -149,15 +149,9 @@
                                 </li>
 
                                 <li><strong>Additional Services</strong>
-                                    <dl>
-                                                <dt>Larger Google Map (currently doesn't work in IE)</dt>
-                                                <dd><a href="<%=baseURL%>/GoogleMap/GoogleMap.jsp">Google Map</a></dd>
-                                    </dl>
- 
-                                    <p></p>
                                     <dl>Required External Schemas<br />
                                         <dd>
-                                            <a href="WaterML2_Schemas.jsp">WaterML2 Schemas</a>
+                                            <a href="WaterML2_Schemas.jsp">WaterML2 and other external schemas</a>
                                         </dd>
                                     </dl>
                                     <p></p>
@@ -166,8 +160,13 @@
                     </ul>
                  </td>            
 
-        <td width = 500 valign="top" style="text-decoration: underline; color: #4444ff;">
+        <td width = 500 valign="top" >
            <div id="map" style="width: 460px; height: 360px"></div>
+           Markers represent USGS gauging stations on the Mississippi, Delaware, Fox, Wisconsin, Illinois, and Red River of the North. 
+           Clicking on a marker brings up a box with the station name, and links to GetObservation, GetFeature, and the public USGS website.<br />
+           <p></p>
+           <a href="<%=baseURL%>/GoogleMap/GoogleMap.jsp">Larger Google Map</a>
+
         </td>
       </tr>
     </table>
@@ -202,8 +201,6 @@
       gicons["IA"] = new GIcon(G_DEFAULT_ICON, "yellow_MarkerA.png");
       gicons["ND"] = new GIcon(G_DEFAULT_ICON, "purple_MarkerA.png");
       gicons["SD"] = new GIcon(G_DEFAULT_ICON, "brown_MarkerA.png");
-    //Should figure out a default marker
-      //gicons["ca01"] = new GIcon(G_DEFAULT_ICON, "blue_MarkerB.png");
 
 // ========================Create a marker============================================
 
@@ -322,35 +319,27 @@
         }
 
         var base = '<%=baseURL%>';
-        //var test = base.length - 10;    // Gets rid of /GoogleMap/ from baseURL
-        //var base_url = base.substring(0,test);
-
         for (j = 0; j < (i - 1); j++) {
             if (latitude[j] == latitude[j + 1] & longitude[j] == longitude[j + 1] & timeDate[j] == timeDate[j + 1]) {
-                var WML2_link = '<a href =' + base + '/wml2?request=GetObservation&featureId=' + siteCode[j] + '>GetObservation from this site</a>';
-                var USGS_link = '<a href = "http://waterdata.usgs.gov/' + State_code[j] + '/nwis/uv/?site_no=' + siteCode[j] + '&PARAmeter_cd=00065" >' + siteName[j] + '</a>';
-                var wfs_link = '<a href =' + base + '/wfs?request=GetFeature&featureId=' + siteCode[j] + '&typename=swml:Discharge>GetFeature from this site</a>';
-                var information = (USGS_link + '<br>' + WML2_link + '<br>' + wfs_link + '<br>' + USGS_link);
+                var WML2_link = '<a href =' + base + '/wml2?request=GetObservation&featureId=' + siteCode[j] + '>GetObservation</a>';
+                var USGS_link = '<a href = "http://waterdata.usgs.gov/' + State_code[j] + '/nwis/uv/?site_no=' + siteCode[j] + '&PARAmeter_cd=00065" >' + siteCode[j] + '</a>';
+                var wfs_link = '<a href =' + base + '/wfs?request=GetFeature&featureId=' + siteCode[j] + '&typename=swml:Discharge>GetFeature</a>';
+                var information = (siteName[j] + '<br>' + WML2_link + '<br>' + wfs_link + '<br>USGS Site: ' + USGS_link);
                 var point = new GLatLng(latitude[j], longitude[j]);
 
-                var data_tab_next = value[j + 1] + ' ' + variableName[j + 1] + '<br>';
-                var data_tab = data_tab_next + value[j] + ' ' + variableName[j] + '<br>' + timeDate[j];
-
-                var marker_PA = createMarker(point, information, siteName[j], State_code[j]);
-                map.addOverlay(marker_PA);
+                var marker = createMarker(point, information, siteName[j], State_code[j]);
+                map.addOverlay(marker);
                 j++;
             }
             else {
-                var WML2_link = '<a href =' + base + '/wml2?request=GetObservation&featureId=' + siteCode[j] + '>GetObservation from this site</a>';
-                var wfs_link = '<a href =' + base + '/wfs?request=GetFeature&featureId=' + siteCode[j] + '&typename=swml:Discharge>GetFeature from this site</a>';
-                var USGS_link = '<a href = "http://waterdata.usgs.gov/' + State_code[j] + '/nwis/uv/?site_no=' + siteCode[j] + '&PARAmeter_cd=00065" >' + siteName[j] + '</a>';
-                var information = (USGS_link + '<br>' + WML2_link + '<br>' + wfs_link);
+                var WML2_link = '<a href =' + base + '/wml2?request=GetObservation&featureId=' + siteCode[j] + '>GetObservation</a>';
+                var wfs_link = '<a href =' + base + '/wfs?request=GetFeature&featureId=' + siteCode[j] + '&typename=swml:Discharge>GetFeature</a>';
+                var USGS_link = '<a href = "http://waterdata.usgs.gov/' + State_code[j] + '/nwis/uv/?site_no=' + siteCode[j] + '&PARAmeter_cd=00065" >' + siteCode[j] + '</a>';
+                var information = (siteName[j] + '<br>' + WML2_link + '<br>' + wfs_link + '<br>USGS Site: ' + USGS_link);
                 var point = new GLatLng(latitude[j], longitude[j]);
 
-                var data_tab = value[j] + ' ' + variableName[j] + '<br>' + timeDate[j] + '<br>';
-
-                var marker_PA = createMarker(point, information, siteName[j], State_code[j]);
-                map.addOverlay(marker_PA);
+                var marker = createMarker(point, information, siteName[j], State_code[j]);
+                map.addOverlay(marker);
             }
         }
 
