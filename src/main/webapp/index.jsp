@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <% String baseURL = request.getRequestURL().toString().replaceAll("/[^/]*$", "");%>
+<%@ page  language="java" import="java.util.*,java.text.*"%>
+<%
+    Calendar ca = new GregorianCalendar();
+    //ca = ca.set(Calendar.DATE, -7)
+    int Day=ca.get(Calendar.DATE);
+    int Year=ca.get(Calendar.YEAR);
+    int Month=ca.get(Calendar.MONTH)+1;
+    int old_Day = Day - 7;
+    if (old_Day < 0) {
+        old_Day = 1;
+        };
+    String Month_str = "";
+    if (Month < 10) {
+        Month_str = '0' + Integer.toString(Month);
+        }
+    else {
+           Month_str = Integer.toString(Month);
+       };
+    String Day_str = "";
+    if (old_Day < 10) {
+        Day_str = '0' + Integer.toString(old_Day);
+        }
+    else {
+        Day_str = Integer.toString(old_Day);
+       };
+    String Old_Date = Integer.toString(Year) + '-' + Month_str + '-' + Day_str;
+
+ %>
+
+
+
 <html>
 	<head>
 		<title>OGC Surface Water Interoperability Experiment (USGS node)</title>
@@ -23,67 +54,47 @@
 		</script>
 	</head>
 	<body>
-		<h1>Services Implemented - SWIE</h1>
+               <h1>Services Implemented</h1>
                     <ul>
-                                <li><strong>WaterML2 Service</strong> at <%=baseURL%>/wml2
-                                    <p></p>
+                                <li> <strong>Warning </strong>
+                                    <dt> SOS and other caveats go here....</dt>
+
+                                </li>
+                                <p></p>
+                                <li><strong>Sensor Observation Service</strong>
                                     <dl>
-                                        <dt>WaterMoniteringObservation<i> ...validates, but might not make sense</i></dt>
-                                        <dd>WaterMoniteringObservation by feature ID:<br />
+                                        <dt>GetObservation</dt>
+                                        <dd>Observation by feature ID:<br />
                                             <a href="<%=baseURL%>/wml2?request=GetObservation&featureId=01446500"><%=baseURL%>/wml2?request=GetObservation&featureId=01446500</a>
                                         </dd>
                                     </dl>
                                     <dl>
-                                        <dd>WaterMoniteringObservation by feature ID with beginTime:<br />
-                                            <a href="<%=baseURL%>/wml2?request=GetObservation&featureId=01446500&beginPosition=2011-01-13"><%=baseURL%>/wml2?request=GetObservation&featureId=01446500&beginPosition=2011-01-13</a>
+                                        <dd>Observation by feature ID with beginTime:<br />
+                                            <a href="<%=baseURL%>/wml2?request=GetObservation&featureId=01446500&beginPosition=<%=Old_Date%>"><%=baseURL%>/wml2?request=GetObservation&featureId=01446500&beginPosition=<%=Old_Date%></a>
                                         </dd>
                                     </dl>
-                                    <p></p>
                                     <dl>
-                                        Required Schemas<br />
-                                        <dd>
-                                            <a href="WaterML2_Schemas.jsp">WaterML2 Schemas</a>
-                                        </dd>
-                                    </dl>
-                                    <p></p>
-
-                                        
-                                <li><strong>Web Mapping Service</strong> at http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/wms
-                                    <p></p>
+						<dt>GetCapabilities</dt>
+						<dd><a href="<%=baseURL%>/sos?request=GetCapabilities"><%=baseURL%>/sos?request=GetCapabilities</a></dd>
+				    </dl>
                                     <dl>
-                                                <dt>GetMap Google (currently doesn't work in IE, uses a static XML file)</dt>
-                                                <dd><a href="<%=baseURL%>/GoogleMap/GoogleMap.jsp">Google Map</a></dd>
-                                    </dl>
+						<dt>DescribeSensor</dt>
+						<dd><a href="<%=baseURL%>/sos?request=DescribeSensor"><%=baseURL%>/sos?request=DescribeSensor</a></dd>
+				    </dl>
+                                </li>
                                     <p></p>
-                                    <dl> GeoServer data:</dl>
-
+                                                                          
+                                <li><strong>Web Feature Service</strong>
                                     <dl>
-                                                <dd>GetFeature: All features:<br />
-                                                    <a href="http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=upload:SWIE_SITES&maxFeatures=50 ">http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=upload:SWIE_SITES&maxFeatures=50 </a></dd>
-                                    </dl>
-
-				    <dl>
-						<dd>GetMap<br />
-                                                    <a href="http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/wms?service=WMS&version=1.1.0&request=GetMap&layers=upload:SWIE_SITES&styles=&bbox=-92.8,37.216,-74.697,45.831&width=693&height=330&srs=EPSG:4269&format=application/openlayers
-">  http://igsarmewfsbbh.er.usgs.gov:8080/geoserver/wms?service=WMS&version=1.1.0&request=GetMap&layers=upload:SWIE_SITES&styles=&bbox=-92.8,37.216,-74.697,45.831&width=693&height=330&srs=EPSG:4269&format=application/openlayers
- </a></dd>
-                                    </dl>
-
-                                    <p></p>
-				</li>
-                                        
-                                <li><strong>Web Feature Service</strong> at <%=baseURL%>/wfs
-                                    <p></p>
-                                    <dl>
-						<dt>GetCapabilities<i> ...validates, but might not make sense</i></dt>
+						<dt>GetCapabilities</dt>
 						<dd><a href="<%=baseURL%>/wfs?request=GetCapabilities"><%=baseURL%>/wfs?request=GetCapabilities</a></dd>
 				    </dl>
                                     <dl>
-						<dt>DescribeFeatureType<i> ...work in progress</i></dt>
+						<dt>DescribeFeatureType</dt>
 						<dd><a href="<%=baseURL%>/wfs?request=DescribeFeatureType"><%=baseURL%>/wfs?request=DescribeFeatureType</a></dd>
 				    </dl>
 
-                                    <dt>GetFeature <i>could use some guidance</i></dt>
+                                    <dt>GetFeature</dt>
                                     <dl>
                                         <dd>All features related to SWIE:<br />
                                         <a href="<%=baseURL%>/wfs?request=GetFeature&typename=swml:Discharge"><%=baseURL%>/wfs?request=GetFeature&typename=swml:Discharge</a>
@@ -127,20 +138,23 @@
                                     <p></p>
                                 </li>
 
-                                <li><strong>Sensor Observation Service</strong> at <%=baseURL%>/sos
-                                    <p></p>
+                                <li><strong>Web Mapping Service</strong>
                                     <dl>
-						<dt>GetCapabilities<i> ...work in progress</i></dt>
-						<dd><a href="<%=baseURL%>/sos?request=GetCapabilities"><%=baseURL%>/sos?request=GetCapabilities</a></dd>
-				    </dl>
-                                    <dl>
-						<dt>DescribeSensor<i> ...work in progress</i></dt>
-						<dd><a href="<%=baseURL%>/sos?request=DescribeSensor"><%=baseURL%>/sos?request=DescribeSensor</a></dd>
-				    </dl>
+                                                <dt>GetMap Google (currently doesn't work in IE)</dt>
+                                                <dd><a href="<%=baseURL%>/GoogleMap/GoogleMap.jsp">Google Map</a></dd>
+                                    </dl>
                                     <p></p>
+				</li>
+                                    
+                                <li><strong>External Schema</strong>
+                                    <dl>Required Schemas<br />
+                                        <dd>
+                                            <a href="WaterML2_Schemas.jsp">WaterML2 Schemas</a>
+                                        </dd>
+                                    </dl>
+                                    <p></p>
+                                    
                                 </li>
-
-
                     </ul>
 	</body>
 </html>

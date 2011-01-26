@@ -1,7 +1,7 @@
-<sos:Capabilities xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:oost="http://www.oostethys.org/schemas/0.1.0/oostethys" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:ogc="http://www.opengis.net/ogc" xsi:schemaLocation="http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosGetCapabilities.xsd" version="1.0.0">
+<sos:Capabilities xmlns:sos="http://www.opengis.net/sos/2.0" xmlns:oost="http://www.oostethys.org/schemas/0.1.0/oostethys" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:ogc="http://www.opengis.net/ogc" xsi:schemaLocation="http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
 	<ows:ServiceIdentification>
 		<ows:Title>USGS Surface Water Interoperability Experiment Sensor Observation Service</ows:Title>
-		<ows:Abstract>This is a minimal implementation of SOS 1.0.0, in progress, based on USGS NWIS data</ows:Abstract>
+		<ows:Abstract>This is a minimal implementation of SOS 2.0.0, in progress, based on USGS NWIS data</ows:Abstract>
 		<ows:Keywords>
 			<ows:Keyword>WFS</ows:Keyword>
 			<ows:Keyword>Surface Water</ows:Keyword>
@@ -14,7 +14,7 @@
 			<ows:Keyword>Water Level</ows:Keyword>
 		</ows:Keywords>
 		<ows:ServiceType codeSpace="http://opengeospatial.net">OGC:SOS</ows:ServiceType>
-		<ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
+		<ows:ServiceTypeVersion>2.0.0</ows:ServiceTypeVersion>
 		<ows:Fees>None</ows:Fees>
 		<ows:AccessConstraints>None</ows:AccessConstraints>
 	</ows:ServiceIdentification>
@@ -60,18 +60,6 @@
 					<ows:Value>1.0.0</ows:Value>
 				</ows:AllowedValues>
 			</ows:Parameter>
-			<!-- TODO implement this
-			<ows:Parameter name="Sections">
-				<ows:AllowedValues>
-					<ows:Value>ServiceIdentification</ows:Value>
-					<ows:Value>ServiceProvider</ows:Value>
-					<ows:Value>OperationsMetadata</ows:Value>
-					<ows:Value>Contents</ows:Value>
-					<ows:Value>Filter_Capabilities</ows:Value>
-					<ows:Value>All</ows:Value>
-				</ows:AllowedValues>
-			</ows:Parameter>
-			 -->
 		</ows:Operation>
 		<ows:Operation name="GetObservation">
 			<ows:DCP>
@@ -82,7 +70,8 @@
 			</ows:DCP>
 			<ows:Parameter name="version">
 				<ows:AllowedValues>
-					<ows:Value>1.0.0</ows:Value>
+					<ows:Value>2.0.0</ows:Value>
+                                        <ows:Value>1.0.0</ows:Value>
 				</ows:AllowedValues>
 			</ows:Parameter>
 			<ows:Parameter name="service">
@@ -97,11 +86,8 @@
 			</ows:Parameter>
 			<ows:Parameter name="responseFormat">
 				<ows:AllowedValues>
-					<ows:Value/>
-					<ows:Value>text/xml;subtype="om/1.0.0"</ows:Value>
-					<!-- TODO: implement this
-					<ows:Value>text/xml;subtype="om/2.0.0";enc=block</ows:Value>
-					-->
+					<ows:Value>text/xml;subtype="om/2.0.0"</ows:Value>
+                                        <ows:Value>text/xml;subtype="om/1.0.0"</ows:Value>
 				</ows:AllowedValues>
 			</ows:Parameter>
 			<ows:Parameter name="resultType">
@@ -125,8 +111,8 @@
 		<ows:Operation name="GetObservationById">
 			<ows:DCP>
 				<ows:HTTP>
-					<ows:Get xlink:href="${base.url}/sos/sos"/>
-					<ows:Post xlink:href="${base.url}/sos/sos"/>
+					<ows:Get xlink:href="${base.url}/sos"/>
+					<ows:Post xlink:href="${base.url}/sos"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="version">
@@ -148,9 +134,7 @@
 				<ows:AllowedValues>
 					<ows:Value/>
 					<ows:Value>text/xml;subtype="om/1.0.0"</ows:Value>
-					<!-- TODO: implement this
 					<ows:Value>text/xml;subtype="om/2.0.0";enc=block</ows:Value>
-					-->
 				</ows:AllowedValues>
 			</ows:Parameter>
 			<ows:Parameter name="resultType">
@@ -174,8 +158,8 @@
 		<ows:Operation name="DescribeSensor">
 			<ows:DCP>
 				<ows:HTTP>
-					<ows:Get xlink:href="${base.url}/sosnwis/sos"/>
-					<ows:Post xlink:href="${base.url}/sosnwis/sos"/>
+					<ows:Get xlink:href="${base.url}/sos"/>
+					<ows:Post xlink:href="${base.url}/sos"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="version">
@@ -193,20 +177,6 @@
 					<ows:Value>DescribeSensor</ows:Value>
 				</ows:AllowedValues>
 			</ows:Parameter>
-			<!--
-			<ows:Parameter name="outputFormat">
-				<ows:AllowedValues>
-					<ows:Value>text/xml;subtype="sensorML/1.0.1"</ows:Value>
-				</ows:AllowedValues>
-			</ows:Parameter>
-			<ows:Parameter name="procedure">
-				<ows:AllowedValues>
-					<ows:Value>urn:mbari:org</ows:Value>
-					<ows:Value>uri:mbari:org:mooring:m2</ows:Value>
-					<ows:Value>urn:mbari:org:device:1455</ows:Value>
-				</ows:AllowedValues>
-			</ows:Parameter>
--->
 		</ows:Operation>
 	</ows:OperationsMetadata>
 	<sos:Filter_Capabilities>
@@ -233,16 +203,7 @@
 		</ogc:Temporal_Capabilities>
 		<ogc:Scalar_Capabilities>
 			<ogc:LogicalOperators/>
-			<!-- TODO: implement these
-			<ogc:ComparisonOperators>
-				
-				<ogc:ComparisonOperator>LessThan</ogc:ComparisonOperator>
-				<ogc:ComparisonOperator>LessThanEqualTo</ogc:ComparisonOperator>
-				<ogc:ComparisonOperator>Between</ogc:ComparisonOperator>
-				<ogc:ComparisonOperator>GreaterThan</ogc:ComparisonOperator>
-				<ogc:ComparisonOperator>GreaterThanEqualTo</ogc:ComparisonOperator>
-			</ogc:ComparisonOperators>
-		 -->
+
 		</ogc:Scalar_Capabilities>
 		<ogc:Id_Capabilities>
                         <ogc:EID/>
@@ -264,7 +225,7 @@
 				<sos:time>
 					<gml:TimePeriod gml:id="timePeriod3">
 						<gml:beginPosition>1900-01-01T12:00:00Z</gml:beginPosition>
-						<!-- TODO make the end time dynamic -->
+
 						<gml:endPosition indeterminatePosition='unknown'/>
 					</gml:TimePeriod>
 				</sos:time>
