@@ -284,7 +284,6 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 
                 nwisweb.SITEFILE a,
                 nwisweb.TZ b
-               <!-- WHERE 1 = 0-->
 
               <choose>
                     <when test="featureId != null">

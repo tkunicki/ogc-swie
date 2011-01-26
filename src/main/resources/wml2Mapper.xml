@@ -191,7 +191,6 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="om:result/wml2:Timeseries/wml2:domainExtent#xlink:href=ts_period"
 			column="station_nm"
 			javaType="string" />
-<!-- TODO: figure out if this should be something from the database, if not, either take it out or figure out a better way to put in a constant -->
                 <result
 			property="om:result/wml2:Timeseries/wml2:aggregationDuration=P15M"
 			column="station_nm"
@@ -201,11 +200,17 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="units"
 			javaType="string" />
 		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:href=http://www.opengis.net/WaterML2.0/def/quality/unchecked"
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:href=http://waterdata.usgs.gov/nwis/help/?provisional
+"
 			column="station_nm"
 			javaType="string" />
 		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:title=unchecked data"
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:title=provisional data"
+			column="station_nm"
+			javaType="string" />
+		<result
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality=The data you have obtained from this automated U.S. Geological Survey database
+have not received Director's approval and as such are provisional and subject to revision.  The data are released on the condition that neither the USGS nor theUnited States Government may be held liable for any damages resulting from its use."
 			column="station_nm"
 			javaType="string" />
 		<result
@@ -235,7 +240,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 <!-- Make this ice/other warning flags? -->
                 <result
 			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:comment"
-			column="parameter_nm"
+			column="result_cd"
 			javaType="string" />
                         
 	</resultMap>
@@ -258,7 +263,8 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		CONCAT(CONVERT(DATE_FORMAT(g.result_dt,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) as currentPosition,
 		g.result_va as value,
 		d.parameter_units as units,
-		d.parameter_nm
+                g.result_cd
+<!--                c.table_cd-->
 		
 		FROM
 		    (select b.site_id,
@@ -268,25 +274,14 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		    FROM nwisweb.UV a,
 		    nwisweb.SITEFILE b
 		    
-		    <!--WHERE b.site_no ='01427207'-->
-              <choose>
+                <choose>
                     <when test="featureId != null">
                         WHERE b.site_no IN (#{featureId[0]})
                     </when>
-                    <!--  I'm not sure this is a good idea
-                    <when test="west != null">
-				WHERE SDO_FILTER(s.geom,
-						SDO_GEOMETRY(2003, 8307, NULL,
-							SDO_ELEM_INFO_ARRAY(1,1003,3),
-							SDO_ORDINATE_ARRAY(#{west[0]},#{south[0]},#{east[0]},#{north[0]})
-                                                            )
-				 		) = 'TRUE'
-		    </when>	-->
 
                     <otherwise>
                         WHERE b.site_no IN ('01427207')
                     </otherwise>
-
                 </choose>
 
                 <if test="beginPosition != null">
@@ -299,14 +294,21 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 
                         AND a.site_id = b.site_id
                         GROUP BY a.site_id) s,
-		    
-		nwisweb.UV g,
+
+<!--		nwisweb.DD_STATUS c,-->
 		nwisweb.PARAM_REF d,
 		nwisweb.UV_DD_CONF e,
-		nwisweb.SITEFILE f
-		
-		WHERE s.site_id = g.site_id and f.site_id = s.site_id and e.site_id = s.site_id
-		AND d.parameter_cd = e.parameter_cd and e.dd_nu = g.dd_nu and e.parameter_cd = '00060'
+		nwisweb.SITEFILE f,
+                nwisweb.UV g
+                
+		WHERE s.site_id = g.site_id 
+                AND f.site_id = s.site_id
+                AND e.site_id = s.site_id
+		AND d.parameter_cd = e.parameter_cd
+                AND e.dd_nu = g.dd_nu
+                AND e.parameter_cd = '00060'
+<!--                AND c.site_id = g.site_id-->
+<!--                AND c.dd_nu = g.dd_nu-->
 
                 <if test="beginPosition != null">
                         AND g.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{beginPosition[0]}, '%Y-%m-%d')
