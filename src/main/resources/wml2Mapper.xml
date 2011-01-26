@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
- <!DOCTYPE mapper
+<!DOCTYPE mapper
 PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <mapper namespace="wml2Mapper">
@@ -89,7 +89,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			javaType="string" />
 		<result
 			property="gml:name"
-			column="station_nm"
+			column="FeatureID"
 			javaType="string" />
 
 		<result
@@ -150,7 +150,6 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="om:featureOfInterest/wml2:WaterMonitoringPoint#gml:id=ID_1"
 			column="station_nm"
 			javaType="string" />
-<!-- TODO: make this an actual website, which needs the state code, might have to do down below -->
                 <result
                         property="om:featureOfInterest/wml2:WaterMonitoringPoint/sf:sampledFeature#xlink:href=%s"
  			column="state_site"
@@ -178,8 +177,8 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			javaType="string" />
 		<result
 			property="om:featureOfInterest/wml2:WaterMonitoringPoint/wml2:timeZone/wml2:TimeZone/wml2:zoneOffset"
-			column="beginPosition"
-			typeHandler="TimeZoneTypeHandler" />
+			column="result_tz_offset"
+			javaType="string" />
                 <result
 			property="om:featureOfInterest/wml2:WaterMonitoringPoint/wml2:timeZone/wml2:TimeZone/wml2:zoneAbbreviation"
 			column="zoneAbbreviation"
@@ -246,8 +245,10 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 	 -->
 	<select id="observationsSelect" parameterType="map" resultMap="observationsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 		select f.station_nm,
+                CONCAT('USGS ',CONVERT(f.site_no,CHAR),' ',f.station_nm) as FeatureID,
                 f.site_no,
                 f.tz_cd as zoneAbbreviation,
+                g.result_tz_offset,
                 CONCAT(f.state_cd,'.',f.site_no) as state_site,
 		STR_TO_DATE(SYSDATE(),'%Y-%m-%d') as dateStamp,
                 CONCAT(DATE_FORMAT(SYSDATE(),'%Y-%m-%dT%H:%i'),f.tz_cd) as currentTimeStamp,

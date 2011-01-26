@@ -23,42 +23,52 @@
 		</script>
 	</head>
   <body>
-    <dt><strong>WaterML 2.0 Schemas: </strong></dt>
+
+      <p />
+      <dt><strong>WaterML 2.0 Schemas: </strong></dt>
         <dd>
-            <a href="<%=baseURL%>/schemas/waterml2.xsd">WaterML2.xsd</a>
+            <a href="http://services.iwis.csiro.au/WaterML2Validation/schemas/waterml_2/waterml2.xsd">WaterML2.xsd</a>
         </dd>
         <dd>
-            <a href="<%=baseURL%>/schemas/waterSampling.xsd">waterSampling.xsd</a>
+            <a href="http://services.iwis.csiro.au/WaterML2Validation/schemas/waterml_2/waterSampling.xsd">waterSampling.xsd</a>
         </dd>
         <dd>
-            <a href="<%=baseURL%>/schemas/waterResultsCoverage.xsd">waterResultsCoverage.xsd</a>
+            <a href="http://services.iwis.csiro.au/WaterML2Validation/schemas/waterml_2/waterResultsCoverage.xsd">waterResultsCoverage.xsd</a>
         </dd>
         <dd>
-            <a href="<%=baseURL%>/schemas/waterProperty.xsd">waterProperty.xsd</a>
+            <a href="http://services.iwis.csiro.au/WaterML2Validation/schemas/waterml_2/waterProperty.xsd">waterProperty.xsd</a>
         </dd>
         <dd>
-            <a href="<%=baseURL%>/schemas/waterProcedure.xsd">waterProcedure.xsd</a>
+            <a href="http://services.iwis.csiro.au/WaterML2Validation/schemas/waterml_2/waterProcedure.xsd">waterProcedure.xsd</a>
         </dd>
         <dd>
-            <a href="<%=baseURL%>/schemas/waterObservation.xsd">waterObservation.xsd</a>
+            <a href="http://services.iwis.csiro.au/WaterML2Validation/schemas/waterml_2/waterObservation.xsd">waterObservation.xsd</a>
         </dd>
         <dd>
-            <a href="<%=baseURL%>/schemas/WaterCollection.xsd">WaterCollection.xsd</a>
+            <a href="http://services.iwis.csiro.au/WaterML2Validation/schemas/waterml_2/WaterCollection.xsd">WaterCollection.xsd</a>
         </dd>
         <dd>
-            <a href="<%=baseURL%>/schemas/timeseriesLite.xsd">timeseriesLite.xsd</a>
+            <a href="http://services.iwis.csiro.au/WaterML2Validation/schemas/waterml_2/timeseriesLite.xsd">timeseriesLite.xsd</a>
         </dd>
+    <p />
    <dt><strong>Additional externally required schemas:</strong></dt>
         <dd>
-            <a href="<%=baseURL%>/schemas/observation.xsd">observation.xsd</a>
+            OM 2.0 <br />
+            <dd><a href="http://services.iwis.csiro.au/WaterML2Validation/schemas/externalSchemas/SCHEMAS_OPENGIS_NET/om/2.0/observation.xsd">observation.xsd</a></dd>
+        </dd>
+
+        <dd>
+            Sampling 2.0 <br />
+            <dd><a href="http://services.iwis.csiro.au/WaterML2Validation/schemas/externalSchemas/SCHEMAS_OPENGIS_NET/sampling/2.0/samplingFeature.xsd">samplingFeature.xsd</a></dd>
         </dd>
         <dd>
-            <a href="<%=baseURL%>/schemas/samplingFeature.xsd">samplingFeature.xsd</a>
+            samplingSpatial 2.0 <br />
+            <dd><a href="http://services.iwis.csiro.au/WaterML2Validation/schemas/externalSchemas/SCHEMAS_OPENGIS_NET/samplingSpatial/2.0/spatialSamplingFeature.xsd">spatialSamplingFeature.xsd</a></dd>
         </dd>
-        <dd>
-            <a href="<%=baseURL%>/schemas/spatialSamplingFeature.xsd">spatialSamplingFeature.xsd</a>
-        </dd>
-        <p></p>
+        <p />
+        <dt><strong>Notes:</strong> <br />
+            The links take you to an external site. Last modified Jan. 26, 2011.
+
 
   </body>
 </html>

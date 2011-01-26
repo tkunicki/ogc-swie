@@ -5,7 +5,6 @@ PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN"
 	<typeAliases>
 		<typeAlias alias="XMLMap" type="gov.usgs.webservices.ibatis.stax.XMLMapStreamMarshaller"/>
 		<typeAlias alias="ISODateTimeTypeHandler" type="gov.usgs.webservices.ibatis.ISODateTimeTypeHandler"/>
-                <typeAlias alias="TimeZoneTypeHandler" type="gov.usgs.webservices.ibatis.TimeZoneTypeHandler"/>
                 <typeAlias alias="USGS_URL_TypeHandler" type="gov.usgs.webservices.ibatis.USGS_URL_TypeHandler"/>
 	</typeAliases>
 

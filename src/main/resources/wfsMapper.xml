@@ -104,8 +104,6 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="^!{wfs:boundedBy/gml:Envelope#srsName=urn:ogc:def:crs:EPSG::4326"
 			column="Constant"
 			javaType="string" />
-
-<!-- TODO: get a dynamic bounding box-->
                 <result
 			property="wfs:boundedBy/gml:Envelope/gml:lowerCorner"
 			column="lower"
@@ -152,15 +150,15 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			javaType="string" />
 		<result
 			property="wfs:member/om:featureOfInterest/wml2:timeZone/wml2:TimeZone/^wml2:zoneOffset"
-			column="currentPosition"
-			typeHandler="TimeZoneTypeHandler" />
+			column="tz_utc_offset_tm"
+			javaType="string" />
 		<result
 			property="}wfs:member/om:featureOfInterest/wml2:timeZone/wml2:TimeZone/^wml2:zoneAbbreviation"
 			column="tz_cd"
 			javaType="string" />
 
         <!-- removed per NLB 05.24.2010, will be put back in later but still needs output validation... -->
-		<!--<association property="UNUSED" column="FEATURE_ID" select="wfsRelatedObservationSelect" javaType="list" />-->
+	<!--<association property="UNUSED" column="FEATURE_ID" select="wfsRelatedObservationSelect" javaType="list" />-->
 <!--
 		<result
 			property="wfs:member/om:featureOfInterest/sa:position/gml:Point#srsName=EPSG:4326"
@@ -241,7 +239,8 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 'test' as Constant,
                 a.tz_cd,
                 s.lowerPosition AS lower,
-                s.upperPosition AS upper
+                s.upperPosition AS upper,
+                b.tz_utc_offset_tm
 
 		FROM (           
                     <choose>
@@ -283,7 +282,8 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                       </choose>                             
                 ) s,
 
-                nwisweb.SITEFILE a
+                nwisweb.SITEFILE a,
+                nwisweb.TZ b
                <!-- WHERE 1 = 0-->
 
               <choose>
@@ -309,6 +309,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                     </otherwise>
                 </choose>
 
+                AND a.tz_cd = b.tz_cd
 <!---		<trim prefix="OR (" suffix=")" prefixOverrides="AND">
 			<if test="bBox != null">
                             AND a.DEC_LONG_VA BETWEEN #{bBox[0]} AND #{bBox[2]} AND a.DEC_LAT_VA BETWEEN #{bBox[1]} AND #{bBox[3]}
