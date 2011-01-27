@@ -129,7 +129,6 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="om:resultTime/gml:TimeInstant/gml:timePosition"
 			column="currentTimeStamp"
 			typeHandler="ISODateTimeTypeHandler" />
-<!-- TODO: look for a procedure: process used to make the observation.  The procedure may be the sensor type or specific instance-->
                 <result
 			property="om:procedure#xlink:href=http://www.usgs.gov"
 			column="station_nm"
@@ -191,7 +190,6 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="om:result/wml2:Timeseries/wml2:domainExtent#xlink:href=ts_period"
 			column="station_nm"
 			javaType="string" />
-<!-- TODO: figure out if this should be something from the database, if not, either take it out or figure out a better way to put in a constant -->
                 <result
 			property="om:result/wml2:Timeseries/wml2:aggregationDuration=P15M"
 			column="station_nm"
@@ -201,11 +199,15 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="units"
 			javaType="string" />
 		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:href=http://www.opengis.net/WaterML2.0/def/quality/unchecked"
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:href=http://waterdata.usgs.gov/nd/nwis/help/?provisional"
 			column="station_nm"
 			javaType="string" />
 		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:title=unchecked data"
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:title=provisional"
+			column="station_nm"
+			javaType="string" />
+		<result
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality=The data you have obtained from this automated U.S. Geological Survey database have not received Director's approval and as such are provisional and subject to revision.  The data are released on the condition that neither the USGS nor the United States Government may be held liable for any damages resulting from its use."
 			column="station_nm"
 			javaType="string" />
 		<result
