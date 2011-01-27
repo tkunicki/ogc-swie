@@ -60,14 +60,18 @@
   <body onunload="GUnload()">
 
 <!===============================Create Table=========================================>
-    <h1>Services Implemented</h1>
+    <h1>Services Implemented 1.0</h1>
     <table border=0>
         <tr>
           <td>
 
             <ul>
                 <li> <strong>Warning </strong>
-                    <dt> SOS and other caveats go here....</dt>
+                    <dt> The services provided on this page are primarily intended for surface water interoperability experiments for implementing WaterML2
+                    and other trial OGC standards such as SOS 2.0.  Since these standards are in flux, the output formatting on this page may change at any time.
+                    There is no guarantee that the output will validate with the latest standards.
+                    Check the version and log at the bottom of the page for changes and news.
+                    </dt>
 
                 </li>
                 <p></p>
@@ -157,6 +161,13 @@
                                     <p></p>
                                     
                                 </li>
+                                <li><strong>Log</strong>
+                                    <dl>Version 1.0 January 28, 2011 <br />
+                                        <dd> Initial release </dd>
+                                    </dl>
+                                    <p></p>
+
+                                </li>
                     </ul>
                  </td>            
 
@@ -164,6 +175,7 @@
            <div id="map" style="width: 460px; height: 360px"></div>
            Markers represent USGS gauging stations on the Mississippi, Delaware, Fox, Wisconsin, Illinois, and Red River of the North. 
            Clicking on a marker brings up a box with the station name, and links to GetObservation, GetFeature, and the public USGS website.<br />
+           <i>Does not currently work in IE</i><br>
            <p></p>
            <a href="<%=baseURL%>/GoogleMap/GoogleMap.jsp">Larger Google Map</a>
 
