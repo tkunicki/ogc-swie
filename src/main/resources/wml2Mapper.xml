@@ -191,6 +191,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="om:result/wml2:Timeseries/wml2:domainExtent#xlink:href=ts_period"
 			column="station_nm"
 			javaType="string" />
+<!-- TODO: figure out if this should be something from the database, if not, either take it out or figure out a better way to put in a constant -->
                 <result
 			property="om:result/wml2:Timeseries/wml2:aggregationDuration=P15M"
 			column="station_nm"
@@ -200,17 +201,11 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="units"
 			javaType="string" />
 		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:href=http://waterdata.usgs.gov/nwis/help/?provisional
-"
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:href=http://www.opengis.net/WaterML2.0/def/quality/unchecked"
 			column="station_nm"
 			javaType="string" />
 		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:title=provisional data"
-			column="station_nm"
-			javaType="string" />
-		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality=The data you have obtained from this automated U.S. Geological Survey database
-have not received Director's approval and as such are provisional and subject to revision.  The data are released on the condition that neither the USGS nor theUnited States Government may be held liable for any damages resulting from its use."
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:title=unchecked data"
 			column="station_nm"
 			javaType="string" />
 		<result
@@ -240,7 +235,7 @@ have not received Director's approval and as such are provisional and subject to
 <!-- Make this ice/other warning flags? -->
                 <result
 			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:comment"
-			column="result_cd"
+			column="table_cd"
 			javaType="string" />
                         
 	</resultMap>
@@ -263,8 +258,9 @@ have not received Director's approval and as such are provisional and subject to
 		CONCAT(CONVERT(DATE_FORMAT(g.result_dt,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) as currentPosition,
 		g.result_va as value,
 		d.parameter_units as units,
-                g.result_cd
-<!--                c.table_cd-->
+		d.parameter_nm,
+                c.table_cd
+
 		
 		FROM
 		    (select b.site_id,
@@ -274,7 +270,7 @@ have not received Director's approval and as such are provisional and subject to
 		    FROM nwisweb.UV a,
 		    nwisweb.SITEFILE b
 		    
-                <choose>
+              <choose>
                     <when test="featureId != null">
                         WHERE b.site_no IN (#{featureId[0]})
                     </when>
@@ -282,6 +278,7 @@ have not received Director's approval and as such are provisional and subject to
                     <otherwise>
                         WHERE b.site_no IN ('01427207')
                     </otherwise>
+
                 </choose>
 
                 <if test="beginPosition != null">
@@ -294,21 +291,22 @@ have not received Director's approval and as such are provisional and subject to
 
                         AND a.site_id = b.site_id
                         GROUP BY a.site_id) s,
-
-<!--		nwisweb.DD_STATUS c,-->
+		    
 		nwisweb.PARAM_REF d,
 		nwisweb.UV_DD_CONF e,
 		nwisweb.SITEFILE f,
-                nwisweb.UV g
-                
+                nwisweb.UV g LEFT JOIN nwisweb.DD_STATUS c ON (c.site_id = g.site_id 
+                    AND c.dd_nu = g.dd_nu
+                    AND c.parameter_cd = '00060'
+                    AND g.result_dt <![CDATA[ >= ]]> c.begin_dt
+                    AND (g.result_dt <![CDATA[ <= ]]> c.end_dt OR c.end_dt = '0000-00-00 00:00:00'))
+		
 		WHERE s.site_id = g.site_id 
                 AND f.site_id = s.site_id
                 AND e.site_id = s.site_id
-		AND d.parameter_cd = e.parameter_cd
+		AND d.parameter_cd = e.parameter_cd 
                 AND e.dd_nu = g.dd_nu
                 AND e.parameter_cd = '00060'
-<!--                AND c.site_id = g.site_id-->
-<!--                AND c.dd_nu = g.dd_nu-->
 
                 <if test="beginPosition != null">
                         AND g.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{beginPosition[0]}, '%Y-%m-%d')
