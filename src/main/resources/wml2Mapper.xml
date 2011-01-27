@@ -199,9 +199,9 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="units"
 			javaType="string" />
 		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:href=http://waterdata.usgs.gov/nd/nwis/help/?provisional"
-			column="station_nm"
-			javaType="string" />
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:href=%s"
+			column="state_cd"
+			typeHandler="ProvisionalWarningURLTypeHandler" />
 		<result
 			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:title=provisional"
 			column="station_nm"
@@ -252,6 +252,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 f.tz_cd as zoneAbbreviation,
                 g.result_tz_offset,
                 CONCAT(f.state_cd,'.',f.site_no) as state_site,
+                f.state_cd,
 		STR_TO_DATE(SYSDATE(),'%Y-%m-%d') as dateStamp,
                 CONCAT(DATE_FORMAT(SYSDATE(),'%Y-%m-%dT%H:%i'),f.tz_cd) as currentTimeStamp,
 		CONCAT(CONVERT(f.DEC_LAT_VA,CHAR),' ',CONVERT(f.DEC_LONG_VA,CHAR)) AS pos,
