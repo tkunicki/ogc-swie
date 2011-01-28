@@ -73,9 +73,11 @@
 
     if (GBrowserIsCompatible()) {
       var gmarkers = [];
+      var base = '<%=baseURL%>';
+      var test = base.length - 10;    // Gets rid of /GoogleMap/ from baseURL
+      var base_url = base.substring(0,test);
 
-
-// ======================= Create an associative array of GIcons() =====================
+// ======================= Create an associative array of GIcons() =======================
       var gicons = [];
       gicons["WI"] = new GIcon(G_DEFAULT_ICON, "red_MarkerA.png");
       gicons["PA"] = new GIcon(G_DEFAULT_ICON, "blue_MarkerA.png");
@@ -86,7 +88,6 @@
       gicons["IA"] = new GIcon(G_DEFAULT_ICON, "yellow_MarkerA.png");
       gicons["ND"] = new GIcon(G_DEFAULT_ICON, "purple_MarkerA.png");
       gicons["SD"] = new GIcon(G_DEFAULT_ICON, "brown_MarkerA.png");
-    //Should figure out a default marker
       //gicons["ca01"] = new GIcon(G_DEFAULT_ICON, "blue_MarkerB.png");
 
 // ========================Create a marker============================================
@@ -154,140 +155,71 @@
       }
 
 //==========================================Load XML file================================
-      	function loadXMLDoc(dname) {
-      	    if (window.XMLHttpRequest) {
-      	        xhttp = new XMLHttpRequest();
-      	    }
-      	    else {
-      	        xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-                // This needs work...
-      	    }
-      	    //xhttp = new XMLHttpRequest();
-            xhttp.open("GET", dname, false);
-      	    xhttp.send("");
-
-      	    return xhttp.responseXML;
-      	}
-
-//=============================== Convert state codes to postal name=====================
-        function stateCD_conversion(state_cd) {
-            var state_nm = [];
-            state_nm = ["AL","AK","AS","AZ", "AR", "CA", "XX", "CO", "CT", "DE", "DC", "FL", "GA", "GU",
-            "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO",
-            "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "PR", "RI",
-            "SC", "SD", "TN", "TX", "UT", "VT", "VA", "VI", "WA", "WV", "WI", "WY", "PR", "VI" ];
-            var postal_nm = state_nm[(state_cd-1)];
-            return postal_nm;
-        }
+      function loadXMLDoc(dname) {
+          if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+              xmlhttp = new XMLHttpRequest();
+          }
+          else {// code for IE6, IE5
+              xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+          }
+          //xmlhttp = new XMLHttpRequest();
+          xmlhttp.open("GET", dname, false);
+          xmlhttp.send();
+          xmlDoc = xmlhttp.responseXML;
+          return xmlDoc
+      }
 
 //==========================================Create the map================================
       	var map = new GMap2(document.getElementById("map"));
       	map.addControl(new GLargeMapControl());
       	map.addControl(new GMapTypeControl());
       	map.addMapType(G_PHYSICAL_MAP);
-      	map.setCenter(new GLatLng(44.55972222, -90.613888889), 5, G_PHYSICAL_MAP);
+      	map.setCenter(new GLatLng(44.55972222, -90.613888889), 7, G_PHYSICAL_MAP);
       	map.enableScrollWheelZoom();
 
 // ====================================Read the data from xxxx.xml=========================
 
-        xml = loadXMLDoc("wfs_2.xml");
+        var wfs_url = base_url + "/wfs?request=GetFeature&typename=swml:Discharge";
+        xmlDoc = loadXMLDoc(wfs_url);
 
-        var length = xml.length;
+      	xmlDoc = loadXMLDoc("wfs.xml");
 
-        var path = [];
-        path[1] = "//*[local-name()='latitude']"
-        path[2] = "//*[local-name()='longitude']"
-        path[3] = "//*[local-name()='siteName']"
-        path[4] = "//*[local-name()='siteCode']"
-        path[5] = "//*[local-name()='variableName']"
-        path[6] = "//*[local-name()='value']"
-        path[7] = "//*[local-name()='note'][@title='stateCd']"
+      	var x = xmlDoc.getElementsByTagName("wfs:member");
 
-        var latitude = [];
-        var longitude = [];
-        var siteCode = [];
-        var siteName = [];
-        var variableName = [];
-        var value = [];
-        var timeDate = [];
-        var note = [];
-        var State_code = [];
-        var value2 = [];
+      	var latitude = [];
+      	var longitude = [];
+      	var siteCode = [];
+      	var siteName = [];
+      	var USGS_URL = [];
+      	var stateNM = [];
 
-        var nodes_lat = xml.evaluate(path[1], xml, null, XPathResult.ANY_TYPE, null);
-        var nodes_long = xml.evaluate(path[2], xml, null, XPathResult.ANY_TYPE, null);
-        var nodes_siteName = xml.evaluate(path[3], xml, null, XPathResult.ANY_TYPE, null);
-        var nodes_siteCode = xml.evaluate(path[4], xml, null, XPathResult.ANY_TYPE, null);
-        var nodes_variableName = xml.evaluate(path[5], xml, null, XPathResult.ANY_TYPE, null);
-        var nodes_value = xml.evaluate(path[6], xml, null, XPathResult.ANY_TYPE, null);
-        var nodes_note = xml.evaluate(path[7], xml, null, XPathResult.ANY_TYPE, null);
+      	var base = '<%=baseURL%>';
+      	var test = base.length - 10;    // Gets rid of /GoogleMap/ from baseURL
+      	var base_url = base.substring(0, test);
 
-        var result_lat = nodes_lat.iterateNext();
-        var result_long = nodes_long.iterateNext();
-        var result_siteName = nodes_siteName.iterateNext();
-        var result_siteCode = nodes_siteCode.iterateNext();
-        var result_variableName = nodes_variableName.iterateNext();
-        var result_value = nodes_value.iterateNext();
-        var result_note = nodes_note.iterateNext();
 
-        var i = 0;
-        while (result_lat) {
-            latitude[i] = result_lat.childNodes[0].nodeValue;
-            longitude[i] = result_long.childNodes[0].nodeValue;
-            siteName[i] = result_siteName.childNodes[0].nodeValue;
-            siteCode[i] = result_siteCode.childNodes[0].nodeValue;
-            timeDate[i] = result_value.getAttribute("dateTime");
-            value[i] = result_value.childNodes[0].nodeValue;
-            variableName[i] = result_variableName.childNodes[0].nodeValue;
-            var note = result_note.childNodes[0].nodeValue;
-            State_code[i] = stateCD_conversion(note);
+      	for (i = 0; i < x.length; i++) {
+      	    siteName[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("gml:name")[0].childNodes[0].nodeValue;
+      	    var pos = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getElementsByTagName("sams:shape")[0].getElementsByTagName("gml:Point")[0].getElementsByTagName("gml:pos")[0].childNodes[0].nodeValue;
+      	    var pos_array = pos.split(" ");
+      	    latitude[i] = pos_array[0];
+      	    longitude[i] = pos_array[1];
+      	    USGS_URL[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getElementsByTagName("sf:sampledFeature")[0].getAttribute("xlink:ref");
+      	    var URL_array = USGS_URL[i].split("/");
+      	    stateNM[i] = URL_array[3];
+      	    siteCode[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getAttribute("gml:id");
 
-            result_note = nodes_note.iterateNext();
-            result_variableName = nodes_variableName.iterateNext();
-            result_value = nodes_value.iterateNext();
-            result_siteName = nodes_siteName.iterateNext();
-            result_siteCode = nodes_siteCode.iterateNext();
-            result_lat = nodes_lat.iterateNext();
-            result_long = nodes_long.iterateNext();
+      	    var WML2_link = '<a href =' + base_url + '/wml2?request=GetObservation&featureId=' + siteCode[i] + '>GetObservation from this site</a>';
+      	    var USGS_link = '<a href ="' + USGS_URL[i] + '">' + siteCode[i] + '</a>';
+      	    var wfs_link = '<a href =' + base_url + '/wfs?request=GetFeature&featureId=' + siteCode[i] + '&typename=swml:Discharge>GetFeature from this site</a>';
 
-            i++;
-        }
+      	    var information = (siteName[i] + '<br />' + WML2_link + '<br />' + wfs_link + '<br />USGS Station: ' + USGS_link);
 
-        var base = '<%=baseURL%>';
-        var test = base.length - 10;    // Gets rid of /GoogleMap/ from baseURL
-        var base_url = base.substring(0,test);
+      	    var point = new GLatLng(latitude[i], longitude[i]);
+      	    var marker = createMarker(point, information, siteName[i], stateNM[i]);
+      	    map.addOverlay(marker);
+      	}
 
-        for (j = 0; j < (i - 1); j++) {
-            if (latitude[j] == latitude[j + 1] & longitude[j] == longitude[j + 1] & timeDate[j] == timeDate[j + 1]) {
-                var WML2_link = '<a href =' + base_url + '/wml2?request=GetObservation&featureId=' + siteCode[j] + '>GetObservation from this site</a>';
-                var USGS_link = '<a href = "http://waterdata.usgs.gov/' + State_code[j] + '/nwis/uv/?site_no=' + siteCode[j] + '&PARAmeter_cd=00065" >' + siteCode[j] + '</a>';
-                var wfs_link = '<a href =' + base_url + '/wfs?request=GetFeature&featureId=' + siteCode[j] + '&typename=swml:Discharge>GetFeature from this site</a>';
-                var Data_link = '<img src = "http://waterdata.usgs.gov/nwisweb/graph?site_no=' + siteCode[j] + '&parm_cd=00065" width="576" height="400" alt="USGS Water-data graph"/>';
-                var information = (WML2_link + '<br>' + wfs_link + '<br>USGS Station: ' + USGS_link + '<br>' + siteName[j] + '<br>' + Data_link);
-                var point = new GLatLng(latitude[j], longitude[j]);
-
-                var data_tab_next = value[j + 1] + ' ' + variableName[j + 1] + '<br>';
-                var data_tab = data_tab_next + value[j] + ' ' + variableName[j] + '<br>' + timeDate[j];
-
-                var marker_PA = createMarker(point, information, siteName[j], State_code[j]);
-                map.addOverlay(marker_PA);
-                j++;
-            }
-            else {
-                var WML2_link = '<a href =' + base_url + '/wml2?request=GetObservation&featureId=' + siteCode[j] + '>GetObservation from this site</a>';
-                var wfs_link = '<a href =' + base_url + '/wfs?request=GetFeature&featureId=' + siteCode[j] + '&typename=swml:Discharge>GetFeature from this site</a>';
-                var USGS_link = '<a href = "http://waterdata.usgs.gov/' + State_code[j] + '/nwis/uv/?site_no=' + siteCode[j] + '&PARAmeter_cd=00065" >' + siteCode[j] + '</a>';
-                var Data_link = '<img src = "http://waterdata.usgs.gov/nwisweb/graph?site_no=' + siteCode[j] + '&parm_cd=00065" width="576" height="400" alt="USGS Water-data graph"/>';
-
-                var information = (WML2_link + '<br>' + wfs_link + '<br>USGS Station: ' + USGS_link + '<br>' + siteName[j] + '<br>' + Data_link);
-                var point = new GLatLng(latitude[j], longitude[j]);
-
-                var data_tab = value[j] + ' ' + variableName[j] + '<br>' + timeDate[j] + '<br>';
-
-                var marker_PA = createMarker(point, information, siteName[j], State_code[j]);
-                map.addOverlay(marker_PA);
-            }
-        }
         show("WI");
         show("NJ");
         show("PA");
@@ -316,3 +248,4 @@
   </body>
 
 </html>
+

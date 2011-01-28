@@ -32,7 +32,6 @@ xsi:schemaLocation="http://www.opengis.net/wfs/2.0
 	</ows:ServiceIdentification>
 	<ows:ServiceProvider>
 		<ows:ProviderName>USGS Center for Integrated Data Analytics (CIDA)</ows:ProviderName>
-	<!-- TODO: replace temporary site with more specific permanent site -->
 		<ows:ProviderSite xlink:href="http://cida.usgs.gov"/>
 		<ows:ServiceContact>
 			<ows:IndividualName>Nate Booth</ows:IndividualName>
@@ -73,14 +72,6 @@ xsi:schemaLocation="http://www.opengis.net/wfs/2.0
 					<ows:Value>text/xml; subtype=gml/3.1.1</ows:Value>
 				</ows:AllowedValues>
 			</ows:Parameter>
-			<!--
-			<ows:Parameter name="srsName">
-				<ows:Value>urn:ogc:def:crs:EPSG:4326</ows:Value>
-			</ows:Parameter>
-			<ows:Constraint name="DefaultMaxFeatures">
-				<ows:Value>50</ows:Value>
-			</ows:Constraint>
-			 -->
 		</ows:Operation>
 		<ows:Operation name="DescribeFeatureType">
 			<ows:DCP>
@@ -114,29 +105,17 @@ xsi:schemaLocation="http://www.opengis.net/wfs/2.0
 					<ows:Value>text/xml</ows:Value>
 				</ows:AllowedValues>
 			</ows:Parameter>
-
-			<!-- TODO: need to implement this if we advertise it here
-			<ows:Parameter name="Sections">
-				<ows:Value>ServiceIdentification</ows:Value>
-				<ows:Value>ServiceProvider</ows:Value>
-				<ows:Value>OperationsMetadata</ows:Value>
-				<ows:Value>FeatureTypeList</ows:Value>
-				<ows:Value>ServesGMLObjectTypeList</ows:Value>
-				<ows:Value>SupportsGMLObjectTypeList</ows:Value>
-				<ows:Value>Filter_Capabilities</ows:Value>
-			</ows:Parameter>
-			 -->
 		</ows:Operation>
 	</ows:OperationsMetadata>
 
 	<wfs:FeatureTypeList>
-<!-- TODO: figure out what the namespace should actually be-->
+
                 <wfs:FeatureType xmlns:swml="${base.url}">
 			<wfs:Name>swml:Discharge</wfs:Name>
 			<wfs:Title>Alaska Western Hemisphere River Levels</wfs:Title>
 			<wfs:Abstract>River level information extracted from USGS services</wfs:Abstract>
 			<ows:Keywords>
-				<ows:Keyword>SWML USGS NWIS</ows:Keyword>
+				<ows:Keyword>USGS NWIS</ows:Keyword>
 			</ows:Keywords>
 			<wfs:DefaultCRS>EPSG:4326</wfs:DefaultCRS>
 			<wfs:OtherCRS>EPSG:4326</wfs:OtherCRS>
@@ -155,7 +134,7 @@ xsi:schemaLocation="http://www.opengis.net/wfs/2.0
 			<wfs:Title>Alaska Eastern Hemisphere River Levels</wfs:Title>
 			<wfs:Abstract>River level information extracted from USGS services</wfs:Abstract>
 			<ows:Keywords>
-				<ows:Keyword>SWML USGS NWIS</ows:Keyword>
+				<ows:Keyword>USGS NWIS</ows:Keyword>
 			</ows:Keywords>
 			<wfs:DefaultCRS>EPSG:4326</wfs:DefaultCRS>
 			<wfs:OtherCRS>EPSG:4326</wfs:OtherCRS>
@@ -174,7 +153,7 @@ xsi:schemaLocation="http://www.opengis.net/wfs/2.0
 			<wfs:Title>Continental United States Water Discharge</wfs:Title>
 			<wfs:Abstract>River level information extracted from USGS services</wfs:Abstract>
 			<ows:Keywords>
-				<ows:Keyword>SWML USGS NWIS</ows:Keyword>
+				<ows:Keyword>USGS NWIS</ows:Keyword>
 			</ows:Keywords>
 			<wfs:DefaultCRS>EPSG:4326</wfs:DefaultCRS>
 			<wfs:OtherCRS>EPSG:4326</wfs:OtherCRS>
@@ -192,7 +171,7 @@ xsi:schemaLocation="http://www.opengis.net/wfs/2.0
 			<wfs:Title>Hawaii River Levels</wfs:Title>
 			<wfs:Abstract>River level information extracted from USGS services</wfs:Abstract>
 			<ows:Keywords>
-				<ows:Keyword>SWML USGS NWIS</ows:Keyword>
+				<ows:Keyword>USGS NWIS</ows:Keyword>
 			</ows:Keywords>
 			<wfs:DefaultCRS>EPSG:4326</wfs:DefaultCRS>
 			<wfs:OtherCRS>EPSG:4326</wfs:OtherCRS>
