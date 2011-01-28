@@ -234,7 +234,6 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:value"
 			column="value"
 			javaType="string" />
-<!-- Make this ice/other warning flags? -->
                 <result
 			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:comment"
 			column="table_cd"
@@ -242,9 +241,6 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                         
 	</resultMap>
 	
-	<!-- For a tutorial on analytic functions in Oracle, see http://www.oracle.com/technetwork/issue-archive/2005/05-mar/o25dba-091480.html
-	and http://psoug.org/reference/analytic_functions.html
-	 -->
 	<select id="observationsSelect" parameterType="map" resultMap="observationsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 		select f.station_nm,
                 CONCAT('USGS ',CONVERT(f.site_no,CHAR),' ',f.station_nm) as FeatureID,
