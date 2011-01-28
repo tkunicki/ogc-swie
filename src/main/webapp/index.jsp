@@ -79,14 +79,14 @@
                 <p></p>
                 <li><strong>Sensor Observation Service</strong>
                     <dl>
-                        <dt>GetObservation</dt>
+                        <dt>GetObservation - featureID, beginPosition, endPosition can be specified in URL</dt>
                         <dd>Observation by feature ID:<br />
-                            <a href="<%=baseURL%>/wml2?request=GetObservation&featureId=01446500"><%=baseURL%>/wml2?request=GetObservation&featureId=01446500</a>
+                            <a href="<%=baseURL%>/wml2?request=GetObservation&featureID=01446500"><%=baseURL%>/wml2?request=GetObservation&featureId=01446500</a>
                         </dd>
                     </dl>
                     <dl>
                         <dd>Observation by feature ID with beginTime:<br />
-                            <a href="<%=baseURL%>/wml2?request=GetObservation&featureId=01446500&beginPosition=<%=Old_Date%>"><%=baseURL%>/wml2?request=GetObservation&featureId=01446500&beginPosition=<%=Old_Date%></a>
+                            <a href="<%=baseURL%>/wml2?request=GetObservation&featureID=01446500&beginPosition=<%=Old_Date%>"><%=baseURL%>/wml2?request=GetObservation&featureId=01446500&beginPosition=<%=Old_Date%></a>
                         </dd>
                     </dl>
                     <dl>
