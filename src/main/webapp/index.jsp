@@ -175,7 +175,7 @@
 
         <td width = 500 valign="top" >
            <div id="map" style="width: 460px; height: 360px"></div>
-           Markers represent USGS gauging stations on the Mississippi, Delaware, Fox, Wisconsin, Illinois, and Red River of the North.
+           Markers represent USGS gauging stations on the Mississippi, Delaware, Fox, Wisconsin, Illinois, Red River of the North, and others near the Great Lakes.
            Clicking on a marker brings up a box with the station name, and links to GetObservation, GetFeature, and the public USGS website.<br />
            <p></p>
            <a href="<%=baseURL%>/GoogleMap/GoogleMap.jsp">Larger Google Map</a>
@@ -213,6 +213,10 @@
       gicons["IA"] = new GIcon(G_DEFAULT_ICON, "yellow_MarkerA.png");
       gicons["ND"] = new GIcon(G_DEFAULT_ICON, "purple_MarkerA.png");
       gicons["SD"] = new GIcon(G_DEFAULT_ICON, "brown_MarkerA.png");
+      gicons["OH"] = new GIcon(G_DEFAULT_ICON, "paleblue_MarkerA.png");
+      gicons["MI"] = new GIcon(G_DEFAULT_ICON, "pink_MarkerA.png");
+      gicons["IN"] = new GIcon(G_DEFAULT_ICON, "blue_MarkerB.png");
+      gicons["NY"] = new GIcon(G_DEFAULT_ICON, "brown_MarkerB.png");
 
 // ========================Create a marker============================================
 

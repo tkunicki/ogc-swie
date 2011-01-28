@@ -50,6 +50,7 @@
 
       WI Rivers: <input type="checkbox" id="WIbox" onclick="boxclick(this,'WI')" />&nbsp;&nbsp;
       PA Rivers: <input type="checkbox" id="PAbox" onclick="boxclick(this,'PA')" />&nbsp;&nbsp;
+      NY Rivers: <input type="checkbox" id="NYbox" onclick="boxclick(this,'NY')" />&nbsp;&nbsp;
       NJ Rivers: <input type="checkbox" id="NJbox" onclick="boxclick(this,'NJ')" /><br />
       MN Rivers: <input type="checkbox" id="MNbox" onclick="boxclick(this,'MN')" />&nbsp;&nbsp;
       MO Rivers: <input type="checkbox" id="MObox" onclick="boxclick(this,'MO')" />&nbsp;&nbsp;
@@ -57,6 +58,9 @@
       IA Rivers: <input type="checkbox" id="IAbox" onclick="boxclick(this,'IA')" /><br />
       ND Rivers: <input type="checkbox" id="NDbox" onclick="boxclick(this,'ND')" />&nbsp;&nbsp;
       SD Rivers: <input type="checkbox" id="SDbox" onclick="boxclick(this,'SD')" />&nbsp;&nbsp;
+      OH Rivers: <input type="checkbox" id="OHbox" onclick="boxclick(this,'OH')" /><br />
+      IN Rivers: <input type="checkbox" id="INbox" onclick="boxclick(this,'IN')" />&nbsp;&nbsp;
+      MI Rivers: <input type="checkbox" id="MIbox" onclick="boxclick(this,'MI')" />&nbsp;&nbsp;
     </form>
 
 <! ==========================Message if JavaScript is not enabled=======================>
@@ -89,6 +93,10 @@
       gicons["IA"] = new GIcon(G_DEFAULT_ICON, "yellow_MarkerA.png");
       gicons["ND"] = new GIcon(G_DEFAULT_ICON, "purple_MarkerA.png");
       gicons["SD"] = new GIcon(G_DEFAULT_ICON, "brown_MarkerA.png");
+      gicons["OH"] = new GIcon(G_DEFAULT_ICON, "paleblue_MarkerA.png");
+      gicons["MI"] = new GIcon(G_DEFAULT_ICON, "pink_MarkerA.png");
+      gicons["IN"] = new GIcon(G_DEFAULT_ICON, "blue_MarkerB.png");
+      gicons["NY"] = new GIcon(G_DEFAULT_ICON, "brown_MarkerB.png");
       //gicons["ca01"] = new GIcon(G_DEFAULT_ICON, "blue_MarkerB.png");
 
 // ========================Create a marker============================================
@@ -230,6 +238,10 @@
         show("IA");
         show("ND");
         show("SD");
+        show("IN");
+        show("OH");
+        show("MI");
+        show("NY");
         makeSidebar();
 
 }   // goes with compatiblity check
