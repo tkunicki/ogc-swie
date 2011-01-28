@@ -52,22 +52,20 @@
         </dd>
     <p />
    <dt><strong>Additional externally required schemas:</strong></dt>
-        <dd>
-            OM 2.0 <br />
+        
+        <dt>   OM 2.0 </dt>
             <dd><a href="http://services.iwis.csiro.au/WaterML2Validation/schemas/externalSchemas/SCHEMAS_OPENGIS_NET/om/2.0/observation.xsd">observation.xsd</a></dd>
-        </dd>
+        
 
-        <dd>
-            Sampling 2.0 <br />
+        <dt>Sampling 2.0 </dt>
             <dd><a href="http://services.iwis.csiro.au/WaterML2Validation/schemas/externalSchemas/SCHEMAS_OPENGIS_NET/sampling/2.0/samplingFeature.xsd">samplingFeature.xsd</a></dd>
-        </dd>
-        <dd>
-            samplingSpatial 2.0 <br />
+        
+        <dt>samplingSpatial 2.0 </dt>
             <dd><a href="http://services.iwis.csiro.au/WaterML2Validation/schemas/externalSchemas/SCHEMAS_OPENGIS_NET/samplingSpatial/2.0/spatialSamplingFeature.xsd">spatialSamplingFeature.xsd</a></dd>
-        </dd>
+        
         <p />
         <dt><strong>Notes:</strong> <br />
-            The links take you to an external site. Last modified Jan. 26, 2011.
+            The links take you to an external site. Last modified Jan. 28, 2011.
 
 
   </body>
