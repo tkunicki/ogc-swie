@@ -30,6 +30,7 @@
   </head>
 
   <body onunload="GUnload()">
+    <font face="Arial">
     <h1>Surface Water Interoperability Experiment UGSG Gauge Sites</h1>
 
 <!===============================Create Table=========================================>
@@ -65,7 +66,7 @@
       To view Google Maps, enable JavaScript by changing your browser options, and then
       try again.
     </noscript>
-
+    </font>
 
 <! ==============================With compatable browsers, do the following===============>
 
@@ -174,7 +175,7 @@
       	map.addControl(new GLargeMapControl());
       	map.addControl(new GMapTypeControl());
       	map.addMapType(G_PHYSICAL_MAP);
-      	map.setCenter(new GLatLng(44.55972222, -90.613888889), 7, G_PHYSICAL_MAP);
+      	map.setCenter(new GLatLng(44.55972222, -90.613888889), 5, G_PHYSICAL_MAP);
       	map.enableScrollWheelZoom();
 
 // ====================================Read the data from xxxx.xml=========================
@@ -182,7 +183,7 @@
         var wfs_url = base_url + "/wfs?request=GetFeature&typename=swml:Discharge";
         xmlDoc = loadXMLDoc(wfs_url);
 
-      	xmlDoc = loadXMLDoc("wfs.xml");
+      	//xmlDoc = loadXMLDoc("wfs.xml");
 
       	var x = xmlDoc.getElementsByTagName("wfs:member");
 
