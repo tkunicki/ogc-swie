@@ -175,6 +175,7 @@
 
         <td width = 500 valign="top" >
            <div id="map" style="width: 460px; height: 360px"></div>
+           <i>Map works in IE and Firefox.  Future versions will include Safari and Chrome</i><br />
            Markers represent USGS gauging stations on the Mississippi, Delaware, Fox, Wisconsin, Illinois, Red River of the North, and others near the Great Lakes.
            Clicking on a marker brings up a box with the station name, and links to GetObservation, GetFeature, and the public USGS website.<br />
            <p></p>
