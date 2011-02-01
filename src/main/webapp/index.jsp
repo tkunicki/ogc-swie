@@ -205,19 +205,19 @@
 
 // ======================= Create an associative array of GIcons() =====================
       var gicons = [];
-      gicons["WI"] = new GIcon(G_DEFAULT_ICON, "red_MarkerA.png");
-      gicons["PA"] = new GIcon(G_DEFAULT_ICON, "blue_MarkerA.png");
-      gicons["NJ"] = new GIcon(G_DEFAULT_ICON, "darkgreen_MarkerA.png");
-      gicons["MO"] = new GIcon(G_DEFAULT_ICON, "orange_MarkerA.png");
-      gicons["IL"] = new GIcon(G_DEFAULT_ICON, "green_MarkerA.png");
-      gicons["MN"] = new GIcon(G_DEFAULT_ICON, "paleblue_MarkerA.png");
-      gicons["IA"] = new GIcon(G_DEFAULT_ICON, "yellow_MarkerA.png");
-      gicons["ND"] = new GIcon(G_DEFAULT_ICON, "purple_MarkerA.png");
-      gicons["SD"] = new GIcon(G_DEFAULT_ICON, "brown_MarkerA.png");
-      gicons["OH"] = new GIcon(G_DEFAULT_ICON, "paleblue_MarkerA.png");
-      gicons["MI"] = new GIcon(G_DEFAULT_ICON, "pink_MarkerA.png");
-      gicons["IN"] = new GIcon(G_DEFAULT_ICON, "blue_MarkerB.png");
-      gicons["NY"] = new GIcon(G_DEFAULT_ICON, "brown_MarkerB.png");
+      gicons["WI"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/red_MarkerA.png");
+      gicons["PA"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/blue_MarkerA.png");
+      gicons["NJ"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/darkgreen_MarkerA.png");
+      gicons["MO"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/orange_MarkerA.png");
+      gicons["IL"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/green_MarkerA.png");
+      gicons["MN"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/paleblue_MarkerA.png");
+      gicons["IA"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/yellow_MarkerA.png");
+      gicons["ND"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/purple_MarkerA.png");
+      gicons["SD"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/brown_MarkerA.png");
+      gicons["OH"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/paleblue_MarkerA.png");
+      gicons["MI"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/pink_MarkerA.png");
+      gicons["IN"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/blue_MarkerB.png");
+      gicons["NY"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/brown_MarkerB.png");
 
 // ========================Create a marker============================================
 
