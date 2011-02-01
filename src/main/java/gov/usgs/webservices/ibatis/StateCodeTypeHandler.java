@@ -12,32 +12,27 @@ import java.sql.PreparedStatement;
  *
  * @author lkranendonk
  */
-public class ProvisionalWarningURLTypeHandler implements TypeHandler {
+public class StateCodeTypeHandler implements TypeHandler {
 
-    public ProvisionalWarningURLTypeHandler() {
+    public StateCodeTypeHandler() {
     }
 
     @Override
     public String getResult(ResultSet rs, String columnName) throws SQLException {
         String state_cd = rs.getString(columnName);
-        return getProvisionalWarningFromSQL(state_cd);
+        return getURLFromSQL(state_cd);
     }
 
-    public static String getProvisionalWarningFromSQL(String state_cd) {
+    public static String getURLFromSQL(String state_cd) {
 
         String[] state_nm = {"AL","AK","AS","AZ", "AR", "CA", "XX", "CO", "CT", "DE", "DC", "FL", "GA", "GU",
             "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO",
             "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "PR", "RI",
             "SC", "SD", "TN", "TX", "UT", "VT", "VA", "VI", "WA", "WV", "WI", "WY", "PR", "VI" };
 
-        /*String delims = "[.]";
-        String[] state_site = state_cd.split(delims);
-        String state = state_site[0];
-        String site = state_site[1];*/
         int i = Integer.parseInt(state_cd.trim())-1;
         String postal_nm = state_nm[i];
-        String url = "http://waterdata.usgs.gov/".concat(postal_nm).concat("/nwis/help/?provisional");
-        return url;
+        return postal_nm;
     }
 
     @Override

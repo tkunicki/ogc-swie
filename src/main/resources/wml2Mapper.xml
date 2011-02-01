@@ -54,7 +54,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
             <result
-    		property="gml:id=Simple_Example"
+    		property="gml:id=USGS"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
 
@@ -84,11 +84,19 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="station_nm"
 			javaType="string" />
 		<result
-			property="gml:name#codeSpace=http://www.opengis.net/waterml/2.0/examples"
+			property="gml:name#codeSpace=http://nwis.waterdata.usgs.gov/%s/nwis"
+			column="state_cd"
+			typeHandler="StateCodeTypeHandler" />
+		<result
+			property="gml:name"
 			column="station_nm"
 			javaType="string" />
 		<result
-			property="gml:name"
+			property="gml:identifier#codeSpace=http://nwis.waterdata.usgs.gov/%s/nwis"
+			column="state_cd"
+			typeHandler="StateCodeTypeHandler" />
+		<result
+			property="gml:identifier"
 			column="FeatureID"
 			javaType="string" />
 
@@ -107,6 +115,19 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		<result
 			property="om:metadata/wml2:ObservationMetadata/md:identificationInfo#xlink:href=urn:OGC:unknown"
 			column="dateStamp"
+			javaType="string" />
+	<!-- I'm assuming it's all provisional....if that is not be the case, then this needs to be fixed up-->
+                <result
+			property="om:metadata/wml2:ObservationMetadata/wml2:status#xlink:href=http://waterdata.usgs.gov/%s/nwis/help/?provisional"
+			column="state_cd"
+			typeHandler="StateCodeTypeHandler" />
+		<result
+			property="om:metadata/wml2:ObservationMetadata/wml2:status#xlink:title=%s"
+			column="data_aging_cd"
+			javaType="string" />
+		<result
+			property="om:metadata/wml2:ObservationMetadata/wml2:status=The data you have obtained from this automated U.S. Geological Survey database have not received Director's approval and as such are provisional and subject to revision.  The data are released on the condition that neither the USGS nor the United States Government may be held liable for any damages resulting from its use."
+			column="station_nm"
 			javaType="string" />
 		<result
 			property="om:phenomenonTime/gml:TimePeriod#gml:id=ts_period"
@@ -190,24 +211,16 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="om:result/wml2:Timeseries/wml2:domainExtent#xlink:href=ts_period"
 			column="station_nm"
 			javaType="string" />
-                <result
-			property="om:result/wml2:Timeseries/wml2:aggregationDuration=P15M"
-			column="station_nm"
-			javaType="string" />
 		<result
 			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:unitOfMeasure#xlink:href=%s"
 			column="units"
 			javaType="string" />
 		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:href=%s"
-			column="state_cd"
-			typeHandler="ProvisionalWarningURLTypeHandler" />
-		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:title=provisional"
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:href=http://www.opengis.net/WaterML2.0/def/quality/unchecked"
 			column="station_nm"
 			javaType="string" />
 		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality=The data you have obtained from this automated U.S. Geological Survey database have not received Director's approval and as such are provisional and subject to revision.  The data are released on the condition that neither the USGS nor the United States Government may be held liable for any damages resulting from its use."
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:title=unchecked data"
 			column="station_nm"
 			javaType="string" />
 		<result
@@ -243,7 +256,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 	
 	<select id="observationsSelect" parameterType="map" resultMap="observationsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 		select f.station_nm,
-                CONCAT('USGS ',CONVERT(f.site_no,CHAR),' ',f.station_nm) as FeatureID,
+                CONCAT('USGS.',CONVERT(f.site_no,CHAR)) as FeatureID,
                 f.site_no,
                 f.tz_cd as zoneAbbreviation,
                 g.result_tz_offset,
@@ -258,7 +271,8 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		g.result_va as value,
 		d.parameter_units as units,
 		d.parameter_nm,
-                c.table_cd
+                c.table_cd,
+                g.data_aging_cd
 
 		
 		FROM
