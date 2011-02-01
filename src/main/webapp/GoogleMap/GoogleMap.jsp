@@ -61,6 +61,7 @@
       OH Rivers: <input type="checkbox" id="OHbox" onclick="boxclick(this,'OH')" /><br />
       IN Rivers: <input type="checkbox" id="INbox" onclick="boxclick(this,'IN')" />&nbsp;&nbsp;
       MI Rivers: <input type="checkbox" id="MIbox" onclick="boxclick(this,'MI')" />&nbsp;&nbsp;
+      Inactive Gauge Stations: <input type="checkbox" id="Inactivebox" onclick="boxclick(this,'Inactive')" /><br />
     </form>
 
 <! ==========================Message if JavaScript is not enabled=======================>
@@ -97,6 +98,7 @@
       gicons["MI"] = new GIcon(G_DEFAULT_ICON, "pink_MarkerA.png");
       gicons["IN"] = new GIcon(G_DEFAULT_ICON, "blue_MarkerB.png");
       gicons["NY"] = new GIcon(G_DEFAULT_ICON, "brown_MarkerB.png");
+      gicons["Inactive"] = new GIcon(G_DEFAULT_ICON, "red_MarkerB.png");
       //gicons["ca01"] = new GIcon(G_DEFAULT_ICON, "blue_MarkerB.png");
 
 // ========================Create a marker============================================
@@ -187,6 +189,23 @@
       	map.enableScrollWheelZoom();
 
 // ====================================Read the data from xxxx.xml=========================
+      	GDownloadUrl("InactiveSites.csv", function(doc) {
+      	    lines = doc.split("\n");
+      	    for (var i = 0; i < lines.length; i++) {
+      	        if (lines[i].length > 1) {
+      	            parts = lines[i].split(",");
+      	            var Lat = parseFloat(parts[0]);
+      	            var Long = parseFloat(parts[1]);
+      	            var name_in = parts[2];
+      	            var point = new GLatLng(Lat, Long);
+      	            var html = "Inactive USGS site: <br />" + name_in;
+
+      	            var marker = createMarker(point, html, name_in, "Inactive");
+      	            map.addOverlay(marker);
+      	        }
+      	    }
+      	    hide("Inactive");
+      	});
 
         var wfs_url = base_url + "/wfs?request=GetFeature&typename=swml:Discharge";
         xmlDoc = loadXMLDoc(wfs_url);
