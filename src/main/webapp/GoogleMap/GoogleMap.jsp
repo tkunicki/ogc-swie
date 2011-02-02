@@ -6,7 +6,7 @@
 
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <title>USGS Gauges</title>
+    <title>USGS Gages</title>
     <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>
     <script type="text/javascript" src="jquery-1.4.4.js">
         function httpBodyPost(url, reqTextId) {
@@ -31,7 +31,7 @@
 
   <body onunload="GUnload()">
     <font face="Arial">
-    <h1>Surface Water Interoperability Experiment UGSG Gauge Sites</h1>
+    <h1>Surface Water Interoperability Experiment UGSG Gage Sites</h1>
 
 <!===============================Create Table=========================================>
     <table border=1>
@@ -57,7 +57,6 @@
       IL Rivers: <input type="checkbox" id="ILbox" onclick="boxclick(this,'IL')" />&nbsp;&nbsp;
       IA Rivers: <input type="checkbox" id="IAbox" onclick="boxclick(this,'IA')" /><br />
       ND Rivers: <input type="checkbox" id="NDbox" onclick="boxclick(this,'ND')" />&nbsp;&nbsp;
-      SD Rivers: <input type="checkbox" id="SDbox" onclick="boxclick(this,'SD')" />&nbsp;&nbsp;
       OH Rivers: <input type="checkbox" id="OHbox" onclick="boxclick(this,'OH')" /><br />
       IN Rivers: <input type="checkbox" id="INbox" onclick="boxclick(this,'IN')" />&nbsp;&nbsp;
       MI Rivers: <input type="checkbox" id="MIbox" onclick="boxclick(this,'MI')" />&nbsp;&nbsp;
@@ -85,20 +84,19 @@
 
 // ======================= Create an associative array of GIcons() =======================
       var gicons = [];
-      gicons["WI"] = new GIcon(G_DEFAULT_ICON, "red_MarkerA.png");
-      gicons["PA"] = new GIcon(G_DEFAULT_ICON, "blue_MarkerA.png");
-      gicons["NJ"] = new GIcon(G_DEFAULT_ICON, "darkgreen_MarkerA.png");
-      gicons["MO"] = new GIcon(G_DEFAULT_ICON, "orange_MarkerA.png");
-      gicons["IL"] = new GIcon(G_DEFAULT_ICON, "green_MarkerA.png");
-      gicons["MN"] = new GIcon(G_DEFAULT_ICON, "paleblue_MarkerA.png");
-      gicons["IA"] = new GIcon(G_DEFAULT_ICON, "yellow_MarkerA.png");
-      gicons["ND"] = new GIcon(G_DEFAULT_ICON, "purple_MarkerA.png");
-      gicons["SD"] = new GIcon(G_DEFAULT_ICON, "brown_MarkerA.png");
-      gicons["OH"] = new GIcon(G_DEFAULT_ICON, "paleblue_MarkerA.png");
-      gicons["MI"] = new GIcon(G_DEFAULT_ICON, "pink_MarkerA.png");
-      gicons["IN"] = new GIcon(G_DEFAULT_ICON, "blue_MarkerB.png");
-      gicons["NY"] = new GIcon(G_DEFAULT_ICON, "brown_MarkerB.png");
-      gicons["Inactive"] = new GIcon(G_DEFAULT_ICON, "red_MarkerB.png");
+      gicons["WI"] = new GIcon(G_DEFAULT_ICON, "red_MarkerW.png");
+      gicons["PA"] = new GIcon(G_DEFAULT_ICON, "blue_MarkerP.png");
+      gicons["NJ"] = new GIcon(G_DEFAULT_ICON, "darkgreen_MarkerN.png");
+      gicons["MO"] = new GIcon(G_DEFAULT_ICON, "orange_MarkerM.png");
+      gicons["IL"] = new GIcon(G_DEFAULT_ICON, "orange_MarkerI.png");
+      gicons["MN"] = new GIcon(G_DEFAULT_ICON, "purple_MarkerM.png");
+      gicons["IA"] = new GIcon(G_DEFAULT_ICON, "yellow_MarkerI.png");
+      gicons["ND"] = new GIcon(G_DEFAULT_ICON, "purple_MarkerN.png");
+      gicons["OH"] = new GIcon(G_DEFAULT_ICON, "red_MarkerO.png");
+      gicons["MI"] = new GIcon(G_DEFAULT_ICON, "paleblue_MarkerM.png");
+      gicons["IN"] = new GIcon(G_DEFAULT_ICON, "blue_MarkerI.png");
+      gicons["NY"] = new GIcon(G_DEFAULT_ICON, "green_MarkerN.png");
+      //gicons["Inactive"] = new GIcon(G_DEFAULT_ICON, "red_MarkerB.png");
       //gicons["ca01"] = new GIcon(G_DEFAULT_ICON, "blue_MarkerB.png");
 
 // ========================Create a marker============================================
@@ -256,7 +254,6 @@
         show("IL");
         show("IA");
         show("ND");
-        show("SD");
         show("IN");
         show("OH");
         show("MI");

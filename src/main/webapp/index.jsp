@@ -176,7 +176,7 @@
         <td width = 500 valign="top" >
            <div id="map" style="width: 460px; height: 360px"></div>
            <i> <font size ="2"> Map works in IE and Firefox.  Future versions will include Safari and Chrome</i></font><br />
-           Markers represent USGS gauging stations on the Mississippi, Delaware, Fox, Wisconsin, Illinois, Red River of the North, and others near the Great Lakes.
+           Markers represent USGS gaging stations on the Mississippi, Delaware, Fox, Wisconsin, Illinois, Red River of the North, and others near the Great Lakes.
            Clicking on a marker brings up a box with the station name, and links to GetObservation, GetFeature, and the public USGS website.<br />
            <p></p>
            <a href="<%=baseURL%>/GoogleMap/GoogleMap.jsp">Larger Google Map</a>
@@ -205,19 +205,18 @@
 
 // ======================= Create an associative array of GIcons() =====================
       var gicons = [];
-      gicons["WI"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/red_MarkerA.png");
-      gicons["PA"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/blue_MarkerA.png");
-      gicons["NJ"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/darkgreen_MarkerA.png");
-      gicons["MO"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/orange_MarkerA.png");
-      gicons["IL"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/green_MarkerA.png");
-      gicons["MN"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/paleblue_MarkerA.png");
-      gicons["IA"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/yellow_MarkerA.png");
-      gicons["ND"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/purple_MarkerA.png");
-      gicons["SD"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/brown_MarkerA.png");
-      gicons["OH"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/paleblue_MarkerA.png");
-      gicons["MI"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/pink_MarkerA.png");
-      gicons["IN"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/blue_MarkerB.png");
-      gicons["NY"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/brown_MarkerB.png");
+      gicons["WI"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/red_MarkerW.png");
+      gicons["PA"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/blue_MarkerP.png");
+      gicons["NJ"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/darkgreen_MarkerN.png");
+      gicons["MO"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/orange_MarkerM.png");
+      gicons["IL"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/orange_MarkerI.png");
+      gicons["MN"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/purple_MarkerM.png");
+      gicons["IA"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/yellow_MarkerI.png");
+      gicons["ND"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/purple_MarkerN.png");
+      gicons["OH"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/red_MarkerO.png");
+      gicons["MI"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/paleblue_MarkerM.png");
+      gicons["IN"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/blue_MarkerI.png");
+      gicons["NY"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/green_MarkerN.png");
 
 // ========================Create a marker============================================
 
