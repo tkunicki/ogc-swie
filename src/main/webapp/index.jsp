@@ -113,20 +113,20 @@
                     <dt>GetFeature</dt>
                     <dl>
                         <dd>All features related to SWIE:<br />
-                        <a href="<%=baseURL%>/wfs?request=GetFeature&typename=swml:Discharge"><%=baseURL%>/wfs?request=GetFeature&typename=swml:Discharge</a>
+                        <a href="<%=baseURL%>/wfs?request=GetFeature"><%=baseURL%>/wfs?request=GetFeature</a>
                         </dd>
                         <p></p>
                     </dl>
                     <dl>
                         <dd>GetFeature by feature ID:<br />
-                        <a href="<%=baseURL%>/wfs?request=GetFeature&typename=swml:Discharge&featureId=01446500"><%=baseURL%>/wfs?request=GetFeature&typename=swml:Discharge&featureId=01446500</a>
+                        <a href="<%=baseURL%>/wfs?request=GetFeature&featureId=01446500"><%=baseURL%>/wfs?request=GetFeature&featureId=01446500</a>
                         </dd>
                         <p></p>
                     </dl>
                     <dl>
                         <dd>GetFeature by via XML HTTP body POST:<br />
 
-                        <form name="input" action="<%=baseURL%>/wfs?request=GetFeature&typename=swml:Discharge" method="post">
+                        <form name="input" action="<%=baseURL%>/wfs?request=GetFeature" method="post">
                                 <textarea name="xml" rows="10" cols="90">
 <?xml version="1.0" ?>
 <wfs:GetFeature version="1.1.0" service="WFS"
@@ -260,7 +260,8 @@
 // ====================================Read the data from xxxx.xml=========================
 
         var base_url = '<%=baseURL%>';
-        var wfs_url = base_url + "/wfs?request=GetFeature&typename=swml:Discharge";
+        //var wfs_url = base_url + "/wfs?request=GetFeature&typename=swml:Discharge&featureID=01427207,01427510,01434000,01438500,01457500,01463500,04073365,04073500,04082400,04084445,040851385,05344500,05378500,05389500,05391000,05395000,05404000,05407000,05420500,05543500,05543830,05545750,05551540,05552500,05558300,05568500,05585500,05586100,07010000,07020500,07022000,05051500,05054000,05063398,05064000,'05064500,05069000,05075000,05078000,05078230,05078500,05082500,05083500";
+        var wfs_url = base_url + "/wfs?request=GetFeature";
         xmlDoc = loadXMLDoc(wfs_url);
 
       	var x = xmlDoc.getElementsByTagName("wfs:member");

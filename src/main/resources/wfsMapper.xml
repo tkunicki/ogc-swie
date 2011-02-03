@@ -260,7 +260,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                             FROM nwisweb.SITEFILE b
                             <choose>
                                 <when test="featureId != null">
-                                    WHERE #{featureId} = b.site_no
+                                    WHERE b.site_no IN (#{featureId})
                                 </when>
 
                                 <otherwise>
@@ -293,7 +293,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 
               <choose>
                     <when test="featureId != null">
-                        WHERE #{featureId} = a.site_no
+                        WHERE a.site_no IN (#{featureId})
                     </when>
                     
                     <when test="bBox != null">
