@@ -150,6 +150,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="om:resultTime/gml:TimeInstant/gml:timePosition"
 			column="currentTimeStamp"
 			typeHandler="ISODateTimeTypeHandler" />
+<!--
                 <result
 			property="om:procedure#xlink:href=http://www.usgs.gov"
 			column="station_nm"
@@ -158,6 +159,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="om:procedure#xlink:title=Surface water discharge"
 			column="station_nm"
 			javaType="string" />
+                        -->
                 <result
 			property="om:observedProperty#xlink:href=urn:ogc:def:phenomenon:OGC:stage"
 			column="station_nm"
