@@ -167,19 +167,19 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="parameter_nm"
 			javaType="string" />
 		<result
-			property="om:featureOfInterest/wml2:WaterMonitoringPoint#gml:id=ID_1"
-			column="station_nm"
+			property="om:featureOfInterest/wml2:WaterMonitoringPoint#gml:id=%s"
+			column="site_no"
 			javaType="string" />
                 <result
                         property="om:featureOfInterest/wml2:WaterMonitoringPoint/sf:sampledFeature#xlink:href=%s"
  			column="state_site"
 			typeHandler="USGS_URL_TypeHandler" />
                 <result
-                        property="om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/gml:Point#gml:id=st1p"
- 			column="station_nm"
+                        property="om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/gml:Point#gml:id=%s"
+ 			column="site_no"
 			javaType="string" />
                 <result
-                        property="om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/gml:Point/gml:pos#srsName=urn:ogc:def:crs:EPSG:4326"
+                        property="om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/gml:Point/gml:pos#srsName=urn:ogc:def:crs:EPSG:4269"
  			column="pos"
 			javaType="string" />
                 <result
@@ -207,38 +207,51 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="om:result/wml2:Timeseries#gml:id=time_series_1"
 			column="station_nm"
 			javaType="string" />
-		<result
+		<!--
+                <result
 			property="om:result/wml2:Timeseries/wml2:domainExtent#xlink:href=ts_period"
 			column="station_nm"
 			javaType="string" />
+                        -->
 		<result
 			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:unitOfMeasure#xlink:href=%s"
 			column="units"
 			javaType="string" />
 		<result
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:qualifier#xlink:href=http://waterdata.usgs.gov/%s/nwis/help/?provisional"
+			column="state_cd"
+			typeHandler="StateCodeTypeHandler" />
+		<result
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:qualifier#xlink:title=provisional"
+			column="state_cd"
+			typeHandler="StateCodeTypeHandler" />
+		<result
 			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:href=http://www.opengis.net/WaterML2.0/def/quality/unchecked"
 			column="station_nm"
 			javaType="string" />
 		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:title=unchecked data"
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:title=unverified"
 			column="station_nm"
 			javaType="string" />
 		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:dataType#xlink:href=http://www.opengis.net/WaterML2.0/def/timeseriesType/AveragePrec"
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:dataType#xlink:href=http://www.opengis.net/WaterML2.0/def/timeseriesType/InstantTotal"
 			column="station_nm"
 			javaType="string" />
 		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:dataType#xlink:title=Average in preceeding interval"
+			property="}om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:dataType#xlink:title=Instantaneous total"
 			column="station_nm"
 			javaType="string" />
-		<result
+<!--
+                <result
 			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:processing#xlink:href=http://www.opengis.net/WaterML2.0/def/processing/raw"
 			column="station_nm"
 			javaType="string" />
+
 		<result
 			property="}om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:processing#xlink:title=As measured data"
 			column="station_nm"
 			javaType="string" />
+                         -->
 		<result
 			property="om:result/wml2:Timeseries/^wml2:point/wml2:TimeValuePair/^wml2:time"
 			column="currentPosition"
@@ -250,6 +263,10 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 <result
 			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:comment"
 			column="table_cd"
+			javaType="string" />
+                <result
+			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:qualifier"
+			column="qualifier"
 			javaType="string" />
                         
 	</resultMap>
@@ -272,7 +289,9 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		d.parameter_units as units,
 		d.parameter_nm,
                 c.table_cd,
-                g.data_aging_cd
+                (CASE 
+                    WHEN g.data_aging_cd != 'P' THEN g.data_aging_cd
+                 END) qualifier
 
 		
 		FROM

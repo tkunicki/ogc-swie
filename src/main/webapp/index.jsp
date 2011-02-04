@@ -254,7 +254,7 @@
       	map.addControl(new GLargeMapControl());
       	map.addControl(new GMapTypeControl());
       	map.addMapType(G_PHYSICAL_MAP);
-      	map.setCenter(new GLatLng(45.55972222, -88.613888889), 4, G_PHYSICAL_MAP);
+      	map.setCenter(new GLatLng(45.55972222, -88.613888889), 5, G_PHYSICAL_MAP);
       	map.enableScrollWheelZoom();
 
 // ====================================Read the data from xxxx.xml=========================

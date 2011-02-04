@@ -101,7 +101,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			javaType="string" />
 -->
                 <result
-			property="^!{wfs:boundedBy/gml:Envelope#srsName=urn:ogc:def:crs:EPSG::4326"
+			property="^!{wfs:boundedBy/gml:Envelope#srsName=urn:ogc:def:crs:EPSG::4269"
 			column="Constant"
 			javaType="string" />
                 <result
@@ -129,11 +129,11 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="state_site"
 			typeHandler="USGS_URL_TypeHandler" />
 		<result
-			property="wfs:member/om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/^gml:Point#gml:id=st1p"
-			column="STATION_NM"
+			property="wfs:member/om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/^gml:Point#gml:id=%s"
+			column="SITE_NO"
 			javaType="string" />
 		<result
-			property="wfs:member/om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/gml:Point/^gml:pos#srsName=urn:ogc:def:crs:EPSG:4326"
+			property="wfs:member/om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/gml:Point/^gml:pos#srsName=urn:ogc:def:crs:EPSG:4269"
 			column="LON_LAT"
 			javaType="string" />
 		<result
