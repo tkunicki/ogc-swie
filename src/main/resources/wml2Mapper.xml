@@ -146,9 +146,19 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="om:resultTime/gml:TimeInstant#gml:id=result_time"
 			column="station_nm"
 			javaType="string" />
-		<result
+<!--
+                <result
 			property="om:resultTime/gml:TimeInstant/gml:timePosition"
 			column="currentTimeStamp"
+			typeHandler="ISODateTimeTypeHandler" />
+                        -->
+                <result
+			property="om:resultTime/gml:TimeInstant/gml:beginPosition"
+			column="beginPosition"
+			typeHandler="ISODateTimeTypeHandler" />
+                <result
+			property="om:resultTime/gml:TimeInstant/gml:endPosition"
+			column="endPosition"
 			typeHandler="ISODateTimeTypeHandler" />
 <!--
                 <result
@@ -180,9 +190,9 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                         property="om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/gml:Point#gml:id=%s"
  			column="site_no"
 			javaType="string" />
-                <result
-                        property="om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/gml:Point/gml:pos#srsName=urn:ogc:def:crs:EPSG:4269"
- 			column="pos"
+               <result
+                        property="om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/gml:Point/gml:pos#srsName=%s"
+ 			column="coord_datum"
 			javaType="string" />
                 <result
                         property="om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/gml:Point/gml:pos"
@@ -227,20 +237,22 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:qualifier#xlink:title=provisional"
 			column="state_cd"
 			typeHandler="StateCodeTypeHandler" />
-		<result
+<!--
+                <result
 			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:href=http://www.opengis.net/WaterML2.0/def/quality/unchecked"
 			column="station_nm"
 			javaType="string" />
 		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:title=unverified"
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:title=unchecked"
+			column="station_nm"
+			javaType="string" />
+                        -->
+		<result
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:dataType#xlink:href=http://www.opengis.net/def/timeseriesType/WaterML/2.0/Continuous"
 			column="station_nm"
 			javaType="string" />
 		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:dataType#xlink:href=http://www.opengis.net/WaterML2.0/def/timeseriesType/InstantTotal"
-			column="station_nm"
-			javaType="string" />
-		<result
-			property="}om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:dataType#xlink:title=Instantaneous total"
+			property="}om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:dataType#xlink:title=Continuous/Instantaneous"
 			column="station_nm"
 			javaType="string" />
 <!--
@@ -267,8 +279,16 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="table_cd"
 			javaType="string" />
                 <result
+			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:qualifier#qualifierCode%s"
+			column="qualifier_cd"
+			javaType="string" />
+                <result
 			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:qualifier"
-			column="qualifier"
+			column="qualifier_message"
+			javaType="string" />
+                <result
+			property="om:result/wml2:Timeseries/wml2:TimeValuePair/wml2:unitOfMeasure#xlink:href=%s"
+			column="units_odd"
 			javaType="string" />
                         
 	</resultMap>
@@ -293,7 +313,17 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 c.table_cd,
                 (CASE 
                     WHEN g.data_aging_cd != 'P' THEN g.data_aging_cd
-                 END) qualifier
+                END) qualifier_cd,
+                (CASE
+                    WHEN g.data_aging_cd = 'A' THEN 'Approved for publication -- Processing and review completed.'
+                END) qualifier_message,
+                (CASE
+                    WHEN d.parameter_units != 'cfs' THEN d.parameter_units
+                END) units_odd,
+                (CASE
+                    WHEN f.dec_coord_datum_cd = 'NAD83' THEN 'urn:ogc:def:crs:EPSG:4269'
+                    ELSE f.dec_coord_datum_cd
+                END) coord_datum
 
 		
 		FROM
