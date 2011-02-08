@@ -66,7 +66,7 @@
             </div>
 
     <div id="usgstitle">
-            <p>Water Resources of the United States</p>
+            <p>Center for Integrated Data Analytics</p>
     </div>
 <!-- END USGS Header Template -->
 
@@ -74,10 +74,9 @@
         </tr>
     </table>
 
-  <body onunload="GUnload()">
     <font face="Arial">
-    <h1>Surface Water Interoperability Experiment USGS Gage Sites</h1>
-
+    <h1>Southeast USGS Gage Sites</h1>
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>
 <!===============================Create Table=========================================>
     <table border=1>
       <tr>
@@ -92,7 +91,11 @@
 
 <! ===========================Create Check Boxes==================================>
     <form action="#">
-      NASQAN Coastal Subnetwork: <input type="checkbox" id="Coastalbox" onclick="boxclick(this,'Coastal')" /><br />
+      TN Rivers: <input type="checkbox" id="TNbox" onclick="boxclick(this,'TN')" />&nbsp;&nbsp;
+      NC Rivers: <input type="checkbox" id="NCbox" onclick="boxclick(this,'NC')" />&nbsp;&nbsp;
+      GA Rivers: <input type="checkbox" id="GAbox" onclick="boxclick(this,'GA')" />&nbsp;&nbsp;
+      SC Rivers: <input type="checkbox" id="SCbox" onclick="boxclick(this,'SC')" />&nbsp;&nbsp;
+      AL Rivers: <input type="checkbox" id="ALbox" onclick="boxclick(this,'AL')" /><br />
       WI Rivers: <input type="checkbox" id="WIbox" onclick="boxclick(this,'WI')" />&nbsp;&nbsp;
       PA Rivers: <input type="checkbox" id="PAbox" onclick="boxclick(this,'PA')" />&nbsp;&nbsp;
       NY Rivers: <input type="checkbox" id="NYbox" onclick="boxclick(this,'NY')" />&nbsp;&nbsp;
@@ -105,15 +108,7 @@
       OH Rivers: <input type="checkbox" id="OHbox" onclick="boxclick(this,'OH')" />&nbsp;&nbsp;
       IN Rivers: <input type="checkbox" id="INbox" onclick="boxclick(this,'IN')" />&nbsp;&nbsp;
       MI Rivers: <input type="checkbox" id="MIbox" onclick="boxclick(this,'MI')" /><br />
- 
-      <!--
-      TN Rivers: <input type="checkbox" id="TNbox" onclick="boxclick(this,'TN')" />&nbsp;&nbsp;
-      NC Rivers: <input type="checkbox" id="NCbox" onclick="boxclick(this,'NC')" />&nbsp;&nbsp;
-      AL Rivers: <input type="checkbox" id="ALbox" onclick="boxclick(this,'AL')" />&nbsp;&nbsp;
-      GA Rivers: <input type="checkbox" id="GAbox" onclick="boxclick(this,'GA')" />&nbsp;&nbsp;
-      SC Rivers: <input type="checkbox" id="SCbox" onclick="boxclick(this,'SC')" /><br />
-      -->
-    
+      
       Inactive Gage Stations: <input type="checkbox" id="Inactivebox" onclick="boxclick(this,'Inactive')" /><br />
     </form>
 
@@ -150,14 +145,11 @@
       gicons["MI"] = new GIcon(G_DEFAULT_ICON, "paleblue_MarkerM.png");
       gicons["IN"] = new GIcon(G_DEFAULT_ICON, "blue_MarkerI.png");
       gicons["NY"] = new GIcon(G_DEFAULT_ICON, "green_MarkerN.png");
-      gicons["Coastal"] = new GIcon(G_DEFAULT_ICON, "blue_MarkerC.png");
-
-      //gicons["TN"] = new GIcon(G_DEFAULT_ICON, "orange_MarkerT.png");
-      //gicons["NC"] = new GIcon(G_DEFAULT_ICON, "blue_MarkerN.png");
-      //gicons["AL"] = new GIcon(G_DEFAULT_ICON, "red_MarkerA.png");
-      //gicons["GA"] = new GIcon(G_DEFAULT_ICON, "red_MarkerG.png");
-      //gicons["SC"] = new GIcon(G_DEFAULT_ICON, "red_MarkerG.png");
-
+      gicons["TN"] = new GIcon(G_DEFAULT_ICON, "orange_MarkerT.png");
+      gicons["NC"] = new GIcon(G_DEFAULT_ICON, "blue_MarkerN.png");
+      gicons["AL"] = new GIcon(G_DEFAULT_ICON, "red_MarkerA.png");
+      gicons["GA"] = new GIcon(G_DEFAULT_ICON, "red_MarkerG.png");
+      gicons["SC"] = new GIcon(G_DEFAULT_ICON, "red_MarkerG.png");
       //gicons["Inactive"] = new GIcon(G_DEFAULT_ICON, "red_MarkerB.png");
       //gicons["ca01"] = new GIcon(G_DEFAULT_ICON, "blue_MarkerB.png");
 
@@ -239,6 +231,7 @@
           xmlDoc = xmlhttp.responseXML;
           return xmlDoc
       }
+
 //====================================Create Marker HTML==================================
     function MarkerHTML(StateNM, Site_no, base_url, USGS_URL, Site_nm){
         var USGS_picture = '<img src = "USGS.gif" width="84" height="32"/>      ';
@@ -256,7 +249,8 @@
       	map.addControl(new GLargeMapControl());
       	map.addControl(new GMapTypeControl());
       	map.addMapType(G_PHYSICAL_MAP);
-      	map.setCenter(new GLatLng(40.55972222, -95.613888889), 4, G_PHYSICAL_MAP);
+      	//map.setCenter(new GLatLng(35.96501528, -84.17866200), 7, G_PHYSICAL_MAP);
+        map.setCenter(new GLatLng(40.55972222, -95.613888889), 4, G_PHYSICAL_MAP);
       	map.enableScrollWheelZoom();
 
 // ====================================Read the data from xxxx.xml=========================
@@ -314,62 +308,29 @@
 
       	    //var information = (siteName[i] + '<br />' + WML2_link + '<br />' + wfs_link + '<br />USGS Station: ' + USGS_link);
             var information = MarkerHTML(stateNM[i], siteCode[i], base_url, USGS_URL[i], siteName[i]);
+
       	    var point = new GLatLng(latitude[i], longitude[i]);
       	    var marker = createMarker(point, information, siteName[i], stateNM[i]);
       	    map.addOverlay(marker);
       	}
 
         show("WI");
-        show("NJ");
-        show("PA");
-        show("MN");
-        show("MO");
-        show("IL");
-        show("IA");
-        show("ND");
-        show("IN");
-        show("OH");
-        show("MI");
-        show("NY");
-
-        xmlDoc = loadXMLDoc("wfs_coastal.xml");
-      	var x = xmlDoc.getElementsByTagName("wfs:member");
-
-      	var latitude = [];
-      	var longitude = [];
-      	var siteCode = [];
-      	var siteName = [];
-      	var USGS_URL = [];
-      	var stateNM = [];
-
-      	for (i = 0; i < x.length; i++) {
-      	    siteName[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("gml:name")[0].childNodes[0].nodeValue;
-      	    var pos = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getElementsByTagName("sams:shape")[0].getElementsByTagName("gml:Point")[0].getElementsByTagName("gml:pos")[0].childNodes[0].nodeValue;
-      	    var pos_array = pos.split(" ");
-      	    latitude[i] = pos_array[0];
-      	    longitude[i] = pos_array[1];
-      	    USGS_URL[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getElementsByTagName("sf:sampledFeature")[0].getAttribute("xlink:ref");
-      	    var URL_array = USGS_URL[i].split("/");
-      	    stateNM[i] = URL_array[3];
-      	    siteCode[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getAttribute("gml:id");
-
-      	    //var WML2_link = '<a href =' + base_url + '/wml2?request=GetObservation&featureId=' + siteCode[i] + '>GetObservation from this site</a>';
-      	    //var USGS_link = '<a href ="' + USGS_URL[i] + '">' + siteCode[i] + '</a>';
-      	    //var wfs_link = '<a href =' + base_url + '/wfs?request=GetFeature&featureId=' + siteCode[i] + '&typename=swml:Discharge>GetFeature from this site</a>';
-
-      	    //var information = (siteName[i] + '<br />' + WML2_link + '<br />' + wfs_link + '<br />USGS Station: ' + USGS_link);
-            var information = MarkerHTML(stateNM[i], siteCode[i], base_url, USGS_URL[i], siteName[i]);
-      	    var point = new GLatLng(latitude[i], longitude[i]);
-      	    var marker = createMarker(point, information, siteName[i], 'Coastal');
-      	    map.addOverlay(marker);
-      	}
-
-        show("Coastal");
-        //hide("TN");
-        //hide("NC");
-        //hide("AL");
-        //hide("GA");
-        //hide("SC");
+        hide("NJ");
+        hide("PA");
+        hide("MN");
+        hide("MO");
+        hide("IL");
+        hide("IA");
+        hide("ND");
+        hide("IN");
+        hide("OH");
+        hide("MI");
+        hide("NY");
+        show("TN");
+        show("NC");
+        show("AL");
+        show("GA");
+        show("SC");
         makeSidebar();
 
 }   // goes with compatiblity check
@@ -425,7 +386,7 @@
 
         Page Contact Information: <a href="http://water.usgs.gov/user_feedback_form.html">Water Webserver Team</a><br />
 
-        Page Last Modified: Tuesday, 08-Feb-2011 13:45:46 CST
+        Page Last Modified: Thursday, 09-Dec-2010 07:40:46 EST
       </p>
     </div>
 <!-- END USGS Footer Template -->
@@ -437,5 +398,4 @@
   </body>
 
 </html>
-
 

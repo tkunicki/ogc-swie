@@ -146,20 +146,10 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="om:resultTime/gml:TimeInstant#gml:id=result_time"
 			column="station_nm"
 			javaType="string" />
-<!--
                 <result
 			property="om:resultTime/gml:TimeInstant/gml:timePosition"
-			column="currentTimeStamp"
-			typeHandler="ISODateTimeTypeHandler" />
-                        -->
-                <result
-			property="om:resultTime/gml:TimeInstant/gml:beginPosition"
-			column="beginPosition"
-			typeHandler="ISODateTimeTypeHandler" />
-                <result
-			property="om:resultTime/gml:TimeInstant/gml:endPosition"
 			column="endPosition"
-			typeHandler="ISODateTimeTypeHandler" />
+			typeHandler="ISODateTimeTypeHandler" />                
 <!--
                 <result
 			property="om:procedure#xlink:href=http://www.usgs.gov"
@@ -287,7 +277,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="qualifier_message"
 			javaType="string" />
                 <result
-			property="om:result/wml2:Timeseries/wml2:TimeValuePair/wml2:unitOfMeasure#xlink:href=%s"
+			property="om:result/wml2:Timeseries/wml2:TimeValuePair/^wml2:unitOfMeasure#xlink:href=%s"
 			column="units_odd"
 			javaType="string" />
                         
@@ -310,12 +300,13 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		g.result_va as value,
 		d.parameter_units as units,
 		d.parameter_nm,
-                c.table_cd,
-                (CASE 
-                    WHEN g.data_aging_cd != 'P' THEN g.data_aging_cd
-                END) qualifier_cd,
+                (CASE
+                    WHEN c.table_cd = '***' THEN 'Temporarily unavailable'
+                    ELSE c.table_cd
+                END) table_cd,
                 (CASE
                     WHEN g.data_aging_cd = 'A' THEN 'Approved for publication -- Processing and review completed.'
+                    ELSE s.qualifier_cd
                 END) qualifier_message,
                 (CASE
                     WHEN d.parameter_units != 'cfs' THEN d.parameter_units
@@ -324,12 +315,14 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                     WHEN f.dec_coord_datum_cd = 'NAD83' THEN 'urn:ogc:def:crs:EPSG:4269'
                     ELSE f.dec_coord_datum_cd
                 END) coord_datum
-
 		
 		FROM
 		    (select b.site_id,
 		    MIN(a.result_dt) as startTime,
-                    MAX(a.result_dt) as endTime
+                    MAX(a.result_dt) as endTime,
+                    (CASE
+                        WHEN a.data_aging_cd != 'P' THEN a.data_aging_cd
+                    END) qualifier_cd
               
 		    FROM nwisweb.UV a,
 		    nwisweb.SITEFILE b

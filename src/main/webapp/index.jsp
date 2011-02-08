@@ -33,6 +33,23 @@
 <html>
 
   <head>
+    <meta name="publisher" content="USGS">
+    <meta name="description" content="Home page for water resources information from the US Geological Survey.">
+    <meta name="keywords" content="USGS, U.S. Geological Survey, water, earth science, hydrology, hydrologic, data, streamflow, stream, river, lake, flood, drought, quality, basin, watershed, environment, ground water, groundwater">
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <meta name="publisher" content="USGS - U.S. Geological Survey, Water Resources">
+    <meta name="expires" content="never">
+       <link href="/style/msie.css" rel="stylesheet" type="text/css">
+   <link href="http://www.usgs.gov/styles/common.css" rel="stylesheet" type="text/css">
+   <link href="/style/custom.css" rel="stylesheet" type="text/css">
+   <link href="/style/leftnav.css" rel="stylesheet" type="text/css">
+   <link href="/style/water.css" rel="stylesheet" type="text/css">
+   <link href="/style/topnav.css" rel="stylesheet" type="text/css">
+<!-- <link href="/style/media.css" rel="stylesheet" type="text/css" media="print"> -->
+    <link href="/style/homepage.css" rel="stylesheet" type="text/css">
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <title>OGC Services SWIE</title>
     <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>
@@ -60,6 +77,26 @@
   </head>
 
   <body onunload="GUnload()">
+
+      <!-- BEGIN USGS Header Template -->
+    <div id="usgscolorband">
+      <div id="usgsbanner">
+		<div id="usgsidentifier"><a href="http://www.usgs.gov/"><img src="http://www.usgs.gov/images/header_graphic_usgsIdentifier_white.jpg" alt="USGS - science for a changing world" title="U.S. Geological Survey Home Page" width="178" height="72" /></a></div>
+
+        <div id="usgsccsabox">
+          <div id="usgsccsa">
+            <br /><a href="http://www.usgs.gov/">USGS Home</a>
+            <br /><a href="http://www.usgs.gov/ask/">Contact USGS</a>
+            <br /><a href="http://search.usgs.gov/">Search USGS</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div id="usgstitle">
+      <p>Water Resources of the United States</p>
+    </div>
+<!-- END USGS Header Template -->
 
 <!===============================Create Table=========================================>
     <font face="Arial">
@@ -164,7 +201,7 @@
 
                                 </li>
                                 <li><strong>Log</strong>
-                                    <dl>Version 1.0 January 28, 2011 <br />
+                                    <dl>Version 1.0 February 8th, 2011 <br />
                                         <dd> Initial release </dd>
                                     </dl>
                                     <p></p>
@@ -176,7 +213,7 @@
         <td width = 500 valign="top" >
            <div id="map" style="width: 460px; height: 360px"></div>
            <i> <font size ="2"> Map works in IE and Firefox.  Future versions will include Safari and Chrome</i></font><br />
-           Markers represent USGS gaging stations on the Mississippi, Delaware, Fox, Wisconsin, Illinois, Red River of the North, and others near the Great Lakes.
+           Markers represent USGS gaging stations on the Mississippi, Delaware, Fox, Wisconsin, Illinois, Red River of the North, NASQAN Coastal Subnetwork, and others near the Great Lakes.
            Clicking on a marker brings up a box with the station name, and links to GetObservation, GetFeature, and the public USGS website.<br />
            <p></p>
            <a href="<%=baseURL%>/GoogleMap/GoogleMap.jsp">Larger Google Map</a>
@@ -217,6 +254,12 @@
       gicons["MI"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/paleblue_MarkerM.png");
       gicons["IN"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/blue_MarkerI.png");
       gicons["NY"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/green_MarkerN.png");
+      //gicons["TN"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/orange_MarkerT.png");
+      //gicons["NC"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/blue_MarkerN.png");
+      //gicons["AL"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/red_MarkerA.png");
+      //gicons["GA"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/red_MarkerG.png");
+      //gicons["SC"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/red_MarkerG.png");
+      gicons["Coastal"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/blue_MarkerC.png");
 
 // ========================Create a marker============================================
 
@@ -248,7 +291,17 @@
             xmlDoc = xmlhttp.responseXML;
             return xmlDoc
         }
-
+//====================================Create Marker HTML==================================
+    function MarkerHTML(StateNM, Site_no, base_url, USGS_URL, Site_nm){
+        var USGS_picture = '<img src = "GoogleMap/USGS.gif" width="84" height="32"/>      ';
+        var Title = 'Station: ' + Site_no + '<br />';
+        var Name = '<b>' + Site_nm + '</b><br /><br />';
+        var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + Site_no + '>GetFeature from this site</a></li><br />';
+        var USGS_link = '<li><a href = "' + USGS_URL + '" >Station Home Page</a></li><br />';
+        var WML2_link = '<li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + Site_no + '>GetObservation from this site</a></li><br />';
+        var html = USGS_picture + Title + Name + GetFeature + WML2_link + USGS_link;
+        return html
+    }
 //==========================================Create the map================================
       	var map = new GMap2(document.getElementById("map"));
       	map.addControl(new GLargeMapControl());
@@ -284,6 +337,37 @@
             stateNM[i] = URL_array[3];
             siteCode[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getAttribute("gml:id");
 
+      	    //var WML2_link = '<a href =' + base_url + '/wml2?request=GetObservation&featureId=' + siteCode[i] + '>GetObservation from this site</a>';
+      	    //var USGS_link = '<a href ="' + USGS_URL[i] + '">' + siteCode[i] + '</a>';
+      	    //var wfs_link = '<a href =' + base_url + '/wfs?request=GetFeature&featureId=' + siteCode[i] + '&typename=swml:Discharge>GetFeature from this site</a>';
+            var information = MarkerHTML(stateNM[i], siteCode[i], base_url, USGS_URL[i], siteName[i]);
+      	    //var information = (siteName[i] + '<br />' + WML2_link + '<br />' + wfs_link + '<br />USGS Station: ' + USGS_link);
+
+      	    var point = new GLatLng(latitude[i], longitude[i]);
+      	    var marker = createMarker(point, information, siteName[i], stateNM[i]);
+      	    map.addOverlay(marker);
+      	}
+        xmlDoc = loadXMLDoc("GoogleMap/wfs_coastal.xml");
+      	var x = xmlDoc.getElementsByTagName("wfs:member");
+
+      	var latitude = [];
+      	var longitude = [];
+      	var siteCode = [];
+      	var siteName = [];
+      	var USGS_URL = [];
+      	var stateNM = [];
+
+      	for (i = 0; i < x.length; i++) {
+      	    siteName[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("gml:name")[0].childNodes[0].nodeValue;
+      	    var pos = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getElementsByTagName("sams:shape")[0].getElementsByTagName("gml:Point")[0].getElementsByTagName("gml:pos")[0].childNodes[0].nodeValue;
+      	    var pos_array = pos.split(" ");
+      	    latitude[i] = pos_array[0];
+      	    longitude[i] = pos_array[1];
+      	    USGS_URL[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getElementsByTagName("sf:sampledFeature")[0].getAttribute("xlink:ref");
+      	    var URL_array = USGS_URL[i].split("/");
+      	    stateNM[i] = URL_array[3];
+      	    siteCode[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getAttribute("gml:id");
+
       	    var WML2_link = '<a href =' + base_url + '/wml2?request=GetObservation&featureId=' + siteCode[i] + '>GetObservation from this site</a>';
       	    var USGS_link = '<a href ="' + USGS_URL[i] + '">' + siteCode[i] + '</a>';
       	    var wfs_link = '<a href =' + base_url + '/wfs?request=GetFeature&featureId=' + siteCode[i] + '&typename=swml:Discharge>GetFeature from this site</a>';
@@ -291,7 +375,7 @@
       	    var information = (siteName[i] + '<br />' + WML2_link + '<br />' + wfs_link + '<br />USGS Station: ' + USGS_link);
 
       	    var point = new GLatLng(latitude[i], longitude[i]);
-      	    var marker = createMarker(point, information, siteName[i], stateNM[i]);
+      	    var marker = createMarker(point, information, siteName[i], 'Coastal');
       	    map.addOverlay(marker);
       	}
 }   // goes with compatiblity check
@@ -309,6 +393,51 @@
 
     </script>
 
+<!-- BEGIN USGS Footer Template -->
+<br class="clear">
+
+<p id="linksfooterbar">
+	<a href="http://www.usgs.gov/" title="USGS Home page.">USGS Home</a>
+
+	<a href="http://water.usgs.gov/" title="USGS Water Resources of the United States">Water</a>
+	<a href="http://www.usgs.gov/climate_landuse/" title="USGS Climate and Land Use Change">Climate Change</a>
+	<a href="http://www.usgs.gov/core_science_systems/" title="USGS Core Science Systems">Science Systems</a>
+	<a href="http://www.usgs.gov/ecosystems/" title="USGS Ecosystems">Ecosystems</a>
+	<a href="http://www.usgs.gov/resources_envirohealth/" title="USGS Energy, Minerals, and Environmental Health">Energy, Minerals, &amp; Env. Health</a>
+
+	<a href="http://www.usgs.gov/natural_hazards/" title="USGS Natural Hazards">Hazards</a>
+    <a href="http://internal.usgs.gov/" title="USGS Intranet home page">USGS Intranet</a>
+</p>
+
+    <div id="usgsfooter">
+      <p id="usgsfooterbar">
+        <a href="http://www.usgs.gov/accessibility.html" title="Accessibility Policy (Section 508)">Accessibility</a>
+        <a href="http://www.usgs.gov/foia/" title="Freedom of Information Act">FOIA</a>
+
+        <a href="http://www.usgs.gov/privacy.html" title="Privacy policies of the U.S. Geological Survey.">Privacy</a>
+        <a href="http://www.usgs.gov/policies_notices.html" title="Policies and notices that govern information posted on USGS Web sites.">Policies and Notices</a>
+      </p>
+
+      <p id="usgsfootertext">
+<a href="http://www.takepride.gov/"><img src="http://www.usgs.gov/images/footer_graphic_takePride.jpg" alt="Take Pride in America logo" title="Take Pride in America Home Page" width="60" height="58"></a>
+		<a href="http://firstgov.gov/"><img src="http://www.usgs.gov/images/footer_graphic_usagov.jpg" alt="USA.gov logo" width="90" height="26" style="float: right; margin-right: 10px;" title="USAGov: Government Made Easy."></a>
+        <a href="http://www.doi.gov/">U.S. Department of the Interior</a> |
+        <a href="http://www.usgs.gov/">U.S. Geological Survey</a><br />
+
+
+
+
+        URL: http://water.usgs.gov/<br />
+
+        Page Contact Information: <a href="http://water.usgs.gov/user_feedback_form.html">Water Webserver Team</a><br />
+
+        Page Last Modified: Tuesday, 08-Feb-2011 13:45:46 CST
+      </p>
+    </div>
+<!-- END USGS Footer Template -->
+
+    </div>
+    <!-- END CONTAINER -->
   </body>
 
 </html>

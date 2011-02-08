@@ -20,10 +20,10 @@ public class StateCodeTypeHandler implements TypeHandler {
     @Override
     public String getResult(ResultSet rs, String columnName) throws SQLException {
         String state_cd = rs.getString(columnName);
-        return getURLFromSQL(state_cd);
+        return getStateNameFromSQL(state_cd);
     }
 
-    public static String getURLFromSQL(String state_cd) {
+    public static String getStateNameFromSQL(String state_cd) {
 
         String[] state_nm = {"AL","AK","AS","AZ", "AR", "CA", "XX", "CO", "CT", "DE", "DC", "FL", "GA", "GU",
             "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO",
