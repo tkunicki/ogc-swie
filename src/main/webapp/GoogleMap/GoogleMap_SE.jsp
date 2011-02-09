@@ -1,5 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <% String baseURL = request.getRequestURL().toString().replaceAll("/[^/]*$", "");%>
+<%@ page  language="java" import="java.util.*,java.text.*"%>
+<%
+    Calendar ca = new GregorianCalendar();
+    //ca = ca.set(Calendar.DATE, -7)
+    int Day=ca.get(Calendar.DATE);
+    int Year=ca.get(Calendar.YEAR);
+    int Month=ca.get(Calendar.MONTH)+1;
+    String Today = Integer.toString(Year) + '-' + Integer.toString(Month) + '-' + Integer.toString(Day);
+ %>
 <html>
 
   <head>
@@ -241,6 +250,7 @@
         var USGS_link = '<li><a href = "' + USGS_URL + '" >Station Home Page</a></li><br />';
         var WML2_link = '<li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + Site_no + '>GetObservation from this site</a></li><br />';
         var html = USGS_picture + Title + Name + GetFeature + WML2_link + USGS_link;
+       
         return html
     }
 
@@ -302,11 +312,7 @@
       	    stateNM[i] = URL_array[3];
       	    siteCode[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getAttribute("gml:id");
 
-      	    //var WML2_link = '<a href =' + base_url + '/wml2?request=GetObservation&featureId=' + siteCode[i] + '>GetObservation from this site</a>';
-      	    //var USGS_link = '<a href ="' + USGS_URL[i] + '">' + siteCode[i] + '</a>';
-      	    //var wfs_link = '<a href =' + base_url + '/wfs?request=GetFeature&featureId=' + siteCode[i] + '&typename=swml:Discharge>GetFeature from this site</a>';
 
-      	    //var information = (siteName[i] + '<br />' + WML2_link + '<br />' + wfs_link + '<br />USGS Station: ' + USGS_link);
             var information = MarkerHTML(stateNM[i], siteCode[i], base_url, USGS_URL[i], siteName[i]);
 
       	    var point = new GLatLng(latitude[i], longitude[i]);

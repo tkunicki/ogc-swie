@@ -3,24 +3,24 @@
 <html>
 
   <head>
-    <meta name="publisher" content="USGS">
-    <meta name="description" content="Home page for water resources information from the US Geological Survey.">
-    <meta name="keywords" content="USGS, U.S. Geological Survey, water, earth science, hydrology, hydrologic, data, streamflow, stream, river, lake, flood, drought, quality, basin, watershed, environment, ground water, groundwater">
+    <meta name="publisher" content="USGS"/>
+    <meta name="description" content="Home page for water resources information from the US Geological Survey."/>
+    <meta name="keywords" content="USGS, U.S. Geological Survey, water, earth science, hydrology, hydrologic, data, streamflow, stream, river, lake, flood, drought, quality, basin, watershed, environment, ground water, groundwater"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="publisher" content="USGS - U.S. Geological Survey, Water Resources"/>
+    <meta name="expires" content="never"/>
 
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link href="http://www.usgs.gov/styles/common.css" rel="stylesheet" type="text/css"/>
+    <link href="http://www.usgs.gov/frameworkfiles/styles/custom.css" rel="stylesheet" type="text/css" />
+    <link href="http://www.usgs.gov/frameworkfiles/styles/framework.css" rel="stylesheet" type="text/css" />
+    <link href="../styles/framework.css" rel="stylesheet" type="text/css" />
+<!--this adds or changes styles for CIDA applications -->
+    <link href="../styles/mdc.css" rel="stylesheet" type="text/css" media="screen"/>
+    <link href="../styles/mdc-print.css" rel="stylesheet" type="text/css" media="print"/>
 
-    <meta name="publisher" content="USGS - U.S. Geological Survey, Water Resources">
-    <meta name="expires" content="never">
-       <link href="/style/msie.css" rel="stylesheet" type="text/css">
-   <link href="http://www.usgs.gov/styles/common.css" rel="stylesheet" type="text/css">
-   <link href="/style/custom.css" rel="stylesheet" type="text/css">
-   <link href="/style/leftnav.css" rel="stylesheet" type="text/css">
-   <link href="/style/water.css" rel="stylesheet" type="text/css">
-   <link href="/style/topnav.css" rel="stylesheet" type="text/css">
-<!-- <link href="/style/media.css" rel="stylesheet" type="text/css" media="print"> -->
-    <link href="/style/homepage.css" rel="stylesheet" type="text/css">
 
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    
     <title>OGC Services SWIE</title>
     <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>
     <script type="text/javascript" src="jquery-1.4.4.js">
@@ -244,9 +244,9 @@
         var USGS_picture = '<img src = "USGS.gif" width="84" height="32"/>      ';
         var Title = 'Station: ' + Site_no + '<br />';
         var Name = '<b>' + Site_nm + '</b><br /><br />';
-        var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + Site_no + '>GetFeature from this site</a></li><br />';
-        var USGS_link = '<li><a href = "' + USGS_URL + '" >Station Home Page</a></li><br />';
-        var WML2_link = '<li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + Site_no + '>GetObservation from this site</a></li><br />';
+        var GetFeature = '<dd><li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + Site_no + '>GetFeature from this site</a></li></dd><br />';
+        var USGS_link = '<dd><li><a href = "' + USGS_URL + '" >Station Home Page</a></li></dd><br />';
+        var WML2_link = '<dd><li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + Site_no + '>GetObservation from this site</a></li></dd><br />';
         var html = USGS_picture + Title + Name + GetFeature + WML2_link + USGS_link;
         return html
     }
@@ -281,8 +281,6 @@
         var wfs_url = base_url + "/wfs?request=GetFeature&typename=swml:Discharge";
         xmlDoc = loadXMLDoc(wfs_url);
 
-      	//xmlDoc = loadXMLDoc("wfs.xml");
-
       	var x = xmlDoc.getElementsByTagName("wfs:member");
 
       	var latitude = [];
@@ -308,11 +306,6 @@
       	    stateNM[i] = URL_array[3];
       	    siteCode[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getAttribute("gml:id");
 
-      	    //var WML2_link = '<a href =' + base_url + '/wml2?request=GetObservation&featureId=' + siteCode[i] + '>GetObservation from this site</a>';
-      	    //var USGS_link = '<a href ="' + USGS_URL[i] + '">' + siteCode[i] + '</a>';
-      	    //var wfs_link = '<a href =' + base_url + '/wfs?request=GetFeature&featureId=' + siteCode[i] + '&typename=swml:Discharge>GetFeature from this site</a>';
-
-      	    //var information = (siteName[i] + '<br />' + WML2_link + '<br />' + wfs_link + '<br />USGS Station: ' + USGS_link);
             var information = MarkerHTML(stateNM[i], siteCode[i], base_url, USGS_URL[i], siteName[i]);
       	    var point = new GLatLng(latitude[i], longitude[i]);
       	    var marker = createMarker(point, information, siteName[i], stateNM[i]);
@@ -353,11 +346,6 @@
       	    stateNM[i] = URL_array[3];
       	    siteCode[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getAttribute("gml:id");
 
-      	    //var WML2_link = '<a href =' + base_url + '/wml2?request=GetObservation&featureId=' + siteCode[i] + '>GetObservation from this site</a>';
-      	    //var USGS_link = '<a href ="' + USGS_URL[i] + '">' + siteCode[i] + '</a>';
-      	    //var wfs_link = '<a href =' + base_url + '/wfs?request=GetFeature&featureId=' + siteCode[i] + '&typename=swml:Discharge>GetFeature from this site</a>';
-
-      	    //var information = (siteName[i] + '<br />' + WML2_link + '<br />' + wfs_link + '<br />USGS Station: ' + USGS_link);
             var information = MarkerHTML(stateNM[i], siteCode[i], base_url, USGS_URL[i], siteName[i]);
       	    var point = new GLatLng(latitude[i], longitude[i]);
       	    var marker = createMarker(point, information, siteName[i], 'Coastal');
@@ -365,11 +353,6 @@
       	}
 
         show("Coastal");
-        //hide("TN");
-        //hide("NC");
-        //hide("AL");
-        //hide("GA");
-        //hide("SC");
         makeSidebar();
 
 }   // goes with compatiblity check
@@ -386,53 +369,41 @@
     // http://econym.org.uk/gmap/
 
     </script>
+    <span><br />References to non-U.S. Department of the Interior (DOI) products do not constitute an endorsement by the DOI. By viewing the Google Maps API on this web site the user agrees to these
+        <a href="http://code.google.com/apis/maps/terms.html" target="_blank" title="Opens a new browser window.">Terms of Service set forth by Google</a>.<br /></span>
 
 <!-- BEGIN USGS Footer Template -->
-<br class="clear">
 
-<p id="linksfooterbar">
-	<a href="http://www.usgs.gov/" title="USGS Home page.">USGS Home</a>
+<div id="linksfooterbar">
+                <a href="http://www.usgs.gov/" title="USGS Home page.">USGS Home</a>
+                <a href="http://water.usgs.gov/" title="USGS Water Resources of the United States">Water</a>
+                <a href="http://www.usgs.gov/climate_landuse/" title="USGS Climate and Land Use Change">Climate Change</a>
+                <a href="http://www.usgs.gov/core_science_systems/" title="USGS Core Science Systems">Science Systems</a>
+                <a href="http://www.usgs.gov/ecosystems/" title="USGS Ecosystems">Ecosystems</a>
+                <a href="http://www.usgs.gov/resources_envirohealth/" title="USGS Energy, Minerals, and Environmental Health">Energy, Minerals, &amp; Env. Health</a>
+                <a href="http://www.usgs.gov/natural_hazards/" title="USGS Natural Hazards">Hazards</a>
+            <a href="http://internal.usgs.gov/" title="USGS Intranet home page">USGS Intranet</a>
+</div>
 
-	<a href="http://water.usgs.gov/" title="USGS Water Resources of the United States">Water</a>
-	<a href="http://www.usgs.gov/climate_landuse/" title="USGS Climate and Land Use Change">Climate Change</a>
-	<a href="http://www.usgs.gov/core_science_systems/" title="USGS Core Science Systems">Science Systems</a>
-	<a href="http://www.usgs.gov/ecosystems/" title="USGS Ecosystems">Ecosystems</a>
-	<a href="http://www.usgs.gov/resources_envirohealth/" title="USGS Energy, Minerals, and Environmental Health">Energy, Minerals, &amp; Env. Health</a>
-
-	<a href="http://www.usgs.gov/natural_hazards/" title="USGS Natural Hazards">Hazards</a>
-    <a href="http://internal.usgs.gov/" title="USGS Intranet home page">USGS Intranet</a>
-</p>
-
-    <div id="usgsfooter">
+<div id="usgsfooter">
       <p id="usgsfooterbar">
         <a href="http://www.usgs.gov/accessibility.html" title="Accessibility Policy (Section 508)">Accessibility</a>
         <a href="http://www.usgs.gov/foia/" title="Freedom of Information Act">FOIA</a>
-
         <a href="http://www.usgs.gov/privacy.html" title="Privacy policies of the U.S. Geological Survey.">Privacy</a>
         <a href="http://www.usgs.gov/policies_notices.html" title="Policies and notices that govern information posted on USGS Web sites.">Policies and Notices</a>
       </p>
 
       <p id="usgsfootertext">
-<a href="http://www.takepride.gov/"><img src="http://www.usgs.gov/images/footer_graphic_takePride.jpg" alt="Take Pride in America logo" title="Take Pride in America Home Page" width="60" height="58"></a>
-		<a href="http://firstgov.gov/"><img src="http://www.usgs.gov/images/footer_graphic_usagov.jpg" alt="USA.gov logo" width="90" height="26" style="float: right; margin-right: 10px;" title="USAGov: Government Made Easy."></a>
-        <a href="http://www.doi.gov/">U.S. Department of the Interior</a> |
-        <a href="http://www.usgs.gov/">U.S. Geological Survey</a><br />
-
-
-
-
-        URL: http://water.usgs.gov/<br />
-
-        Page Contact Information: <a href="http://water.usgs.gov/user_feedback_form.html">Water Webserver Team</a><br />
-
-        Page Last Modified: Tuesday, 08-Feb-2011 13:45:46 CST
+            <a href="http://www.takepride.gov/"><img src="http://www.usgs.gov/images/footer_graphic_takePride.jpg" alt="Take Pride in America logo" title="Take Pride in America Home Page" width="60" height="58"></a>
+            <a href="http://firstgov.gov/"><img src="http://www.usgs.gov/images/footer_graphic_usagov.jpg" alt="USA.gov logo" width="90" height="26" style="float: right; margin-right: 10px;" title="USAGov: Government Made Easy."></a>
+            <a href="http://www.doi.gov/">U.S. Department of the Interior</a> |
+            <a href="http://www.usgs.gov/">U.S. Geological Survey</a><br />
+        URL: <%=baseURL%><br />
+        <!--Page Contact Information: <a href="http://water.usgs.gov/user_feedback_form.html">Water Webserver Team</a><br />-->
+        Page Last Modified: Tuesday, 08-Feb-2011 16:45:46 CST
       </p>
-    </div>
+</div>
 <!-- END USGS Footer Template -->
-
-    </div>
-    <!-- END CONTAINER -->
-
 
   </body>
 
