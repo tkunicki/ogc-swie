@@ -273,9 +273,9 @@
         var USGS_picture = '<img src = "GoogleMap/USGS.gif" width="84" height="32"/>      ';
         var Title = 'Station: ' + Site_no + '<br />';
         var Name = '<b>' + Site_nm + '</b><br /><br />';
-        var GetFeature = '<dd><li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + Site_no + '>GetFeature from this site</a></li></dd><br />';
-        var USGS_link = '<dd><li><a href = "' + USGS_URL + '" >Station Home Page</a></li></dd><br />';
-        var WML2_link = '<dd><li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + Site_no + '>GetObservation from this site</a></li></dd><br />';
+        var GetFeature = '<dd><li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + Site_no + '>GetFeature from this site</a></li></dd>';
+        var USGS_link = '<dd><li><a href = "' + USGS_URL + '" >Station Home Page</a></li></dd>';
+        var WML2_link = '<dd><li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + Site_no + '>GetObservation from this site</a></li></dd>';
         var html = USGS_picture + Title + Name + GetFeature + WML2_link + USGS_link;
         return html
     }

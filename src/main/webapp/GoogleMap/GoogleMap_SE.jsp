@@ -102,7 +102,7 @@
       SC Rivers: <input type="checkbox" id="SCbox" onclick="boxclick(this,'SC')" />&nbsp;&nbsp;
       AL Rivers: <input type="checkbox" id="ALbox" onclick="boxclick(this,'AL')" /><br />
       WI Rivers: <input type="checkbox" id="WIbox" onclick="boxclick(this,'WI')" />&nbsp;&nbsp;
-      PA Rivers: <input type="checkbox" id="PAbox" onclick="boxclick(this,'PA')" />&nbsp;&nbsp;
+      <!--PA Rivers: <input type="checkbox" id="PAbox" onclick="boxclick(this,'PA')" />&nbsp;&nbsp;
       NY Rivers: <input type="checkbox" id="NYbox" onclick="boxclick(this,'NY')" />&nbsp;&nbsp;
       NJ Rivers: <input type="checkbox" id="NJbox" onclick="boxclick(this,'NJ')" /><br />
       MN Rivers: <input type="checkbox" id="MNbox" onclick="boxclick(this,'MN')" />&nbsp;&nbsp;
@@ -111,7 +111,7 @@
       IA Rivers: <input type="checkbox" id="IAbox" onclick="boxclick(this,'IA')" /><br />
       ND Rivers: <input type="checkbox" id="NDbox" onclick="boxclick(this,'ND')" />&nbsp;&nbsp;
       OH Rivers: <input type="checkbox" id="OHbox" onclick="boxclick(this,'OH')" />&nbsp;&nbsp;
-      IN Rivers: <input type="checkbox" id="INbox" onclick="boxclick(this,'IN')" />&nbsp;&nbsp;
+      IN Rivers: <input type="checkbox" id="INbox" onclick="boxclick(this,'IN')" />&nbsp;&nbsp;-->
       Coastal Rivers: <input type="checkbox" id="Coastalbox" onclick="boxclick(this,'Coastal')" />&nbsp;&nbsp;
       MI Rivers: <input type="checkbox" id="MIbox" onclick="boxclick(this,'MI')" /><br />
       
@@ -157,6 +157,18 @@
         return html
     }
 
+    function SimpleMarkerHTML(Site_no, base_url, USGS_URL, Site_nm){
+        var USGS_picture = '<img src = "USGS.gif" width="84" height="32"/>      ';
+        var Title = 'Station: ' + Site_no + '<br /><br />';
+        var Name = '<b>' + Site_nm + '</b><br /><br />';
+        var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + Site_no + '>GetFeature</a></li>';
+        var USGS_link = '<li><a href = "' + USGS_URL + '" >Station Home Page</a></li>';
+        var WML2_link = '<li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + Site_no + '>GetObservation</a></li>';
+
+        var html = USGS_picture + Title + Name + GetFeature + WML2_link + USGS_link;
+
+        return html
+    }
 // ======================= Create an associative array of GIcons() =======================
       var gicons = [];
 
@@ -185,18 +197,19 @@
         return marker;
     }
 
-    function createCoastalMarker(point, html, name, category) {
-        var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
-        var marker = new GMarker(point, newIcon);
-        //var marker = new GMarker(point, gicons[category]);
-        marker.mycategory = 'Coastal';
-        marker.myname = name;
-        GEvent.addListener(marker, "click", function() {
-            marker.openInfoWindowHtml(html);
-        });
+        function createCoastalMarker(point, name, Site_no, base_url, USGS_URL) {
+            var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
+            var marker = new GMarker(point, newIcon);
+            marker.mycategory = "Coastal";
+            marker.myname = name;
 
-        gmarkers.push(marker);
-        return marker;
+            GEvent.addListener(marker, "click", function() {
+                var html = SimpleMarkerHTML(Site_no, base_url, USGS_URL, name);
+                marker.openInfoWindowHtml(html);
+            });
+
+            gmarkers.push(marker);
+            return marker;
     }
 
 // ========================Create a tabbed marker============================================
@@ -324,17 +337,17 @@
         show("GA");
         show("SC");
         show("MI");
-        show("NJ");
-        show("PA");
-        show("MN");
-        show("MO");
-        show("IL");
-        show("IA");
-        show("ND");
-        show("IN");
-        show("OH");
+        //show("NJ");
+        //show("PA");
+        //show("MN");
+        //show("MO");
+        //show("IL");
+        //show("IA");
+        //show("ND");
+        //show("IN");
+        //show("OH");
         show("MI");
-        show("NY");
+        //show("NY");
 
 
         xmlDoc_Coast = loadXMLDoc("wfs_coastal.xml");
@@ -348,20 +361,18 @@
         var stateNM = [];
 
         for (i = 0; i < x.length; i++) {
-            siteName[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("gml:name")[0].childNodes[0].nodeValue;
-            var pos = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getElementsByTagName("sams:shape")[0].getElementsByTagName("gml:Point")[0].getElementsByTagName("gml:pos")[0].childNodes[0].nodeValue;
-            var pos_array = pos.split(" ");
-            latitude[i] = pos_array[0];
-            longitude[i] = pos_array[1];
-            USGS_URL[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getElementsByTagName("sf:sampledFeature")[0].getAttribute("xlink:ref");
-            var URL_array = USGS_URL[i].split("/");
-            stateNM[i] = URL_array[3];
-            siteCode[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getAttribute("gml:id");
-
-            var information = MarkerHTML(stateNM[i], siteCode[i], base_url, USGS_URL[i], siteName[i]);
-            var point = new GLatLng(latitude[i], longitude[i]);
-            var marker = createCoastalMarker(point, information, siteName[i], 'Coastal');
-            map.addOverlay(marker);
+                    siteName[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("gml:name")[0].childNodes[0].nodeValue;
+                    var pos = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getElementsByTagName("sams:shape")[0].getElementsByTagName("gml:Point")[0].getElementsByTagName("gml:pos")[0].childNodes[0].nodeValue;
+                    var pos_array = pos.split(" ");
+                    latitude[i] = pos_array[0];
+                    longitude[i] = pos_array[1];
+                    USGS_URL[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getElementsByTagName("sf:sampledFeature")[0].getAttribute("xlink:ref");
+                    var URL_array = USGS_URL[i].split("/");
+                    stateNM[i] = URL_array[3];
+                    siteCode[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getAttribute("gml:id");
+                    var point = new GLatLng(latitude[i], longitude[i]);
+                    var marker = createCoastalMarker(point, siteName[i], siteCode[i], base_url, USGS_URL[i]);
+                    map.addOverlay(marker);
         }
         show("Coastal");
         makeSidebar();
