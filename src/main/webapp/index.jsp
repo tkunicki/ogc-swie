@@ -52,7 +52,7 @@
     <title>OGC Services SWIE</title>
 
     <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>
-
+    <script src="GoogleMap/mapiconmaker.js" type="text/javascript"></script>
     <script type="text/javascript" src="jquery-1.4.4.js">
         function httpBodyPost(url, reqTextId) {
                 var reqXML = unescapeHTML(document.getElementById(reqTextId).innerHTML);
@@ -214,16 +214,14 @@
            <div id="map" style="width: 460px; height: 360px"></div>
            <i> <font size ="2"> Map works in IE and Firefox.  Future versions will include Safari and Chrome</i></font><br />
            Markers represent USGS gaging stations on the Mississippi, Delaware, Fox, Wisconsin, Illinois, Red River of the North, NASQAN Coastal Subnetwork, and others near the Great Lakes.
-           Clicking on a marker brings up a box with the station name, and links to GetObservation, GetFeature, and the public USGS website.<br />
+           Clicking on a marker brings up a box with the station name, and links to GetObservation, GetFeature, and the public USGS website.*<br />
            <p></p>
-           <a href="<%=baseURL%>/GoogleMap/GoogleMap.jsp">Larger Google Map</a>
+           <a href="<%=baseURL%>/GoogleMap/GoogleMap.jsp">Larger Google Map*</a>
 
         </td>
       </tr>
     </table>
     </font>
-<! ===========================Create Check Boxes==================================>
-
 
 <! ==========================Message if JavaScript is not enabled=======================>
 
@@ -240,35 +238,14 @@
     if (GBrowserIsCompatible()) {
       var gmarkers = [];
 
-// ======================= Create an associative array of GIcons() =====================
-      var gicons = [];
-      gicons["WI"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/red_MarkerW.png");
-      gicons["PA"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/blue_MarkerP.png");
-      gicons["NJ"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/darkgreen_MarkerN.png");
-      gicons["MO"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/orange_MarkerM.png");
-      gicons["IL"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/orange_MarkerI.png");
-      gicons["MN"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/purple_MarkerM.png");
-      gicons["IA"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/yellow_MarkerI.png");
-      gicons["ND"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/purple_MarkerN.png");
-      gicons["OH"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/red_MarkerO.png");
-      gicons["MI"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/paleblue_MarkerM.png");
-      gicons["IN"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/blue_MarkerI.png");
-      gicons["NY"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/green_MarkerN.png");
-      //gicons["TN"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/orange_MarkerT.png");
-      //gicons["NC"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/blue_MarkerN.png");
-      //gicons["AL"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/red_MarkerA.png");
-      //gicons["GA"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/red_MarkerG.png");
-      //gicons["SC"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/red_MarkerG.png");
-      gicons["Coastal"] = new GIcon(G_DEFAULT_ICON, "GoogleMap/blue_MarkerC.png");
-
 // ========================Create a marker============================================
 
     function createMarker(point, html, name, category) {
-
-        var marker = new GMarker(point, gicons[category]);
+        var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
+        var marker = new GMarker(point, newIcon);
+        //var marker = new GMarker(point, gicons[category]);
         marker.mycategory = category;
         marker.myname = name;
-
         GEvent.addListener(marker, "click", function() {
             marker.openInfoWindowHtml(html);
         });
@@ -307,13 +284,12 @@
       	map.addControl(new GLargeMapControl());
       	map.addControl(new GMapTypeControl());
       	map.addMapType(G_PHYSICAL_MAP);
-      	map.setCenter(new GLatLng(45.55972222, -88.613888889), 5, G_PHYSICAL_MAP);
+      	map.setCenter(new GLatLng(40.55972222, -88.613888889), 4, G_PHYSICAL_MAP);
       	map.enableScrollWheelZoom();
 
 // ====================================Read the data from xxxx.xml=========================
 
         var base_url = '<%=baseURL%>';
-        //var wfs_url = base_url + "/wfs?request=GetFeature&typename=swml:Discharge&featureID=01427207,01427510,01434000,01438500,01457500,01463500,04073365,04073500,04082400,04084445,040851385,05344500,05378500,05389500,05391000,05395000,05404000,05407000,05420500,05543500,05543830,05545750,05551540,05552500,05558300,05568500,05585500,05586100,07010000,07020500,07022000,05051500,05054000,05063398,05064000,'05064500,05069000,05075000,05078000,05078230,05078500,05082500,05083500";
         var wfs_url = base_url + "/wfs?request=GetFeature";
         xmlDoc = loadXMLDoc(wfs_url);
 
@@ -384,9 +360,10 @@
 
     </script>
 
-        <span> <font size="10"><br />References to non-U.S. Department of the Interior (DOI) products do not constitute an endorsement by the DOI. By viewing the Google Maps API on this web site the user agrees to these
+        <span> <font size="0.5"><br />* References to non-U.S. Department of the Interior (DOI) products do not constitute an endorsement by the DOI. By viewing the Google Maps API on this web site the user agrees to these
         <a href="http://code.google.com/apis/maps/terms.html" target="_blank" title="Opens a new browser window.">Terms of Service set forth by Google</a>.<br /></font></span>
-<!-- BEGIN USGS Footer Template -->
+        <br />
+        <!-- BEGIN USGS Footer Template -->
 
 <div id="linksfooterbar">
    <!-- <p id="usgsfooterbar">-->

@@ -206,15 +206,13 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="zoneAbbreviation"
 			javaType="string" />
 		<result
-			property="om:result/wml2:Timeseries#gml:id=time_series_1"
-			column="station_nm"
-			javaType="string" />
-		<!--
+                        property="^!{om:result/wml2:Timeseries"
+                        column="loc_nu"
+                        javaType="string" />
                 <result
-			property="om:result/wml2:Timeseries/wml2:domainExtent#xlink:href=ts_period"
-			column="station_nm"
+			property="om:result/wml2:Timeseries#gml:id=time_series_1"
+			column="loc_nu"
 			javaType="string" />
-                        -->
 		<result
 			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:unitOfMeasure#xlink:href=%s"
 			column="units"
@@ -239,23 +237,12 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                         -->
 		<result
 			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:dataType#xlink:href=http://www.opengis.net/def/timeseriesType/WaterML/2.0/Continuous"
-			column="station_nm"
+			column="loc_nu"
 			javaType="string" />
 		<result
 			property="}om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:dataType#xlink:title=Continuous/Instantaneous"
-			column="station_nm"
+			column="loc_nu"
 			javaType="string" />
-<!--
-                <result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:processing#xlink:href=http://www.opengis.net/WaterML2.0/def/processing/raw"
-			column="station_nm"
-			javaType="string" />
-
-		<result
-			property="}om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:processing#xlink:title=As measured data"
-			column="station_nm"
-			javaType="string" />
-                         -->
 		<result
 			property="om:result/wml2:Timeseries/^wml2:point/wml2:TimeValuePair/^wml2:time"
 			column="currentPosition"
@@ -301,8 +288,8 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		d.parameter_units as units,
 		d.parameter_nm,
                 (CASE
-                    WHEN c.table_cd = '***' THEN 'Temporarily unavailable'
-                    ELSE c.table_cd
+                    WHEN c.table_cd = '***' THEN CONCAT(e.loc_nm,' Temporarily unavailable')
+                    ELSE CONCAT(c.table_cd,' ',e.loc_nm)
                 END) table_cd,
                 (CASE
                     WHEN g.data_aging_cd = 'A' THEN 'Approved for publication -- Processing and review completed.'
@@ -314,7 +301,9 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 (CASE
                     WHEN f.dec_coord_datum_cd = 'NAD83' THEN 'urn:ogc:def:crs:EPSG:4269'
                     ELSE f.dec_coord_datum_cd
-                END) coord_datum
+                END) coord_datum,
+                e.loc_nm,
+                e.loc_nu
 		
 		FROM
 		    (select b.site_id,
@@ -373,7 +362,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			AND g.result_dt <![CDATA[ <= ]]> STR_TO_DATE(#{endPosition[0]}, '%Y-%m-%d')
                 </if>
 
-		ORDER BY f.station_nm, currentPosition DESC
+		ORDER BY f.station_nm, e.loc_nu, currentPosition DESC
 	  
 	</select>
 
