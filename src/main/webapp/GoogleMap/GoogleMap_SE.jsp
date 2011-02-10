@@ -82,7 +82,7 @@
 <font face="Arial">
     <h1>Southeast USGS Gage Sites</h1>
 
-<!===============================Create Table=========================================>
+<!--===============================Create Table=========================================-->
     <table border=1>
       <tr>
         <td>
@@ -94,7 +94,7 @@
       </tr>
     </table>
 
-<! ===========================Create Check Boxes==================================>
+<!-- ===========================Create Check Boxes==================================-->
     <form action="#">
       TN Rivers: <input type="checkbox" id="TNbox" onclick="boxclick(this,'TN')" />&nbsp;&nbsp;
       NC Rivers: <input type="checkbox" id="NCbox" onclick="boxclick(this,'NC')" />&nbsp;&nbsp;
@@ -112,12 +112,13 @@
       ND Rivers: <input type="checkbox" id="NDbox" onclick="boxclick(this,'ND')" />&nbsp;&nbsp;
       OH Rivers: <input type="checkbox" id="OHbox" onclick="boxclick(this,'OH')" />&nbsp;&nbsp;
       IN Rivers: <input type="checkbox" id="INbox" onclick="boxclick(this,'IN')" />&nbsp;&nbsp;
+      Coastal Rivers: <input type="checkbox" id="Coastalbox" onclick="boxclick(this,'Coastal')" />&nbsp;&nbsp;
       MI Rivers: <input type="checkbox" id="MIbox" onclick="boxclick(this,'MI')" /><br />
       
-      Inactive Gage Stations: <input type="checkbox" id="Inactivebox" onclick="boxclick(this,'Inactive')" /><br />
+<!--      Inactive Gage Stations: <input type="checkbox" id="Inactivebox" onclick="boxclick(this,'Inactive')" /><br />-->
     </form>
 
-<! ==========================Message if JavaScript is not enabled=======================>
+<!-- ==========================Message if JavaScript is not enabled=======================-->
 
     <noscript><b>JavaScript must be enabled in order for you to use Google Maps.</b>
       However, it seems JavaScript is either disabled or not supported by your browser.
@@ -126,7 +127,7 @@
     </noscript>
     </font>
 
-<! ==============================With compatable browsers, do the following===============>
+<!-- ==============================With compatable browsers, do the following===============-->
     <script type="text/javascript">
     //<![CDATA[
     if (GBrowserIsCompatible()) {
@@ -135,39 +136,88 @@
       var test = base.length - 10;    // Gets rid of /GoogleMap/ from baseURL
       var base_url = base.substring(0,test);
 
+//====================================Create Marker HTML==================================
+    function MarkerHTML(Site_no, base_url, USGS_URL, Site_nm){
+        var USGS_picture = '<img src = "USGS.gif" width="84" height="32"/>      ';
+        var Title = 'Station: ' + Site_no + '<br /><br />';
+        var Name = '<b>' + Site_nm + '</b><br /><br />';
+        var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + Site_no + '>GetFeature</a></li>';
+        var USGS_link = '<li><a href = "' + USGS_URL + '" >Station Home Page</a></li>';
+        var WML2_link = '<li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + Site_no + '>GetObservation</a></li>';
+        var sos_url = base_url + "/wml2?request=GetObservation&featureId=" + Site_no + '&beginPosition=' + '<%=Today%>';
+        xmlDoc_SOS = loadXMLDoc(sos_url);
+        var TimeSeries = xmlDoc_SOS.getElementsByTagName("wml2:WaterMonitoringObservation")[0].getElementsByTagName("om:result")[0].getElementsByTagName("wml2:Timeseries");
+        var x = TimeSeries[0].getElementsByTagName("wml2:point")[0].getElementsByTagName("wml2:TimeValuePair");
+        var Time = x[0].getElementsByTagName("wml2:time")[0].childNodes[0].nodeValue;
+        var Value = x[0].getElementsByTagName("wml2:value")[0].childNodes[0].nodeValue;
+        var Units = TimeSeries[0].getElementsByTagName("wml2:defaultTimeValuePair")[0].getElementsByTagName("wml2:TimeValuePair")[0].getElementsByTagName("wml2:unitOfMeasure")[0].getAttribute("xlink:href");
+        var html_1 = USGS_picture + Title + Name + "<table border='1'><tr><th colspan='2'> Latest Reading:<br />" + Time + '</tr></th><tr><td>Discharge:</td><td>' + Value + ' ' + Units + '</td></tr></table>';
+        var html_2 = '<br /><strong>WaterML2</strong><br />' + GetFeature + WML2_link;
+        var html = html_1 + html_2;
+        return html
+    }
+
 // ======================= Create an associative array of GIcons() =======================
       var gicons = [];
-      //gicons["WI"] = new GIcon(G_DEFAULT_ICON, "red_MarkerW.png");
+
       gicons["WI"] = MapIconMaker.createMarkerIcon({primaryColor: "#33CC66"});
-      gicons["PA"] = MapIconMaker.createMarkerIcon({primaryColor: "#0066FF"});
-      gicons["NJ"] = MapIconMaker.createMarkerIcon({primaryColor: "#00FF00"});
-      gicons["MO"] = MapIconMaker.createMarkerIcon({primaryColor: "#FF9933"});
-      gicons["IL"] = MapIconMaker.createMarkerIcon({primaryColor: "#FF9933"});
-      gicons["MN"] = MapIconMaker.createMarkerIcon({primaryColor: "#6633FF"});
-      gicons["IA"] = MapIconMaker.createMarkerIcon({primaryColor: "#FFFF33"});
-      gicons["ND"] = MapIconMaker.createMarkerIcon({primaryColor: "#6633FF"});
-      gicons["OH"] = MapIconMaker.createMarkerIcon({primaryColor: "#B0B0B0"});
       gicons["MI"] = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
-      gicons["IN"] = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
-      gicons["NY"] = MapIconMaker.createMarkerIcon({primaryColor: "#336600"});
       gicons["TN"] = MapIconMaker.createMarkerIcon({primaryColor: "#FF9933"});
       gicons["NC"] = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
       gicons["AL"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
       gicons["GA"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
       gicons["SC"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
+      gicons["Coastal"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
 
 // ========================Create a marker============================================
+    function createMarker(point, name, StateNM, Site_no, base_url, USGS_URL) {
+        //var marker = new GMarker(point, {icon: gicons[StateNM]});
+        var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
+        var marker = new GMarker(point, newIcon);
 
-    function createMarker(point, html, name, category) {
-        var marker = new GMarker(point, {icon: gicons[category]});
-        marker.mycategory = category;
+        marker.mycategory = StateNM;
+        marker.myname = name;
+        GEvent.addListener(marker, "click", function() {
+            var html = MarkerHTML(StateNM, Site_no, base_url, USGS_URL, name);
+            marker.openInfoWindowHtml(html);
+            });
+        gmarkers.push(marker);
+        return marker;
+    }
+
+    function createCoastalMarker(point, html, name, category) {
+        var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
+        var marker = new GMarker(point, newIcon);
+        //var marker = new GMarker(point, gicons[category]);
+        marker.mycategory = 'Coastal';
         marker.myname = name;
         GEvent.addListener(marker, "click", function() {
             marker.openInfoWindowHtml(html);
         });
+
         gmarkers.push(marker);
         return marker;
     }
+
+// ========================Create a tabbed marker============================================
+      function createTabbedMarker(point, name, StateNM, Site_no, base_url, USGS_URL)
+      {
+        var marker = new GMarker(point, {icon: gicons[StateNM]});
+        //var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
+        //var marker = new GMarker(point, newIcon);
+        marker.mycategory = StateNM;
+        marker.myname = name;
+        GEvent.addListener(marker, "click", function() {
+            var label1 = "Site Information"
+            var html1 = MarkerHTML(Site_no, base_url, USGS_URL, name);
+            var label2 = "Data"
+            var html2 = '<img src = "http://waterdata.usgs.gov/nwisweb/graph?site_no=' + Site_no + '&parm_cd=00060" width="387" height="277" alt="USGS Water-data graph"/>';
+            marker.openInfoWindowTabsHtml([new GInfoWindowTab(label1,html1), new GInfoWindowTab(label2,html2)]);
+            });
+        gmarkers.push(marker);
+        return marker;
+    }
+
 
 // ===================================== Shows markers =================================
       function show(category) {
@@ -231,53 +281,16 @@
           return xmlDoc
       }
 
-//====================================Create Marker HTML==================================
-    function MarkerHTML(StateNM, Site_no, base_url, USGS_URL, Site_nm){
-        var USGS_picture = '<img src = "USGS.gif" width="84" height="32"/>      ';
-        //var data_url = base_url + '/wml2?request=GetObservation&featureId=' + Site_no + '&beginPosition=' + '<%=Today%>' + '&endPosition='+ '<%=Today%>';
-        //var xmlDoc = loadXMLDoc(data_url);
-        //var date = xmlDoc.getElementsByTagName("om.result")[0].getElementsByTagName("wml2:Timeseries ")[0].getElementsByTagName("wml2:point")[0].getElementsByTagName("wml2:TimeValuePair")[0].getElementsByTagName("wml2:time")[0].childNodes[0].nodeValue;
-        var Title = 'Station: ' + Site_no + '<br /><br />';
-        var Name = '<b>' + Site_nm + '</b><br /><br />';
-        var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + Site_no + '>GetFeature from this site</a></li><br />';
-        var USGS_link = '<li><a href = "' + USGS_URL + '" >Station Home Page</a></li><br />';
-        var WML2_link = '<li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + Site_no + '>GetObservation from this site</a></li><br />';
-        var html = USGS_picture + Title + Name + GetFeature + WML2_link + USGS_link;
-
-        return html
-    }
-
 //==========================================Create the map================================
       	var map = new GMap2(document.getElementById("map"));
       	map.addControl(new GLargeMapControl());
       	map.addControl(new GMapTypeControl());
       	map.addMapType(G_PHYSICAL_MAP);
-      	//map.setCenter(new GLatLng(35.96501528, -84.17866200), 7, G_PHYSICAL_MAP);
-        map.setCenter(new GLatLng(40.55972222, -95.613888889), 4, G_PHYSICAL_MAP);
+        map.setCenter(new GLatLng(35.96501528, -84.17866200), 7, G_PHYSICAL_MAP);
       	map.enableScrollWheelZoom();
 
 // ====================================Read the data from xxxx.xml=========================
-      	GDownloadUrl("InactiveSites.csv", function(doc) {
-      	    lines = doc.split("\n");
-      	    for (var i = 0; i < lines.length; i++) {
-      	        if (lines[i].length > 1) {
-      	            parts = lines[i].split(",");
-      	            var Lat = parseFloat(parts[0]);
-      	            var Long = parseFloat(parts[1]);
-      	            var name_in = parts[2];
-      	            var point = new GLatLng(Lat, Long);
-      	            var html = "Inactive USGS site: <br />" + name_in;
-      	            var marker = createMarker(point, html, name_in, "Inactive");
-      	            map.addOverlay(marker);
-      	        }
-      	    }
-      	    hide("Inactive");
-      	});
-
-        var wfs_url = base_url + "/wfs?request=GetFeature&typename=swml:Discharge";
-        xmlDoc = loadXMLDoc(wfs_url);
-
-      	//xmlDoc = loadXMLDoc("wfs.xml");
+        xmlDoc = loadXMLDoc("wfs_SE.xml");
 
       	var x = xmlDoc.getElementsByTagName("wfs:member");
 
@@ -287,10 +300,6 @@
       	var siteName = [];
       	var USGS_URL = [];
       	var stateNM = [];
-
-      	var base = '<%=baseURL%>';
-      	var test = base.length - 10;    // Gets rid of /GoogleMap/ from baseURL
-      	var base_url = base.substring(0, test);
 
       	for (i = 0; i < x.length; i++) {
       	    siteName[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("gml:name")[0].childNodes[0].nodeValue;
@@ -302,15 +311,19 @@
       	    var URL_array = USGS_URL[i].split("/");
       	    stateNM[i] = URL_array[3];
       	    siteCode[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getAttribute("gml:id");
-
-            var information = MarkerHTML(stateNM[i], siteCode[i], base_url, USGS_URL[i], siteName[i]);
-
       	    var point = new GLatLng(latitude[i], longitude[i]);
-      	    var marker = createMarker(point, information, siteName[i], stateNM[i]);
+            //var marker = createTabbedMarker(point, siteName[i],  stateNM[i], siteCode[i], base_url, wfs_url);
+            var marker = createTabbedMarker(point, siteName[i],  stateNM[i], siteCode[i], base_url, USGS_URL[i]);
       	    map.addOverlay(marker);
       	}
 
         show("WI");
+        show("TN");
+        show("NC");
+        show("AL");
+        show("GA");
+        show("SC");
+        show("MI");
         show("NJ");
         show("PA");
         show("MN");
@@ -322,12 +335,38 @@
         show("OH");
         show("MI");
         show("NY");
-        show("TN");
-        show("NC");
-        show("AL");
-        show("GA");
-        show("SC");
+
+
+        xmlDoc_Coast = loadXMLDoc("wfs_coastal.xml");
+        var x = xmlDoc_Coast.getElementsByTagName("wfs:member");
+
+        var latitude = [];
+        var longitude = [];
+        var siteCode = [];
+        var siteName = [];
+        var USGS_URL = [];
+        var stateNM = [];
+
+        for (i = 0; i < x.length; i++) {
+            siteName[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("gml:name")[0].childNodes[0].nodeValue;
+            var pos = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getElementsByTagName("sams:shape")[0].getElementsByTagName("gml:Point")[0].getElementsByTagName("gml:pos")[0].childNodes[0].nodeValue;
+            var pos_array = pos.split(" ");
+            latitude[i] = pos_array[0];
+            longitude[i] = pos_array[1];
+            USGS_URL[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getElementsByTagName("sf:sampledFeature")[0].getAttribute("xlink:ref");
+            var URL_array = USGS_URL[i].split("/");
+            stateNM[i] = URL_array[3];
+            siteCode[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getAttribute("gml:id");
+
+            var information = MarkerHTML(stateNM[i], siteCode[i], base_url, USGS_URL[i], siteName[i]);
+            var point = new GLatLng(latitude[i], longitude[i]);
+            var marker = createCoastalMarker(point, information, siteName[i], 'Coastal');
+            map.addOverlay(marker);
+        }
+        show("Coastal");
         makeSidebar();
+
+
 
     }   // goes with compatiblity check
 
@@ -368,8 +407,8 @@
       </p>
 
       <p id="usgsfootertext">
-        <a href="http://www.takepride.gov/"><img src="http://www.usgs.gov/images/footer_graphic_takePride.jpg" alt="Take Pride in America logo" title="Take Pride in America Home Page" width="60" height="58"></a>
-	<a href="http://firstgov.gov/"><img src="http://www.usgs.gov/images/footer_graphic_usagov.jpg" alt="USA.gov logo" width="90" height="26" style="float: right; margin-right: 10px;" title="USAGov: Government Made Easy."></a>
+        <a href="http://www.takepride.gov/"><img src="http://www.usgs.gov/images/footer_graphic_takePride.jpg" alt="Take Pride in America logo" title="Take Pride in America Home Page" width="60" height="58"/></a>
+	<a href="http://firstgov.gov/"><img src="http://www.usgs.gov/images/footer_graphic_usagov.jpg" alt="USA.gov logo" width="90" height="26" style="float: right; margin-right: 10px;" title="USAGov: Government Made Easy."/></a>
         <a href="http://www.doi.gov/">U.S. Department of the Interior</a> |
         <a href="http://www.usgs.gov/">U.S. Geological Survey</a><br />
         URL: <%=baseURL%><br />

@@ -1,5 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <% String baseURL = request.getRequestURL().toString().replaceAll("/[^/]*$", "");%>
+<%@ page  language="java" import="java.util.*,java.text.*"%>
+<%
+    Calendar ca = new GregorianCalendar();
+    //ca = ca.set(Calendar.DATE, -7)
+    int Day=ca.get(Calendar.DATE);
+    int Year=ca.get(Calendar.YEAR);
+    int Month=ca.get(Calendar.MONTH)+1;
+    String Today = Integer.toString(Year) + '-' + Integer.toString(Month) + '-' + Integer.toString(Day);
+ %>
 <html>
 
   <head>
@@ -123,8 +132,37 @@
 
        // ========================Create a marker============================================
 
-            function createMarker(point, html, name, category) {
+            function createMarker(point, name, StateNM, Site_no, base_url, USGS_URL) {
                 var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
+                var marker = new GMarker(point, newIcon);
+                marker.mycategory = StateNM;
+                marker.myname = name;
+
+                GEvent.addListener(marker, "click", function() {
+                    var html = MarkerHTML(Site_no, base_url, USGS_URL, name);
+                    marker.openInfoWindowHtml(html);
+                });
+
+                gmarkers.push(marker);
+                return marker;
+            }
+            function createCoastalMarker(point, name, Site_no, base_url, USGS_URL) {
+                var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
+                var marker = new GMarker(point, newIcon);
+                marker.mycategory = "Coastal";
+                marker.myname = name;
+
+                GEvent.addListener(marker, "click", function() {
+                    var html = SimpleMarkerHTML(Site_no, base_url, USGS_URL, name);
+                    marker.openInfoWindowHtml(html);
+                });
+
+                gmarkers.push(marker);
+                return marker;
+            }
+
+           function createInactiveMarker(point, html, name, category) {
+                var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#33CC66"});
                 var marker = new GMarker(point, newIcon);
                 marker.mycategory = category;
                 marker.myname = name;
@@ -200,14 +238,36 @@
                   return xmlDoc
               }
         //====================================Create Marker HTML==================================
-            function MarkerHTML(StateNM, Site_no, base_url, USGS_URL, Site_nm){
+            function MarkerHTML(Site_no, base_url, USGS_URL, Site_nm){
                 var USGS_picture = '<img src = "USGS.gif" width="84" height="32"/>      ';
-                var Title = 'Station: ' + Site_no + '<br />';
+                var Title = 'Station: ' + Site_no + '<br /><br />';
                 var Name = '<b>' + Site_nm + '</b><br /><br />';
-                var GetFeature = '<dd><li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + Site_no + '>GetFeature from this site</a></li></dd><br />';
-                var USGS_link = '<dd><li><a href = "' + USGS_URL + '" >Station Home Page</a></li></dd><br />';
-                var WML2_link = '<dd><li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + Site_no + '>GetObservation from this site</a></li></dd><br />';
+                var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + Site_no + '>GetFeature</a></li>';
+                var USGS_link = '<li><a href = "' + USGS_URL + '" >Station Home Page</a></li>';
+                var WML2_link = '<li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + Site_no + '>GetObservation</a></li>';
+                var sos_url = base_url + "/wml2?request=GetObservation&featureId=" + Site_no + '&beginPosition=' + '<%=Today%>';
+                xmlDoc_SOS = loadXMLDoc(sos_url);
+                var TimeSeries = xmlDoc_SOS.getElementsByTagName("wml2:WaterMonitoringObservation")[0].getElementsByTagName("om:result")[0].getElementsByTagName("wml2:Timeseries");
+                var x = TimeSeries[0].getElementsByTagName("wml2:point")[0].getElementsByTagName("wml2:TimeValuePair");
+                var Time = x[0].getElementsByTagName("wml2:time")[0].childNodes[0].nodeValue;
+                var Value = x[0].getElementsByTagName("wml2:value")[0].childNodes[0].nodeValue;
+                var Units = TimeSeries[0].getElementsByTagName("wml2:defaultTimeValuePair")[0].getElementsByTagName("wml2:TimeValuePair")[0].getElementsByTagName("wml2:unitOfMeasure")[0].getAttribute("xlink:href");
+                var html_1 = USGS_picture + Title + Name + "<table border='1'><tr><th colspan='2'> Latest Reading:<br />" + Time + '</tr></th><tr><td>Discharge:</td><td>' + Value + ' ' + Units + '</td></tr></table>';
+                var html_2 = USGS_link + '<br /><strong>WaterML2</strong><br />' + GetFeature + WML2_link;
+                var html = html_1 + html_2;
+                return html
+            }
+
+            function SimpleMarkerHTML(Site_no, base_url, USGS_URL, Site_nm){
+                var USGS_picture = '<img src = "USGS.gif" width="84" height="32"/>      ';
+                var Title = 'Station: ' + Site_no + '<br /><br />';
+                var Name = '<b>' + Site_nm + '</b><br /><br />';
+                var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + Site_no + '>GetFeature</a></li>';
+                var USGS_link = '<li><a href = "' + USGS_URL + '" >Station Home Page</a></li>';
+                var WML2_link = '<li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + Site_no + '>GetObservation</a></li>';
+
                 var html = USGS_picture + Title + Name + GetFeature + WML2_link + USGS_link;
+
                 return html
             }
 
@@ -231,12 +291,39 @@
                             var point = new GLatLng(Lat, Long);
                             var html = "Inactive USGS site: <br />" + name_in;
 
-                            var marker = createMarker(point, html, name_in, "Inactive");
+                            var marker = createInactiveMarker(point, html, name_in, "Inactive");
                             map.addOverlay(marker);
                         }
                     }
                     hide("Inactive");
                 });
+
+                xmlDoc_Coast = loadXMLDoc("wfs_coastal.xml");
+                var x = xmlDoc_Coast.getElementsByTagName("wfs:member");
+
+                var latitude = [];
+                var longitude = [];
+                var siteCode = [];
+                var siteName = [];
+                var USGS_URL = [];
+                var stateNM = [];
+
+                for (i = 0; i < x.length; i++) {
+                    siteName[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("gml:name")[0].childNodes[0].nodeValue;
+                    var pos = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getElementsByTagName("sams:shape")[0].getElementsByTagName("gml:Point")[0].getElementsByTagName("gml:pos")[0].childNodes[0].nodeValue;
+                    var pos_array = pos.split(" ");
+                    latitude[i] = pos_array[0];
+                    longitude[i] = pos_array[1];
+                    USGS_URL[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getElementsByTagName("sf:sampledFeature")[0].getAttribute("xlink:ref");
+                    var URL_array = USGS_URL[i].split("/");
+                    stateNM[i] = URL_array[3];
+                    siteCode[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getAttribute("gml:id");
+                    var point = new GLatLng(latitude[i], longitude[i]);
+                    var marker = createCoastalMarker(point, siteName[i], siteCode[i], base_url, USGS_URL[i]);
+                    map.addOverlay(marker);
+                }
+                show("Coastal");
+
 
                 var wfs_url = base_url + "/wfs?request=GetFeature";
                 xmlDoc = loadXMLDoc(wfs_url);
@@ -254,7 +341,6 @@
                 var test = base.length - 10;    // Gets rid of /GoogleMap/ from baseURL
                 var base_url = base.substring(0, test);
 
-
                 for (i = 0; i < x.length; i++) {
                     siteName[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("gml:name")[0].childNodes[0].nodeValue;
                     var pos = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getElementsByTagName("sams:shape")[0].getElementsByTagName("gml:Point")[0].getElementsByTagName("gml:pos")[0].childNodes[0].nodeValue;
@@ -266,9 +352,10 @@
                     stateNM[i] = URL_array[3];
                     siteCode[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getAttribute("gml:id");
 
-                    var information = MarkerHTML(stateNM[i], siteCode[i], base_url, USGS_URL[i], siteName[i]);
+                    //var information = MarkerHTML(stateNM[i], siteCode[i], base_url, USGS_URL[i], siteName[i]);
                     var point = new GLatLng(latitude[i], longitude[i]);
-                    var marker = createMarker(point, information, siteName[i], stateNM[i]);
+                    var marker = createMarker(point, siteName[i],  stateNM[i], siteCode[i], base_url, USGS_URL[i]);
+                    //var marker = createMarker(point, information, siteName[i], stateNM[i]);
                     map.addOverlay(marker);
                 }
 
@@ -284,35 +371,6 @@
                 show("OH");
                 show("MI");
                 show("NY");
-
-                xmlDoc = loadXMLDoc("wfs_coastal.xml");
-                var x = xmlDoc.getElementsByTagName("wfs:member");
-
-                var latitude = [];
-                var longitude = [];
-                var siteCode = [];
-                var siteName = [];
-                var USGS_URL = [];
-                var stateNM = [];
-
-                for (i = 0; i < x.length; i++) {
-                    siteName[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("gml:name")[0].childNodes[0].nodeValue;
-                    var pos = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getElementsByTagName("sams:shape")[0].getElementsByTagName("gml:Point")[0].getElementsByTagName("gml:pos")[0].childNodes[0].nodeValue;
-                    var pos_array = pos.split(" ");
-                    latitude[i] = pos_array[0];
-                    longitude[i] = pos_array[1];
-                    USGS_URL[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getElementsByTagName("sf:sampledFeature")[0].getAttribute("xlink:ref");
-                    var URL_array = USGS_URL[i].split("/");
-                    stateNM[i] = URL_array[3];
-                    siteCode[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getAttribute("gml:id");
-
-                    var information = MarkerHTML(stateNM[i], siteCode[i], base_url, USGS_URL[i], siteName[i]);
-                    var point = new GLatLng(latitude[i], longitude[i]);
-                    var marker = createMarker(point, information, siteName[i], 'Coastal');
-                    map.addOverlay(marker);
-                }
-
-                show("Coastal");
                 makeSidebar();
 
         }   // goes with compatiblity check
@@ -349,8 +407,8 @@
       </p>
 
       <p id="usgsfootertext">
-            <a href="http://www.takepride.gov/"><img src="http://www.usgs.gov/images/footer_graphic_takePride.jpg" alt="Take Pride in America logo" title="Take Pride in America Home Page" width="60" height="58"></a>
-            <a href="http://firstgov.gov/"><img src="http://www.usgs.gov/images/footer_graphic_usagov.jpg" alt="USA.gov logo" width="90" height="26" style="float: right; margin-right: 10px;" title="USAGov: Government Made Easy."></a>
+            <a href="http://www.takepride.gov/"><img src="http://www.usgs.gov/images/footer_graphic_takePride.jpg" alt="Take Pride in America logo" title="Take Pride in America Home Page" width="60" height="58"/></a>
+            <a href="http://firstgov.gov/"><img src="http://www.usgs.gov/images/footer_graphic_usagov.jpg" alt="USA.gov logo" width="90" height="26" style="float: right; margin-right: 10px;" title="USAGov: Government Made Easy."/></a>
             <a href="http://www.doi.gov/">U.S. Department of the Interior</a> |
             <a href="http://www.usgs.gov/">U.S. Geological Survey</a><br />
         URL: <%=baseURL%><br />
