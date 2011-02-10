@@ -252,7 +252,15 @@
                 var Time = x[0].getElementsByTagName("wml2:time")[0].childNodes[0].nodeValue;
                 var Value = x[0].getElementsByTagName("wml2:value")[0].childNodes[0].nodeValue;
                 var Units = TimeSeries[0].getElementsByTagName("wml2:defaultTimeValuePair")[0].getElementsByTagName("wml2:TimeValuePair")[0].getElementsByTagName("wml2:unitOfMeasure")[0].getAttribute("xlink:href");
-                var html_1 = USGS_picture + Title + Name + "<table border='1'><tr><th colspan='2'> Latest Reading:<br />" + Time + '</tr></th><tr><td>Discharge:</td><td>' + Value + ' ' + Units + '</td></tr></table>';
+                
+                if (x[0].getElementsByTagName("wml2:comment")[0]){
+                    var Comment = x[0].getElementsByTagName("wml2:comment")[0].childNodes[0].nodeValue;
+                    var html_1 = USGS_picture + Title + Name + "<table border='1'><tr><th colspan='2'> Latest Reading:<br />" + Time + '</tr></th><tr><td>Discharge:</td><td>' + Value + ' ' + Units + ' <b>' + Comment +'</b></td></tr></table>';
+                }
+                else {
+                    var html_1 = USGS_picture + Title + Name + "<table border='1'><tr><th colspan='2'> Latest Reading:<br />" + Time + '</tr></th><tr><td>Discharge:</td><td>' + Value + ' ' + Units + '</td></tr></table>';
+                }
+
                 var html_2 = USGS_link + '<br /><strong>WaterML2</strong><br />' + GetFeature + WML2_link;
                 var html = html_1 + html_2;
                 return html
