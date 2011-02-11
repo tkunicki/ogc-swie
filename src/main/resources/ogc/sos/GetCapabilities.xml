@@ -231,7 +231,7 @@
 				</sos:time>
 				<sos:procedure xlink:href="http://nemi.usgs.gov/water/procedure/unknown"/>
 				<sos:observedProperty xlink:href="http://usgs.gov/water/parameter/water_level"/>
-				<sos:featureOfInterest xlink:href="${base.url}/sosFeatures/MasterFeatureList.xml"/>
+				<sos:featureOfInterest xlink:href="${base.url}/sos?request=MasterFeatureList"/>
 				<sos:responseFormat>text/xml; subtype="om/1.0.0"</sos:responseFormat>
 				<sos:responseMode>inline</sos:responseMode>
 			</sos:ObservationOffering>

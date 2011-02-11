@@ -155,6 +155,18 @@ public class SOSServlet extends HttpServlet {
 				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
 						errorMessage);
 			}
+                        break;
+			case MasterFeatureList:
+			{
+				Map<String, String> replacementMap = new HashMap<String, String>();
+				replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
+
+				// Just sending back static file for now.
+				String resource = "/ogc/sos/" + opType.name() + ".xml";
+				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
+				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
+						errorMessage);
+			}
 			break;
 			default:
 				BufferedWriter writer = FileResponseUtil.wrapAsBufferedWriter(outputStream);

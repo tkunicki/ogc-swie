@@ -123,8 +123,9 @@ public class SOSFeaturesServlet extends HttpServlet {
 				break;
 			case MasterFeatureList:
 				// Just sending back static file for now.
-				String resource = "/ogc/sos/features/" + op.name() + ".xml";
-				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
+				//String resource = "/ogc/sos/features/" + op.name() + ".xml";
+				String resource = "/ogc/sos/MasterFeaturesList.xml";
+                                String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
 				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
 						errorMessage);
 				break;
