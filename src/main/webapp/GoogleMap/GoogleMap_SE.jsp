@@ -102,6 +102,7 @@
       SC Rivers: <input type="checkbox" id="SCbox" onclick="boxclick(this,'SC')" />&nbsp;&nbsp;
       AL Rivers: <input type="checkbox" id="ALbox" onclick="boxclick(this,'AL')" /><br />
       WI Rivers: <input type="checkbox" id="WIbox" onclick="boxclick(this,'WI')" />&nbsp;&nbsp;
+      MI Rivers: <input type="checkbox" id="MIbox" onclick="boxclick(this,'MI')" /><br />
       <!--PA Rivers: <input type="checkbox" id="PAbox" onclick="boxclick(this,'PA')" />&nbsp;&nbsp;
       NY Rivers: <input type="checkbox" id="NYbox" onclick="boxclick(this,'NY')" />&nbsp;&nbsp;
       NJ Rivers: <input type="checkbox" id="NJbox" onclick="boxclick(this,'NJ')" /><br />
@@ -112,8 +113,8 @@
       ND Rivers: <input type="checkbox" id="NDbox" onclick="boxclick(this,'ND')" />&nbsp;&nbsp;
       OH Rivers: <input type="checkbox" id="OHbox" onclick="boxclick(this,'OH')" />&nbsp;&nbsp;
       IN Rivers: <input type="checkbox" id="INbox" onclick="boxclick(this,'IN')" />&nbsp;&nbsp;-->
-      Coastal Rivers: <input type="checkbox" id="Coastalbox" onclick="boxclick(this,'Coastal')" />&nbsp;&nbsp;
-      MI Rivers: <input type="checkbox" id="MIbox" onclick="boxclick(this,'MI')" /><br />
+      NASQAN Coastal Subnetwork: <input type="checkbox" id="Coastalbox" onclick="boxclick(this,'Coastal')" />&nbsp;&nbsp;
+      
       
 <!--      Inactive Gage Stations: <input type="checkbox" id="Inactivebox" onclick="boxclick(this,'Inactive')" /><br />-->
     </form>
@@ -150,16 +151,28 @@
         var x = TimeSeries[0].getElementsByTagName("wml2:point")[0].getElementsByTagName("wml2:TimeValuePair");
         var Time = x[0].getElementsByTagName("wml2:time")[0].childNodes[0].nodeValue;
         var Value = x[0].getElementsByTagName("wml2:value")[0].childNodes[0].nodeValue;
+
         var Units = TimeSeries[0].getElementsByTagName("wml2:defaultTimeValuePair")[0].getElementsByTagName("wml2:TimeValuePair")[0].getElementsByTagName("wml2:unitOfMeasure")[0].getAttribute("xlink:href");
         
         if (x[0].getElementsByTagName("wml2:comment")[0]){
             var Comment = x[0].getElementsByTagName("wml2:comment")[0].childNodes[0].nodeValue;
-            var html_1 = USGS_picture + Title + Name + "<table border='1'><tr><th colspan='2'> Latest Reading:<br />" + Time + '</tr></th><tr><td>Discharge:</td><td>' + Value + ' ' + Units + ' <b>' + Comment +'</b></td></tr></table>';
+            var html_1 = USGS_picture + Title + Name + "<table border='1'><tr><th colspan='2'> Latest Reading:<br />" + Time + '</tr></th><tr><td>Discharge:</td><td>' + Value + ' ' + Units + ' <b>' + Comment +'</b></td></tr>';
         }
         else {
-            var html_1 = USGS_picture + Title + Name + "<table border='1'><tr><th colspan='2'> Latest Reading:<br />" + Time + '</tr></th><tr><td>Discharge:</td><td>' + Value + ' ' + Units + '</td></tr></table>';
+            var html_1 = USGS_picture + Title + Name + "<table border='1'><tr><th colspan='2'> Latest Reading:<br />" + Time + '</tr></th><tr><td>Discharge:</td><td>' + Value + ' ' + Units + '</td></tr>';
         }
-        var html_2 = USGS_link + '<br /><strong>WaterML2</strong><br />' + GetFeature + WML2_link;
+
+        // If we add the daily stats, this could be cool:
+        //if (x[0].getElementsByTagName("wml2:mean")[0]){
+        //    var Mean = x[0].getElementsByTagName("wml2:mean")[0].childNodes[0].nodeValue;
+        //    var Min = x[0].getElementsByTagName("wml2:min")[0].childNodes[0].nodeValue;
+        //    var Max = x[0].getElementsByTagName("wml2:max")[0].childNodes[0].nodeValue;
+        //    html_1 = html_1 + '<tr><td>Historical mean for this day</td><td>' + Mean + ' ' + Units + '</td></tr>';
+        //    html_1 +=  '<tr><td>Historical min for this day</td><td>' + Min + ' ' + Units + '</td></tr>';
+        //    html_1 +=  '<tr><td>Historical max for this day</td><td>' + Max + ' ' + Units + '</td></tr>';
+        //}
+
+        var html_2 = '</table>' + USGS_link + '<br /><strong>WaterML2</strong><br />' + GetFeature + WML2_link;
         var html = html_1 + html_2;
         return html
     }
@@ -381,7 +394,7 @@
                     var marker = createCoastalMarker(point, siteName[i], siteCode[i], base_url, USGS_URL[i]);
                     map.addOverlay(marker);
         }
-        show("Coastal");
+        hide("Coastal");
         makeSidebar();
 
 

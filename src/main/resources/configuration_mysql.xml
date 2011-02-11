@@ -7,6 +7,7 @@ PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN"
 		<typeAlias alias="ISODateTimeTypeHandler" type="gov.usgs.webservices.ibatis.ISODateTimeTypeHandler"/>
                 <typeAlias alias="USGS_URL_TypeHandler" type="gov.usgs.webservices.ibatis.USGS_URL_TypeHandler"/>
                 <typeAlias alias="StateCodeTypeHandler" type="gov.usgs.webservices.ibatis.StateCodeTypeHandler"/>
+                <typeAlias alias="StateFullNameTypeHandler" type="gov.usgs.webservices.ibatis.StateFullNameTypeHandler"/>
 	</typeAliases>
 
 	<environments default="development">

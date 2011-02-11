@@ -51,6 +51,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
             <result
+    		property="xmlns:gmd=http://www.isotc211.org/2005/gmd"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+            <result
     		property="xmlns:sf=http://www.opengis.net/sampling/2.0"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
@@ -149,13 +153,17 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="FEATURE_ID"
 			javaType="string" />
 		<result
-			property="wfs:member/om:featureOfInterest/wml2:timeZone/wml2:TimeZone/^wml2:zoneOffset"
+			property="wfs:member/om:featureOfInterest/wml2:WaterMonitoringPoint/wml2:timeZone/wml2:TimeZone/^wml2:zoneOffset"
 			column="tz_utc_offset_tm"
 			javaType="string" />
 		<result
-			property="}wfs:member/om:featureOfInterest/wml2:timeZone/wml2:TimeZone/^wml2:zoneAbbreviation"
+			property="}wfs:member/om:featureOfInterest/wml2:WaterMonitoringPoint/wml2:timeZone/wml2:TimeZone/^wml2:zoneAbbreviation"
 			column="tz_cd"
 			javaType="string" />
+		<result
+			property="}wfs:member/om:featureOfInterest/wml2:WaterMonitoringPoint/wml2:owner/gmd:organisationName/^gmd:CharacterString=%s Water Science Center"
+			column="district_cd"
+			typeHandler="StateFullNameTypeHandler" />
 
         <!-- removed per NLB 05.24.2010, will be put back in later but still needs output validation... -->
 	<!--<association property="UNUSED" column="FEATURE_ID" select="wfsRelatedObservationSelect" javaType="list" />-->
@@ -230,6 +238,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		CONCAT(CONVERT(a.dec_lat_va,CHAR),' ',CONVERT(a.dec_long_va,CHAR)) AS LON_LAT, 
 		CONCAT(CONVERT(a.dec_lat_va,CHAR),' ',CONVERT(a.dec_long_va,CHAR),' ',CONVERT(a.alt_va,CHAR)) AS LON_LAT_ALT,
 		a.alt_va AS ALT,
+                a.district_cd,
 		a.ALT_DATUM_CD,
 		a.WELL_DEPTH_VA,
 		a.NAT_WATER_USE_CD,

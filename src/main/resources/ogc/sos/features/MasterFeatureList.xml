@@ -17,7 +17,7 @@
 -->
 	<gml:featureMembers>
 		<gml:FeatureCollection>
-			<gml:description>USGS SOS ground water sites by state</gml:description>
+			<gml:description>USGS SOS surface water sites by state</gml:description>
 			<gml:featureMember xlink:href="${base.url}/sosFeatures/features.xml?state_cd=1" xlink:title="ALABAMA"/>
 			<gml:featureMember xlink:href="${base.url}/sosFeatures/features.xml?state_cd=2" xlink:title="ALASKA"/>
 			<gml:featureMember xlink:href="${base.url}/sosFeatures/features.xml?state_cd=4" xlink:title="ARIZONA"/>

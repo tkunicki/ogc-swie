@@ -38,7 +38,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
             <result
-    		property="xmlns:md=http://www.isotc211.org/2005/gmd"
+    		property="xmlns:gmd=http://www.isotc211.org/2005/gmd"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
             <result
@@ -101,19 +101,19 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			javaType="string" />
 
 		<result
-			property="^!{om:metadata/wml2:ObservationMetadata/md:contact"
+			property="^!{om:metadata/wml2:ObservationMetadata/gmd:contact"
 			column="station_nm"
 			javaType="string" />
 		<result
-			property="om:metadata/wml2:ObservationMetadata/md:contact#xlink:href=http://cida.usgs.gov"
+			property="om:metadata/wml2:ObservationMetadata/gmd:contact#xlink:href=http://cida.usgs.gov"
 			column="station_nm"
 			javaType="string" />
 		<result
-			property="om:metadata/wml2:ObservationMetadata/md:dateStamp/gco:Date"
+			property="om:metadata/wml2:ObservationMetadata/gmd:dateStamp/gco:Date"
 			column="dateStamp"
 			javaType="string" />
 		<result
-			property="om:metadata/wml2:ObservationMetadata/md:identificationInfo#xlink:href=urn:OGC:unknown"
+			property="om:metadata/wml2:ObservationMetadata/gmd:identificationInfo#xlink:href=urn:OGC:unknown"
 			column="dateStamp"
 			javaType="string" />
 	<!-- I'm assuming it's all provisional....if that is not be the case, then this needs to be fixed up-->
@@ -188,7 +188,6 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                         property="om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/gml:Point/gml:pos"
  			column="pos"
 			javaType="string" />
-<!-- TODO: figure out an appropriate link/title: -->
                 <result
                         property="om:featureOfInterest/wml2:WaterMonitoringPoint/wml2:descriptionReference#xlink:href=http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/SurfacewaterInteroperabilityExperiment#Use_Case_2"
  			column="station_nm"
@@ -205,6 +204,10 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="om:featureOfInterest/wml2:WaterMonitoringPoint/wml2:timeZone/wml2:TimeZone/wml2:zoneAbbreviation"
 			column="zoneAbbreviation"
 			javaType="string" />
+                <result
+			property="om:featureOfInterest/wml2:WaterMonitoringPoint/wml2:owner/gmd:organisationName/gmd:CharacterString=%s Water Science Center"
+			column="district_cd"
+			typeHandler="StateFullNameTypeHandler" />
 		<result
                         property="^!{om:result/wml2:Timeseries"
                         column="loc_nu"
@@ -263,10 +266,25 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:qualifier"
 			column="qualifier_message"
 			javaType="string" />
+<!--
+                <result
+			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:mean"
+			column="mean_va"
+			javaType="string" />
+                <result
+			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:min"
+			column="min_va"
+			javaType="string" />
+                <result
+			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:max"
+			column="max_va"
+			javaType="string" />
+                        -->
                 <result
 			property="om:result/wml2:Timeseries/wml2:TimeValuePair/^wml2:unitOfMeasure#xlink:href=%s"
 			column="units_odd"
 			javaType="string" />
+
                         
 	</resultMap>
 	
@@ -278,6 +296,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 g.result_tz_offset,
                 CONCAT(f.state_cd,'.',f.site_no) as state_site,
                 f.state_cd,
+                f.district_cd,
 		STR_TO_DATE(SYSDATE(),'%Y-%m-%d') as dateStamp,
                 CONCAT(DATE_FORMAT(SYSDATE(),'%Y-%m-%dT%H:%i'),f.tz_cd) as currentTimeStamp,
 		CONCAT(CONVERT(f.DEC_LAT_VA,CHAR),' ',CONVERT(f.DEC_LONG_VA,CHAR)) AS pos,
@@ -304,6 +323,9 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 END) coord_datum,
                 e.loc_nm,
                 e.loc_nu
+                <!--h.max_va,
+                h.min_va,
+                h.mean_va-->
 		
 		FROM
 		    (select b.site_id,
@@ -341,6 +363,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		nwisweb.PARAM_REF d,
 		nwisweb.UV_DD_CONF e,
 		nwisweb.SITEFILE f,
+               <!-- someday: nwisweb.DAILY_STAT h,-->
                 nwisweb.UV g LEFT JOIN nwisweb.DD_STATUS c ON (c.site_id = g.site_id 
                     AND c.dd_nu = g.dd_nu
                     AND c.parameter_cd = '00060'
@@ -354,6 +377,10 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 AND e.dd_nu = g.dd_nu
                 AND e.parameter_cd = '00060'
                 AND e.access_cd = '0'
+                <!--AND s.site_id = h.site_id
+                AND e.dd_nu = h.dd_nu
+                AND h.month_nu = DATE_FORMAT(g.result_dt,'%m')
+                AND h.day_nu = DATE_FORMAT(g.result_dt,'%d') -->
 
                 <if test="beginPosition != null">
                         AND g.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{beginPosition[0]}, '%Y-%m-%d')
