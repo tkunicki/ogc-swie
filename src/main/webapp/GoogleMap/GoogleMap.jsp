@@ -138,16 +138,6 @@
                });
             }
 
-            function LoadSOSXML(filename){
-                $.ajax({
-                    type: "GET",
-                    url: filename,
-                    dataType: "xml",
-                    success: parseXml_SOS,
-                    error: errorHandler
-               });
-            }
-
             function parseXml(xml){
                 $(xml).find("[nodeName=wfs:FeatureCollection],FeatureCollection").each(function()
                     {
@@ -194,31 +184,6 @@
                     });
                 }
 
-            function parseXml_SOS(xml){
-                $(xml).find("[nodeName=wml2:WaterMonitoringObservation],WaterMonitoringObservation").each(function(){
-                        var name = $(this).find("[nodeName=gml:name]").text();
-                        var USGS_link = $(this).find("[nodeName=sf:sampledFeature]").attr("xlink:href");
-                        var site = $(this).find("[nodeName=gml:Point]").attr("gml:id");
-
-                        var units = $(this).find("[nodeName=wml2:unitOfMeasure]").attr("xlink:href");
-                        var time = $(this).find("[nodeName=wml2:time]:first").text();
-                        var value = $(this).find("[nodeName=wml2:value]").first().text();
-                        var comment = $(this).find("[nodeName=wml2:comment]:first").text();
-
-                        var USGS_picture = '<img src = "USGS.gif" width="84" height="32"/>      ';
-                        var Title = 'Station: ' + site + '<br /><br />';
-                        var Name_html = '<b>' + name + '</b><br /><br />';
-                        var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + site + '>GetFeature</a></li>';
-                        var USGS_link = '<li><a href = "' + USGS_link + '" >Station Home Page</a></li>';
-                        var WML2_link = '<li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + site + '>GetObservation</a></li>';
-
-                        var html_1 = USGS_picture + Title + Name_html + "<table border='1'><tr><th colspan='2'> Latest Reading:<br />" + time + '</tr></th><tr><td>Discharge:</td><td>' + value + ' ' + units + ' <b>' + comment +'</b></td></tr></table>';
-                        $("#date").append(html_1)
-                        return html
-
-                });
-            }
-
             function errorHandler(a,b,c){
                 alert(a);
                 alert(b);
@@ -232,8 +197,9 @@
             var marker = new GMarker(point, newIcon);
             marker.mycategory = StateNM;
             marker.myname = name;
+            var site = Site_no;
             GEvent.addListener(marker, "click", function() {
-                var sos_url = base_url + "/wml2?request=GetObservation&featureId=05389500&beginPosition=" + '<%=Today%>';
+                var sos_url = base_url + "/wml2?request=GetObservation&featureId=" + site + "&beginPosition=" + '<%=Today%>';
                 $.get(sos_url, function(xml) {
                     $(xml).find("[nodeName=wml2:WaterMonitoringObservation],WaterMonitoringObservation").each(function(){
                         var name = $(this).find("[nodeName=gml:name]").text();
