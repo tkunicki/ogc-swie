@@ -42,7 +42,7 @@
                //alert("finished load");
             });
 
-            function parseXml(xml){
+            function parseXml(xml){     //this was an example for peakflow.xml
                 alert("go original");
                 $(xml).find("reading").each(function()
                     {
@@ -54,16 +54,28 @@
                     });
             }
 
+            function parseXml_SOS(xml){
+                $(xml).find("[nodeName=wml2:WaterMonitoringObservation],WaterMonitoringObservation").each(function(){
+                        var units = $(this).find("[nodeName=wml2:unitOfMeasure]").attr("xlink:href");
+                        var time = $(this).find("[nodeName=wml2:time]:first").text();
+                        var value = $(this).find("[nodeName=wml2:value]").first().text();
+                        var comment = $(this).find("[nodeName=wml2:comment]:first").text();
+
+                        $("#date").append('Time: ' + time + 'Value: ' + value + ' ' + units + 'Comment: ' + comment + '<br />')
+                });
+            }
+
             function parseXml_2(xml){
                 //alert("go namespace");
+
                 $(xml).find("[nodeName=wfs:FeatureCollection],FeatureCollection").each(function()
                     {
                         var LowerCorner = $(this).find("[nodeName=gml:lowerCorner]").text();
                         var UpperCorner = $(this).find("[nodeName=gml:upperCorner]").text();
 
-                        $("#date").append('Lower Corner = ' + LowerCorner + '<br />Upper Corner = ' + UpperCorner + '<br />');
+                        //$("#date").append('Lower Corner = ' + LowerCorner + '<br />Upper Corner = ' + UpperCorner + '<br />');
 
-                        $(xml).find("[nodeName=wfs:member],member").each(function()
+                        $(this).find("[nodeName=wfs:member],member").each(function()
                         {
                                 var siteName = $("[nodeName=gml:name]", this).text();
                                 var pos = $("[nodeName=gml:pos]", this).text();
@@ -90,11 +102,12 @@
 
             function test_funk(siteName, latitude, stateNM)
             {
-                $("#date").append(siteName + ': ' + latitude + ': ' + stateNM + '<br />');
+                //$("#date").append(siteName + ': ' + latitude + ': ' + stateNM + '<br />');
             }
 
             function LoadSOSXML(filename){
                 //alert("Tried to load");
+                var temp = 'test';
                 $.ajax({
                     type: "GET",
                     url: filename,
@@ -103,6 +116,11 @@
                     error: errorHandler
                });
             }
+
+            var sos_url = base_url + "/wml2?request=GetObservation&featureId=05389500&beginPosition=" + '<%=Today%>';
+            LoadSOSXML(sos_url);
+
+
 
         </script>
         <!--<h1>"volume"</h1>-->

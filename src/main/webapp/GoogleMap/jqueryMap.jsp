@@ -97,7 +97,7 @@
           To view Google Maps, enable JavaScript by changing your browser options, and then
           try again.
         </noscript>
-        
+
         <script>
     //<![CDATA[
         if (GBrowserIsCompatible()) {
@@ -260,36 +260,19 @@
                     success: parseXml_SOS,
                     error: errorHandler
                });
-
-            var TimeSeries = xmlDoc_SOS.getElementsByTagName("wml2:WaterMonitoringObservation")[0].getElementsByTagName("om:result")[0].getElementsByTagName("wml2:Timeseries");
-            var x = TimeSeries[0].getElementsByTagName("wml2:point")[0].getElementsByTagName("wml2:TimeValuePair");
-            var Time = x[0].getElementsByTagName("wml2:time")[0].childNodes[0].nodeValue;
-            var Value = x[0].getElementsByTagName("wml2:value")[0].childNodes[0].nodeValue;
-
-            var Units = TimeSeries[0].getElementsByTagName("wml2:defaultTimeValuePair")[0].getElementsByTagName("wml2:TimeValuePair")[0].getElementsByTagName("wml2:unitOfMeasure")[0].getAttribute("xlink:href");
-
-            if (x[0].getElementsByTagName("wml2:comment")[0]){
-                var Comment = x[0].getElementsByTagName("wml2:comment")[0].childNodes[0].nodeValue;
-                var html_1 = USGS_picture + Title + Name + "<table border='1'><tr><th colspan='2'> Latest Reading:<br />" + Time + '</tr></th><tr><td>Discharge:</td><td>' + Value + ' ' + Units + ' <b>' + Comment +'</b></td></tr>';
-            }
-            else {
-                var html_1 = USGS_picture + Title + Name + "<table border='1'><tr><th colspan='2'> Latest Reading:<br />" + Time + '</tr></th><tr><td>Discharge:</td><td>' + Value + ' ' + Units + '</td></tr>';
-            }
-
-            // If we add the daily stats, this could be cool:
-            //if (x[0].getElementsByTagName("wml2:mean")[0]){
-            //    var Mean = x[0].getElementsByTagName("wml2:mean")[0].childNodes[0].nodeValue;
-            //    var Min = x[0].getElementsByTagName("wml2:min")[0].childNodes[0].nodeValue;
-            //    var Max = x[0].getElementsByTagName("wml2:max")[0].childNodes[0].nodeValue;
-            //    html_1 = html_1 + '<tr><td>Historical mean for this day</td><td>' + Mean + ' ' + Units + '</td></tr>';
-            //    html_1 +=  '<tr><td>Historical min for this day</td><td>' + Min + ' ' + Units + '</td></tr>';
-            //    html_1 +=  '<tr><td>Historical max for this day</td><td>' + Max + ' ' + Units + '</td></tr>';
-            //}
-
-            var html_2 = '</table>' + USGS_link + '<br /><strong>WaterML2</strong><br />' + GetFeature + WML2_link;
-            var html = html_1 + html_2;
+//TODO: get parsed SOS output to here...
+            var html = 'temp';
             return html
-        }
+            }
+
+            function parseXml_SOS(xml){
+                $(xml).find("[nodeName=wml2:WaterMonitoringObservation],WaterMonitoringObservation").each(function(){
+                    var units = $(this).find("[nodeName=wml2:unitOfMeasure]").attr("xlink:href");
+                    var time = $(this).find("[nodeName=wml2:time]:first").text();
+                    var value = $(this).find("[nodeName=wml2:value]").first().text();
+                    var comment = $(this).find("[nodeName=wml2:comment]:first").text();
+                    });
+            }
 
 // ===================================== Shows markers =================================
           function show(category) {

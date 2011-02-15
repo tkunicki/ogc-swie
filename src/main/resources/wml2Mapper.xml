@@ -312,7 +312,6 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 END) table_cd,
                 (CASE
                     WHEN g.data_aging_cd = 'A' THEN 'Approved for publication -- Processing and review completed.'
-                    ELSE s.qualifier_cd
                 END) qualifier_message,
                 (CASE
                     WHEN d.parameter_units != 'cfs' THEN d.parameter_units

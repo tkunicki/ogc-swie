@@ -6,7 +6,7 @@
     int Day=ca.get(Calendar.DATE);
     int Year=ca.get(Calendar.YEAR);
     int Month=ca.get(Calendar.MONTH)+1;
-    int old_Day = Day - 7;
+    int old_Day = Day - 3;
     if (old_Day < 0) {
         old_Day = 1;
         };
@@ -53,26 +53,7 @@
 
     <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>
     <script src="GoogleMap/mapiconmaker.js" type="text/javascript"></script>
-    <script type="text/javascript" src="jquery-1.4.4.js">
-        function httpBodyPost(url, reqTextId) {
-                var reqXML = unescapeHTML(document.getElementById(reqTextId).innerHTML);
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", url, false);
-                xhr.send(reqXML);
-                // only tested in firefox, probably doesn't work in IE
-                window.location="data:text/xml," + xhr.responseText;
-        }
-
-        // makes xml not entityized
-        function unescapeHTML(html) {
-                var tmpDiv = document.createElement("DIV");
-                tmpDiv.innerHTML = html;
-                return tmpDiv.textContent;
-        }
-
-
-    </script>
-
+    <script type="text/javascript" src="GoogleMap/jquery-1.4.4.js"></script>
 
   </head>
 
@@ -233,132 +214,135 @@
 
 
 <! ==============================With compatable browsers, do the following===============>
-   <script type="text/javascript">
+        <script>
+     //<![CDATA[
+        if (GBrowserIsCompatible()) {
+          var gmarkers = [];
+          var base_url = '<%=baseURL%>';
 
-    if (GBrowserIsCompatible()) {
-      var gmarkers = [];
+            function LoadXML(filename){
+                $.ajax({
+                    type: "GET",
+                    url: filename,
+                    dataType: "xml",
+                    success: parseXml,
+                    error: errorHandler
+               });
+            }
+
+            function LoadCoastalXML(filename){
+                $.ajax({
+                    type: "GET",
+                    url: filename,
+                    dataType: "xml",
+                    success: parseXml_Coastal,
+                    error: errorHandler
+               });
+            }
+
+            function parseXml(xml){
+                $(xml).find("[nodeName=wfs:FeatureCollection],FeatureCollection").each(function()
+                    {
+                        $(xml).find("[nodeName=wfs:member],member").each(function()
+                        {
+                                var siteName = $("[nodeName=gml:name]", this).text();
+                                var pos = $("[nodeName=gml:pos]", this).text();
+                                var pos_array = pos.split(" ");
+                                var latitude = pos_array[0];
+                                var longitude = pos_array[1];
+                                var pos_name = $("[nodeName=gml:pos]", this).attr("srsName");
+                                var siteCode = $("[nodeName=wml2:WaterMonitoringPoint]", this).attr("gml:id");
+                                var USGS_URL = $("[nodeName=sf:sampledFeature]", this).attr("xlink:ref");
+                                var URL_array = USGS_URL.split("/");
+                                var stateNM = URL_array[3];
+                                var point = new GLatLng(latitude, longitude);
+                                var marker = createMarker(point, siteName,  stateNM, siteCode, base_url, USGS_URL);
+                                map.addOverlay(marker);
+
+                        });
+                    });
+                }
+
+            function parseXml_Coastal(xml){
+                $(xml).find("[nodeName=wfs:FeatureCollection],FeatureCollection").each(function()
+                    {
+                        $(xml).find("[nodeName=wfs:member],member").each(function()
+                        {
+                                var siteName = $("[nodeName=gml:name]", this).text();
+                                var pos = $("[nodeName=gml:pos]", this).text();
+                                var pos_array = pos.split(" ");
+                                var latitude = pos_array[0];
+                                var longitude = pos_array[1];
+                                var pos_name = $("[nodeName=gml:pos]", this).attr("srsName");
+                                var siteCode = $("[nodeName=wml2:WaterMonitoringPoint]", this).attr("gml:id");
+                                var USGS_URL = $("[nodeName=sf:sampledFeature]", this).attr("xlink:ref");
+                                var URL_array = USGS_URL.split("/");
+                                var stateNM = "Coastal";
+                                var point = new GLatLng(latitude, longitude);
+                                var marker = createMarker(point, siteName,  stateNM, siteCode, base_url, USGS_URL);
+                                map.addOverlay(marker);
+                         });
+                    });
+                }
+
+            function errorHandler(a,b,c){
+                alert(a);
+                alert(b);
+                alert(c);
+            }
 
 // ========================Create a marker============================================
-
-    function createMarker(point, html, name, category) {
-        var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
-        var marker = new GMarker(point, newIcon);
-        //var marker = new GMarker(point, gicons[category]);
-        marker.mycategory = category;
-        marker.myname = name;
-        GEvent.addListener(marker, "click", function() {
-            marker.openInfoWindowHtml(html);
-        });
-
-        gmarkers.push(marker);
-        return marker;
-    }
-
-//==========================================Load XML file================================
-      	function loadXMLDoc(dname) {
-            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-                xmlhttp = new XMLHttpRequest();
-            }
-            else {// code for IE6, IE5
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            function createMarker(point, name, StateNM, Site_no, base_url, USGS_URL) {
+                var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
+                var marker = new GMarker(point, newIcon);
+                marker.mycategory = StateNM;
+                marker.myname = name;
+                GEvent.addListener(marker, "click", function() {
+                    var html = SimpleMarkerHTML(Site_no, base_url, USGS_URL, name);
+                    marker.openInfoWindowHtml(html);
+                    });
+                gmarkers.push(marker);
+                return marker;
             }
 
-            xmlhttp.open("GET", dname, false);
-            xmlhttp.send();
-            xmlDoc = xmlhttp.responseXML;
-            return xmlDoc
-        }
 //====================================Create Marker HTML==================================
-    function MarkerHTML(StateNM, Site_no, base_url, USGS_URL, Site_nm){
-        var USGS_picture = '<img src = "GoogleMap/USGS.gif" width="84" height="32"/>      ';
-        var Title = 'Station: ' + Site_no + '<br />';
-        var Name = '<b>' + Site_nm + '</b><br /><br />';
-        var GetFeature = '<dd><li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + Site_no + '>GetFeature from this site</a></li></dd>';
-        var USGS_link = '<dd><li><a href = "' + USGS_URL + '" >Station Home Page</a></li></dd>';
-        var WML2_link = '<dd><li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + Site_no + '>GetObservation from this site</a></li></dd>';
-        var html = USGS_picture + Title + Name + GetFeature + WML2_link + USGS_link;
-        return html
-    }
+        function SimpleMarkerHTML(Site_no, base_url, USGS_URL, Site_nm){
+                    var USGS_picture = '<img src = "GoogleMap/USGS.gif" width="84" height="32"/>      ';
+                    var Title = 'Station: ' + Site_no + '<br /><br />';
+                    var Name = '<b>' + Site_nm + '</b><br /><br />';
+                    var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + Site_no + '>GetFeature</a></li>';
+                    var USGS_link = '<li><a href = "' + USGS_URL + '" >Station Home Page</a></li>';
+                    var WML2_link = '<li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + Site_no + '>GetObservation</a></li>';
+
+                    var html = USGS_picture + Title + Name + GetFeature + WML2_link + USGS_link;
+
+                    return html
+                }
+
+
+
+
 //==========================================Create the map================================
       	var map = new GMap2(document.getElementById("map"));
       	map.addControl(new GLargeMapControl());
       	map.addControl(new GMapTypeControl());
       	map.addMapType(G_PHYSICAL_MAP);
-      	map.setCenter(new GLatLng(40.55972222, -88.613888889), 4, G_PHYSICAL_MAP);
+        map.setCenter(new GLatLng(40.55972222, -88.613888889), 4, G_PHYSICAL_MAP);
       	map.enableScrollWheelZoom();
 
-// ====================================Read the data from xxxx.xml=========================
-
-        var base_url = '<%=baseURL%>';
         var wfs_url = base_url + "/wfs?request=GetFeature";
-        xmlDoc = loadXMLDoc(wfs_url);
+        LoadXML(wfs_url);
+        //LoadXML("wfs_SE.xml");
+        LoadCoastalXML("GoogleMap/wfs_coastal.xml");
 
-      	var x = xmlDoc.getElementsByTagName("wfs:member");
-
-      	var latitude = [];
-      	var longitude = [];
-      	var siteCode = [];
-      	var siteName = [];
-      	var USGS_URL = [];
-        var stateNM = [];
-
-      	for (i = 0; i < x.length; i++) {
-      	    siteName[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("gml:name")[0].childNodes[0].nodeValue;
-      	    var pos = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getElementsByTagName("sams:shape")[0].getElementsByTagName("gml:Point")[0].getElementsByTagName("gml:pos")[0].childNodes[0].nodeValue;
-      	    var pos_array = pos.split(" ");
-      	    latitude[i] = pos_array[0];
-      	    longitude[i] = pos_array[1];
-      	    USGS_URL[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getElementsByTagName("sf:sampledFeature")[0].getAttribute("xlink:ref");
-      	    var URL_array = USGS_URL[i].split("/");
-            stateNM[i] = URL_array[3];
-            siteCode[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getAttribute("gml:id");
-
-            var information = MarkerHTML(stateNM[i], siteCode[i], base_url, USGS_URL[i], siteName[i]);
-
-      	    var point = new GLatLng(latitude[i], longitude[i]);
-      	    var marker = createMarker(point, information, siteName[i], stateNM[i]);
-      	    map.addOverlay(marker);
-      	}
-        xmlDoc = loadXMLDoc("GoogleMap/wfs_coastal.xml");
-      	var x = xmlDoc.getElementsByTagName("wfs:member");
-
-      	var latitude = [];
-      	var longitude = [];
-      	var siteCode = [];
-      	var siteName = [];
-      	var USGS_URL = [];
-      	var stateNM = [];
-
-      	for (i = 0; i < x.length; i++) {
-      	    siteName[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("gml:name")[0].childNodes[0].nodeValue;
-      	    var pos = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getElementsByTagName("sams:shape")[0].getElementsByTagName("gml:Point")[0].getElementsByTagName("gml:pos")[0].childNodes[0].nodeValue;
-      	    var pos_array = pos.split(" ");
-      	    latitude[i] = pos_array[0];
-      	    longitude[i] = pos_array[1];
-      	    USGS_URL[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getElementsByTagName("sf:sampledFeature")[0].getAttribute("xlink:ref");
-      	    var URL_array = USGS_URL[i].split("/");
-      	    stateNM[i] = URL_array[3];
-      	    siteCode[i] = x[i].getElementsByTagName("om:featureOfInterest")[0].getElementsByTagName("wml2:WaterMonitoringPoint")[0].getAttribute("gml:id");
-
-            var information = MarkerHTML(stateNM[i], siteCode[i], base_url, USGS_URL[i], siteName[i]);
-      	    var point = new GLatLng(latitude[i], longitude[i]);
-      	    var marker = createMarker(point, information, siteName[i], 'Coastal');
-      	    map.addOverlay(marker);
-      	}
-}   // goes with compatiblity check
-
-//===============================If browser is not compatible===================================
-
-    else {
-      alert("Sorry, the Google Maps API is not compatible with this browser");
     }
+    else {
+            alert("Sorry, the Google Maps API is not compatible with this browser");
+        }
 
-    // This Javascript is based on code based on examples from:
-    // Community Church Javascript Team
-    // http://www.bisphamchurch.org.uk/
-    // http://econym.org.uk/gmap/
+    //]]>
 
-    </script>
+        </script>
 
         <span> <font size="0.5"><br />* References to non-U.S. Department of the Interior (DOI) products do not constitute an endorsement by the DOI. By viewing the Google Maps API on this web site the user agrees to these
         <a href="http://code.google.com/apis/maps/terms.html" target="_blank" title="Opens a new browser window.">Terms of Service set forth by Google</a>.<br /></font></span>
