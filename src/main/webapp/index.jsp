@@ -256,7 +256,7 @@
                                 var URL_array = USGS_URL.split("/");
                                 var stateNM = URL_array[3];
                                 var point = new GLatLng(latitude, longitude);
-                                var marker = createMarker(point, siteName,  stateNM, siteCode, base_url, USGS_URL);
+                                var marker = createMarker(point, siteName,  stateNM, siteCode, USGS_URL);
                                 map.addOverlay(marker);
 
                         });
@@ -279,7 +279,7 @@
                                 var URL_array = USGS_URL.split("/");
                                 var stateNM = "Coastal";
                                 var point = new GLatLng(latitude, longitude);
-                                var marker = createMarker(point, siteName,  stateNM, siteCode, base_url, USGS_URL);
+                                var marker = createMarker(point, siteName,  stateNM, siteCode, USGS_URL);
                                 map.addOverlay(marker);
                          });
                     });
@@ -292,13 +292,13 @@
             }
 
 // ========================Create a marker============================================
-            function createMarker(point, name, StateNM, Site_no, base_url, USGS_URL) {
+            function createMarker(point, name, StateNM, Site_no, USGS_URL) {
                 var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
                 var marker = new GMarker(point, newIcon);
                 marker.mycategory = StateNM;
                 marker.myname = name;
                 GEvent.addListener(marker, "click", function() {
-                    var html = SimpleMarkerHTML(Site_no, base_url, USGS_URL, name);
+                    var html = SimpleMarkerHTML(Site_no, USGS_URL, name);
                     marker.openInfoWindowHtml(html);
                     });
                 gmarkers.push(marker);
@@ -306,7 +306,7 @@
             }
 
 //====================================Create Marker HTML==================================
-        function SimpleMarkerHTML(Site_no, base_url, USGS_URL, Site_nm){
+        function SimpleMarkerHTML(Site_no, USGS_URL, Site_nm){
                     var USGS_picture = '<img src = "GoogleMap/USGS.gif" width="84" height="32"/>      ';
                     var Title = 'Station: ' + Site_no + '<br /><br />';
                     var Name = '<b>' + Site_nm + '</b><br /><br />';
@@ -319,9 +319,6 @@
                     return html
                 }
 
-
-
-
 //==========================================Create the map================================
       	var map = new GMap2(document.getElementById("map"));
       	map.addControl(new GLargeMapControl());
@@ -332,7 +329,7 @@
 
         var wfs_url = base_url + "/wfs?request=GetFeature";
         LoadXML(wfs_url);
-        //LoadXML("wfs_SE.xml");
+
         LoadCoastalXML("GoogleMap/wfs_coastal.xml");
 
     }

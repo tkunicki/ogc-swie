@@ -35,27 +35,38 @@
         <script src="mapiconmaker.js" type="text/javascript"></script>
     </head>
 
-    <body>
-     <!-- BEGIN USGS Header Template -->
-    <div id="usgscolorband">
-      <div id="usgsbanner">
-		<div id="usgsidentifier"><a href="http://www.usgs.gov/"><img src="http://www.usgs.gov/images/header_graphic_usgsIdentifier_white.jpg" alt="USGS - science for a changing world" title="U.S. Geological Survey Home Page" width="178" height="72" /></a></div>
+<body onload="load()" onunload="GUnload()">
+    <table cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <td width="100%" valign="top"><!-- START header and top navigation section -->
+            <!-- BEGIN USGS Header Template -->
+                <div id="usgscolorband">
+                        <div id="usgsbanner">
+                                <div id="usgsidentifier"><a href="http://www.usgs.gov/"><img src="http://www.usgs.gov/images/header_graphic_usgsIdentifier_white.jpg" alt="USGS - science for a changing world" title="U.S. Geological Survey Home Page" width="178" height="72" /></a></div>
 
-        <div id="usgsccsabox">
-          <div id="usgsccsa">
-            <br /><a href="http://www.usgs.gov/">USGS Home</a>
-            <br /><a href="http://www.usgs.gov/ask/">Contact USGS</a>
-            <br /><a href="http://search.usgs.gov/">Search USGS</a>
-          </div>
-        </div>
+                                <div id="usgsccsabox">
+                                        <div id="usgsccsa">
+                                          <br /><a href="http://www.usgs.gov/">USGS Home</a>
+                                          <br /><a href="http://www.usgs.gov/ask/">Contact USGS</a>
+                                          <br /><a href="http://search.usgs.gov/">Search USGS</a>
+                                        </div>
+                                </div>
 
-      </div>
-    </div>
-    <div id="usgstitle">
-      <p>Water Resources of the United States</p>
-    </div>
-<!-- END USGS Header Template -->
+                        </div>
+                </div>
 
+                <div id="usgstitle">
+                        <p>Water Resources of the United States</p>
+                </div>
+    <!-- END USGS Header Template -->
+            </td>
+        </tr>
+    </table>
+
+    <font face="Arial">
+        <h1>Surface Water Interoperability Experiment USGS Gage Sites</h1>
+
+<!===============================Create Table=========================================>
         <table border=1>
           <tr>
             <td>
@@ -87,6 +98,7 @@
           OH Rivers: <input type="checkbox" id="OHbox" onclick="boxclick(this,'OH')" />&nbsp;&nbsp;
           IN Rivers: <input type="checkbox" id="INbox" onclick="boxclick(this,'IN')" />&nbsp;&nbsp;
           NASQAN Coastal Subnetwork: <input type="checkbox" id="Coastalbox" onclick="boxclick(this,'Coastal')" />&nbsp;&nbsp;
+          Inactive Gage Stations: <input type="checkbox" id="Inactivebox" onclick="boxclick(this,'Inactive')" /><br />
 
 
     <!--      Inactive Gage Stations: <input type="checkbox" id="Inactivebox" onclick="boxclick(this,'Inactive')" /><br />-->
@@ -106,12 +118,10 @@
           var test = base.length - 10;    // Gets rid of /GoogleMap/ from baseURL
           var base_url = base.substring(0,test);
 
-            //$(document).ready(function(){
-            function LoadXML(filename){
+          function LoadXML(filename){
                 $.ajax({
                     type: "GET",
                     url: filename,
-                    //url:"http://nwisvaws02.er.usgs.gov/ogc-swie/wfs?request=GetFeature",
                     dataType: "xml",
                     success: parseXml,
                     error: errorHandler
@@ -119,7 +129,6 @@
             }
 
             function LoadCoastalXML(filename){
-                //alert("Tried to load");
                 $.ajax({
                     type: "GET",
                     url: filename,
@@ -130,7 +139,6 @@
             }
 
             function LoadSOSXML(filename){
-                //alert("Tried to load");
                 $.ajax({
                     type: "GET",
                     url: filename,
@@ -141,7 +149,6 @@
             }
 
             function parseXml(xml){
-                //alert("go namespace");
                 $(xml).find("[nodeName=wfs:FeatureCollection],FeatureCollection").each(function()
                     {
                         $(xml).find("[nodeName=wfs:member],member").each(function()
@@ -157,15 +164,14 @@
                                 var URL_array = USGS_URL.split("/");
                                 var stateNM = URL_array[3];
                                 var point = new GLatLng(latitude, longitude);
-                                var marker = createMarker(point, siteName,  stateNM, siteCode, base_url, USGS_URL);
+                                var marker = createMarker(point, siteName,  stateNM, siteCode, USGS_URL);
                                 map.addOverlay(marker);
-
+                                makeSidebar();
                         });
                     });
                 }
 
             function parseXml_Coastal(xml){
-                //alert("go namespace");
                 $(xml).find("[nodeName=wfs:FeatureCollection],FeatureCollection").each(function()
                     {
                         $(xml).find("[nodeName=wfs:member],member").each(function()
@@ -181,11 +187,37 @@
                                 var URL_array = USGS_URL.split("/");
                                 var stateNM = "Coastal";
                                 var point = new GLatLng(latitude, longitude);
-                                var marker = createMarker(point, siteName,  stateNM, siteCode, base_url, USGS_URL);
+                                var marker = createCoastalMarker(point, siteName,  stateNM, siteCode, USGS_URL);
                                 map.addOverlay(marker);
+                                makeSidebar();
                          });
                     });
                 }
+
+            function parseXml_SOS(xml){
+                $(xml).find("[nodeName=wml2:WaterMonitoringObservation],WaterMonitoringObservation").each(function(){
+                        var name = $(this).find("[nodeName=gml:name]").text();
+                        var USGS_link = $(this).find("[nodeName=sf:sampledFeature]").attr("xlink:href");
+                        var site = $(this).find("[nodeName=gml:Point]").attr("gml:id");
+
+                        var units = $(this).find("[nodeName=wml2:unitOfMeasure]").attr("xlink:href");
+                        var time = $(this).find("[nodeName=wml2:time]:first").text();
+                        var value = $(this).find("[nodeName=wml2:value]").first().text();
+                        var comment = $(this).find("[nodeName=wml2:comment]:first").text();
+
+                        var USGS_picture = '<img src = "USGS.gif" width="84" height="32"/>      ';
+                        var Title = 'Station: ' + site + '<br /><br />';
+                        var Name_html = '<b>' + name + '</b><br /><br />';
+                        var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + site + '>GetFeature</a></li>';
+                        var USGS_link = '<li><a href = "' + USGS_link + '" >Station Home Page</a></li>';
+                        var WML2_link = '<li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + site + '>GetObservation</a></li>';
+
+                        var html_1 = USGS_picture + Title + Name_html + "<table border='1'><tr><th colspan='2'> Latest Reading:<br />" + time + '</tr></th><tr><td>Discharge:</td><td>' + value + ' ' + units + ' <b>' + comment +'</b></td></tr></table>';
+                        $("#date").append(html_1)
+                        return html
+                        
+                });
+            }
 
             function errorHandler(a,b,c){
                 alert(a);
@@ -216,73 +248,94 @@
               gicons["Coastal"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
 
 // ========================Create a marker============================================
-            function createMarker(point, name, StateNM, Site_no, base_url, USGS_URL) {
-                var marker = new GMarker(point, {icon: gicons[StateNM]});
-                //var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
-                //var marker = new GMarker(point, newIcon);
-                marker.mycategory = StateNM;
-                marker.myname = name;
-                GEvent.addListener(marker, "click", function() {
-                    var html = SimpleMarkerHTML(Site_no, base_url, USGS_URL, name);
-                    marker.openInfoWindowHtml(html);
+        function createMarker(point, name, StateNM, Site_no, USGS_URL) {
+            var marker = new GMarker(point, {icon: gicons[StateNM]});
+            //var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
+            //var marker = new GMarker(point, newIcon);
+            marker.mycategory = StateNM;
+            marker.myname = name;
+            GEvent.addListener(marker, "click", function() {
+                var sos_url = base_url + "/wml2?request=GetObservation&featureId=05389500&beginPosition=" + '<%=Today%>';
+                $.get(sos_url, function(xml) {
+                    $(xml).find("[nodeName=wml2:WaterMonitoringObservation],WaterMonitoringObservation").each(function(){
+                        var name = $(this).find("[nodeName=gml:name]").text();
+                        var USGS_link = $(this).find("[nodeName=sf:sampledFeature]").attr("xlink:href");
+                        var site = $(this).find("[nodeName=gml:Point]").attr("gml:id");
+
+                        var units = $(this).find("[nodeName=wml2:unitOfMeasure]").attr("xlink:href");
+                        var time = $(this).find("[nodeName=wml2:time]:first").text();
+                        var value = $(this).find("[nodeName=wml2:value]").first().text();
+                        var comment = $(this).find("[nodeName=wml2:comment]:first").text();
+
+                        var USGS_picture = '<img src = "USGS.gif" width="84" height="32"/>      ';
+                        var Title = 'Station: ' + site + '<br /><br />';
+                        var Name_html = '<b>' + name + '</b><br /><br />';
+                        var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + site + '>GetFeature</a></li>';
+                        var USGS_link = '<li><a href = "' + USGS_link + '" >Station Home Page</a></li>';
+                        var WML2_link = '<li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + site + '>GetObservation</a></li>';
+
+                        var html_1 = USGS_picture + Title + Name_html + "<table border='1'><tr><th colspan='2'> Latest Reading:<br />" + time + '</tr></th><tr><td>Discharge:</td><td>' + value + ' ' + units + ' <b>' + comment +'</b></td></tr></table>';
+                        marker.openInfoWindowHtml(html_1);
+                        });
                     });
-                gmarkers.push(marker);
-                return marker;
-            }
+                });
+                
+            gmarkers.push(marker);
+            return marker;
+        }
+
+        function createCoastalMarker(point, name, StateNM, Site_no, USGS_URL) {
+            var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
+            var marker = new GMarker(point, newIcon);
+            marker.mycategory = StateNM;
+            marker.myname = name;
+            GEvent.addListener(marker, "click", function() {
+                var html = SimpleMarkerHTML(Site_no, USGS_URL, name);
+                marker.openInfoWindowHtml(html);
+                });
+            gmarkers.push(marker);
+            return marker;
+        }
+
+       function createInactiveMarker(point, html, name, category) {
+            var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#33CC66"});
+            var marker = new GMarker(point, newIcon);
+            marker.mycategory = category;
+            marker.myname = name;
+            GEvent.addListener(marker, "click", function() {
+                marker.openInfoWindowHtml(html);
+            });
+            gmarkers.push(marker);
+            return marker;
+        }
 
 //====================================Create Marker HTML==================================
-        function SimpleMarkerHTML(Site_no, base_url, USGS_URL, Site_nm){
-                    var USGS_picture = '<img src = "USGS.gif" width="84" height="32"/>      ';
-                    var Title = 'Station: ' + Site_no + '<br /><br />';
-                    var Name = '<b>' + Site_nm + '</b><br /><br />';
-                    var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + Site_no + '>GetFeature</a></li>';
-                    var USGS_link = '<li><a href = "' + USGS_URL + '" >Station Home Page</a></li>';
-                    var WML2_link = '<li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + Site_no + '>GetObservation</a></li>';
-
-                    var html = USGS_picture + Title + Name + GetFeature + WML2_link + USGS_link;
-
-                    return html
-                }
-
-        function MarkerHTML(Site_no, base_url, USGS_URL, Site_nm){
+        function SimpleMarkerHTML(Site_no, USGS_URL, Site_nm){
             var USGS_picture = '<img src = "USGS.gif" width="84" height="32"/>      ';
             var Title = 'Station: ' + Site_no + '<br /><br />';
             var Name = '<b>' + Site_nm + '</b><br /><br />';
             var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + Site_no + '>GetFeature</a></li>';
             var USGS_link = '<li><a href = "' + USGS_URL + '" >Station Home Page</a></li>';
             var WML2_link = '<li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + Site_no + '>GetObservation</a></li>';
-            var sos_url = base_url + "/wml2?request=GetObservation&featureId=" + Site_no + '&beginPosition=' + '<%=Today%>';
-            //loadSOSXML(sos_url);
-            $.ajax({
-                    type: "GET",
-                    url: sos_url,
-                    dataType: "xml",
-                    success: parseXml_SOS,
-                    error: errorHandler
-               });
-//TODO: get parsed SOS output to here...
-            var html = 'temp';
+            var html = USGS_picture + Title + Name + GetFeature + WML2_link + USGS_link;
             return html
-            }
+        }
 
-            function parseXml_SOS(xml){
-                $(xml).find("[nodeName=wml2:WaterMonitoringObservation],WaterMonitoringObservation").each(function(){
-                    var units = $(this).find("[nodeName=wml2:unitOfMeasure]").attr("xlink:href");
-                    var time = $(this).find("[nodeName=wml2:time]:first").text();
-                    var value = $(this).find("[nodeName=wml2:value]").first().text();
-                    var comment = $(this).find("[nodeName=wml2:comment]:first").text();
-                    });
-            }
+       function FancyMarkerHTML(Site_no){
+            var sos_url = base_url + "/wml2?request=GetObservation&featureId=" + Site_no + '&beginPosition=' + '<%=Today%>';
+            var html = LoadSOSXML(sos_url);
+            return html
+        }
 
 // ===================================== Shows markers =================================
-          function show(category) {
-            for (var i=0; i<gmarkers.length; i++) {
-              if (gmarkers[i].mycategory == category) {
-                gmarkers[i].show();
-              }
-            }
-            document.getElementById(category+"box").checked = true;
+      function show(category) {
+        for (var i=0; i<gmarkers.length; i++) {
+          if (gmarkers[i].mycategory == category) {
+            gmarkers[i].show();
           }
+        }
+        document.getElementById(category+"box").checked = true;
+      }
 
 // ===================================== Hides markers ===================================
           function hide(category) {
@@ -330,6 +383,24 @@
         map.setCenter(new GLatLng(40.55972222, -95.613888889), 4, G_PHYSICAL_MAP);
       	map.enableScrollWheelZoom();
 
+        GDownloadUrl("InactiveSites.csv", function(doc) {
+            lines = doc.split("\n");
+            for (var i = 0; i < lines.length; i++) {
+                if (lines[i].length > 1) {
+                    parts = lines[i].split(",");
+                    var Lat = parseFloat(parts[0]);
+                    var Long = parseFloat(parts[1]);
+                    var name_in = parts[2];
+                    var point = new GLatLng(Lat, Long);
+                    var html = "Inactive USGS site: <br />" + name_in;
+
+                    var marker = createInactiveMarker(point, html, name_in, "Inactive");
+                    map.addOverlay(marker);
+                }
+            }
+            hide("Inactive");
+        });
+
         var wfs_url = base_url + "/wfs?request=GetFeature";
         LoadXML(wfs_url);
         //LoadXML("wfs_SE.xml");
@@ -342,18 +413,17 @@
         show("GA");
         show("SC");
         show("MI");
-        hide("NJ");
-        hide("PA");
-        hide("MN");
-        hide("MO");
-        hide("IL");
-        hide("IA");
-        hide("ND");
-        hide("IN");
-        hide("OH");
-        hide("NY");
-        hide("Coastal");
-        makeSidebar();
+        show("NJ");
+        show("PA");
+        show("MN");
+        show("MO");
+        show("IL");
+        show("IA");
+        show("ND");
+        show("IN");
+        show("OH");
+        show("NY");
+        show("Coastal");
 
     }
     else {
