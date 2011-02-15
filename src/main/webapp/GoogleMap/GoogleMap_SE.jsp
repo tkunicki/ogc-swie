@@ -206,6 +206,16 @@
       gicons["AL"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
       gicons["GA"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
       gicons["SC"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
+      gicons["PA"] = MapIconMaker.createMarkerIcon({primaryColor: "#33CC66"});
+      gicons["NY"] = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
+      gicons["NJ"] = MapIconMaker.createMarkerIcon({primaryColor: "#FF9933"});
+      gicons["MN"] = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
+      gicons["MO"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
+      gicons["IL"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
+      gicons["IA"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
+      gicons["ND"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
+      gicons["OH"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
+      gicons["IN"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
       gicons["Coastal"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
 
 // ========================Create a marker============================================

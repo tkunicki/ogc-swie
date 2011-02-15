@@ -118,7 +118,7 @@
                 //$("#date").append(siteName + ': ' + latitude + ': ' + stateNM + '<br />');
             }
 
-            var sos_url = base_url + "/wml2?request=GetObservation&featureId=05389500&beginPosition=" + '<%=Today%>';
+            var sos_url = base_url + "/wml2?request=GetObservation&featureId=04010500&beginPosition=" + '<%=Today%>';
             parseXml_SOS(sos_url);
             document.write($("#date").text());
             //$("#date").append(html)

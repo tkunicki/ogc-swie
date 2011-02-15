@@ -81,7 +81,7 @@
 
 <!===============================Create Table=========================================>
     <font face="Arial">
-    <h1>Surface Water IE 1.0</h1>
+    <h1>Surface Water IE 1.1</h1>
     <table border=0>
         <tr>
           <td>
@@ -185,6 +185,11 @@
                                     <dl>Version 1.0 February 8th, 2011 <br />
                                         <dd> Initial release </dd>
                                     </dl>
+                                     <dl>Version 1.1 February 15th, 2011 <br />
+                                        <dd> Updated maps to work in Chrome/Safari </dd>
+                                        <dd> Updated getObservation to properly account for P/A qualifiers </dd>
+                                        <dd> Updated Master Feature List </dd>
+                                    </dl>
                                     <p></p>
 
                                 </li>
@@ -193,7 +198,6 @@
 
         <td width = 500 valign="top" >
            <div id="map" style="width: 460px; height: 360px"></div>
-           <i> <font size ="2"> Map works in IE and Firefox.  Future versions will include Safari and Chrome</i></font><br />
            Markers represent USGS gaging stations on the Mississippi, Delaware, Fox, Wisconsin, Illinois, Red River of the North, NASQAN Coastal Subnetwork, and others near the Great Lakes.
            Clicking on a marker brings up a box with the station name, and links to GetObservation, GetFeature, and the public USGS website.*<br />
            <p></p>
@@ -375,7 +379,7 @@
 
        <!-- Page Contact Information: <a href="http://water.usgs.gov/user_feedback_form.html">Water Webserver Team</a><br />-->
 
-        Page Last Modified: Tuesday, 08-Feb-2011 16:45:46 CST
+        Page Last Modified: Tuesday, 15-Feb-2011 11:45:46 CST
       </p>
 </div>
 

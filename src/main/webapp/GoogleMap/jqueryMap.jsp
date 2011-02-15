@@ -80,25 +80,25 @@
 
 <!-- ===========================Create Check Boxes==================================-->
         <form action="#">
-          TN Rivers: <input type="checkbox" id="TNbox" onclick="boxclick(this,'TN')" />&nbsp;&nbsp;
+          <!--TN Rivers: <input type="checkbox" id="TNbox" onclick="boxclick(this,'TN')" />&nbsp;&nbsp;
           NC Rivers: <input type="checkbox" id="NCbox" onclick="boxclick(this,'NC')" />&nbsp;&nbsp;
           GA Rivers: <input type="checkbox" id="GAbox" onclick="boxclick(this,'GA')" />&nbsp;&nbsp;
           SC Rivers: <input type="checkbox" id="SCbox" onclick="boxclick(this,'SC')" />&nbsp;&nbsp;
-          AL Rivers: <input type="checkbox" id="ALbox" onclick="boxclick(this,'AL')" /><br />
-          WI Rivers: <input type="checkbox" id="WIbox" onclick="boxclick(this,'WI')" />&nbsp;&nbsp;
-          MI Rivers: <input type="checkbox" id="MIbox" onclick="boxclick(this,'MI')" /><br />
-          PA Rivers: <input type="checkbox" id="PAbox" onclick="boxclick(this,'PA')" />&nbsp;&nbsp;
-          NY Rivers: <input type="checkbox" id="NYbox" onclick="boxclick(this,'NY')" />&nbsp;&nbsp;
-          NJ Rivers: <input type="checkbox" id="NJbox" onclick="boxclick(this,'NJ')" /><br />
-          MN Rivers: <input type="checkbox" id="MNbox" onclick="boxclick(this,'MN')" />&nbsp;&nbsp;
-          MO Rivers: <input type="checkbox" id="MObox" onclick="boxclick(this,'MO')" />&nbsp;&nbsp;
-          IL Rivers: <input type="checkbox" id="ILbox" onclick="boxclick(this,'IL')" />&nbsp;&nbsp;
-          IA Rivers: <input type="checkbox" id="IAbox" onclick="boxclick(this,'IA')" /><br />
-          ND Rivers: <input type="checkbox" id="NDbox" onclick="boxclick(this,'ND')" />&nbsp;&nbsp;
-          OH Rivers: <input type="checkbox" id="OHbox" onclick="boxclick(this,'OH')" />&nbsp;&nbsp;
-          IN Rivers: <input type="checkbox" id="INbox" onclick="boxclick(this,'IN')" />&nbsp;&nbsp;
+          AL Rivers: <input type="checkbox" id="ALbox" onclick="boxclick(this,'AL')" /><br />-->
           NASQAN Coastal Subnetwork: <input type="checkbox" id="Coastalbox" onclick="boxclick(this,'Coastal')" />&nbsp;&nbsp;
           Inactive Gage Stations: <input type="checkbox" id="Inactivebox" onclick="boxclick(this,'Inactive')" /><br />
+          WI Rivers: <input type="checkbox" id="WIbox" onclick="boxclick(this,'WI')" />&nbsp;&nbsp;
+          MI Rivers: <input type="checkbox" id="MIbox" onclick="boxclick(this,'MI')" />&nbsp;&nbsp;
+          PA Rivers: <input type="checkbox" id="PAbox" onclick="boxclick(this,'PA')" />&nbsp;&nbsp;
+          NY Rivers: <input type="checkbox" id="NYbox" onclick="boxclick(this,'NY')" /><br />
+          NJ Rivers: <input type="checkbox" id="NJbox" onclick="boxclick(this,'NJ')" />&nbsp;&nbsp;
+          MN Rivers: <input type="checkbox" id="MNbox" onclick="boxclick(this,'MN')" />&nbsp;&nbsp;
+          MO Rivers: <input type="checkbox" id="MObox" onclick="boxclick(this,'MO')" />&nbsp;&nbsp;
+          IL Rivers: <input type="checkbox" id="ILbox" onclick="boxclick(this,'IL')" /><br />
+          IA Rivers: <input type="checkbox" id="IAbox" onclick="boxclick(this,'IA')" />&nbsp;&nbsp;
+          ND Rivers: <input type="checkbox" id="NDbox" onclick="boxclick(this,'ND')" />&nbsp;&nbsp;
+          OH Rivers: <input type="checkbox" id="OHbox" onclick="boxclick(this,'OH')" />&nbsp;&nbsp;
+          IN Rivers: <input type="checkbox" id="INbox" onclick="boxclick(this,'IN')" /><br />
 
 
     <!--      Inactive Gage Stations: <input type="checkbox" id="Inactivebox" onclick="boxclick(this,'Inactive')" /><br />-->
@@ -225,33 +225,11 @@
                 alert(c);
             }
 
-// ======================= Create an associative array of GIcons() =======================
-              var gicons = [];
-
-              gicons["WI"] = MapIconMaker.createMarkerIcon({primaryColor: "#33CC66"});
-              gicons["MI"] = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
-              gicons["TN"] = MapIconMaker.createMarkerIcon({primaryColor: "#FF9933"});
-              gicons["NC"] = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
-              gicons["AL"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
-              gicons["GA"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
-              gicons["SC"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
-              gicons["PA"] = MapIconMaker.createMarkerIcon({primaryColor: "#33CC66"});
-              gicons["NY"] = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
-              gicons["NJ"] = MapIconMaker.createMarkerIcon({primaryColor: "#FF9933"});
-              gicons["MN"] = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
-              gicons["MO"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
-              gicons["IL"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
-              gicons["IA"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
-              gicons["ND"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
-              gicons["OH"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
-              gicons["IN"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
-              gicons["Coastal"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
-
 // ========================Create a marker============================================
         function createMarker(point, name, StateNM, Site_no, USGS_URL) {
-            var marker = new GMarker(point, {icon: gicons[StateNM]});
-            //var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
-            //var marker = new GMarker(point, newIcon);
+            //var marker = new GMarker(point, {icon: gicons[StateNM]});
+            var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
+            var marker = new GMarker(point, newIcon);
             marker.mycategory = StateNM;
             marker.myname = name;
             GEvent.addListener(marker, "click", function() {
@@ -270,12 +248,18 @@
                         var USGS_picture = '<img src = "USGS.gif" width="84" height="32"/>      ';
                         var Title = 'Station: ' + site + '<br /><br />';
                         var Name_html = '<b>' + name + '</b><br /><br />';
+
+                        var WML2_link = '<li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + site + '>GetObservation</a></li>';
+                        var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + site + '>GetFeature</a></li>';
+
                         var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + site + '>GetFeature</a></li>';
                         var USGS_link = '<li><a href = "' + USGS_link + '" >Station Home Page</a></li>';
                         var WML2_link = '<li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + site + '>GetObservation</a></li>';
 
                         var html_1 = USGS_picture + Title + Name_html + "<table border='1'><tr><th colspan='2'> Latest Reading:<br />" + time + '</tr></th><tr><td>Discharge:</td><td>' + value + ' ' + units + ' <b>' + comment +'</b></td></tr></table>';
-                        marker.openInfoWindowHtml(html_1);
+                        var html_2 = USGS_link + '<br /><strong>WaterML2</strong><br />' + GetFeature + WML2_link;
+                        var html = html_1 + html_2;
+                        marker.openInfoWindowHtml(html);
                         });
                     });
                 });
@@ -285,7 +269,7 @@
         }
 
         function createCoastalMarker(point, name, StateNM, Site_no, USGS_URL) {
-            var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
+            var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
             var marker = new GMarker(point, newIcon);
             marker.mycategory = StateNM;
             marker.myname = name;
@@ -294,6 +278,7 @@
                 marker.openInfoWindowHtml(html);
                 });
             gmarkers.push(marker);
+            show("Coastal");
             return marker;
         }
 
@@ -393,7 +378,6 @@
                     var name_in = parts[2];
                     var point = new GLatLng(Lat, Long);
                     var html = "Inactive USGS site: <br />" + name_in;
-
                     var marker = createInactiveMarker(point, html, name_in, "Inactive");
                     map.addOverlay(marker);
                 }
@@ -405,13 +389,7 @@
         LoadXML(wfs_url);
         //LoadXML("wfs_SE.xml");
         LoadCoastalXML("wfs_coastal.xml");
-
         show("WI");
-        show("TN");
-        show("NC");
-        show("AL");
-        show("GA");
-        show("SC");
         show("MI");
         show("NJ");
         show("PA");
@@ -423,7 +401,6 @@
         show("IN");
         show("OH");
         show("NY");
-        show("Coastal");
 
     }
     else {
