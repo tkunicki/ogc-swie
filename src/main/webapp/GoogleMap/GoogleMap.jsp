@@ -205,22 +205,22 @@
                         var name = $(this).find("[nodeName=gml:name]").text();
                         var USGS_link = $(this).find("[nodeName=sf:sampledFeature]").attr("xlink:href");
                         var site = $(this).find("[nodeName=gml:Point]").attr("gml:id");
-
+                        var siteCode = site.substring(7);
                         var units = $(this).find("[nodeName=wml2:unitOfMeasure]").attr("xlink:href");
                         var time = $(this).find("[nodeName=wml2:time]:first").text();
                         var value = $(this).find("[nodeName=wml2:value]").first().text();
                         var comment = $(this).find("[nodeName=wml2:comment]:first").text();
 
                         var USGS_picture = '<img src = "USGS.gif" width="84" height="32"/>      ';
-                        var Title = 'Station: ' + site + '<br /><br />';
+                        var Title = 'Station: ' + siteCode + '<br /><br />';
                         var Name_html = '<b>' + name + '</b><br /><br />';
 
-                        var WML2_link = '<li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + site + '>GetObservation</a></li>';
-                        var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + site + '>GetFeature</a></li>';
+                        var WML2_link = '<li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + siteCode + '>GetObservation</a></li>';
+                        var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + siteCode + '>GetFeature</a></li>';
 
-                        var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + site + '>GetFeature</a></li>';
+                        var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + siteCode + '>GetFeature</a></li>';
                         var USGS_link = '<li><a href = "' + USGS_link + '" >Station Home Page</a></li>';
-                        var WML2_link = '<li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + site + '>GetObservation</a></li>';
+                        var WML2_link = '<li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + siteCode + '>GetObservation</a></li>';
 
                         var html_1 = USGS_picture + Title + Name_html + "<table border='1'><tr><th colspan='2'> Latest Reading:<br />" + time + '</tr></th><tr><td>Discharge:</td><td>' + value + ' ' + units + ' <b>' + comment +'</b></td></tr></table>';
                         var html_2 = USGS_link + '<br /><strong>WaterML2</strong><br />' + GetFeature + WML2_link;

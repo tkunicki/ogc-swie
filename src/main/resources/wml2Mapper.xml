@@ -78,10 +78,17 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 	</resultMap>
 
 	<resultMap id="observationsResultMap" type="XMLMap" extends="wml2ResultMap">
-
 		<result
-			property="^!{gml:name"
+			property="^!{gml:identifier"
 			column="station_nm"
+			javaType="string" />
+                <result
+			property="gml:identifier#codeSpace=http://nwis.waterdata.usgs.gov/%s/nwis"
+			column="state_cd"
+			typeHandler="StateCodeTypeHandler" />
+                <result
+			property="gml:identifier"
+			column="FeatureID"
 			javaType="string" />
 		<result
 			property="gml:name#codeSpace=http://nwis.waterdata.usgs.gov/%s/nwis"
@@ -91,15 +98,6 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="gml:name"
 			column="station_nm"
 			javaType="string" />
-		<result
-			property="gml:identifier#codeSpace=http://nwis.waterdata.usgs.gov/%s/nwis"
-			column="state_cd"
-			typeHandler="StateCodeTypeHandler" />
-		<result
-			property="gml:identifier"
-			column="FeatureID"
-			javaType="string" />
-
 		<result
 			property="^!{om:metadata/wml2:ObservationMetadata/gmd:contact"
 			column="station_nm"
@@ -116,7 +114,6 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="om:metadata/wml2:ObservationMetadata/gmd:identificationInfo#xlink:href=urn:OGC:unknown"
 			column="dateStamp"
 			javaType="string" />
-	<!-- I'm assuming it's all provisional....if that is not be the case, then this needs to be fixed up-->
                 <result
 			property="om:metadata/wml2:ObservationMetadata/wml2:status#xlink:href=http://waterdata.usgs.gov/%s/nwis/help/?provisional"
 			column="state_cd"
@@ -126,7 +123,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="data_aging_cd"
 			javaType="string" />
 		<result
-			property="om:metadata/wml2:ObservationMetadata/wml2:status=The data you have obtained from this automated U.S. Geological Survey database have not received Director's approval and as such are provisional and subject to revision.  The data are released on the condition that neither the USGS nor the United States Government may be held liable for any damages resulting from its use."
+			property="om:metadata/wml2:ObservationMetadata/wml2:status=The data you have obtained from this automated U.S. Geological Survey database have not received Director's approval and as such are provisional and subject to revision.  The data are released on the condition that neither the USGS nor the United States Government may be held liable for any damages resulting from its use"
 			column="station_nm"
 			javaType="string" />
 		<result
@@ -141,7 +138,6 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="om:phenomenonTime/gml:TimePeriod/gml:endPosition"
 			column="endPosition"
 			typeHandler="ISODateTimeTypeHandler" />
-<!-- ResultTime "describes when the results were available", I'm not sure if this should be now, or endPosition-->
 		<result
 			property="om:resultTime/gml:TimeInstant#gml:id=result_time"
 			column="station_nm"
@@ -150,16 +146,14 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="om:resultTime/gml:TimeInstant/gml:timePosition"
 			column="endPosition"
 			typeHandler="ISODateTimeTypeHandler" />                
-<!--
                 <result
-			property="om:procedure#xlink:href=http://www.usgs.gov"
+			property="om:procedure#xlink:href=http://www.nemi.gov"
 			column="station_nm"
 			javaType="string" />
 		<result
-			property="om:procedure#xlink:title=Surface water discharge"
+			property="om:procedure#xlink:title=Volumetric flow rate"
 			column="station_nm"
 			javaType="string" />
-                        -->
                 <result
 			property="om:observedProperty#xlink:href=urn:ogc:def:phenomenon:OGC:stage"
 			column="station_nm"
@@ -169,7 +163,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="parameter_nm"
 			javaType="string" />
 		<result
-			property="om:featureOfInterest/wml2:WaterMonitoringPoint#gml:id=%s"
+			property="om:featureOfInterest/wml2:WaterMonitoringPoint#gml:id=USGS.WMP.%s"
 			column="site_no"
 			javaType="string" />
                 <result
@@ -177,7 +171,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
  			column="state_site"
 			typeHandler="USGS_URL_TypeHandler" />
                 <result
-                        property="om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/gml:Point#gml:id=%s"
+                        property="om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/gml:Point#gml:id=USGS.P.%s"
  			column="site_no"
 			javaType="string" />
                <result
@@ -205,27 +199,52 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="zoneAbbreviation"
 			javaType="string" />
                 <result
-			property="om:featureOfInterest/wml2:WaterMonitoringPoint/wml2:owner/gmd:organisationName/gmd:CharacterString=%s Water Science Center"
+			property="^!{om:result/wml2:owner/gmd:organisationName/gmd:CharacterString"
 			column="district_cd"
 			typeHandler="StateFullNameTypeHandler" />
-		<result
-                        property="^!{om:result/wml2:Timeseries"
-                        column="loc_nu"
-                        javaType="string" />
+                <result
+			property="om:result/wml2:owner/gmd:organisationName/gmd:CharacterString=%s Water Science Center"
+			column="district_cd"
+			typeHandler="StateFullNameTypeHandler" />
                 <result
 			property="om:result/wml2:Timeseries#gml:id=time_series_loc_%s"
 			column="loc_nu"
 			javaType="string" />
+               <result
+			property="om:result/wml2:Timeseries/wml2:domainExtent#xlink:href=ts_period"
+			column="loc_nu"
+			javaType="string" />
+               <result
+			property="om:result/wml2:Timeseries/wml2:domainExtent/gml:TimePeriod#gml:id=USGS.TP.%s"
+			column="site_no"
+			javaType="string" />
+		<result
+			property="om:result/wml2:Timeseries/wml2:domainExtent/gml:TimePeriod/gml:beginPosition"
+			column="beginPosition"
+			typeHandler="ISODateTimeTypeHandler" />
+		<result
+			property="om:result/wml2:Timeseries/wml2:domainExtent/gml:TimePeriod/gml:endPosition"
+			column="endPosition"
+			typeHandler="ISODateTimeTypeHandler" />
+
 		<result
 			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:unitOfMeasure#xlink:href=%s"
 			column="units"
+			javaType="string" />
+		<result
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:dataType#xlink:href=http://www.opengis.net/def/timeseriesType/WaterML/2.0/Continuous"
+			column="loc_nu"
+			javaType="string" />
+		<result
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:dataType#xlink:title=Continuous/Instantaneous"
+			column="loc_nu"
 			javaType="string" />
 		<result
 			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:qualifier#xlink:href=http://waterdata.usgs.gov/%s/nwis/help/?provisional"
 			column="state_cd"
 			typeHandler="StateCodeTypeHandler" />
 		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:qualifier#xlink:title=provisional"
+			property="}om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:qualifier#xlink:title=provisional"
 			column="state_cd"
 			typeHandler="StateCodeTypeHandler" />
 <!--
@@ -238,14 +257,6 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="station_nm"
 			javaType="string" />
                         -->
-		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:dataType#xlink:href=http://www.opengis.net/def/timeseriesType/WaterML/2.0/Continuous"
-			column="loc_nu"
-			javaType="string" />
-		<result
-			property="}om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:dataType#xlink:title=Continuous/Instantaneous"
-			column="loc_nu"
-			javaType="string" />
 		<result
 			property="om:result/wml2:Timeseries/^wml2:point/wml2:TimeValuePair/^wml2:time"
 			column="currentPosition"
@@ -307,7 +318,18 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		d.parameter_units as units,
 		d.parameter_nm,
                 (CASE
-                    WHEN c.table_cd = '***' THEN CONCAT(e.loc_nm,' Temporarily unavailable')
+                    WHEN c.table_cd = '***' THEN CONCAT('Temporarily unavailable ',e.loc_nm)
+                    WHEN c.table_cd = '--' THEN CONCAT('Parameter not determined ',e.loc_nm)
+                    WHEN c.table_cd = 'Dis' THEN CONCAT('Data-collection discontinued ',e.loc_nm)
+                    WHEN c.table_cd = 'Dry' THEN CONCAT('Dry ',e.loc_nm)
+                    WHEN c.table_cd = 'Eqp' THEN CONCAT('Equipment malfunction ',e.loc_nm)
+                    WHEN c.table_cd = 'Fld' THEN CONCAT('Flood damage ',e.loc_nm)
+                    WHEN c.table_cd = 'Ice' THEN CONCAT('Ice affected ',e.loc_nm)
+                    WHEN c.table_cd = 'Mnt' THEN CONCAT('Maintenance in progress ',e.loc_nm)
+                    WHEN c.table_cd = 'Pr' THEN CONCAT('Partial-record site ',e.loc_nm)
+                    WHEN c.table_cd = 'Rat' THEN CONCAT('Rating being developed or revised ',e.loc_nm)
+                    WHEN c.table_cd = 'Ssn' THEN CONCAT('Parameter monitored seasonally ',e.loc_nm)
+                    WHEN c.table_cd = 'ZFl' THEN CONCAT('Zero flow ',e.loc_nm)
                     ELSE CONCAT(c.table_cd,' ',e.loc_nm)
                 END) table_cd,
                 (CASE

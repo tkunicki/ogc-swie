@@ -223,16 +223,18 @@
         if (GBrowserIsCompatible()) {
           var gmarkers = [];
           var base_url = '<%=baseURL%>';
+          var wfs_url = base_url + "/wfs?request=GetFeature";
 
-            function LoadXML(filename){
+          $(document).ready(function(){
+            //function LoadXML(filename){
                 $.ajax({
                     type: "GET",
-                    url: filename,
+                    url: wfs_url,
                     dataType: "xml",
                     success: parseXml,
                     error: errorHandler
                });
-            }
+            });
 
             function LoadCoastalXML(filename){
                 $.ajax({
@@ -331,11 +333,8 @@
         map.setCenter(new GLatLng(40.55972222, -88.613888889), 4, G_PHYSICAL_MAP);
       	map.enableScrollWheelZoom();
 
-        var wfs_url = base_url + "/wfs?request=GetFeature";
-        LoadXML(wfs_url);
-
         LoadCoastalXML("GoogleMap/wfs_coastal.xml");
-
+        //LoadXML(wfs_url);
     }
     else {
             alert("Sorry, the Google Maps API is not compatible with this browser");
