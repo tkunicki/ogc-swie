@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-<mapper namespace="wml2Mapper">
+<mapper namespace="uvMapper">
 
-	<resultMap id="wml2ResultMap" type="XMLMap">
+	<resultMap id="uvResultMap" type="XMLMap">
             <result
 	    	property="wml2:WaterMonitoringObservation"
 	    	column="%ROOT_ELEMENT"
@@ -77,7 +77,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			javaType="string" />
 	</resultMap>
 
-	<resultMap id="observationsResultMap" type="XMLMap" extends="wml2ResultMap">
+	<resultMap id="observationsResultMap" type="XMLMap" extends="uvResultMap">
 		<result
 			property="^!{gml:identifier"
 			column="station_nm"
@@ -151,12 +151,12 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="station_nm"
 			javaType="string" />
 		<result
-			property="om:procedure#xlink:title=Volumetric flow rate"
-			column="station_nm"
+			property="om:procedure#xlink:title=%s"
+			column="parameter_nm"
 			javaType="string" />
                 <result
-			property="om:observedProperty#xlink:href=urn:ogc:def:phenomenon:OGC:stage"
-			column="station_nm"
+			property="om:observedProperty#xlink:href=urn:ogc:def:phenomenon:OGC:%s"
+			column="parameter_nm"
 			javaType="string" />
 		<result
 			property="om:observedProperty#xlink:title=%s"
@@ -244,9 +244,9 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="state_cd"
 			typeHandler="StateCodeTypeHandler" />
 		<result
-			property="}om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:qualifier#xlink:title=provisional"
+			property="}om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:qualifier#xlink:title=Provisional data subject to revision."
 			column="state_cd"
-			typeHandler="StateCodeTypeHandler" />
+			javaType="string" />
 <!--
                 <result
 			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:href=http://www.opengis.net/WaterML2.0/def/quality/unchecked"
@@ -277,25 +277,6 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:qualifier"
 			column="qualifier_message"
 			javaType="string" />
-<!--
-                <result
-			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:mean"
-			column="mean_va"
-			javaType="string" />
-                <result
-			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:min"
-			column="min_va"
-			javaType="string" />
-                <result
-			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:max"
-			column="max_va"
-			javaType="string" />
-                        -->
-                <result
-			property="om:result/wml2:Timeseries/wml2:TimeValuePair/^wml2:unitOfMeasure#xlink:href=%s"
-			column="units_odd"
-			javaType="string" />
-
                         
 	</resultMap>
 	
@@ -333,20 +314,14 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                     ELSE CONCAT(c.table_cd,' ',e.loc_nm)
                 END) table_cd,
                 (CASE
-                    WHEN g.data_aging_cd = 'A' THEN 'Approved for publication -- Processing and review completed.'
+                    WHEN g.data_aging_cd = 'A' THEN 'Approved for publication. Processing and review completed.'
                 END) qualifier_message,
-                (CASE
-                    WHEN d.parameter_units != 'cfs' THEN d.parameter_units
-                END) units_odd,
                 (CASE
                     WHEN f.dec_coord_datum_cd = 'NAD83' THEN 'urn:ogc:def:crs:EPSG:4269'
                     ELSE f.dec_coord_datum_cd
                 END) coord_datum,
                 e.loc_nm,
                 e.loc_nu
-                <!--h.max_va,
-                h.min_va,
-                h.mean_va-->
 		
 		FROM
 		    (select b.site_id,
@@ -357,34 +332,46 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                     END) qualifier_cd
               
 		    FROM nwisweb.UV a,
-		    nwisweb.SITEFILE b
+		    nwisweb.SITEFILE b,
+                    nwisweb.UV_DD_CONF j
 		    
-              <choose>
-                    <when test="featureId != null">
-                        WHERE b.site_no IN (#{featureId[0]})
-                    </when>
+                   <choose>
+                        <when test="featureId != null">
+                            WHERE b.site_no IN (#{featureId[0]})
+                        </when>
 
-                    <otherwise>
-                        WHERE b.site_no IN ('01427207')
-                    </otherwise>
+                        <otherwise>
+                            WHERE b.site_no IN ('01427207')
+                        </otherwise>
 
-                </choose>
+                    </choose>
 
-                <if test="beginPosition != null">
-                        AND a.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{beginPosition[0]}, '%Y-%m-%d')
-		</if>
+                    <choose>
+                        <when test="observedProperty != null">
+                            AND j.parameter_cd = (#{observedProperty[0]})
+                        </when>
+                        <otherwise>
+                            AND j.parameter_cd = '00060'
+                        </otherwise>
+                    </choose>
 
-                <if test="endPosition != null">
-			AND a.result_dt <![CDATA[ <= ]]> STR_TO_DATE(#{endPosition[0]}, '%Y-%m-%d')
-                </if>
+                    <if test="beginPosition != null">
+                            AND a.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{beginPosition[0]}, '%Y-%m-%d')
+                    </if>
 
-                        AND a.site_id = b.site_id
-                        GROUP BY a.site_id) s,
+                    <if test="endPosition != null">
+                            AND a.result_dt <![CDATA[ <= ]]> STR_TO_DATE(#{endPosition[0]}, '%Y-%m-%d')
+                    </if>
+
+                    AND a.site_id = b.site_id
+                    AND j.site_id = b.site_id
+                    AND j.dd_nu = a.dd_nu
+                    AND j.access_cd = '0'
+                    GROUP BY a.site_id) s,
 		    
 		nwisweb.PARAM_REF d,
 		nwisweb.UV_DD_CONF e,
 		nwisweb.SITEFILE f,
-               <!-- someday: nwisweb.DAILY_STAT h,-->
                 nwisweb.UV g LEFT JOIN nwisweb.DD_STATUS c ON (c.site_id = g.site_id 
                     AND c.dd_nu = g.dd_nu
                     AND c.parameter_cd = '00060'
@@ -396,12 +383,16 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 AND e.site_id = s.site_id
 		AND d.parameter_cd = e.parameter_cd 
                 AND e.dd_nu = g.dd_nu
-                AND e.parameter_cd = '00060'
                 AND e.access_cd = '0'
-                <!--AND s.site_id = h.site_id
-                AND e.dd_nu = h.dd_nu
-                AND h.month_nu = DATE_FORMAT(g.result_dt,'%m')
-                AND h.day_nu = DATE_FORMAT(g.result_dt,'%d') -->
+
+                <choose>
+                    <when test="observedProperty != null">
+                        AND e.parameter_cd = (#{observedProperty[0]})
+                    </when>
+                    <otherwise>
+                        AND e.parameter_cd = '00060'
+                    </otherwise>
+                </choose>
 
                 <if test="beginPosition != null">
                         AND g.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{beginPosition[0]}, '%Y-%m-%d')

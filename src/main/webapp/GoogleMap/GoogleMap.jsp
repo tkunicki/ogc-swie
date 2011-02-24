@@ -8,6 +8,27 @@
     int Year=ca.get(Calendar.YEAR);
     int Month=ca.get(Calendar.MONTH)+1;
     String Today = Integer.toString(Year) + '-' + Integer.toString(Month) + '-' + Integer.toString(Day);
+
+    int old_Day = Day - 3;
+    if (old_Day < 0) {
+        old_Day = 1;
+        };
+    String Month_str = "";
+    if (Month < 10) {
+        Month_str = '0' + Integer.toString(Month);
+        }
+    else {
+           Month_str = Integer.toString(Month);
+       };
+    String Day_str = "";
+    if (old_Day < 10) {
+        Day_str = '0' + Integer.toString(old_Day);
+        }
+    else {
+        Day_str = Integer.toString(old_Day);
+       };
+    // probably should add oldYear at some point...
+    String Old_Date = Integer.toString(Year) + '-' + Month_str + '-' + Day_str;
  %>
 <html>
     <head>
@@ -115,6 +136,8 @@
         if (GBrowserIsCompatible()) {
           var gmarkers = [];
           var base = '<%=baseURL%>';
+          var today = '<%=Today%>';
+          var old_day = '<%=Old_Date%>';
           var test = base.length - 10;    // Gets rid of /GoogleMap/ from baseURL
           var base_url = base.substring(0,test);
 
@@ -128,7 +151,7 @@
                });
             }
 
-            function LoadCoastalXML(filename){
+          function LoadCoastalXML(filename){
                 $.ajax({
                     type: "GET",
                     url: filename,
@@ -138,7 +161,7 @@
                });
             }
 
-            function parseXml(xml){
+          function parseXml(xml){
                 $(xml).find("[nodeName=wfs:FeatureCollection],FeatureCollection").each(function()
                     {
                         $(xml).find("[nodeName=wfs:member],member").each(function()
@@ -199,7 +222,7 @@
             marker.myname = name;
             var site = Site_no;
             GEvent.addListener(marker, "click", function() {
-                var sos_url = base_url + "/wml2?request=GetObservation&featureId=" + site + "&beginPosition=" + '<%=Today%>';
+                var sos_url = base_url + "/sos/uv?request=GetObservation&featureId=" + site + "&beginPosition=" + today + '&observedProperty=Discharge';
                 $.get(sos_url, function(xml) {
                     $(xml).find("[nodeName=wml2:WaterMonitoringObservation],WaterMonitoringObservation").each(function(){
                         var name = $(this).find("[nodeName=gml:name]").text();
@@ -215,15 +238,14 @@
                         var Title = 'Station: ' + siteCode + '<br /><br />';
                         var Name_html = '<b>' + name + '</b><br /><br />';
 
-                        var WML2_link = '<li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + siteCode + '>GetObservation</a></li>';
+                        var WML2_link_uv = '<li><a href =' + base_url + '/sos/uv?request=GetObservation&featureId=' + siteCode + '&observedProperty=Discharge&beginPosition=' + old_day + '>GetObservation - Instantaneous Values</a></li>';
+                        var WML2_link_dv = '<li><a href =' + base_url + '/sos/dv?request=GetObservation&featureId=' + siteCode + '&observedProperty=Discharge&beginPosition=' + old_day + '>GetObservation - Daily Mean Values</a></li>';
                         var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + siteCode + '>GetFeature</a></li>';
 
-                        var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + siteCode + '>GetFeature</a></li>';
                         var USGS_link = '<li><a href = "' + USGS_link + '" >Station Home Page</a></li>';
-                        var WML2_link = '<li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + siteCode + '>GetObservation</a></li>';
 
                         var html_1 = USGS_picture + Title + Name_html + "<table border='1'><tr><th colspan='2'> Latest Reading:<br />" + time + '</tr></th><tr><td>Discharge:</td><td>' + value + ' ' + units + ' <b>' + comment +'</b></td></tr></table>';
-                        var html_2 = USGS_link + '<br /><strong>WaterML2</strong><br />' + GetFeature + WML2_link;
+                        var html_2 = USGS_link + '<br /><strong>WaterML2</strong><br />' + GetFeature + WML2_link_uv + WML2_link_dv;
                         var html = html_1 + html_2;
                         marker.openInfoWindowHtml(html);
                         });
@@ -267,14 +289,8 @@
             var Name = '<b>' + Site_nm + '</b><br /><br />';
             var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + Site_no + '>GetFeature</a></li>';
             var USGS_link = '<li><a href = "' + USGS_URL + '" >Station Home Page</a></li>';
-            var WML2_link = '<li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + Site_no + '>GetObservation</a></li>';
+            var WML2_link = '<li><a href =' + base_url + '/sos/uv?request=GetObservation&featureId=' + Site_no + '&observedProperty=00060>GetObservation</a></li>';
             var html = USGS_picture + Title + Name + GetFeature + WML2_link + USGS_link;
-            return html
-        }
-
-       function FancyMarkerHTML(Site_no){
-            var sos_url = base_url + "/wml2?request=GetObservation&featureId=" + Site_no + '&beginPosition=' + '<%=Today%>';
-            var html = LoadSOSXML(sos_url);
             return html
         }
 
@@ -353,8 +369,8 @@
 
         var wfs_url = base_url + "/wfs?request=GetFeature";
         LoadXML(wfs_url);
-        //LoadXML("wfs_SE.xml");
         LoadCoastalXML("wfs_coastal.xml");
+
         show("WI");
         show("MI");
         show("NJ");

@@ -81,7 +81,7 @@
 
 <!===============================Create Table=========================================>
     <font face="Arial">
-    <h1>Surface Water IE 1.1</h1>
+    <h1>Surface Water IE 1.2</h1>
     <table border=0>
         <tr>
           <td>
@@ -97,14 +97,14 @@
                 <p></p>
                 <li><strong>Sensor Observation Service</strong>
                     <dl>
-                        <dt>GetObservation - featureID, beginPosition, endPosition can be specified in URL</dt>
-                        <dd>Observation by feature ID:<br />
-                            <a href="<%=baseURL%>/wml2?request=GetObservation&featureID=01446500"><%=baseURL%>/wml2?request=GetObservation&featureId=01446500</a>
+                        <dt>GetObservation - featureID(required), beginPosition, endPosition, observedProperty(required) can be specified in URL</dt>
+                        <p />
+                        <dt>Daily mean values = dv, Unit values (Instantaneous) = uv</dt>
+                        <dd><i>Instantaneous Observation by feature ID:</i><br />
+                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=01446500&observedProperty=GageHeight&beginPosition=<%=Old_Date%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=01446500&observedProperty=GageHeight&beginPosition=<%=Old_Date%></a>
                         </dd>
-                    </dl>
-                    <dl>
-                        <dd>Observation by feature ID with beginTime:<br />
-                            <a href="<%=baseURL%>/wml2?request=GetObservation&featureID=01446500&beginPosition=<%=Old_Date%>"><%=baseURL%>/wml2?request=GetObservation&featureId=01446500&beginPosition=<%=Old_Date%></a>
+                        <dd><i>Daily resolution Observation by feature ID:</i><br />
+                            <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=01446500&observedProperty=Discharge&beginPosition=<%=Old_Date%>"><%=baseURL%>/sos/dv?request=GetObservation&featureId=01446500&observedProperty=Discharge&beginPosition=<%=Old_Date%></a>
                         </dd>
                     </dl>
                     <dl>
@@ -114,6 +114,10 @@
                     <dl>
                                 <dt>DescribeSensor</dt>
                                 <dd><a href="<%=baseURL%>/sos?request=DescribeSensor"><%=baseURL%>/sos?request=DescribeSensor</a></dd>
+                    </dl>
+                    <dl>
+                                <dt>Example output:</dt>
+                                <dd><a href="<%=baseURL%>/sos?request=wml2_Example"><%=baseURL%>/sos?request=wml2_Example</a></dd>
                     </dl>
                 </li>
                     <p></p>
@@ -178,17 +182,24 @@
                                             <a href="WaterML2_Schemas.jsp">WaterML2 and other external schemas</a>
                                         </dd>
                                     </dl>
+                                    <dl>CSIRO WaterML2 validation tool (external link)<br />
+                                        <dd>
+                                            <a href="http://services.iwis.csiro.au/WaterML2Validation/">CSIRO WaterML2 Validation</a>
+                                        </dd>
+                                    </dl>
                                     <p></p>
 
                                 </li>
                                 <li><strong>Log</strong>
-                                    <dl>Version 1.0 February 8th, 2011 <br />
-                                        <dd> Initial release </dd>
+                                    <dl>Version 1.2 February 24th, 2011 <br />
+                                        <dd> * Added daily mean value option - mean daily results can be found in /sos/dv </dd>
+                                        <dd> * Instantaneous values (variable resolution, depending on the station) are now found at /sos/uv </dd>
+                                        <dd> * Added observedProperty option to url.  Discharge, GageHeight....</dd>
                                     </dl>
-                                     <dl>Version 1.1 February 15th, 2011 <br />
-                                        <dd> Updated maps to work in Chrome/Safari </dd>
-                                        <dd> Updated getObservation to properly account for P/A qualifiers </dd>
-                                        <dd> Updated Master Feature List </dd>
+                                    <dl>Version 1.1 February 15th, 2011 <br />
+                                        <dd> * Updated maps to work in Chrome/Safari </dd>
+                                        <dd> * Updated getObservation to properly account for P/A qualifiers </dd>
+                                        <dd> * Updated Master Feature List </dd>
                                     </dl>
                                     <p></p>
 
@@ -223,6 +234,7 @@
         if (GBrowserIsCompatible()) {
           var gmarkers = [];
           var base_url = '<%=baseURL%>';
+          var old_date = '<%=Old_Date%>';
           var wfs_url = base_url + "/wfs?request=GetFeature";
 
           $(document).ready(function(){
@@ -318,9 +330,9 @@
                     var Name = '<b>' + Site_nm + '</b><br /><br />';
                     var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + Site_no + '>GetFeature</a></li>';
                     var USGS_link = '<li><a href = "' + USGS_URL + '" >Station Home Page</a></li>';
-                    var WML2_link = '<li><a href =' + base_url + '/wml2?request=GetObservation&featureId=' + Site_no + '>GetObservation</a></li>';
-
-                    var html = USGS_picture + Title + Name + GetFeature + WML2_link + USGS_link;
+                    var WML2_link_uv = '<li><a href =' + base_url + '/sos/uv?request=GetObservation&featureId=' + Site_no + '&observedProperty=Discharge&beginPosition=' + old_date + '>GetObservation - Instantaneous</a></li>';
+                    var WML2_link_dv = '<li><a href =' + base_url + '/sos/dv?request=GetObservation&featureId=' + Site_no + '&observedProperty=Discharge&beginPosition=' + old_date + '>GetObservation - Daily Mean</a></li>';
+                    var html = USGS_picture + Title + Name + GetFeature + WML2_link_uv + WML2_link_dv + USGS_link;
 
                     return html
                 }
@@ -370,8 +382,8 @@
       </p>
 
       <p id="usgsfootertext">
-        <a href="http://www.takepride.gov/"><img src="http://www.usgs.gov/images/footer_graphic_takePride.jpg" alt="Take Pride in America logo" title="Take Pride in America Home Page" width="60" height="58"></a>
-	<a href="http://firstgov.gov/"><img src="http://www.usgs.gov/images/footer_graphic_usagov.jpg" alt="USA.gov logo" width="90" height="26" style="float: right; margin-right: 10px;" title="USAGov: Government Made Easy."></a>
+        <a href="http://www.takepride.gov/"><img src="http://www.usgs.gov/images/footer_graphic_takePride.jpg" alt="Take Pride in America logo" title="Take Pride in America Home Page" width="60" height="58"/></a>
+	<a href="http://firstgov.gov/"><img src="http://www.usgs.gov/images/footer_graphic_usagov.jpg" alt="USA.gov logo" width="90" height="26" style="float: right; margin-right: 10px;" title="USAGov: Government Made Easy."/></a>
         <a href="http://www.doi.gov/">U.S. Department of the Interior</a> |
         <a href="http://www.usgs.gov/">U.S. Geological Survey</a><br />
         URL: <%=baseURL%><br />

@@ -8,6 +8,7 @@ PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN"
                 <typeAlias alias="USGS_URL_TypeHandler" type="gov.usgs.webservices.ibatis.USGS_URL_TypeHandler"/>
                 <typeAlias alias="StateCodeTypeHandler" type="gov.usgs.webservices.ibatis.StateCodeTypeHandler"/>
                 <typeAlias alias="StateFullNameTypeHandler" type="gov.usgs.webservices.ibatis.StateFullNameTypeHandler"/>
+                <typeAlias alias="TimeZoneTypeHandler" type="gov.usgs.webservices.ibatis.TimeZoneTypeHandler"/>
 	</typeAliases>
 
 	<environments default="development">
@@ -22,6 +23,7 @@ PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN"
 	<mappers>
 		<mapper resource="wfsMapper.xml" />
 		<mapper resource="sosMapper.xml" />
-                <mapper resource="wml2Mapper.xml" />
+                <mapper resource="uvMapper.xml" />
+                <mapper resource="dvMapper.xml" />
 	</mappers>
 </configuration>

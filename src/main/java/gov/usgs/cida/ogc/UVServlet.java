@@ -39,7 +39,7 @@ import org.w3c.dom.Node;
 /**
  * Servlet implementation class to handle WML requests
  */
-public class WML2Servlet extends HttpServlet {
+public class UVServlet extends HttpServlet {
 
 	private static final String OBSERVATION_ID = "observationId";
 
@@ -54,6 +54,7 @@ public class WML2Servlet extends HttpServlet {
 	//private final static String XPATH_filter = "//ogc:Filter";
 	private final static String XPATH_eventTime = "//wml:eventTime";
 	private final static String XPATH_featureId = "//ogc:FeatureId/@fid";
+        private final static String XPATH_observedProperty = "//om:observedProperty/@fid";
 	private static final String XPATH_observationId = "//wml:ObservationId";
 
 	private final static Pattern PATTERN_cornerSplit = Pattern.compile("\\s+");
@@ -71,7 +72,7 @@ public class WML2Servlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public WML2Servlet() {
+	public UVServlet() {
 		super();
 	}
 
@@ -83,6 +84,7 @@ public class WML2Servlet extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Map<String, String[]> parameterMap = new CaseInsensitiveMap<String[]>(request.getParameterMap());
+                parameterMap = applyBusinessRules(parameterMap);
 		queryAndSend(request, response, parameterMap);
 	}
 
@@ -96,9 +98,7 @@ public class WML2Servlet extends HttpServlet {
 			Document document = ServletHandlingUtils.extractXMLRequestDocument(request);
 			Map<String, String[]> parameterMap = createParameterMapFromDocument(document);
 			// we're going to treat this as a GetObservation by default if not specified
-			if (parameterMap.get("request") == null) {
-				parameterMap.put("request", new String[] {WML_1_0_Operation.GetObservation.name()});
-			}
+                        parameterMap = applyBusinessRules(parameterMap);
 			queryAndSend(request, response, parameterMap);
 
 		} catch (RequestBodyExceededException rbe) {
@@ -110,6 +110,26 @@ public class WML2Servlet extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
+
+        private Map<String, String[]> applyBusinessRules(Map<String, String[]> parameters){
+            if (parameters.get("request") == null) {
+                parameters.put("request", new String[] {WML_1_0_Operation.GetObservation.name()});
+            }
+
+            String[] observedProperties = parameters.get(OGCBusinessRules.observedProperty);
+            String observedProperty = observedProperties[0];
+
+            if (observedProperty.equalsIgnoreCase("Discharge")) {
+                observedProperty = "00060";
+            } else if (observedProperty.equalsIgnoreCase("GageHeight")) {
+                observedProperty = "00065";
+            }
+
+            parameters.put(OGCBusinessRules.observedProperty, new String[] {observedProperty});
+
+            return parameters;
+
+        }
 
 	private void queryAndSend(HttpServletRequest request, HttpServletResponse response, Map<String, String[]> parameterMap) throws IOException {
 		ServletHandlingUtils.dumpRequestParamsToConsole(parameterMap);
@@ -133,7 +153,7 @@ public class WML2Servlet extends HttpServlet {
 
 
 				try {
-					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("wml2Mapper.observationsSelect", parameterMap);
+					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("uvMapper.observationsSelect", parameterMap);
 					XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
 					XMLStreamUtils.copy(streamReader, streamWriter);
 				} catch (Exception e) {
@@ -235,6 +255,17 @@ public class WML2Servlet extends HttpServlet {
 				Node featureIdNode = (Node)featureIDResult;
 				String featureId = featureIdNode.getTextContent();
 				parameterMap.put(OGCBusinessRules.FEATURE_ID, new String[] {featureId});
+			}
+		}
+
+                {
+			// Handle observedProperty
+			XPathExpression observedPropertyExpression = xpath.compile(XPATH_observedProperty);
+			Object observedPropertyResult = observedPropertyExpression.evaluate(document, XPathConstants.NODE);
+			if (observedPropertyResult != null && observedPropertyResult instanceof Node) {
+				Node observedPropertyNode = (Node)observedPropertyResult;
+				String observedProperty = observedPropertyNode.getTextContent();                   
+                                parameterMap.put(OGCBusinessRules.observedProperty, new String[] {observedProperty});				
 			}
 		}
 

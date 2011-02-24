@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="dvMapper">
+
+	<resultMap id="dvResultMap" type="XMLMap">
+            <result
+	    	property="wml2:WaterMonitoringObservation"
+	    	column="%ROOT_ELEMENT"
+			javaType="string" />
+	    <result
+	    	property="xmlns:gml=http://www.opengis.net/gml/3.2"
+	    	column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+	    <result
+	    	property="xmlns:om=http://www.opengis.net/om/2.0"
+	    	column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+	    <result
+	    	property="xmlns:sa=http://www.opengis.net/sampling/2.0"
+	    	column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+            <result
+    		property="xmlns:swe=http://www.opengis.net/swe/2.0"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+            <result
+    		property="xmlns:xlink=http://www.w3.org/1999/xlink"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+            <result
+    		property="xmlns:xsi=http://www.w3.org/2001/XMLSchema-instance"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+            <result
+    		property="xmlns:wml2=http://www.opengis.net/waterml/2.0"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+            <result
+    		property="xmlns:gmd=http://www.isotc211.org/2005/gmd"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+            <result
+    		property="xmlns:gco=http://www.isotc211.org/2005/gco"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+            <result
+    		property="xmlns:sf=http://www.opengis.net/sampling/2.0"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+            <result
+    		property="xmlns:sams=http://www.opengis.net/samplingSpatial/2.0"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+            <result
+    		property="gml:id=USGS"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+
+
+ <!-- Since om 2.0, sampling 2.0, samplingSpatial 2.0 are not approved, these locations go to my local computer.  Before going public, this should be changed...
+ "xsi:schemaLocation=http://www.opengis.net/waterml/2.0 ../schemas/waterml_2/waterml2.xsd" is simply what the Austrialia guys use
+ -->
+<!--		<result
+    		property="xsi:schemaLocation=http://www.opengis.net/waterml/2.0 ../schemas/waterml_2/waterml2.xsd"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+-->
+            <result
+    		property="xsi:schemaLocation= http://www.opengis.net/om/2.0 ../observation.xsd
+http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd
+http://www.opengis.net/sampling/2.0 ../samplingFeature.xsd
+http://www.opengis.net/waterml/2.0 ../waterml2.xsd
+http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+	</resultMap>
+
+	<resultMap id="observationsResultMap" type="XMLMap" extends="dvResultMap">
+		<result
+			property="^!{gml:identifier"
+			column="station_nm"
+			javaType="string" />
+                <result
+			property="gml:identifier#codeSpace=http://nwis.waterdata.usgs.gov/%s/nwis"
+			column="state_cd"
+			typeHandler="StateCodeTypeHandler" />
+                <result
+			property="gml:identifier"
+			column="FeatureID"
+			javaType="string" />
+		<result
+			property="gml:name#codeSpace=http://nwis.waterdata.usgs.gov/%s/nwis"
+			column="state_cd"
+			typeHandler="StateCodeTypeHandler" />
+		<result
+			property="gml:name"
+			column="station_nm"
+			javaType="string" />
+		<result
+			property="^!{om:metadata/wml2:ObservationMetadata/gmd:contact"
+			column="station_nm"
+			javaType="string" />
+		<result
+			property="om:metadata/wml2:ObservationMetadata/gmd:contact#xlink:href=http://cida.usgs.gov"
+			column="station_nm"
+			javaType="string" />
+		<result
+			property="om:metadata/wml2:ObservationMetadata/gmd:dateStamp/gco:Date"
+			column="dateStamp"
+			javaType="string" />
+		<result
+			property="om:metadata/wml2:ObservationMetadata/gmd:identificationInfo#xlink:href=urn:OGC:unknown"
+			column="dateStamp"
+			javaType="string" />
+                <result
+			property="om:metadata/wml2:ObservationMetadata/wml2:status#xlink:href=http://waterdata.usgs.gov/%s/nwis/help/?provisional"
+			column="state_cd"
+			typeHandler="StateCodeTypeHandler" />
+		<result
+			property="om:metadata/wml2:ObservationMetadata/wml2:status#xlink:title=%s"
+			column="data_aging_cd"
+			javaType="string" />
+		<result
+			property="om:metadata/wml2:ObservationMetadata/wml2:status=The data you have obtained from this automated U.S. Geological Survey database have not received Director's approval and as such are provisional and subject to revision.  The data are released on the condition that neither the USGS nor the United States Government may be held liable for any damages resulting from its use"
+			column="station_nm"
+			javaType="string" />
+		<result
+			property="om:phenomenonTime/gml:TimePeriod#gml:id=ts_period"
+			column="station_nm"
+			javaType="string" />
+		<result
+			property="om:phenomenonTime/gml:TimePeriod/gml:beginPosition"
+			column="beginPosition"
+			typeHandler="ISODateTimeTypeHandler" />
+		<result
+			property="om:phenomenonTime/gml:TimePeriod/gml:endPosition"
+			column="endPosition"
+			typeHandler="ISODateTimeTypeHandler" />
+		<result
+			property="om:resultTime/gml:TimeInstant#gml:id=result_time"
+			column="station_nm"
+			javaType="string" />
+                <result
+			property="om:resultTime/gml:TimeInstant/gml:timePosition"
+			column="endPosition"
+			typeHandler="ISODateTimeTypeHandler" />
+                <result
+			property="om:procedure#xlink:href=http://www.nemi.gov"
+			column="station_nm"
+			javaType="string" />
+		<result
+			property="om:procedure#xlink:title=%s"
+			column="parameter_nm"
+			javaType="string" />
+                <result
+			property="om:observedProperty#xlink:href=urn:ogc:def:phenomenon:OGC:%s"
+			column="parameter_nm"
+			javaType="string" />
+		<result
+			property="om:observedProperty#xlink:title=%s"
+			column="parameter_nm"
+			javaType="string" />
+		<result
+			property="om:featureOfInterest/wml2:WaterMonitoringPoint#gml:id=USGS.WMP.%s"
+			column="site_no"
+			javaType="string" />
+                <result
+                        property="om:featureOfInterest/wml2:WaterMonitoringPoint/sf:sampledFeature#xlink:href=%s"
+ 			column="state_site"
+			typeHandler="USGS_URL_TypeHandler" />
+                <result
+                        property="om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/gml:Point#gml:id=USGS.P.%s"
+ 			column="site_no"
+			javaType="string" />
+               <result
+                        property="om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/gml:Point/gml:pos#srsName=%s"
+ 			column="coord_datum"
+			javaType="string" />
+                <result
+                        property="om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/gml:Point/gml:pos"
+ 			column="pos"
+			javaType="string" />
+                <result
+                        property="om:featureOfInterest/wml2:WaterMonitoringPoint/wml2:descriptionReference#xlink:href=http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/SurfacewaterInteroperabilityExperiment#Use_Case_2"
+ 			column="station_nm"
+			javaType="string" />
+                <result
+                        property="om:featureOfInterest/wml2:WaterMonitoringPoint/wml2:descriptionReference#xlink:title=This wiki page describes the IE"
+ 			column="station_nm"
+			javaType="string" />
+		<result
+			property="om:featureOfInterest/wml2:WaterMonitoringPoint/wml2:timeZone/wml2:TimeZone/wml2:zoneOffset"
+			column="beginPosition"
+			typeHandler="TimeZoneTypeHandler" />
+                <result
+			property="om:featureOfInterest/wml2:WaterMonitoringPoint/wml2:timeZone/wml2:TimeZone/wml2:zoneAbbreviation"
+			column="zoneAbbreviation"
+			javaType="string" />
+                <result
+			property="^!{om:result/wml2:owner/gmd:organisationName/gmd:CharacterString"
+			column="district_cd"
+			typeHandler="StateFullNameTypeHandler" />
+                <result
+			property="om:result/wml2:owner/gmd:organisationName/gmd:CharacterString=%s Water Science Center"
+			column="district_cd"
+			typeHandler="StateFullNameTypeHandler" />
+                <result
+			property="om:result/wml2:Timeseries#gml:id=time_series_loc_%s"
+			column="loc_nu"
+			javaType="string" />
+               <result
+			property="om:result/wml2:Timeseries/wml2:domainExtent#xlink:href=ts_period"
+			column="loc_nu"
+			javaType="string" />
+               <result
+			property="om:result/wml2:Timeseries/wml2:domainExtent/gml:TimePeriod#gml:id=USGS.TP.%s"
+			column="site_no"
+			javaType="string" />
+		<result
+			property="om:result/wml2:Timeseries/wml2:domainExtent/gml:TimePeriod/gml:beginPosition"
+			column="beginPosition"
+			typeHandler="ISODateTimeTypeHandler" />
+		<result
+			property="om:result/wml2:Timeseries/wml2:domainExtent/gml:TimePeriod/gml:endPosition"
+			column="endPosition"
+			typeHandler="ISODateTimeTypeHandler" />
+
+		<result
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:unitOfMeasure#xlink:href=%s"
+			column="units"
+			javaType="string" />
+		<result
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:dataType#xlink:href=http://www.opengis.net/def/timeseriesType/WaterML/2.0/Continuous"
+			column="loc_nu"
+			javaType="string" />
+		<result
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:dataType#xlink:title=Continuous/Instantaneous"
+			column="loc_nu"
+			javaType="string" />
+		<result
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:qualifier#xlink:href=http://waterdata.usgs.gov/%s/nwis/help"
+			column="state_cd"
+			typeHandler="StateCodeTypeHandler" />
+		<result
+			property="}om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:qualifier#xlink:title=Approved for publication. Processing and review completed"
+			column="state_cd"
+			javaType="string" />
+<!--
+                <result
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:href=http://www.opengis.net/WaterML2.0/def/quality/unchecked"
+			column="station_nm"
+			javaType="string" />
+		<result
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:title=unchecked"
+			column="station_nm"
+			javaType="string" />
+                        -->
+		<result
+			property="om:result/wml2:Timeseries/^wml2:point/wml2:TimeValuePair/^wml2:time"
+			column="currentPosition"
+			typeHandler="ISODateTimeTypeHandler" />
+		<result
+			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:value"
+			column="value"
+			javaType="string" />
+                <result
+			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:comment"
+			column="table_cd"
+			javaType="string" />
+                <result
+			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:qualifier#qualifierCode%s"
+			column="qualifier_cd"
+			javaType="string" />
+                <result
+			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:qualifier"
+			column="qualifier_message"
+			javaType="string" />
+
+	</resultMap>
+
+	<select id="observationsSelect" parameterType="map" resultMap="observationsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
+		select f.station_nm,
+                CONCAT('USGS.',CONVERT(f.site_no,CHAR)) as FeatureID,
+                f.site_no,
+                f.tz_cd as zoneAbbreviation,
+                CONCAT(f.state_cd,'.',f.site_no) as state_site,
+                f.state_cd,
+                f.district_cd,
+		STR_TO_DATE(SYSDATE(),'%Y-%m-%d') as dateStamp,
+                CONCAT(DATE_FORMAT(SYSDATE(),'%Y-%m-%dT%H:%i'),f.tz_cd) as currentTimeStamp,
+		CONCAT(CONVERT(f.DEC_LAT_VA,CHAR),' ',CONVERT(f.DEC_LONG_VA,CHAR)) AS pos,
+                CONCAT(CONVERT(DATE_FORMAT(s.startTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS beginPosition,
+                CONCAT(CONVERT(DATE_FORMAT(s.endTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS endPosition,
+		CONCAT(CONVERT(DATE_FORMAT(g.result_dt,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) as currentPosition,
+		g.result_va as value,
+		d.parameter_units as units,
+		d.parameter_nm,
+                (CASE
+                    WHEN c.table_cd = '***' THEN CONCAT('Temporarily unavailable ',e.loc_nm)
+                    WHEN c.table_cd = '--' THEN CONCAT('Parameter not determined ',e.loc_nm)
+                    WHEN c.table_cd = 'Dis' THEN CONCAT('Data-collection discontinued ',e.loc_nm)
+                    WHEN c.table_cd = 'Dry' THEN CONCAT('Dry ',e.loc_nm)
+                    WHEN c.table_cd = 'Eqp' THEN CONCAT('Equipment malfunction ',e.loc_nm)
+                    WHEN c.table_cd = 'Fld' THEN CONCAT('Flood damage ',e.loc_nm)
+                    WHEN c.table_cd = 'Ice' THEN CONCAT('Ice affected ',e.loc_nm)
+                    WHEN c.table_cd = 'Mnt' THEN CONCAT('Maintenance in progress ',e.loc_nm)
+                    WHEN c.table_cd = 'Pr' THEN CONCAT('Partial-record site ',e.loc_nm)
+                    WHEN c.table_cd = 'Rat' THEN CONCAT('Rating being developed or revised ',e.loc_nm)
+                    WHEN c.table_cd = 'Ssn' THEN CONCAT('Parameter monitored seasonally ',e.loc_nm)
+                    WHEN c.table_cd = 'ZFl' THEN CONCAT('Zero flow ',e.loc_nm)
+                    ELSE CONCAT(c.table_cd,' ',e.loc_nm)
+                END) table_cd,
+                (CASE
+                    WHEN g.data_aging_cd = 'P' THEN 'Provisional data subject to revision.'
+                    WHEN g.data_aging_cd = 'W' THEN 'Provisional data subject to revision.'
+                    WHEN g.data_aging_cd = 'R' THEN 'Provisional data subject to revision.'
+                END) qualifier_message,
+                (CASE
+                    WHEN f.dec_coord_datum_cd = 'NAD83' THEN 'urn:ogc:def:crs:EPSG:4269'
+                    ELSE f.dec_coord_datum_cd
+                END) coord_datum,
+                e.loc_nm,
+                e.loc_nu
+
+		FROM
+		    (select b.site_id,
+		    MIN(a.result_dt) as startTime,
+                    MAX(a.result_dt) as endTime,
+                    (CASE
+                        WHEN a.data_aging_cd != 'P' THEN a.data_aging_cd
+                    END) qualifier_cd
+
+		    FROM nwisweb.DV a,
+		    nwisweb.SITEFILE b,
+                    nwisweb.DV_DD_CONF j
+
+                   <choose>
+                        <when test="featureId != null">
+                            WHERE b.site_no IN (#{featureId[0]})
+                        </when>
+
+                        <otherwise>
+                            WHERE b.site_no IN ('01427207')
+                        </otherwise>
+
+                    </choose>
+
+                    <choose>
+                        <when test="observedProperty != null">
+                            AND j.parameter_cd = (#{observedProperty[0]})
+                        </when>
+                        <otherwise>
+                            AND j.parameter_cd = '00060'
+                        </otherwise>
+                    </choose>
+
+                    <if test="beginPosition != null">
+                            AND a.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{beginPosition[0]}, '%Y-%m-%d')
+                    </if>
+
+                    <if test="endPosition != null">
+                            AND a.result_dt <![CDATA[ <= ]]> STR_TO_DATE(#{endPosition[0]}, '%Y-%m-%d')
+                    </if>
+
+                    AND a.site_id = b.site_id
+                    AND j.site_id = b.site_id
+                    AND j.dd_nu = a.dd_nu
+                    AND j.access_cd = '0'
+                    GROUP BY a.site_id) s,
+
+		nwisweb.PARAM_REF d,
+		nwisweb.DV_DD_CONF e,
+		nwisweb.SITEFILE f,
+                nwisweb.DV g LEFT JOIN nwisweb.DD_STATUS c ON (c.site_id = g.site_id
+                    AND c.dd_nu = g.dd_nu
+                    AND c.parameter_cd = '00060'
+                    AND g.result_dt <![CDATA[ >= ]]> c.begin_dt
+                    AND (g.result_dt <![CDATA[ <= ]]> c.end_dt OR c.end_dt = '0000-00-00 00:00:00'))
+
+		WHERE s.site_id = g.site_id
+                AND f.site_id = s.site_id
+                AND e.site_id = s.site_id
+		AND d.parameter_cd = e.parameter_cd
+                AND e.dd_nu = g.dd_nu
+                AND e.access_cd = '0'
+
+                <choose>
+                    <when test="observedProperty != null">
+                        AND e.parameter_cd = (#{observedProperty[0]})
+                    </when>
+                    <otherwise>
+                        AND e.parameter_cd = '00060'
+                    </otherwise>
+                </choose>
+
+                <if test="beginPosition != null">
+                        AND g.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{beginPosition[0]}, '%Y-%m-%d')
+		</if>
+
+                <if test="endPosition != null">
+			AND g.result_dt <![CDATA[ <= ]]> STR_TO_DATE(#{endPosition[0]}, '%Y-%m-%d')
+                </if>
+
+		ORDER BY f.station_nm, e.loc_nu, currentPosition DESC
+
+	</select>
+
+</mapper>
+

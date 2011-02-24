@@ -129,6 +129,7 @@ public class SOSFeaturesServlet extends HttpServlet {
 				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
 						errorMessage);
 				break;
+
 			default:
 				PrintWriter writer = new PrintWriter(outputStream);
 				writer.write(path);

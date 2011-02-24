@@ -2,7 +2,7 @@ package gov.usgs.cida.ogc;
 
 import com.ctc.wstx.stax.WstxOutputFactory;
 import gov.usgs.cida.ogc.specs.OGC_WFSConstants;
-import gov.usgs.cida.ogc.specs.SOS_1_0_Operation;
+import gov.usgs.cida.ogc.specs.WML_1_0_Operation;
 import gov.usgs.cida.ogc.utils.FileResponseUtil;
 import gov.usgs.cida.ogc.utils.ServletHandlingUtils;
 import gov.usgs.cida.ogc.utils.ServletHandlingUtils.RequestBodyExceededException;
@@ -37,9 +37,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 /**
- * Servlet implementation class to handle SOS requests
+ * Servlet implementation class to handle WML requests
  */
-public class SOSServlet extends HttpServlet {
+public class DVServlet extends HttpServlet {
 
 	private static final String OBSERVATION_ID = "observationId";
 
@@ -48,13 +48,14 @@ public class SOSServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	//	private final static String XPATH_Envelope = "//sos:GetObservation/sos:featureOfInterest/ogc:BBOX[ogc:PropertyName='gml:location']/gml:Envelope";
-	private final static String XPATH_Envelope = "//sos:GetObservation/sos:featureOfInterest/ogc:BBOX/gml:Envelope";
+	private final static String XPATH_Envelope = "//wml:GetObservation/wml:featureOfInterest/ogc:BBOX/gml:Envelope";
 	private final static String XPATH_cornerLower = "gml:lowerCorner/text()";
 	private final static String XPATH_upperCorner = "gml:upperCorner/text()";
 	//private final static String XPATH_filter = "//ogc:Filter";
-	private final static String XPATH_eventTime = "//sos:eventTime";
+	private final static String XPATH_eventTime = "//wml:eventTime";
 	private final static String XPATH_featureId = "//ogc:FeatureId/@fid";
-	private static final String XPATH_observationId = "//sos:ObservationId";
+        private final static String XPATH_observedProperty = "//om:observedProperty/@fid";
+	private static final String XPATH_observationId = "//wml:ObservationId";
 
 	private final static Pattern PATTERN_cornerSplit = Pattern.compile("\\s+");
 
@@ -71,7 +72,7 @@ public class SOSServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public SOSServlet() {
+	public DVServlet() {
 		super();
 	}
 
@@ -83,6 +84,7 @@ public class SOSServlet extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Map<String, String[]> parameterMap = new CaseInsensitiveMap<String[]>(request.getParameterMap());
+                parameterMap = applyBusinessRules(parameterMap);
 		queryAndSend(request, response, parameterMap);
 	}
 
@@ -96,9 +98,7 @@ public class SOSServlet extends HttpServlet {
 			Document document = ServletHandlingUtils.extractXMLRequestDocument(request);
 			Map<String, String[]> parameterMap = createParameterMapFromDocument(document);
 			// we're going to treat this as a GetObservation by default if not specified
-			if (parameterMap.get("request") == null) {
-				parameterMap.put("request", new String[] {SOS_1_0_Operation.GetObservation.name()});
-			}
+                        parameterMap = applyBusinessRules(parameterMap);
 			queryAndSend(request, response, parameterMap);
 
 		} catch (RequestBodyExceededException rbe) {
@@ -111,10 +111,30 @@ public class SOSServlet extends HttpServlet {
 		}
 	}
 
+        private Map<String, String[]> applyBusinessRules(Map<String, String[]> parameters){
+            if (parameters.get("request") == null) {
+                parameters.put("request", new String[] {WML_1_0_Operation.GetObservation.name()});
+            }
+
+            String[] observedProperties = parameters.get(OGCBusinessRules.observedProperty);
+            String observedProperty = observedProperties[0];
+            
+            if (observedProperty.equalsIgnoreCase("Discharge")) {
+                observedProperty = "00060";
+            } else if (observedProperty.equalsIgnoreCase("GageHeight")) {
+                observedProperty = "00065";
+            }
+
+            parameters.put(OGCBusinessRules.observedProperty, new String[] {observedProperty});
+
+            return parameters;
+
+        }
+
 	private void queryAndSend(HttpServletRequest request, HttpServletResponse response, Map<String, String[]> parameterMap) throws IOException {
 		ServletHandlingUtils.dumpRequestParamsToConsole(parameterMap);
 		// TODO parameterMap may or may not be case-insensitive, depending on path of arrival post or get. Correct this later.
-		SOS_1_0_Operation opType = SOS_1_0_Operation.parse(parameterMap.get("request"));
+		WML_1_0_Operation opType = WML_1_0_Operation.parse(parameterMap.get("request"));
 
 		ServletOutputStream outputStream = response.getOutputStream();
 		response.setContentType(OGC_WFSConstants.DEFAULT_DESCRIBEFEATURETYPE_OUTPUTFORMAT);
@@ -133,7 +153,7 @@ public class SOSServlet extends HttpServlet {
 
 
 				try {
-					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("sosMapper.observationsSelect", parameterMap);
+					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("dvMapper.observationsSelect", parameterMap);
 					XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
 					XMLStreamUtils.copy(streamReader, streamWriter);
 				} catch (Exception e) {
@@ -150,38 +170,13 @@ public class SOSServlet extends HttpServlet {
 				replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
 
 				// Just sending back static file for now.
-				String resource = "/ogc/sos/" + opType.name() + ".xml";
+				String resource = "/ogc/wml/" + opType.name() + ".xml";
 				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
 				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
 						errorMessage);
 			}
                         break;
-			case MasterFeatureList:
-			{
-				Map<String, String> replacementMap = new HashMap<String, String>();
-				replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
-
-				// Just sending back static file for now.
-				String resource = "/ogc/sos/" + opType.name() + ".xml";
-				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
-				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
-						errorMessage);
-			}
-			break;
-
-			case wml2_Example:
-			{
-				Map<String, String> replacementMap = new HashMap<String, String>();
-				replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
-
-				// Just sending back static file for now.
-				String resource = "/ogc/sos/" + opType.name() + ".xml";
-				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
-				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
-						errorMessage);
-			}
-			break;
-			default:
+                        default:
 				BufferedWriter writer = FileResponseUtil.wrapAsBufferedWriter(outputStream);
 				try {
 					writer.append("unrecognized or unhandled REQUEST type = " + opType);
@@ -260,6 +255,17 @@ public class SOSServlet extends HttpServlet {
 				Node featureIdNode = (Node)featureIDResult;
 				String featureId = featureIdNode.getTextContent();
 				parameterMap.put(OGCBusinessRules.FEATURE_ID, new String[] {featureId});
+			}
+		}
+
+                {
+			// Handle observedProperty
+			XPathExpression observedPropertyExpression = xpath.compile(XPATH_observedProperty);
+			Object observedPropertyResult = observedPropertyExpression.evaluate(document, XPathConstants.NODE);
+			if (observedPropertyResult != null && observedPropertyResult instanceof Node) {
+				Node observedPropertyNode = (Node)observedPropertyResult;
+				String observedProperty = observedPropertyNode.getTextContent();       
+                                parameterMap.put(OGCBusinessRules.observedProperty, new String[] {observedProperty});				
 			}
 		}
 
