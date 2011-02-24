@@ -329,7 +329,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		    MIN(a.result_dt) as startTime,
                     MAX(a.result_dt) as endTime,
                     (CASE
-                        WHEN a.data_aging_cd != 'P' THEN a.data_aging_cd
+                        WHEN a.data_aging_cd != 'A' THEN a.data_aging_cd
                     END) qualifier_cd
 
 		    FROM nwisweb.DV a,
