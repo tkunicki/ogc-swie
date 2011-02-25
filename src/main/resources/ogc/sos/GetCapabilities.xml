@@ -3,7 +3,7 @@
 		<ows:Title>USGS Surface Water Interoperability Experiment Sensor Observation Service</ows:Title>
 		<ows:Abstract>This is a minimal implementation of SOS 2.0.0, in progress, based on USGS NWIS data</ows:Abstract>
 		<ows:Keywords>
-			<ows:Keyword>WFS</ows:Keyword>
+			<ows:Keyword>SOS</ows:Keyword>
 			<ows:Keyword>Surface Water</ows:Keyword>
 			<ows:Keyword>USGS</ows:Keyword>
 			<ows:Keyword>Interoperability</ows:Keyword>
@@ -36,7 +36,7 @@
 					<ows:Country>U.S.A.</ows:Country>
 					<ows:ElectronicMailAddress>nlbooth@usgs.gov</ows:ElectronicMailAddress>
 				</ows:Address>
-				<ows:OnlineResource xlink:href="${base.url}/wfs"/>
+				<ows:OnlineResource xlink:href="${base.url}/sos/uv?"/>
 				<ows:HoursOfService>24x7 experimental</ows:HoursOfService>
 				<ows:ContactInstructions>8h30-16h00 GMT-5</ows:ContactInstructions>
 			</ows:ContactInfo>

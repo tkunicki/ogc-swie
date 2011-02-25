@@ -47,7 +47,7 @@ public class UVServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	//	private final static String XPATH_Envelope = "//sos:GetObservation/sos:featureOfInterest/ogc:BBOX[ogc:PropertyName='gml:location']/gml:Envelope";
+	//private final static String XPATH_Envelope = "//sos:GetObservation/sos:featureOfInterest/ogc:BBOX[ogc:PropertyName='gml:location']/gml:Envelope";
 	private final static String XPATH_Envelope = "//wml:GetObservation/wml:featureOfInterest/ogc:BBOX/gml:Envelope";
 	private final static String XPATH_cornerLower = "gml:lowerCorner/text()";
 	private final static String XPATH_upperCorner = "gml:upperCorner/text()";
@@ -166,20 +166,22 @@ public class UVServlet extends HttpServlet {
 					outputStream.flush();
 				}
 				break;
-			case GetCapabilities:
-			case GetProfile:
-			case DescribeSensor:
+			// I don't know why this doesn't work
+                        // I'm trying to get the url: http://localhost:4044/ogc-swie/sos/uv?request=GetCapabilities to work
+                        case GetCapabilities:
 			{
 				Map<String, String> replacementMap = new HashMap<String, String>();
 				replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
 
 				// Just sending back static file for now.
-				String resource = "/ogc/wml/" + opType.name() + ".xml";
+				String resource = "/ogc/sos/GetCapabilities.xml";
 				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
 				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
 						errorMessage);
 			}
                         break;
+			case GetProfile:
+			case DescribeSensor:
                         default:
 				BufferedWriter writer = FileResponseUtil.wrapAsBufferedWriter(outputStream);
 				try {
@@ -268,7 +270,16 @@ public class UVServlet extends HttpServlet {
 			Object observedPropertyResult = observedPropertyExpression.evaluate(document, XPathConstants.NODE);
 			if (observedPropertyResult != null && observedPropertyResult instanceof Node) {
 				Node observedPropertyNode = (Node)observedPropertyResult;
-				String observedProperty = observedPropertyNode.getTextContent();                   
+				String observedProperty = observedPropertyNode.getTextContent();
+                                        if (observedProperty.equalsIgnoreCase("Discharge")) {
+                                            observedProperty = "00060";
+                                        } else if (observedProperty.equalsIgnoreCase("GageHeight")) {
+                                            observedProperty = "00065";
+                                        } else if (observedProperty.equalsIgnoreCase("Temperature")) {
+                                            observedProperty = "00010";
+                                        } else if (observedProperty.equalsIgnoreCase("Precipitation")) {
+                                            observedProperty = "00045";
+                                        }
                                 parameterMap.put(OGCBusinessRules.observedProperty, new String[] {observedProperty});				
 			}
 		}

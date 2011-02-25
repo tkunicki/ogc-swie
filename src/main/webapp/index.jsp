@@ -100,7 +100,7 @@
                     <dl>
                         <dt><b>GetObservation</b> - featureID(required), beginPosition(optional), endPosition(optional), observedProperty(required)</dt>
                         <dt>Allowed observedProperty are: Discharge, GageHeight, Temperature, Precipitation</dt>
-                        <dt>Not every station will have all observedProperty options available</dt>
+                        <dt>Not every station will have all observedProperty options available<br /></dt>
                         <dd><i>Instantaneous gage height observation by feature ID:</i><br />
                             <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=01446500&observedProperty=GageHeight&beginPosition=<%=Old_Date%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=01446500&observedProperty=GageHeight&beginPosition=<%=Old_Date%></a>
                         </dd>
@@ -134,23 +134,50 @@
                         <dt>Not every station will have all observedProperty options available<br />
                         <i>Daily resolution discharge observation by feature ID:</i><br /></dt>
                         <dd>
-                            <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=01446500&observedProperty=Discharge&beginPosition=<%=Old_Date%>"><%=baseURL%>/sos/dv?request=GetObservation&featureId=01446500&observedProperty=Discharge&beginPosition=<%=Old_Date%></a>
+                            <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=01446500&observedProperty=Discharge&beginPosition=1970-01-01&endPosition=1980-01-01"><%=baseURL%>/sos/dv?request=GetObservation&featureId=01446500&observedProperty=Discharge&beginPosition=1970-01-01&endPosition=1980-01-01</a>
                         </dd>
                         <i>Daily mean precipitation observation by feature ID:</i><br />
                         <dd>
                             <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=05407000&observedProperty=Precipitation&beginPosition=<%=Old_Date%>"><%=baseURL%>/sos/dv?request=GetObservation&featureId=05407000&observedProperty=Precipitation&beginPosition=<%=Old_Date%></a>
                         </dd>
                     </dl>
+                    <p />
+<!--                    <dt><i>GetObservation by via XML HTTP body POST:</i><br /></dt>
+                      <dd>  <form name="input" action="<%=baseURL%>/sos/dv?request=GetObservation" method="post">
+                                <textarea name="xml" rows="10" cols="90">
+<?xml version="1.0" ?>
+<wml2:GetObservation version="1.1.0" service="SOS"
+    maxFeatures="1"
+    xmlns:wml2=""
+    xmlns:wfs="http://www.opengis.net/wfs"
+    xmlns:ogc="http://www.opengis.net/ogc"
+    xmlns:gml="http://www.opengis.net/gml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <wfs:Query typeName="swml:Discharge">
+    <ogc:Filter>
+      <ogc:BBOX>
+        <gml:Envelope>
+          <gml:lowerCorner>-90 43</gml:lowerCorner>
+          <gml:upperCorner>-89.2 43.7</gml:upperCorner>
+        </gml:Envelope>
+      </ogc:BBOX>
+    </ogc:Filter>
+  </wfs:Query>
+</wml2:GetObservation>
+                                                </textarea><br />
+                                            <input type="submit" value="Submit" />
+                                        </form>
+                    </dd>
+                    <p />
+-->
                     <dl>
                                 <dt><b>GetCapabilities</b></dt>
-                                <dd><a href="<%=baseURL%>/sos?request=GetCapabilities"><%=baseURL%>/sos?request=GetCapabilities</a></dd>
+                                <dd><a href="<%=baseURL%>/sos?request=dvGetCapabilities"><%=baseURL%>/sos?request=dvGetCapabilities</a></dd>
                     </dl>
                     <dl>
                                 <dt><b>DescribeSensor</b></dt>
                                 <dd><a href="<%=baseURL%>/sos?request=DescribeSensor"><%=baseURL%>/sos?request=DescribeSensor</a></dd>
-                    </dl>
-
-                
+                    </dl>            
                     <p></p>
 
                 <font size="4" ><li><strong>Web Feature Service</strong></li></font>

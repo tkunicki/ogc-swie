@@ -47,7 +47,7 @@ public class DVServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	//	private final static String XPATH_Envelope = "//sos:GetObservation/sos:featureOfInterest/ogc:BBOX[ogc:PropertyName='gml:location']/gml:Envelope";
+	//private final static String XPATH_Envelope = "//sos:GetObservation/sos:featureOfInterest/ogc:BBOX[ogc:PropertyName='gml:location']/gml:Envelope";
 	private final static String XPATH_Envelope = "//wml:GetObservation/wml:featureOfInterest/ogc:BBOX/gml:Envelope";
 	private final static String XPATH_cornerLower = "gml:lowerCorner/text()";
 	private final static String XPATH_upperCorner = "gml:upperCorner/text()";
@@ -258,6 +258,7 @@ public class DVServlet extends HttpServlet {
 			if (featureIDResult != null && featureIDResult instanceof Node) {
 				Node featureIdNode = (Node)featureIDResult;
 				String featureId = featureIdNode.getTextContent();
+
 				parameterMap.put(OGCBusinessRules.FEATURE_ID, new String[] {featureId});
 			}
 		}
@@ -268,7 +269,16 @@ public class DVServlet extends HttpServlet {
 			Object observedPropertyResult = observedPropertyExpression.evaluate(document, XPathConstants.NODE);
 			if (observedPropertyResult != null && observedPropertyResult instanceof Node) {
 				Node observedPropertyNode = (Node)observedPropertyResult;
-				String observedProperty = observedPropertyNode.getTextContent();       
+				String observedProperty = observedPropertyNode.getTextContent();    
+                                        if (observedProperty.equalsIgnoreCase("Discharge")) {
+                                            observedProperty = "00060";
+                                        } else if (observedProperty.equalsIgnoreCase("GageHeight")) {
+                                            observedProperty = "00065";
+                                        } else if (observedProperty.equalsIgnoreCase("Temperature")) {
+                                            observedProperty = "00010";
+                                        } else if (observedProperty.equalsIgnoreCase("Precipitation")) {
+                                            observedProperty = "00045";
+                                        }
                                 parameterMap.put(OGCBusinessRules.observedProperty, new String[] {observedProperty});				
 			}
 		}

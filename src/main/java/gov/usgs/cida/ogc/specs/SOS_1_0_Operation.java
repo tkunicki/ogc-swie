@@ -13,7 +13,8 @@ import java.util.List;
  */
 public enum SOS_1_0_Operation {
 	GetCapabilities("core", true, new String[] {"service", "request"}, new String[] {"Sections","updateSequence","AcceptVersions","AcceptFormats","AcceptLanguages"}),
-	DescribeSensor("core", true, new String[] {"service", "version", "request", "SensorId", "outputFormat"}, null),
+	dvGetCapabilities("core", true, new String[] {"service", "request"}, new String[] {"Sections","updateSequence","AcceptVersions","AcceptFormats","AcceptLanguages"}),
+        DescribeSensor("core", true, new String[] {"service", "version", "request", "SensorId", "outputFormat"}, null),
         MasterFeatureList("core", true, null, null),
         wml2_Example("core", true, null, null),
 	GetObservation("core", true, null, null),
