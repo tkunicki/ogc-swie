@@ -95,34 +95,65 @@
 
                 </li>
                 <p></p>
-                <li><strong>Sensor Observation Service</strong>
+                <font size="4" ><li><strong> Sensor Observation Service - Instantaneous Values (UV)</strong></li> </font>
+                <p />
                     <dl>
-                        <dt>GetObservation - featureID(required), beginPosition, endPosition, observedProperty(required) can be specified in URL</dt>
-                        <p />
-                        <dt>Daily mean values = dv, Unit values (Instantaneous) = uv</dt>
-                        <dd><i>Instantaneous Observation by feature ID:</i><br />
+                        <dt><b>GetObservation</b> - featureID(required), beginPosition(optional), endPosition(optional), observedProperty(required)</dt>
+                        <dt>Allowed observedProperty are: Discharge, GageHeight, Temperature, Precipitation</dt>
+                        <dt>Not every station will have all observedProperty options available</dt>
+                        <dd><i>Instantaneous gage height observation by feature ID:</i><br />
                             <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=01446500&observedProperty=GageHeight&beginPosition=<%=Old_Date%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=01446500&observedProperty=GageHeight&beginPosition=<%=Old_Date%></a>
                         </dd>
-                        <dd><i>Daily resolution Observation by feature ID:</i><br />
-                            <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=01446500&observedProperty=Discharge&beginPosition=<%=Old_Date%>"><%=baseURL%>/sos/dv?request=GetObservation&featureId=01446500&observedProperty=Discharge&beginPosition=<%=Old_Date%></a>
+                        <dd><i>Instantaneous resolution discharge observation by feature ID:</i><br />
+                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=01446500&observedProperty=Discharge&beginPosition=<%=Old_Date%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=01446500&observedProperty=Discharge&beginPosition=<%=Old_Date%></a>
                         </dd>
+                        <dd><i>Instantaneous temperature observation by feature ID:</i><br />
+                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=05407000&observedProperty=Temperature&beginPosition=<%=Old_Date%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=05407000&observedProperty=Temperature&beginPosition=<%=Old_Date%></a>
+                        </dd>
+
                     </dl>
                     <dl>
-                                <dt>GetCapabilities</dt>
+                                <dt><b>GetCapabilities</b></dt>
                                 <dd><a href="<%=baseURL%>/sos?request=GetCapabilities"><%=baseURL%>/sos?request=GetCapabilities</a></dd>
                     </dl>
                     <dl>
-                                <dt>DescribeSensor</dt>
+                                <dt><b>DescribeSensor</b></dt>
                                 <dd><a href="<%=baseURL%>/sos?request=DescribeSensor"><%=baseURL%>/sos?request=DescribeSensor</a></dd>
                     </dl>
                     <dl>
-                                <dt>Example output:</dt>
+                                <dt>Example output with comments about content:</dt>
                                 <dd><a href="<%=baseURL%>/sos?request=wml2_Example"><%=baseURL%>/sos?request=wml2_Example</a></dd>
                     </dl>
-                </li>
+                
+                    <p></p>
+                    <font size="4" ><li><strong>Sensor Observation Service - Daily Mean Values (DV)</strong></li></font>
+                    <p />
+                    <dl>
+                        <dt><b>GetObservation</b> - featureID(required), beginPosition(optional), endPosition(optional), observedProperty(required)</dt>
+                        <dt>Allowed observedProperty are: Discharge, GageHeight, Temperature, Precipitation</dt>
+                        <dt>Not every station will have all observedProperty options available<br />
+                        <i>Daily resolution discharge observation by feature ID:</i><br /></dt>
+                        <dd>
+                            <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=01446500&observedProperty=Discharge&beginPosition=<%=Old_Date%>"><%=baseURL%>/sos/dv?request=GetObservation&featureId=01446500&observedProperty=Discharge&beginPosition=<%=Old_Date%></a>
+                        </dd>
+                        <i>Daily mean precipitation observation by feature ID:</i><br />
+                        <dd>
+                            <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=05407000&observedProperty=Precipitation&beginPosition=<%=Old_Date%>"><%=baseURL%>/sos/dv?request=GetObservation&featureId=05407000&observedProperty=Precipitation&beginPosition=<%=Old_Date%></a>
+                        </dd>
+                    </dl>
+                    <dl>
+                                <dt><b>GetCapabilities</b></dt>
+                                <dd><a href="<%=baseURL%>/sos?request=GetCapabilities"><%=baseURL%>/sos?request=GetCapabilities</a></dd>
+                    </dl>
+                    <dl>
+                                <dt><b>DescribeSensor</b></dt>
+                                <dd><a href="<%=baseURL%>/sos?request=DescribeSensor"><%=baseURL%>/sos?request=DescribeSensor</a></dd>
+                    </dl>
+
+                
                     <p></p>
 
-                <li><strong>Web Feature Service</strong>
+                <font size="4" ><li><strong>Web Feature Service</strong></li></font>
                     <dl>
                                 <dt>GetCapabilities</dt>
                                 <dd><a href="<%=baseURL%>/wfs?request=GetCapabilities"><%=baseURL%>/wfs?request=GetCapabilities</a></dd>
@@ -174,8 +205,7 @@
                                         </dd>
                                     </dl>
                                     <p></p>
-                                </li>
-
+                                
                                 <li><strong>Additional Services</strong>
                                     <dl>Required External Schemas<br />
                                         <dd>
@@ -191,7 +221,7 @@
 
                                 </li>
                                 <li><strong>Log</strong>
-                                    <dl>Version 1.2 February 24th, 2011 <br />
+                                    <dl>Version 1.2 February 25th, 2011 <br />
                                         <dd> * Added daily mean value option - mean daily results can be found in /sos/dv </dd>
                                         <dd> * Instantaneous values (variable resolution, depending on the station) are now found at /sos/uv </dd>
                                         <dd> * Added observedProperty option to url.  Discharge, GageHeight....</dd>

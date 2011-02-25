@@ -1,3 +1,9 @@
+<!-- Comments are inserted above the XML they are referring-->
+<!-- The location of the non-public schemas (om 2.0, wml2, etc.) are listed as being available
+one directory up from the currently location.  To validate, the locations of these schemas might
+need to be adjusted.  For example, when using the CSIRO WaterML2 validation tool, the locations
+need to be adjusted to:
+file:///C:/OGC/SCHEMAS_OPENGIS_NET/om/2.0/observation.xsd -->
 <wml2:WaterMonitoringObservation 
 xmlns:gml="http://www.opengis.net/gml/3.2" 
 xmlns:om="http://www.opengis.net/om/2.0" 
@@ -18,9 +24,6 @@ http://www.opengis.net/sampling/2.0 ../samplingFeature.xsd
 http://www.opengis.net/waterml/2.0 ../waterml2.xsd 
 http://www.opengis.net/swe/2.0 
 http://schemas.opengis.net/sweCommon/2.0/swe.xsd">
-
-<!-- Comments are inserted above the XML they are referring-->
-
 
 <!-- codeSpace is base url for station info, identifier value contains agency(static USGS and dynamic siteNumber).  gml schema forces the identifier to contain more than just numbers - therefore  -->
 	<gml:identifier codeSpace="http://nwis.waterdata.usgs.gov/MT/nwis">USGS.12332000</gml:identifier>
@@ -64,12 +67,12 @@ The currently is the time that the user sent the query to the database -->
 	</om:resultTime>
 	
 <!-- 	"System used to estimate values of feature properties. A measurement system is usually composed of at least one sensor that initially transforms a real world phenomenon into digital information after which further processing can be done. A procedure is a more general concept that also encapsulates the method that is used to collect particular measurements (see OGC 07-022)."
-Currently, this is a static general link to our official method's website.  Specific/dynamic information should be implemented -->
-	<om:procedure xlink:href="http://www.nemi.gov" xlink:title="Volumetric flow rate"/>
+Currently, the title is taken from the parameter name, based off of the observedPropery-->
+	<om:procedure xlink:href="http://www.nemi.gov" xlink:title="Discharge"/>
 
 <!-- "The observedProperty property of an observation shall be defined using a URI which shall identify the phenomenon that is being measured (or estimated). "
- Currently, this is a static value. Specific/dynamic information should be implemented-->	
-	<om:observedProperty xlink:href="urn:ogc:def:phenomenon:OGC:stage" xlink:title="Discharge"/>
+ Currently, it is taken from the parameter name, based off of the observedPropery-->
+	<om:observedProperty xlink:href="urn:ogc:def:phenomenon:OGC:Discharge" xlink:title="Discharge"/>
 	
 	<om:featureOfInterest>
 <!-- gml:id must be unique - in this case, WMP stands for water monitoring point-->	
@@ -101,7 +104,7 @@ Currently, references the SWIE - to emphasize this is an experimental site.  In 
 			</gmd:organisationName>
 		</wml2:owner>
 
-<!-- the name of the time series includes the loc_nm (from UV_DD_CONF)...if there were more than 1 sensor measuring the same parameter at the same station, the name of the time series would change.  The results of each sensor would be shown in 2 separate om:result elements -->		
+<!-- the name of the time series includes the loc_nm (from UV_DD_CONF or DV_DD_CONF)...if there were more than 1 sensor measuring the same parameter at the same station, the name of the time series would change.  The results of each sensor would be shown in 2 separate om:result elements -->
 		<wml2:Timeseries gml:id="time_series_loc_0">
 			<wml2:domainExtent xlink:href="ts_period">
 				<gml:TimePeriod gml:id="USGS.TP.12332000">
@@ -111,12 +114,16 @@ Currently, references the SWIE - to emphasize this is an experimental site.  In 
 				</gml:TimePeriod>
 			</wml2:domainExtent>
 
-<!-- -->			
+<!-- The default sets the values for all of the TimeValuePairs...unless they contain a different value, in which case that value would override the default-->
 			<wml2:defaultTimeValuePair>
 				<wml2:TimeValuePair>
-					<wml2:unitOfMeasure xlink:href="cfs"/>
+<!-- The unit of measure is taken from the PARAM_REF table based on the observedProperty.  There is not anything coded in to change the units within a timeseries.  -->
+                                    <wml2:unitOfMeasure xlink:href="cfs"/>
+<!-- The dataType is statically set to 'Continuous/Instantaneous' for the instantaneous values, and 'Average in preceding interval' for daily mean values  -->
 					<wml2:dataType xlink:href="http://www.opengis.net/def/timeseriesType/WaterML/2.0/Continuous" xlink:title="Continuous/Instantaneous"/>
-					<wml2:qualifier xlink:href="http://waterdata.usgs.gov/MT/nwis/help/?provisional" xlink:title="provisional"/>
+<!-- The default qualifier is set to 'Provisional data subject to revision' for the instantaneous values, and 'Approved for publication. Processing and review completed' for daily mean values
+The code will check and update each point below if it is different. -->
+                                        <wml2:qualifier xlink:href="http://waterdata.usgs.gov/MT/nwis/help/?provisional" xlink:title="Provisional data subject to revision."/>
 				</wml2:TimeValuePair>
 			</wml2:defaultTimeValuePair>
 			
@@ -124,6 +131,7 @@ Currently, references the SWIE - to emphasize this is an experimental site.  In 
 				<wml2:TimeValuePair>
 					<wml2:time>2011-02-23T09:15-07:00</wml2:time>
 					<wml2:value>48</wml2:value>
+<!-- Comments for each data point are taken from the table_cd in the UV_STATUS or DV_STATUS table-->
 					<wml2:comment>Ice affected </wml2:comment>
 				</wml2:TimeValuePair>
 			</wml2:point>
@@ -135,27 +143,29 @@ Currently, references the SWIE - to emphasize this is an experimental site.  In 
 					<wml2:comment>Ice affected </wml2:comment>
 				</wml2:TimeValuePair>
 			</wml2:point>
-	<!--...a bunch of data has been deleted here to easier illustrate qualifier --> 
-	<!--.................................................................................................-->
+<!--...a bunch of data has been deleted here to easier illustrate default override... -->
+<!--................................................................................. -->
 			<wml2:point>
 				<wml2:TimeValuePair>
+<!-- Time is result_dt, value is result_va from either DV or UV table -->
 					<wml2:time>2010-10-26T00:30-07:00</wml2:time>
 					<wml2:value>51</wml2:value>
-					<wml2:qualifier>Approved for publication -- Processing and review completed.</wml2:qualifier>
+<!-- When the qualifier no longer matches the default, the output will update -->
+					<wml2:qualifier xlink:href="http://waterdata.usgs.gov/nwis/help" xlink:title="Approved for publication. Processing and review completed."/>
 				</wml2:TimeValuePair>
 			</wml2:point>
 			<wml2:point>
 				<wml2:TimeValuePair>
 					<wml2:time>2010-10-26T00:15-07:00</wml2:time>
 					<wml2:value>51</wml2:value>
-					<wml2:qualifier>Approved for publication -- Processing and review completed.</wml2:qualifier>
+					<wml2:qualifier xlink:href="http://waterdata.usgs.gov/nwis/help" xlink:title="Approved for publication. Processing and review completed."/>
 				</wml2:TimeValuePair>
 			</wml2:point>
 			<wml2:point>
 				<wml2:TimeValuePair>
 					<wml2:time>2010-10-26T00:00-07:00</wml2:time>
 					<wml2:value>51</wml2:value>
-					<wml2:qualifier>Approved for publication -- Processing and review completed.</wml2:qualifier>
+					<wml2:qualifier xlink:href="http://waterdata.usgs.gov/nwis/help" xlink:title="Approved for publication. Processing and review completed."/>
 				</wml2:TimeValuePair>
 			</wml2:point>
 		</wml2:Timeseries>

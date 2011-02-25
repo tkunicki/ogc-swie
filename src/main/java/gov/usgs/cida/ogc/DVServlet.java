@@ -123,6 +123,10 @@ public class DVServlet extends HttpServlet {
                 observedProperty = "00060";
             } else if (observedProperty.equalsIgnoreCase("GageHeight")) {
                 observedProperty = "00065";
+            } else if (observedProperty.equalsIgnoreCase("Temperature")) {
+                observedProperty = "00010";
+            } else if (observedProperty.equalsIgnoreCase("Precipitation")) {
+                observedProperty = "00045";
             }
 
             parameters.put(OGCBusinessRules.observedProperty, new String[] {observedProperty});

@@ -247,16 +247,6 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="}om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:qualifier#xlink:title=Provisional data subject to revision."
 			column="state_cd"
 			javaType="string" />
-<!--
-                <result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:href=http://www.opengis.net/WaterML2.0/def/quality/unchecked"
-			column="station_nm"
-			javaType="string" />
-		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:title=unchecked"
-			column="station_nm"
-			javaType="string" />
-                        -->
 		<result
 			property="om:result/wml2:Timeseries/^wml2:point/wml2:TimeValuePair/^wml2:time"
 			column="currentPosition"
@@ -270,11 +260,11 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="table_cd"
 			javaType="string" />
                 <result
-			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:qualifier#qualifierCode%s"
-			column="qualifier_cd"
+			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:qualifier#xlink:href=http://waterdata.usgs.gov/nwis/help"
+			column="qualifier_message"
 			javaType="string" />
                 <result
-			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:qualifier"
+			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/wml2:qualifier#xlink:title=%s"
 			column="qualifier_message"
 			javaType="string" />
                         

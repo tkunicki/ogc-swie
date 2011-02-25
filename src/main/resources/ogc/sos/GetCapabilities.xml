@@ -47,7 +47,7 @@
 		<ows:Operation name="GetCapabilities">
 			<ows:DCP>
 				<ows:HTTP>
-					<ows:Get xlink:href="${base.url}/sos?"/>
+					<ows:Get xlink:href="${base.url}/sos/uv?"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="service">
@@ -64,8 +64,8 @@
 		<ows:Operation name="GetObservation">
 			<ows:DCP>
 				<ows:HTTP>
-					<ows:Get xlink:href="${base.url}/sos?/sos"/>
-					<ows:Post xlink:href="${base.url}/sos?/sos"/>
+					<ows:Get xlink:href="${base.url}/sos/uv?"/>
+					<ows:Post xlink:href="${base.url}/sos/uv?"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="version">
@@ -101,6 +101,12 @@
 			<ows:Parameter name="featureId">
 				<ows:AnyValue/>
 			</ows:Parameter>
+			<ows:Parameter name="observedProperty">
+				<ows:Value>Discharge</ows:Value>
+                                <ows:Value>GageHeight</ows:Value>
+                                <ows:Value>Temperature</ows:Value>
+                                <ows:Value>Precipitation</ows:Value>
+			</ows:Parameter>
 			<ows:Parameter name="beginPosition">
 				<ows:AnyValue/>
 			</ows:Parameter>
@@ -111,8 +117,8 @@
 		<ows:Operation name="GetObservationById">
 			<ows:DCP>
 				<ows:HTTP>
-					<ows:Get xlink:href="${base.url}/sos"/>
-					<ows:Post xlink:href="${base.url}/sos"/>
+					<ows:Get xlink:href="${base.url}/sos/uv?"/>
+					<ows:Post xlink:href="${base.url}/sos/uv?"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="version">
@@ -154,12 +160,19 @@
 			<ows:Parameter name="endPosition">
 				<ows:AnyValue/>
 			</ows:Parameter>
+			<ows:Parameter name="observedProperty">
+				<ows:Value>Discharge</ows:Value>
+                                <ows:Value>GageHeight</ows:Value>
+                                <ows:Value>Temperature</ows:Value>
+                                <ows:Value>Precipitation</ows:Value>
+			</ows:Parameter>
+
 		</ows:Operation>
 		<ows:Operation name="DescribeSensor">
 			<ows:DCP>
 				<ows:HTTP>
-					<ows:Get xlink:href="${base.url}/sos"/>
-					<ows:Post xlink:href="${base.url}/sos"/>
+					<ows:Get xlink:href="${base.url}/sos/uv?"/>
+					<ows:Post xlink:href="${base.url}/sos/uv?"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="version">
@@ -212,7 +225,7 @@
 	</sos:Filter_Capabilities>
 	<sos:Contents>
 		<sos:ObservationOfferingList>
-			<sos:ObservationOffering gml:id="usgs.water.gwie.waterLevels">
+			<sos:ObservationOffering gml:id="usgs.water.swie.stage">
 				<gml:description>
 					Surface water levels in the continental U.S.
 				</gml:description>

@@ -232,11 +232,11 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="units"
 			javaType="string" />
 		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:dataType#xlink:href=http://www.opengis.net/def/timeseriesType/WaterML/2.0/Continuous"
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:dataType#xlink:href=http://www.opengis.net/def/timeseriesType/WaterML/2.0/AveragePrec"
 			column="loc_nu"
 			javaType="string" />
 		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:dataType#xlink:title=Continuous/Instantaneous"
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:dataType#xlink:title=Average in preceding interval"
 			column="loc_nu"
 			javaType="string" />
 		<result
@@ -270,11 +270,11 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="table_cd"
 			javaType="string" />
                 <result
-			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:qualifier#qualifierCode%s"
-			column="qualifier_cd"
+			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:qualifier#xlink:href=http://waterdata.usgs.gov/nwis/help"
+			column="qualifier_message"
 			javaType="string" />
                 <result
-			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:qualifier"
+			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/wml2:qualifier#xlink:title=%s"
 			column="qualifier_message"
 			javaType="string" />
 
