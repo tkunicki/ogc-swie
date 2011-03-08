@@ -41,7 +41,8 @@ public class ISODateTimeTypeHandler implements TypeHandler {
         float hoursOffset = Math.abs(tzOffset / 1000 / 60 / 60);
         int hours = (int) hoursOffset;
         int minutes = (int) (60 * (hoursOffset - hours));
-        return String.format("%s%s%02d:%02d", dateTime, plusOrMinus, hours, minutes);
+        String seconds = ":00";
+        return String.format("%s%s%s%02d:%02d", dateTime, seconds, plusOrMinus, hours, minutes);
     }
 
     @Override

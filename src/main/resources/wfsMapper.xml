@@ -133,6 +133,14 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="state_site"
 			typeHandler="USGS_URL_TypeHandler" />
 		<result
+			property="wfs:member/om:featureOfInterest/wml2:WaterMonitoringPoint/sf:parameter/om:NamedValue/om:name#xlink:title=Watershed"
+			column="huc_nm"
+			javaType="string" />
+		<result
+			property="wfs:member/om:featureOfInterest/wml2:WaterMonitoringPoint/sf:parameter/om:NamedValue/om:value"
+			column="huc_nm"
+			javaType="string" />
+		<result
 			property="wfs:member/om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/^gml:Point#gml:id=%s"
 			column="SITE_NO"
 			javaType="string" />
@@ -249,7 +257,8 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 a.tz_cd,
                 s.lowerPosition AS lower,
                 s.upperPosition AS upper,
-                b.tz_utc_offset_tm
+                b.tz_utc_offset_tm,
+                c.huc_nm
 
 		FROM (           
                     <choose>
@@ -274,7 +283,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 
                                 <otherwise>
                                     WHERE b.site_no IN (
-                                    
+                           
                                     '01427207','01427510','01434000','01438500','01457500','01463500',
                                     '04073365','04073500','04082400','04084445','040851385','05344500',
                                     '05378500','05389500','05391000','05395000','05404000','05407000',
@@ -286,13 +295,13 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                                     '04102500','04121970','04122200','04122500','04137500','04142000','04157000','04159492','04165500',
                                     '04174500','04176500','04193500','04195820','04198000','04199000','04199500','04200500','04201500',
                                     '04208000','04212100','04213500','04218000','04231600','04249000','04260500','04263000','04265432'
-
+                                    
                                 <!-- NASQAN Coastal Subnetwork -->
                                 <!--
                                 '01578310','01646580','02226160','02470500','04264331','07374525','07381495','08475000','09522000','11303500','11447650','14246900','15565447'
                                 -->
                                 <!-- SE Rivers -->
-                                <!--
+<!--
                                     '04031000','04043275','04065106','04067958','04074950',
                                     '03597210','03497300','03498500','03538830','03539600','03568000',
                                     '03498850','03566000','03528000','03409500','03527220','03566525',
@@ -302,7 +311,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                                     '03479000','03453500','03460000','03459500','03450000','03451500',
                                     '03456991','03456100','03513000','03505550','03503000','03504000','03161000',
                                     '02399200','02399200','02176930','02177000','02178400','02181580','02398000','03544970'
-                                    -->
+-->
                                     )
                                 </otherwise>
                             </choose>
@@ -312,7 +321,8 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 ) s,
 
                 nwisweb.SITEFILE a,
-                nwisweb.TZ b
+                nwisweb.TZ b,
+                nwisweb.HUCS c
 
               <choose>
                     <when test="featureId != null">
@@ -351,14 +361,16 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                                     '03518500','03539778','03539800','03540500','03424860','03425000',
                                     '03479000','03453500','03460000','03459500','03450000','03451500',
                                     '03456991','03456100','03513000','03505550','03503000','03504000','03161000',
-                                    '02399200','02399200','02176930','02177000','02178400','02181580','02398000','03544970'-->
-                                        
+                                    '02399200','02399200','02176930','02177000','02178400','02181580','02398000','03544970'
+-->
 
                                     )
                     </otherwise>
                 </choose>
 
                 AND a.tz_cd = b.tz_cd
+                AND c.huc_cd = a.huc_cd
+                AND c.state_cd = a.state_cd
 <!---		<trim prefix="OR (" suffix=")" prefixOverrides="AND">
 			<if test="bBox != null">
                             AND a.DEC_LONG_VA BETWEEN #{bBox[0]} AND #{bBox[2]} AND a.DEC_LAT_VA BETWEEN #{bBox[1]} AND #{bBox[3]}

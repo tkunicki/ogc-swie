@@ -123,10 +123,6 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="data_aging_cd"
 			javaType="string" />
 		<result
-			property="om:metadata/wml2:ObservationMetadata/wml2:status=The data you have obtained from this automated U.S. Geological Survey database have not received Director's approval and as such are provisional and subject to revision.  The data are released on the condition that neither the USGS nor the United States Government may be held liable for any damages resulting from its use"
-			column="station_nm"
-			javaType="string" />
-		<result
 			property="om:phenomenonTime/gml:TimePeriod#gml:id=ts_period"
 			column="station_nm"
 			javaType="string" />
@@ -170,6 +166,14 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                         property="om:featureOfInterest/wml2:WaterMonitoringPoint/sf:sampledFeature#xlink:href=%s"
  			column="state_site"
 			typeHandler="USGS_URL_TypeHandler" />
+		<result
+			property="om:featureOfInterest/wml2:WaterMonitoringPoint/sf:parameter/om:NamedValue/om:name#xlink:title=Watershed"
+			column="huc_nm"
+			javaType="string" />
+		<result
+			property="om:featureOfInterest/wml2:WaterMonitoringPoint/sf:parameter/om:NamedValue/om:value"
+			column="huc_nm"
+			javaType="string" />
                 <result
                         property="om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/gml:Point#gml:id=USGS.P.%s"
  			column="site_no"
@@ -247,16 +251,6 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="}om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:qualifier#xlink:title=Approved for publication. Processing and review completed"
 			column="state_cd"
 			javaType="string" />
-<!--
-                <result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:href=http://www.opengis.net/WaterML2.0/def/quality/unchecked"
-			column="station_nm"
-			javaType="string" />
-		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:quality#xlink:title=unchecked"
-			column="station_nm"
-			javaType="string" />
-                        -->
 		<result
 			property="om:result/wml2:Timeseries/^wml2:point/wml2:TimeValuePair/^wml2:time"
 			column="currentPosition"
@@ -268,6 +262,10 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 <result
 			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:comment"
 			column="table_cd"
+			javaType="string" />
+                <result
+			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:comment"
+			column="result_cd"
 			javaType="string" />
                 <result
 			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:qualifier#xlink:href=http://waterdata.usgs.gov/nwis/help"
@@ -318,11 +316,18 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                     WHEN g.data_aging_cd = 'R' THEN 'Provisional data subject to revision.'
                 END) qualifier_message,
                 (CASE
+                    WHEN g.result_cd = <![CDATA[ '<' ]]> THEN 'The value is known to be less than reported value and is write protected.'
+                    WHEN g.result_cd = <![CDATA[ '>' ]]> THEN 'The value is known to be greater than reported value and is write protected.'
+                    WHEN g.result_cd = 'e' THEN 'Value has been edited or estimated by USGS personnel and is write protected'
+                    WHEN g.result_cd = 'E' THEN 'Value was computed from estimated unit values.'
+                END) result_cd,
+                (CASE
                     WHEN f.dec_coord_datum_cd = 'NAD83' THEN 'urn:ogc:def:crs:EPSG:4269'
                     ELSE f.dec_coord_datum_cd
                 END) coord_datum,
                 e.loc_nm,
-                e.loc_nu
+                e.loc_nu,
+                h.huc_nm
 
 		FROM
 		    (select b.site_id,
@@ -373,9 +378,17 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		nwisweb.PARAM_REF d,
 		nwisweb.DV_DD_CONF e,
 		nwisweb.SITEFILE f,
+                nwisweb.HUCS h,
                 nwisweb.DV g LEFT JOIN nwisweb.DD_STATUS c ON (c.site_id = g.site_id
                     AND c.dd_nu = g.dd_nu
-                    AND c.parameter_cd = '00060'
+                    <choose>
+                        <when test="observedProperty != null">
+                            AND c.parameter_cd = (#{observedProperty[0]})
+                        </when>
+                        <otherwise>
+                            AND c.parameter_cd = '00060'
+                        </otherwise>
+                    </choose>
                     AND g.result_dt <![CDATA[ >= ]]> c.begin_dt
                     AND (g.result_dt <![CDATA[ <= ]]> c.end_dt OR c.end_dt = '0000-00-00 00:00:00'))
 
@@ -385,6 +398,8 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		AND d.parameter_cd = e.parameter_cd
                 AND e.dd_nu = g.dd_nu
                 AND e.access_cd = '0'
+                AND h.huc_cd = f.huc_cd
+                AND h.state_cd = f.state_cd
 
                 <choose>
                     <when test="observedProperty != null">

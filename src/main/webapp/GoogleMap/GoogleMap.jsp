@@ -56,7 +56,7 @@
         <script src="mapiconmaker.js" type="text/javascript"></script>
     </head>
 
-<body onload="load()" onunload="GUnload()">
+<body>
     <table cellpadding="0" cellspacing="0" width="100%">
         <tr>
             <td width="100%" valign="top"><!-- START header and top navigation section -->
@@ -142,24 +142,17 @@
           var base_url = base.substring(0,test);
 
           function LoadXML(filename){
-                $.ajax({
-                    type: "GET",
-                    url: filename,
-                    dataType: "xml",
-                    success: parseXml,
-                    error: errorHandler
-               });
-            }
+      	    if (window.XMLHttpRequest) {
+      	        xhttp = new XMLHttpRequest();
+      	    }
+      	    else {
+      	        xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+      	    }
+      	    xhttp.open("GET", filename, false);
+      	    xhttp.send("");
 
-          function LoadCoastalXML(filename){
-                $.ajax({
-                    type: "GET",
-                    url: filename,
-                    dataType: "xml",
-                    success: parseXml_Coastal,
-                    error: errorHandler
-               });
-            }
+      	    return xhttp.responseXML;
+         }
 
           function parseXml(xml){
                 $(xml).find("[nodeName=wfs:FeatureCollection],FeatureCollection").each(function()
@@ -207,12 +200,6 @@
                     });
                 }
 
-            function errorHandler(a,b,c){
-                alert(a);
-                alert(b);
-                alert(c);
-            }
-
 // ========================Create a marker============================================
         function createMarker(point, name, StateNM, Site_no, USGS_URL) {
             //var marker = new GMarker(point, {icon: gicons[StateNM]});
@@ -225,6 +212,7 @@
                 var sos_url = base_url + "/sos/uv?request=GetObservation&featureId=" + site + "&beginPosition=" + today + '&observedProperty=Discharge';
                 $.get(sos_url, function(xml) {
                     $(xml).find("[nodeName=wml2:WaterMonitoringObservation],WaterMonitoringObservation").each(function(){
+                        var watershed = $(this).find("[nodeName=om:value]").text();
                         var name = $(this).find("[nodeName=gml:name]").text();
                         var USGS_link = $(this).find("[nodeName=sf:sampledFeature]").attr("xlink:href");
                         var site = $(this).find("[nodeName=gml:Point]").attr("gml:id");
@@ -236,7 +224,8 @@
 
                         var USGS_picture = '<img src = "USGS.gif" width="84" height="32"/>      ';
                         var Title = 'Station: ' + siteCode + '<br /><br />';
-                        var Name_html = '<b>' + name + '</b><br /><br />';
+                        var Name_html = '<b>' + name + '</b><br />';
+                        var Watershed_html = '<b>' + watershed + ' Watershed</b><br /><br />';
 
                         var WML2_link_uv = '<li><a href =' + base_url + '/sos/uv?request=GetObservation&featureId=' + siteCode + '&observedProperty=Discharge&beginPosition=' + old_day + '>GetObservation - Instantaneous Values</a></li>';
                         var WML2_link_dv = '<li><a href =' + base_url + '/sos/dv?request=GetObservation&featureId=' + siteCode + '&observedProperty=Discharge&beginPosition=' + old_day + '>GetObservation - Daily Mean Values</a></li>';
@@ -244,7 +233,7 @@
 
                         var USGS_link = '<li><a href = "' + USGS_link + '" >Station Home Page</a></li>';
 
-                        var html_1 = USGS_picture + Title + Name_html + "<table border='1'><tr><th colspan='2'> Latest Reading:<br />" + time + '</tr></th><tr><td>Discharge:</td><td>' + value + ' ' + units + ' <b>' + comment +'</b></td></tr></table>';
+                        var html_1 = USGS_picture + Title + Name_html + Watershed_html + "<table border='1'><tr><th colspan='2'> Latest Reading:<br />" + time + '</tr></th><tr><td>Discharge:</td><td>' + value + ' ' + units + ' <b>' + comment +'</b></td></tr></table>';
                         var html_2 = USGS_link + '<br /><strong>WaterML2</strong><br />' + GetFeature + WML2_link_uv + WML2_link_dv;
                         var html = html_1 + html_2;
                         marker.openInfoWindowHtml(html);
@@ -289,7 +278,7 @@
             var Name = '<b>' + Site_nm + '</b><br /><br />';
             var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + Site_no + '>GetFeature</a></li>';
             var USGS_link = '<li><a href = "' + USGS_URL + '" >Station Home Page</a></li>';
-            var WML2_link = '<li><a href =' + base_url + '/sos/uv?request=GetObservation&featureId=' + Site_no + '&observedProperty=00060>GetObservation</a></li>';
+            var WML2_link = '<li><a href =' + base_url + '/sos/uv?request=GetObservation&featureId=' + Site_no + '&observedProperty=Discharge>GetObservation</a></li>';
             var html = USGS_picture + Title + Name + GetFeature + WML2_link + USGS_link;
             return html
         }
@@ -368,8 +357,11 @@
         });
 
         var wfs_url = base_url + "/wfs?request=GetFeature";
-        LoadXML(wfs_url);
-        LoadCoastalXML("wfs_coastal.xml");
+        xml = LoadXML(wfs_url);
+        parseXml(xml);
+        
+        xml_coastal = LoadXML("wfs_coastal.xml");
+        parseXml_Coastal(xml_coastal);
 
         show("WI");
         show("MI");

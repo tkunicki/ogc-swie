@@ -141,29 +141,31 @@
                             <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=05407000&observedProperty=Precipitation&beginPosition=<%=Old_Date%>"><%=baseURL%>/sos/dv?request=GetObservation&featureId=05407000&observedProperty=Precipitation&beginPosition=<%=Old_Date%></a>
                         </dd>
                     </dl>
+<!--
                     <p />
-<!--                    <dt><i>GetObservation by via XML HTTP body POST:</i><br /></dt>
+                   <dt><i>GetObservation by via XML HTTP body POST:</i><br /></dt>
                       <dd>  <form name="input" action="<%=baseURL%>/sos/dv?request=GetObservation" method="post">
                                 <textarea name="xml" rows="10" cols="90">
 <?xml version="1.0" ?>
-<wml2:GetObservation version="1.1.0" service="SOS"
-    maxFeatures="1"
-    xmlns:wml2=""
-    xmlns:wfs="http://www.opengis.net/wfs"
+<sos:GetObservation version="1.0.0" service="SOS" srsName="urn:ogc:def:crs:EPSG:4326"
+    xmlns:sos="http://www.opengis.net/sos/1.0"
     xmlns:ogc="http://www.opengis.net/ogc"
     xmlns:gml="http://www.opengis.net/gml"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <wfs:Query typeName="swml:Discharge">
-    <ogc:Filter>
-      <ogc:BBOX>
-        <gml:Envelope>
-          <gml:lowerCorner>-90 43</gml:lowerCorner>
-          <gml:upperCorner>-89.2 43.7</gml:upperCorner>
-        </gml:Envelope>
-      </ogc:BBOX>
-    </ogc:Filter>
-  </wfs:Query>
-</wml2:GetObservation>
+  <sos:offering>observationOffering3</sos:offering>
+  <sos:observedProperty>urn:ogc:def:property:OGC:Discharge</sos:observedProperty>
+  <sos:featureOfInterest>
+    <ogc:BBOX>
+      <ogc:PropertyName>urn:ogc:data:location</ogc:PropertyName>
+      <gml:Envelope srsName="urn:ogc:def:crs:EPSG:4326">
+        <gml:lowerCorner>40.82638889 -75.08250000</gml:lowerCorner>
+        <gml:upperCorner>40.82638889 -75.08250000</gml:upperCorner>
+      </gml:Envelope>
+    </ogc:BBOX>
+  </sos:featureOfInterest>
+  <sos:responseFormat>text/xml; subtype="om/1.0.0"</sos:responseFormat>
+</sos:GetObservation>
+
                                                 </textarea><br />
                                             <input type="submit" value="Submit" />
                                         </form>
@@ -287,6 +289,7 @@
 
 <! ==============================With compatable browsers, do the following===============>
         <script>
+
      //<![CDATA[
         if (GBrowserIsCompatible()) {
           var gmarkers = [];
@@ -294,25 +297,17 @@
           var old_date = '<%=Old_Date%>';
           var wfs_url = base_url + "/wfs?request=GetFeature";
 
-          $(document).ready(function(){
-            //function LoadXML(filename){
-                $.ajax({
-                    type: "GET",
-                    url: wfs_url,
-                    dataType: "xml",
-                    success: parseXml,
-                    error: errorHandler
-               });
-            });
+          function LoadXML(filename){
+                if (window.XMLHttpRequest) {
+                    xhttp = new XMLHttpRequest();
+                }
+                else {
+                    xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xhttp.open("GET", filename, false);
+                xhttp.send("");
 
-            function LoadCoastalXML(filename){
-                $.ajax({
-                    type: "GET",
-                    url: filename,
-                    dataType: "xml",
-                    success: parseXml_Coastal,
-                    error: errorHandler
-               });
+                return xhttp.responseXML;
             }
 
             function parseXml(xml){
@@ -360,12 +355,6 @@
                     });
                 }
 
-            function errorHandler(a,b,c){
-                alert(a);
-                alert(b);
-                alert(c);
-            }
-
 // ========================Create a marker============================================
             function createMarker(point, name, StateNM, Site_no, USGS_URL) {
                 var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
@@ -402,8 +391,12 @@
         map.setCenter(new GLatLng(40.55972222, -88.613888889), 4, G_PHYSICAL_MAP);
       	map.enableScrollWheelZoom();
 
-        LoadCoastalXML("GoogleMap/wfs_coastal.xml");
-        //LoadXML(wfs_url);
+        xml = LoadXML(wfs_url);
+        parseXml(xml);
+
+        xml_coastal = LoadXML("GoogleMap/wfs_coastal.xml");
+        parseXml_Coastal(xml_coastal);
+
     }
     else {
             alert("Sorry, the Google Maps API is not compatible with this browser");

@@ -32,18 +32,18 @@ public class ISODateTimeTypeHandlerTest {
     public void testGetResult_ResultSetAndColumnName() throws SQLException {
         rsm.next();
         String output = timeHandler.getResult(rsm, "datetime");
-        assertEquals("Date not in expected format", output, "2003-05-19T13:52-06:00");
+        assertEquals("Date not in expected format", output, "2003-05-19T13:52:00-06:00");
         rsm.next();
         output = timeHandler.getResult(rsm, "datetime");
-        assertEquals("Date not in expected format", output, "2010-11-02T01:15-05:00");
+        assertEquals("Date not in expected format", output, "2010-11-02T01:15:00-05:00");
         rsm.next();
         output = timeHandler.getResult(rsm, "datetime");
-        assertEquals("Date not in expected format", output, "1952-08-01T21:00-08:00");
+        assertEquals("Date not in expected format", output, "1952-08-01T21:00:00-08:00");
     }
 
     @Test
     public void testGetResult_Static() {
-        assertEquals("Result should be something else", getISODateTimeFromSQL("2000-04-22T16:59MST"), "2000-04-22T16:59-07:00");
+        assertEquals("Result should be something else", getISODateTimeFromSQL("2000-04-22T16:59MST"), "2000-04-22T16:59:00-07:00");
     }
     
     @Test (expected=UnsupportedOperationException.class)
