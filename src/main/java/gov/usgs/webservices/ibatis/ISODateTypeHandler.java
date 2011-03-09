@@ -10,9 +10,9 @@ import java.sql.PreparedStatement;
 
 import java.util.TimeZone;
 
-public class ISODateTimeTypeHandler implements TypeHandler {
+public class ISODateTypeHandler implements TypeHandler {
 
-    public ISODateTimeTypeHandler() {
+    public ISODateTypeHandler() {
     }
 
     /**
@@ -35,14 +35,8 @@ public class ISODateTimeTypeHandler implements TypeHandler {
     }
 
     public static String getISODateTimeFromSQL(String dateString) {
-        String dateTime = dateString.substring(0, 16);
-        int tzOffset = TimeZone.getTimeZone(dateString.substring(16)).getRawOffset();
-        String plusOrMinus = (tzOffset >= 0) ? "+" : "-";
-        float hoursOffset = Math.abs(tzOffset / 1000 / 60 / 60);
-        int hours = (int) hoursOffset;
-        int minutes = (int) (60 * (hoursOffset - hours));
-        String seconds = ":00";
-        return String.format("%s%s%02d:%02d", dateTime, plusOrMinus, hours, minutes);
+        String dateTime = dateString.substring(0, 10);
+        return dateTime;
     }
 
     @Override
@@ -55,3 +49,4 @@ public class ISODateTimeTypeHandler implements TypeHandler {
         throw new UnsupportedOperationException();
     }
 }
+

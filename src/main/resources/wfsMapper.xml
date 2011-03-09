@@ -105,8 +105,8 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			javaType="string" />
 -->
                 <result
-			property="^!{wfs:boundedBy/gml:Envelope#srsName=urn:ogc:def:crs:EPSG::4269"
-			column="Constant"
+			property="^!{wfs:boundedBy/gml:Envelope#srsName=%s"
+			column="coord_datum"
 			javaType="string" />
                 <result
 			property="wfs:boundedBy/gml:Envelope/gml:lowerCorner"
@@ -125,7 +125,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="station_nm"
 			javaType="string" />
 		<result
-			property="wfs:member/om:featureOfInterest/^wml2:WaterMonitoringPoint#gml:id=%s"
+			property="wfs:member/om:featureOfInterest/^wml2:WaterMonitoringPoint#gml:id=USGS.WMP.%s"
 			column="site_no"
 			javaType="string" />
 		<result
@@ -141,8 +141,8 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="huc_nm"
 			javaType="string" />
 		<result
-			property="wfs:member/om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/^gml:Point#gml:id=%s"
-			column="SITE_NO"
+			property="wfs:member/om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/^gml:Point#gml:id=USGS.P.%s"
+			column="site_no"
 			javaType="string" />
 		<result
 			property="wfs:member/om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/gml:Point/^gml:pos#srsName=urn:ogc:def:crs:EPSG:4269"
@@ -154,11 +154,11 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			javaType="string" />
 		<result
 			property="wfs:member/om:featureOfInterest/wml2:WaterMonitoringPoint/^wml2:descriptionReference#xlink:href=http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/SurfacewaterInteroperabilityExperiment#Use_Case_2"
-			column="FEATURE_ID"
+			column="site_no"
 			javaType="string" />
 		<result
 			property="wfs:member/om:featureOfInterest/wml2:WaterMonitoringPoint/wml2:descriptionReference#xlink:title=This wiki page describes the IE"
-			column="FEATURE_ID"
+			column="site_no"
 			javaType="string" />
 		<result
 			property="wfs:member/om:featureOfInterest/wml2:WaterMonitoringPoint/wml2:timeZone/wml2:TimeZone/^wml2:zoneOffset"
@@ -239,26 +239,22 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 	</resultMap>
 
 	<select id="wfsSelect" parameterType="map" resultMap="wfsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
-		SELECT a.site_no AS SITE_NO, 
+		SELECT a.site_no, 
 		a.agency_cd,
-		CONCAT(a.agency_cd,'.', a.site_no) as FEATURE_ID,
 		a.station_nm AS STATION_NM,
 		CONCAT(CONVERT(a.dec_lat_va,CHAR),' ',CONVERT(a.dec_long_va,CHAR)) AS LON_LAT, 
-		CONCAT(CONVERT(a.dec_lat_va,CHAR),' ',CONVERT(a.dec_long_va,CHAR),' ',CONVERT(a.alt_va,CHAR)) AS LON_LAT_ALT,
-		a.alt_va AS ALT,
                 a.district_cd,
-		a.ALT_DATUM_CD,
-		a.WELL_DEPTH_VA,
-		a.NAT_WATER_USE_CD,
-                a.STATE_CD,
                 CONCAT(a.state_cd,'.',a.site_no) as state_site,
                 CONCAT(DATE_FORMAT(SYSDATE(),'%Y-%m-%dT%H:%i'),a.tz_cd) as currentPosition,
-                'test' as Constant,
                 a.tz_cd,
                 s.lowerPosition AS lower,
                 s.upperPosition AS upper,
                 b.tz_utc_offset_tm,
-                c.huc_nm
+                c.huc_nm,
+                (CASE
+                    WHEN a.dec_coord_datum_cd = 'NAD83' THEN 'urn:ogc:def:crs:EPSG:4269'
+                    ELSE a.dec_coord_datum_cd
+                END) coord_datum
 
 		FROM (           
                     <choose>
@@ -283,19 +279,19 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 
                                 <otherwise>
                                     WHERE b.site_no IN (
-                           
+
                                     '01427207','01427510','01434000','01438500','01457500','01463500',
                                     '04073365','04073500','04082400','04084445','040851385','05344500',
                                     '05378500','05389500','05391000','05395000','05404000','05407000',
                                     '05420500','05543500','05543830','05545750','05551540','05552500',
-                                    '05558300','05568500','05585500','05586100','07010000','07020500',
+                                    '05558300','05568500','05586100','07010000','07020500',
                                     '07022000','05051500','05054000','05082500','04269000','040851385',
                                     '04010500','04024000','04024430','04027000','04027500','04040000','04045500','04059000',
                                     '04059500','04067500','04069500','04071765','04085427','04086000','04087000','04092750','04095090',
                                     '04102500','04121970','04122200','04122500','04137500','04142000','04157000','04159492','04165500',
                                     '04174500','04176500','04193500','04195820','04198000','04199000','04199500','04200500','04201500',
                                     '04208000','04212100','04213500','04218000','04231600','04249000','04260500','04263000','04265432'
-                                    
+
                                 <!-- NASQAN Coastal Subnetwork -->
                                 <!--
                                 '01578310','01646580','02226160','02470500','04264331','07374525','07381495','08475000','09522000','11303500','11447650','14246900','15565447'
@@ -303,13 +299,13 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                                 <!-- SE Rivers -->
 <!--
                                     '04031000','04043275','04065106','04067958','04074950',
-                                    '03597210','03497300','03498500','03538830','03539600','03568000',
-                                    '03498850','03566000','03528000','03409500','03527220','03566525',
-                                    '03417500','03455000','03461500','03467609','03415000',
-                                    '03417600','03535000','03535400','03410210','03465500',
-                                    '03518500','03539778','03539800','03540500','03424860','03425000',
+                                    '03497300','03498500','03538830','03539600',
+                                    '03566000','03528000','03409500','03527220','03566525',
+                                    '03455000','03461500','03467609','03415000',
+                                    '03535000','03535400','03410210','03465500',
+                                    '03518500','03539778','03539800','03540500',
                                     '03479000','03453500','03460000','03459500','03450000','03451500',
-                                    '03456991','03456100','03513000','03505550','03503000','03504000','03161000',
+                                    '03456991','03456100','03513000','03505550','03503000','03504000',
                                     '02399200','02399200','02176930','02177000','02178400','02181580','02398000','03544970'
 -->
                                     )
@@ -340,7 +336,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                                     '04073365','04073500','04082400','04084445','040851385','05344500',
                                     '05378500','05389500','05391000','05395000','05404000','05407000',
                                     '05420500','05543500','05543830','05545750','05551540','05552500',
-                                    '05558300','05568500','05585500','05586100','07010000','07020500',
+                                    '05558300','05568500','05586100','07010000','07020500',
                                     '07022000','05051500','05054000','05082500','04269000','040851385',
                                     '04010500','04024000','04024430','04027000','04027500','04040000','04045500','04059000',
                                     '04059500','04067500','04069500','04071765','04085427','04086000','04087000','04092750','04095090',
@@ -353,14 +349,15 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                                     '01578310','01646580','02226160','02470500','04264331','07374525','07381495','08475000','09522000','11303500','11447650','14246900','15565447'
                                      -->
                                     <!-- SE Rivers -->
-<!--                                    '04031000','04043275','04065106','04067958','04074950',
-                                    '03597210','03497300','03498500','03538830','03539600','03568000',
-                                    '03498850','03566000','03528000','03409500','03527220','03566525',
-                                    '03417500','03455000','03461500','03467609','03415000',
-                                    '03417600','03535000','03535400','03410210','03465500',
-                                    '03518500','03539778','03539800','03540500','03424860','03425000',
+<!--
+                                    '04031000','04043275','04065106','04067958','04074950',
+                                    '03497300','03498500','03538830','03539600',
+                                    '03566000','03528000','03409500','03527220','03566525',
+                                    '03455000','03461500','03467609','03415000',
+                                    '03535000','03535400','03410210','03465500',
+                                    '03518500','03539778','03539800','03540500',
                                     '03479000','03453500','03460000','03459500','03450000','03451500',
-                                    '03456991','03456100','03513000','03505550','03503000','03504000','03161000',
+                                    '03456991','03456100','03513000','03505550','03503000','03504000',
                                     '02399200','02399200','02176930','02177000','02178400','02181580','02398000','03544970'
 -->
 

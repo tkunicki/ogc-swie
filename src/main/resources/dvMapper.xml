@@ -62,11 +62,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
  <!-- Since om 2.0, sampling 2.0, samplingSpatial 2.0 are not approved, these locations go to my local computer.  Before going public, this should be changed...
  "xsi:schemaLocation=http://www.opengis.net/waterml/2.0 ../schemas/waterml_2/waterml2.xsd" is simply what the Austrialia guys use
  -->
-<!--		<result
-    		property="xsi:schemaLocation=http://www.opengis.net/waterml/2.0 ../schemas/waterml_2/waterml2.xsd"
+		<result
+    		property="xsi:schemaLocation=http://www.opengis.net/waterml/2.0 ../waterml2.xsd"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
--->
+
+<!--
             <result
     		property="xsi:schemaLocation= http://www.opengis.net/om/2.0 ../observation.xsd
 http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd
@@ -75,6 +76,7 @@ http://www.opengis.net/waterml/2.0 ../waterml2.xsd
 http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
+-->
 	</resultMap>
 
 	<resultMap id="observationsResultMap" type="XMLMap" extends="dvResultMap">
@@ -129,11 +131,11 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		<result
 			property="om:phenomenonTime/gml:TimePeriod/gml:beginPosition"
 			column="beginPosition"
-			typeHandler="ISODateTimeTypeHandler" />
+			typeHandler="ISODateTypeHandler" />
 		<result
 			property="om:phenomenonTime/gml:TimePeriod/gml:endPosition"
 			column="endPosition"
-			typeHandler="ISODateTimeTypeHandler" />
+			typeHandler="ISODateTypeHandler" />
 		<result
 			property="om:resultTime/gml:TimeInstant#gml:id=result_time"
 			column="station_nm"
@@ -141,7 +143,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 <result
 			property="om:resultTime/gml:TimeInstant/gml:timePosition"
 			column="endPosition"
-			typeHandler="ISODateTimeTypeHandler" />
+			typeHandler="ISODateTypeHandler" />
                 <result
 			property="om:procedure#xlink:href=http://www.nemi.gov"
 			column="station_nm"
@@ -225,11 +227,11 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		<result
 			property="om:result/wml2:Timeseries/wml2:domainExtent/gml:TimePeriod/gml:beginPosition"
 			column="beginPosition"
-			typeHandler="ISODateTimeTypeHandler" />
+			typeHandler="ISODateTypeHandler" />
 		<result
 			property="om:result/wml2:Timeseries/wml2:domainExtent/gml:TimePeriod/gml:endPosition"
 			column="endPosition"
-			typeHandler="ISODateTimeTypeHandler" />
+			typeHandler="ISODateTypeHandler" />
 
 		<result
 			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:unitOfMeasure#xlink:href=%s"
@@ -254,7 +256,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		<result
 			property="om:result/wml2:Timeseries/^wml2:point/wml2:TimeValuePair/^wml2:time"
 			column="currentPosition"
-			typeHandler="ISODateTimeTypeHandler" />
+			typeHandler="ISODateTypeHandler" />
 		<result
 			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:value"
 			column="value"
