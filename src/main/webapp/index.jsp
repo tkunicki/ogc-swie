@@ -114,11 +114,11 @@
                     </dl>
                     <dl>
                                 <dt><b>GetCapabilities</b></dt>
-                                <dd><a href="<%=baseURL%>/sos?request=GetCapabilities"><%=baseURL%>/sos?request=GetCapabilities</a></dd>
+                                <dd><a href="<%=baseURL%>/sos/uv?request=GetCapabilities"><%=baseURL%>/sos/uv?request=GetCapabilities</a></dd>
                     </dl>
                     <dl>
                                 <dt><b>DescribeSensor</b></dt>
-                                <dd><a href="<%=baseURL%>/sos?request=DescribeSensor"><%=baseURL%>/sos?request=DescribeSensor</a></dd>
+                                <dd><a href="<%=baseURL%>/sos/uv?request=DescribeSensor"><%=baseURL%>/sos/uv?request=DescribeSensor</a></dd>
                     </dl>
                     <dl>
                                 <dt>Example output with comments about content:</dt>
@@ -174,11 +174,11 @@
 -->
                     <dl>
                                 <dt><b>GetCapabilities</b></dt>
-                                <dd><a href="<%=baseURL%>/sos?request=dvGetCapabilities"><%=baseURL%>/sos?request=dvGetCapabilities</a></dd>
+                                <dd><a href="<%=baseURL%>/sos/dv?request=GetCapabilities"><%=baseURL%>/sos/dv?request=GetCapabilities</a></dd>
                     </dl>
                     <dl>
                                 <dt><b>DescribeSensor</b></dt>
-                                <dd><a href="<%=baseURL%>/sos?request=DescribeSensor"><%=baseURL%>/sos?request=DescribeSensor</a></dd>
+                                <dd><a href="<%=baseURL%>/sos/dv?request=DescribeSensor"><%=baseURL%>/sos/dv?request=DescribeSensor</a></dd>
                     </dl>            
                     <p></p>
 

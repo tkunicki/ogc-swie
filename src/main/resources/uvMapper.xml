@@ -79,7 +79,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 -->
 	</resultMap>
 
-	<resultMap id="observationsResultMap" type="XMLMap" extends="uvResultMap">
+	<resultMap id="uvObservationResultMap" type="XMLMap" extends="uvResultMap">
 		<result
 			property="^!{gml:identifier"
 			column="station_nm"
@@ -280,7 +280,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                         
 	</resultMap>
 	
-	<select id="observationsSelect" parameterType="map" resultMap="observationsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
+	<select id="uvSelect" parameterType="map" resultMap="uvObservationResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 		select f.station_nm,
                 CONCAT('USGS.',CONVERT(f.site_no,CHAR)) as FeatureID,
                 f.site_no,

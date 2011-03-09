@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
- <!DOCTYPE mapper
+<!DOCTYPE mapper
 PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-<mapper namespace="wfsMapper">
+<mapper namespace="dataMapper">
 
-	<resultMap id="wfsBaseMap" type="XMLMap">
+	<resultMap id="dataBaseMap" type="XMLMap">
 		<result
 	    	property="wfs:FeatureCollection"
 	    	column="%ROOT_ELEMENT"
@@ -21,7 +21,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    	property="xmlns:gsml=urn:cgi:xmlns:CGI:GeoSciML:2.0"
 	    	column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
-<!-- Not sure what should go here yet-->
             <result
 	    	property="xmlns:swml=http://www.nrcan.gc.ca/xml/swml/1"
 	    	column="%ROOT_ELEMENT_ATTRIBUTE"
@@ -97,7 +96,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 -->
 	</resultMap>
 	
-	<resultMap id="wfsResultMap" type="XMLMap" extends="wfsBaseMap">
+	<resultMap id="dataResultMap" type="XMLMap" extends="dataBaseMap">
  <!--
                  <id
 	 		property="^!{wfs:boundedBy"
@@ -175,48 +174,49 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 
 	</resultMap>
 
-	<select id="wfsSelect" parameterType="map" resultMap="wfsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
-		SELECT a.site_no, 
-		<!--a.agency_cd,-->
-		a.station_nm AS STATION_NM,
-		CONCAT(CONVERT(a.dec_lat_va,CHAR),' ',CONVERT(a.dec_long_va,CHAR)) AS LON_LAT, 
-                a.district_cd,
-                CONCAT(a.state_cd,'.',a.site_no) as state_site,
-                <!--CONCAT(DATE_FORMAT(SYSDATE(),'%Y-%m-%dT%H:%i'),a.tz_cd) as currentPosition,-->
-                a.tz_cd,
-                s.lowerPosition AS lower,
-                s.upperPosition AS upper,
-                b.tz_utc_offset_tm,
-                c.huc_nm,
-                (CASE
-                    WHEN a.dec_coord_datum_cd = 'NAD83' THEN 'urn:ogc:def:crs:EPSG:4269'
-                    ELSE a.dec_coord_datum_cd
-                END) coord_datum
+	<select id="dataSelect" parameterType="map" resultMap="dataResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 
-		FROM (           
-                    <choose>
-                        
-                        <when test="bBox != null">
-                             SELECT b.site_no,
-                             CONCAT(#{bBox[0]},' ', #{bBox[1]}) as lowerPosition,
-                             CONCAT(#{bBox[2]},' ', #{bBox[3]}) as upperPosition
-                             FROM nwisweb.SITEFILE b
-                             WHERE b.site_no = '01446500'
-                        </when>
-                        
-                        <otherwise>
-                            SELECT b.site_no,
-                            CONCAT(MAX(b.dec_lat_va),' ',MIN(b.dec_long_va)) as lowerPosition,
-                            CONCAT(MIN(b.dec_lat_va),' ',MAX(b.dec_long_va)) as upperPosition
-                            FROM nwisweb.SITEFILE b
-                            <choose>
-                                <when test="featureId != null">
-                                    WHERE b.site_no IN (#{featureId})
-                                </when>
+        SELECT c.site_no,
+        c.agency_cd,
+        c.station_nm,
+        CONCAT(CONVERT(c.dec_lat_va,CHAR),' ',CONVERT(c.dec_long_va,CHAR)) AS Lon_Lat,
+        c.district_cd,
+        c.tz_cd,
+        f.tz_utc_offset_tm,
+        e.parameter_nm,
+        CONCAT(c.state_cd,'.',c.site_no) as state_site,
+        MIN(b.result_dt) AS BeginPosition,
+        MAX(b.result_dt) AS EndPosition,
+        (CASE
+           WHEN c.dec_coord_datum_cd = 'NAD83' THEN 'urn:ogc:def:crs:EPSG:4269'
+           ELSE c.dec_coord_datum_cd
+        END) coord_datum,
+        s.lowerPosition AS lower,
+        s.upperPosition AS upper,
+        d.huc_nm
 
-                                <otherwise>
+        FROM (
+             <choose>
+
+                 <when test="bBox != null">
+                      SELECT b.site_no,
+                      CONCAT(#{bBox[0]},' ', #{bBox[1]}) as lowerPosition,
+                      CONCAT(#{bBox[2]},' ', #{bBox[3]}) as upperPosition
+                      FROM nwisweb.SITEFILE b
+                      WHERE b.site_no = '01446500'
+                 </when>
+
+                 <otherwise>
+                      SELECT b.site_no,
+                      CONCAT(MAX(b.dec_lat_va),' ',MIN(b.dec_long_va)) as lowerPosition,
+                      CONCAT(MIN(b.dec_lat_va),' ',MAX(b.dec_long_va)) as upperPosition
+                      FROM nwisweb.SITEFILE b
+                      <choose>
+                            <when test="featureId != null">
+                                   WHERE b.site_no IN (#{featureId})
+                            </when>
+                            <otherwise>
                                     WHERE b.site_no IN (
-
                                     '01427207','01427510','01434000','01438500','01457500','01463500',
                                     '04073365','04073500','04082400','04084445','040851385','05344500',
                                     '05378500','05389500','05391000','05395000','05404000','05407000',
@@ -228,47 +228,32 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                                     '04102500','04121970','04122200','04122500','04137500','04142000','04157000','04159492','04165500',
                                     '04174500','04176500','04193500','04195820','04198000','04199000','04199500','04200500','04201500',
                                     '04208000','04212100','04213500','04218000','04231600','04249000','04260500','04263000','04265432'
+                            )
+                            </otherwise>
+                        </choose>
+                  </otherwise>
+              </choose>
+   
+                    ) s,
 
-                                <!-- NASQAN Coastal Subnetwork -->
-                                <!--
-                                '01578310','01646580','02226160','02470500','04264331','07374525','07381495','08475000','09522000','11303500','11447650','14246900','15565447'
-                                -->
-                                <!-- SE Rivers -->
-<!--
-                                    '04031000','04043275','04065106','04067958','04074950',
-                                    '03497300','03498500','03538830','03539600',
-                                    '03566000','03528000','03409500','03527220','03566525',
-                                    '03455000','03461500','03467609','03415000',
-                                    '03535000','03535400','03410210','03465500',
-                                    '03518500','03539778','03539800','03540500',
-                                    '03479000','03453500','03460000','03459500','03450000','03451500',
-                                    '03456991','03456100','03513000','03505550','03503000','03504000',
-                                    '02399200','02399200','02176930','02177000','02178400','02181580','02398000','03544970'
--->
-                                    )
-                                </otherwise>
-                            </choose>
-                        </otherwise>
+        nwisweb.DV_DD_CONF a,
+        nwisweb.DV b,
+        nwisweb.SITEFILE c,
+        nwisweb.HUCS d,
+        nwisweb.PARAM_REF e,
+        nwisweb.TZ f
 
-                      </choose>                             
-                ) s,
+        <choose>
+              <when test="featureId != null">
+                        WHERE c.site_no IN (#{featureId})
+              </when>
 
-                nwisweb.SITEFILE a,
-                nwisweb.TZ b,
-                nwisweb.HUCS c
+              <when test="bBox != null">
+                        WHERE c.dec_long_va BETWEEN #{bBox[0]} AND #{bBox[2]} AND c.dec_lat_va BETWEEN #{bBox[1]} AND #{bBox[3]}
+              </when>
 
-              <choose>
-                    <when test="featureId != null">
-                        WHERE a.site_no IN (#{featureId})
-                    </when>
-                    
-                    <when test="bBox != null">
-                        WHERE a.dec_long_va BETWEEN #{bBox[0]} AND #{bBox[2]} AND a.dec_lat_va BETWEEN #{bBox[1]} AND #{bBox[3]} 
-                    </when>
-
-                    <otherwise>
-                        WHERE a.site_no IN (
-
+              <otherwise>
+                        WHERE c.site_no IN (
                                     '01427207','01427510','01434000','01438500','01457500','01463500',
                                     '04073365','04073500','04082400','04084445','040851385','05344500',
                                     '05378500','05389500','05391000','05395000','05404000','05407000',
@@ -280,43 +265,19 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                                     '04102500','04121970','04122200','04122500','04137500','04142000','04157000','04159492','04165500',
                                     '04174500','04176500','04193500','04195820','04198000','04199000','04199500','04200500','04201500',
                                     '04208000','04212100','04213500','04218000','04231600','04249000','04260500','04263000','04265432'
-
-                                     <!-- NASQAN Coastal Subnetwork -->
-                                    <!--
-                                    '01578310','01646580','02226160','02470500','04264331','07374525','07381495','08475000','09522000','11303500','11447650','14246900','15565447'
-                                     -->
-                                    <!-- SE Rivers -->
-<!--
-                                    '04031000','04043275','04065106','04067958','04074950',
-                                    '03497300','03498500','03538830','03539600',
-                                    '03566000','03528000','03409500','03527220','03566525',
-                                    '03455000','03461500','03467609','03415000',
-                                    '03535000','03535400','03410210','03465500',
-                                    '03518500','03539778','03539800','03540500',
-                                    '03479000','03453500','03460000','03459500','03450000','03451500',
-                                    '03456991','03456100','03513000','03505550','03503000','03504000',
-                                    '02399200','02399200','02176930','02177000','02178400','02181580','02398000','03544970'
--->
-
                                     )
-                    </otherwise>
-                </choose>
+                </otherwise>
+         </choose>
 
-                AND a.tz_cd = b.tz_cd
-                AND c.huc_cd = a.huc_cd
-                AND c.state_cd = a.state_cd
-<!---		<trim prefix="OR (" suffix=")" prefixOverrides="AND">
-			<if test="bBox != null">
-                            AND a.DEC_LONG_VA BETWEEN #{bBox[0]} AND #{bBox[2]} AND a.DEC_LAT_VA BETWEEN #{bBox[1]} AND #{bBox[3]}
-			</if>
-			<if test="featureId != null">
-                            AND a.site_no = #{featureId[0]}
-			</if>
-			<if test="maxFeatures != null">
-                            AND ROWNUM<![CDATA[ <= ]]> #{maxFeatures}
-			</if>
-		</trim>
--->
+        AND a.site_id = b.site_id
+        AND a.dd_nu = b.dd_nu
+        AND c.site_id = a.site_id
+        AND a.parameter_cd = e.parameter_cd
+        AND c.huc_cd = d.huc_cd
+        AND f.tz_cd = c.tz_cd
+
+        GROUP BY c.site_no, a.parameter_cd
+
 	</select>
 </mapper> 
 

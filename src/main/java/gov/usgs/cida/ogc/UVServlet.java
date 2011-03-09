@@ -2,7 +2,7 @@ package gov.usgs.cida.ogc;
 
 import com.ctc.wstx.stax.WstxOutputFactory;
 import gov.usgs.cida.ogc.specs.OGC_WFSConstants;
-import gov.usgs.cida.ogc.specs.WML_1_0_Operation;
+import gov.usgs.cida.ogc.specs.SOS_1_0_Operation;
 import gov.usgs.cida.ogc.utils.FileResponseUtil;
 import gov.usgs.cida.ogc.utils.ServletHandlingUtils;
 import gov.usgs.cida.ogc.utils.ServletHandlingUtils.RequestBodyExceededException;
@@ -113,24 +113,25 @@ public class UVServlet extends HttpServlet {
 
         private Map<String, String[]> applyBusinessRules(Map<String, String[]> parameters){
             if (parameters.get("request") == null) {
-                parameters.put("request", new String[] {WML_1_0_Operation.GetObservation.name()});
+                parameters.put("request", new String[] {SOS_1_0_Operation.GetObservation.name()});
             }
 
             String[] observedProperties = parameters.get(OGCBusinessRules.observedProperty);
-            String observedProperty = observedProperties[0];
+            if (observedProperties != null && observedProperties.length > 0){
+                String observedProperty = observedProperties[0];
 
-            if (observedProperty.equalsIgnoreCase("Discharge")) {
-                observedProperty = "00060";
-            } else if (observedProperty.equalsIgnoreCase("GageHeight")) {
-                observedProperty = "00065";
-            } else if (observedProperty.equalsIgnoreCase("Temperature")) {
-                observedProperty = "00010";
-            } else if (observedProperty.equalsIgnoreCase("Precipitation")) {
-                observedProperty = "00045";
+                if (observedProperty.equalsIgnoreCase("Discharge")) {
+                    observedProperty = "00060";
+                } else if (observedProperty.equalsIgnoreCase("GageHeight")) {
+                    observedProperty = "00065";
+                } else if (observedProperty.equalsIgnoreCase("Temperature")) {
+                    observedProperty = "00010";
+                } else if (observedProperty.equalsIgnoreCase("Precipitation")) {
+                    observedProperty = "00045";
+                }
+
+                parameters.put(OGCBusinessRules.observedProperty, new String[] {observedProperty});
             }
-
-            parameters.put(OGCBusinessRules.observedProperty, new String[] {observedProperty});
-
             return parameters;
 
         }
@@ -138,7 +139,7 @@ public class UVServlet extends HttpServlet {
 	private void queryAndSend(HttpServletRequest request, HttpServletResponse response, Map<String, String[]> parameterMap) throws IOException {
 		ServletHandlingUtils.dumpRequestParamsToConsole(parameterMap);
 		// TODO parameterMap may or may not be case-insensitive, depending on path of arrival post or get. Correct this later.
-		WML_1_0_Operation opType = WML_1_0_Operation.parse(parameterMap.get("request"));
+		SOS_1_0_Operation opType = SOS_1_0_Operation.parse(parameterMap.get("request"));
 
 		ServletOutputStream outputStream = response.getOutputStream();
 		response.setContentType(OGC_WFSConstants.DEFAULT_DESCRIBEFEATURETYPE_OUTPUTFORMAT);
@@ -155,9 +156,8 @@ public class UVServlet extends HttpServlet {
 			case GetObservation:
 				parameterMap = USGS_OGC_BusinessRules.cleanFeatureId(parameterMap);
 
-
 				try {
-					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("uvMapper.observationsSelect", parameterMap);
+					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("uvMapper.uvSelect", parameterMap);
 					XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
 					XMLStreamUtils.copy(streamReader, streamWriter);
 				} catch (Exception e) {
@@ -166,15 +166,26 @@ public class UVServlet extends HttpServlet {
 					outputStream.flush();
 				}
 				break;
-			// I don't know why this doesn't work
-                        // I'm trying to get the url: http://localhost:4044/ogc-swie/sos/uv?request=GetCapabilities to work
-                        case GetCapabilities:
+			case GetDataAvailablity:
+				parameterMap = USGS_OGC_BusinessRules.cleanFeatureId(parameterMap);
+
+				try {
+					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("dataMapper.dataSelect", parameterMap);
+					XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
+					XMLStreamUtils.copy(streamReader, streamWriter);
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					outputStream.flush();
+				}
+				break;
+			case GetCapabilities:
 			{
 				Map<String, String> replacementMap = new HashMap<String, String>();
 				replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
 
 				// Just sending back static file for now.
-				String resource = "/ogc/sos/GetCapabilities.xml";
+				String resource = "/ogc/sos/" + opType.name() + ".xml";
 				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
 				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
 						errorMessage);
@@ -182,6 +193,16 @@ public class UVServlet extends HttpServlet {
                         break;
 			case GetProfile:
 			case DescribeSensor:
+                        {
+				Map<String, String> replacementMap = new HashMap<String, String>();
+				replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
+
+				// Just sending back static file for now.
+				String resource = "/ogc/sos/" + opType.name() + ".xml";
+				String errorMessage = "<error>Unable to retrieve resource " + resource + "</error";
+				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
+						errorMessage);
+			}
                         default:
 				BufferedWriter writer = FileResponseUtil.wrapAsBufferedWriter(outputStream);
 				try {

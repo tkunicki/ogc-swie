@@ -1,5 +1,4 @@
-<sos:Capabilities
-xmlns:sos="http://www.opengis.net/sos/2.0"
+<sos:Capabilities xmlns:sos="http://www.opengis.net/sos/2.0"
 xmlns:oost="http://www.oostethys.org/schemas/0.1.0/oostethys"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xmlns:ows="http://www.opengis.net/ows/1.1"
@@ -20,7 +19,7 @@ http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
 			<ows:Keyword>Experiment</ows:Keyword>
 			<ows:Keyword>CIDA</ows:Keyword>
 			<ows:Keyword>NWIS</ows:Keyword>
-			<ows:Keyword>Instantaneous</ows:Keyword>
+			<ows:Keyword>Daily</ows:Keyword>
 			<ows:Keyword>Water Level</ows:Keyword>
 		</ows:Keywords>
 		<ows:ServiceType codeSpace="http://opengeospatial.net">OGC:SOS</ows:ServiceType>
@@ -46,7 +45,7 @@ http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
 					<ows:Country>U.S.A.</ows:Country>
 					<ows:ElectronicMailAddress>nlbooth@usgs.gov</ows:ElectronicMailAddress>
 				</ows:Address>
-				<ows:OnlineResource xlink:href="${base.url}/sos/uv?"/>
+				<ows:OnlineResource xlink:href="${base.url}/sos/dv?"/>
 				<ows:HoursOfService>24x7 experimental</ows:HoursOfService>
 				<ows:ContactInstructions>8h30-16h00 GMT-5</ows:ContactInstructions>
 			</ows:ContactInfo>
@@ -57,7 +56,7 @@ http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
 		<ows:Operation name="GetCapabilities">
 			<ows:DCP>
 				<ows:HTTP>
-					<ows:Get xlink:href="${base.url}/sos/uv?"/>
+					<ows:Get xlink:href="${base.url}/sos/dv?"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="service">
@@ -74,8 +73,8 @@ http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
 		<ows:Operation name="GetObservation">
 			<ows:DCP>
 				<ows:HTTP>
-					<ows:Get xlink:href="${base.url}/sos/uv?"/>
-					<ows:Post xlink:href="${base.url}/sos/uv?"/>
+					<ows:Get xlink:href="${base.url}/sos/dv?"/>
+					<ows:Post xlink:href="${base.url}/sos/dv?"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="version">
@@ -127,8 +126,8 @@ http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
 		<ows:Operation name="GetObservationById">
 			<ows:DCP>
 				<ows:HTTP>
-					<ows:Get xlink:href="${base.url}/sos/uv?"/>
-					<ows:Post xlink:href="${base.url}/sos/uv?"/>
+					<ows:Get xlink:href="${base.url}/sos/dv?"/>
+					<ows:Post xlink:href="${base.url}/sos/dv?"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="version">
@@ -181,8 +180,8 @@ http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
 		<ows:Operation name="DescribeSensor">
 			<ows:DCP>
 				<ows:HTTP>
-					<ows:Get xlink:href="${base.url}/sos/uv?"/>
-					<ows:Post xlink:href="${base.url}/sos/uv?"/>
+					<ows:Get xlink:href="${base.url}/sos/dv?"/>
+					<ows:Post xlink:href="${base.url}/sos/dv?"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="version">
@@ -248,18 +247,16 @@ http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
 				<sos:time>
 					<gml:TimePeriod gml:id="timePeriod3">
 						<gml:beginPosition>1900-01-01T12:00:00Z</gml:beginPosition>
-
 						<gml:endPosition indeterminatePosition='unknown'/>
 					</gml:TimePeriod>
 				</sos:time>
-				<sos:procedure xlink:href="Continuous/Instantaneous"/>
+				<sos:procedure xlink:href="DailyMean"/>
 				<sos:observedProperty xlink:href="GageHeight"/>
                                 <sos:observedProperty xlink:href="Discharge"/>
                                 <sos:observedProperty xlink:href="Temperature"/>
                                 <sos:observedProperty xlink:href="Precipitation"/>
 				<sos:featureOfInterest xlink:href="${base.url}/wfs?request=GetFeature"/>
 				<sos:responseFormat>text/xml; subtype="om/1.0.0"</sos:responseFormat>
-                                <sos:responseFormat>text/xml; subtype="WML2"</sos:responseFormat>
 				<sos:responseMode>inline</sos:responseMode>
 			</sos:ObservationOffering>
 		</sos:ObservationOfferingList>

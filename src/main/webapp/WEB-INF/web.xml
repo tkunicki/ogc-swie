@@ -29,10 +29,13 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j
         <servlet-name>UVServlet</servlet-name>
         <servlet-class>gov.usgs.cida.ogc.UVServlet</servlet-class>
     </servlet>
-
     <servlet>
         <servlet-name>DVServlet</servlet-name>
         <servlet-class>gov.usgs.cida.ogc.DVServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DataServlet</servlet-name>
+        <servlet-class>gov.usgs.cida.ogc.DataServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -44,15 +47,18 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j
         <servlet-name>WFSServlet</servlet-name>
         <url-pattern>/wfs</url-pattern>
     </servlet-mapping>
-
     <servlet-mapping>
         <servlet-name>UVServlet</servlet-name>
         <url-pattern>/sos/uv</url-pattern>
     </servlet-mapping>
-
     <servlet-mapping>
         <servlet-name>DVServlet</servlet-name>
         <url-pattern>/sos/dv</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>DataServlet</servlet-name>
+        <url-pattern>/sos/data</url-pattern>
     </servlet-mapping>
 
     <resource-ref>
