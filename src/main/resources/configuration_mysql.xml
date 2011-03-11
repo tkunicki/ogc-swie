@@ -27,5 +27,6 @@ PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN"
                 <mapper resource="uvMapper.xml" />
                 <mapper resource="dvMapper.xml" />
                 <mapper resource="dataMapper.xml" />
+                <mapper resource="UVdataMapper.xml" />
 	</mappers>
 </configuration>

@@ -40,29 +40,21 @@ import org.w3c.dom.Node;
  */
 public class WFSServlet extends HttpServlet {
 	private static final String SWML_TBD = "swml:TBD";
-
 	private static final String SWML_DISCHARGE = "swml:Discharge";
-
-	private static final long serialVersionUID = 1L;
-	
+	private static final long serialVersionUID = 1L;	
 	private final static String XPATH_request = "local-name(/*)";
 	private final static String XPATH_maxFeatures = "/wfs:GetFeature/@maxFeatures";
 	private final static String XPATH_GetFeature_typeName = "/wfs:GetFeature/wfs:Query/@typeName";
-	
 	private final static String XPATH_DescribeFeatureType_TypeName = "/wfs:DescribeFeatureType/wfs:TypeName/text()";
-	
 	// Bounding box XPATH
 	private final static String XPATH_Envelope = "/wfs:GetFeature/wfs:Query/ogc:Filter/ogc:BBOX/gml:Envelope";
 	private final static String XPATH_cornerLower = "gml:lowerCorner/text()";
 	private final static String XPATH_upperCorner = "gml:upperCorner/text()";
-	
 	private final static String XPATH_featureId = "/wfs:GetFeature/wfs:Query/ogc:Filter/ogc:GmlObjectId/@gml:id";
-	
 	private final static Pattern PATTERN_cornerSplit = Pattern.compile("\\s+");
-       
-	
 	private final static XMLOutputFactory2 xmlOutputFactory;
-	static {
+
+        static {
 		xmlOutputFactory = new WstxOutputFactory();
 		xmlOutputFactory.setProperty(XMLOutputFactory2.IS_REPAIRING_NAMESPACES, false);
 		xmlOutputFactory.configureForSpeed();

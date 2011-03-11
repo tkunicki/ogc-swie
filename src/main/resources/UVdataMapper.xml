@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-<mapper namespace="dataMapper">
+<mapper namespace="UVdataMapper">
 
-	<resultMap id="dataBaseMap" type="XMLMap">
+	<resultMap id="UVdataBaseMap" type="XMLMap">
             <result
 	    	property="gda:GetDataAvailablity"
 	    	column="%ROOT_ELEMENT"
@@ -35,7 +35,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="string" />
 	</resultMap>
 	
-	<resultMap id="dataResultMap" type="XMLMap" extends="dataBaseMap">
+	<resultMap id="UVdataResultMap" type="XMLMap" extends="UVdataBaseMap">
 
 		<result
 			property="^!{gda:featurePropertyRelationship/gda:FeaturePropertyTemporalRelationship"
@@ -79,7 +79,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 	</resultMap>
 
-	<resultMap id="dataPropertyMap" type="XMLMap" extends="dataBaseMap">
+	<resultMap id="UVdataPropertyMap" type="XMLMap" extends="UVdataBaseMap">
         	<result
 			property="^!{gda:propertyEntryPoint"
 			column="parameter_cd"
@@ -102,7 +102,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="string" />
         </resultMap>
 
-	<resultMap id="dataFeatureMap" type="XMLMap" extends="dataBaseMap">
+	<resultMap id="UVdataFeatureMap" type="XMLMap" extends="UVdataBaseMap">
         	<result
 			property="^!{gda:featureOfInterestEntryPoint"
 			column="site_no"
@@ -125,58 +125,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="string" />
         </resultMap>
 
-	<resultMap id="dataHistoryMap" type="XMLMap" extends="dataBaseMap">
-        	<result
-			property="^!{gda:HistoricalEntryPoint"
-			column="site_no"
-			javaType="string" />
-        	<result
-			property="gda:HistoricalEntryPoint/gda:FeatureOfInterestInfo#swes:id=FID_%s"
-			column="site_no"
-			javaType="string" />
-        	<result
-			property="}gda:HistoricalEntryPoint/gda:FeatureOfInterestInfo#swes:name"
-			column="station_nm"
-			javaType="string" />
-		<result
-			property="gda:HistoricalEntryPoint/gda:FeatureOfInterestInfo/^gda:feature#xlink:ref"
-			column="parameter_nm"
-			javaType="string" />
-		<result
-			property="gda:HistoricalEntryPoint/gda:FeatureOfInterestInfo/gda:feature/^gda:TimeValuePair/^gml:Time"
-			column="date"
-			javaType="string" />
-		<result
-			property="}gda:HistoricalEntryPoint/gda:FeatureOfInterestInfo/gda:feature/gda:TimeValuePair/^gml:MeanValue"
-			column="mean_va"
-			javaType="string" />
-		<result
-			property="}gda:HistoricalEntryPoint/gda:FeatureOfInterestInfo/gda:feature/gda:TimeValuePair/^gml:MinValue"
-			column="min_va"
-			javaType="string" />
-		<result
-			property="}gda:HistoricalEntryPoint/gda:FeatureOfInterestInfo/gda:feature/gda:TimeValuePair/^gml:MaxValue"
-			column="max_va"
-			javaType="string" />
-		<result
-			property="}gda:HistoricalEntryPoint/gda:FeatureOfInterestInfo/gda:feature/gda:TimeValuePair/^gml:Value20"
-			column="p20_va"
-			javaType="string" />
-		<result
-			property="}gda:HistoricalEntryPoint/gda:FeatureOfInterestInfo/gda:feature/gda:TimeValuePair/^gml:Value50"
-			column="p50_va"
-			javaType="string" />
-		<result
-			property="}gda:HistoricalEntryPoint/gda:FeatureOfInterestInfo/gda:feature/gda:TimeValuePair/^gml:Value80"
-			column="p80_va"
-			javaType="string" />
-        </resultMap>
-
-
 <!-- So, for debugging until I figure out associations....choose the 'select' map you want to use, and call it dataSelect-->
 
 <!--	<select id="dataFPTRSelect" parameterType="map" resultMap="dataResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">-->
-	<select id="dataSelect" parameterType="map" resultMap="dataResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
+	<select id="UVdataSelect" parameterType="map" resultMap="UVdataResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
             SELECT c.site_no,
             c.station_nm,
             e.parameter_nm,
@@ -186,8 +138,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             CONCAT(e.parameter_cd,'_',c.site_no) AS parameterSite
 
             FROM
-            nwisweb.DV_DD_CONF a,
-            nwisweb.DV b,
+            nwisweb.UV_DD_CONF a,
+            nwisweb.UV b,
             nwisweb.SITEFILE c,
             nwisweb.PARAM_REF e
 
@@ -241,7 +193,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 
 <!--	<select id="dataSelect" parameterType="map" resultMap="dataPropertyMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">-->
-	<select id="dataPropertySelect" parameterType="map" resultMap="dataPropertyMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
+	<select id="UVdataPropertySelect" parameterType="map" resultMap="UVdataPropertyMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
             SELECT c.site_no,
             e.parameter_nm,
             e.parameter_cd,
@@ -249,8 +201,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             c.station_nm
 
             FROM
-            nwisweb.DV_DD_CONF a,
-            nwisweb.DV b,
+            nwisweb.UV_DD_CONF a,
+            nwisweb.UV b,
             nwisweb.SITEFILE c,
             nwisweb.PARAM_REF e
 
@@ -295,7 +247,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 	</select>
 
-	<select id="dataFeatureSelect" parameterType="map" resultMap="dataFeatureMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
+	<select id="UVdataFeatureSelect" parameterType="map" resultMap="UVdataFeatureMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 <!--	<select id="dataSelect" parameterType="map" resultMap="dataFeatureMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">-->
             SELECT c.site_no,
             c.agency_cd,
@@ -305,8 +257,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             CONCAT(e.parameter_nm,': ',c.station_nm) AS parameterSiteTitle
 
             FROM
-            nwisweb.DV_DD_CONF a,
-            nwisweb.DV b,
+            nwisweb.UV_DD_CONF a,
+            nwisweb.UV b,
             nwisweb.SITEFILE c,
             nwisweb.PARAM_REF e
 
@@ -348,77 +300,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
             GROUP BY c.site_no, a.parameter_cd
             ORDER BY c.site_no
-
-	</select>
-	<select id="dataHistorySelect" parameterType="map" resultMap="dataHistoryMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
-<!--	<select id="dataSelect" parameterType="map" resultMap="dataHistoryMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">-->
-            SELECT DISTINCT b.site_no,
-                b.station_nm,
-<!--                STR_TO_DATE(SYSDATE(),'%Y-%m-%d') as dateStamp,-->
-                STR_TO_DATE((CONCAT(CONVERT(a.month_nu,CHAR),'-',CONVERT(a.day_nu,CHAR))),'%m-%d') AS date,
-                a.p20_va,
-                a.p50_va,
-                a.p80_va,
-                a.max_va,
-                a.min_va,
-                a.mean_va,
-                a.begin_yr,
-                a.end_yr,
-                c.parameter_cd,
-                d.parameter_nm
-
-            FROM nwisweb.DAILY_STAT a,
-            nwisweb.SITEFILE b,
-            nwisweb.DV_DD_CONF c,
-            nwisweb.PARAM_REF d
-
-            <choose>
-                  <when test="featureId != null">
-                            WHERE b.site_no IN (#{featureId[0]})
-                  </when>
-
-                  <when test="bBox != null">
-                            WHERE b.dec_long_va BETWEEN #{bBox[0]} AND #{bBox[2]} AND b.dec_lat_va BETWEEN #{bBox[1]} AND #{bBox[3]}
-                  </when>
-
-                  <otherwise>
-                            WHERE b.site_no IN (
-                                        '01427207','01427510','01434000','01438500','01457500','01463500'
-                                    '04073365','04073500','04082400','04084445','040851385','05344500',
-                                    '05378500','05389500','05391000','05395000','05404000','05407000',
-                                    '05420500','05543500','05543830','05545750','05551540','05552500',
-                                    '05558300','05568500','05586100','07010000','07020500',
-                                    '07022000','05051500','05054000','05082500','04269000','040851385',
-                                    '04010500','04024000','04024430','04027000','04027500','04040000','04045500','04059000',
-                                    '04059500','04067500','04069500','04071765','04085427','04086000','04087000','04092750','04095090',
-                                    '04102500','04121970','04122200','04122500','04137500','04142000','04157000','04159492','04165500',
-                                    '04174500','04176500','04193500','04195820','04198000','04199000','04199500','04200500','04201500',
-                                    '04208000','04212100','04213500','04218000','04231600','04249000','04260500','04263000','04265432'
-                                        )
-                    </otherwise>
-             </choose>
-
-            <if test="beginPosition != null">
-                AND a.month_nu <![CDATA[ >= ]]> DATE_FORMAT(#{beginPosition[0]},'%m')
-                AND a.day_nu <![CDATA[ >= ]]> DATE_FORMAT(#{beginPosition[0]},'%d')
-            </if>
-
-            <if test="endPosition != null">
-                AND a.month_nu <![CDATA[ <= ]]> DATE_FORMAT(#{beginPosition[0]},'%m')
-                AND a.day_nu <![CDATA[ <= ]]> DATE_FORMAT(#{beginPosition[0]},'%d')               
-            </if>
-
-            <if test="observedProperty != null">
-                AND c.parameter_cd = (#{observedProperty[0]})
-            </if>
-            
-            AND d.parameter_cd = c.parameter_cd
-            AND a.site_id = b.site_id
-            AND a.site_id = c.site_id
-            AND a.dd_nu = c.dd_nu
-
-<!--            AND a.month_nu = DATE_FORMAT(SYSDATE(),'%m')
-            AND a.day_nu = DATE_FORMAT(SYSDATE(),'%d')-->
 
 	</select>
 

@@ -21,11 +21,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    	property="xmlns:gsml=urn:cgi:xmlns:CGI:GeoSciML:2.0"
 	    	column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
-<!-- Not sure what should go here yet-->
-            <result
-	    	property="xmlns:swml=http://www.nrcan.gc.ca/xml/swml/1"
-	    	column="%ROOT_ELEMENT_ATTRIBUTE"
-			javaType="string" />
 		<result
 	    	property="xmlns:om=http://www.opengis.net/om/2.0"
 	    	column="%ROOT_ELEMENT_ATTRIBUTE"
@@ -98,14 +93,18 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 	</resultMap>
 	
 	<resultMap id="wfsResultMap" type="XMLMap" extends="wfsBaseMap">
- <!--
+<!--
                  <id
 	 		property="^!{wfs:boundedBy"
-	 		column="FEATURE_ID"
+	 		column="coord_datum"
 			javaType="string" />
 -->
                 <result
-			property="^!{wfs:boundedBy/gml:Envelope#srsName=%s"
+			property="^!{wfs:boundedBy/gml:Envelope"
+			column="coord_datum"
+			javaType="string" />
+                <result
+			property="wfs:boundedBy/gml:Envelope#srsName=%s"
 			column="coord_datum"
 			javaType="string" />
                 <result
@@ -177,12 +176,10 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 
 	<select id="wfsSelect" parameterType="map" resultMap="wfsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 		SELECT a.site_no, 
-		<!--a.agency_cd,-->
 		a.station_nm AS STATION_NM,
 		CONCAT(CONVERT(a.dec_lat_va,CHAR),' ',CONVERT(a.dec_long_va,CHAR)) AS LON_LAT, 
                 a.district_cd,
                 CONCAT(a.state_cd,'.',a.site_no) as state_site,
-                <!--CONCAT(DATE_FORMAT(SYSDATE(),'%Y-%m-%dT%H:%i'),a.tz_cd) as currentPosition,-->
                 a.tz_cd,
                 s.lowerPosition AS lower,
                 s.upperPosition AS upper,

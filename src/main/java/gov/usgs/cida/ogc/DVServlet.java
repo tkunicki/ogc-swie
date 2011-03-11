@@ -42,11 +42,8 @@ import org.w3c.dom.Node;
 public class DVServlet extends HttpServlet {
 
 	private static final String OBSERVATION_ID = "observationId";
-
 	private static final String DEFAULT_ENCODING = "UTF-8";
-
 	private static final long serialVersionUID = 1L;
-
 	//private final static String XPATH_Envelope = "//sos:GetObservation/sos:featureOfInterest/ogc:BBOX[ogc:PropertyName='gml:location']/gml:Envelope";
 	private final static String XPATH_Envelope = "//sos:GetObservation/wml:featureOfInterest/ogc:BBOX/gml:Envelope";
 	private final static String XPATH_cornerLower = "gml:lowerCorner/text()";
@@ -56,12 +53,8 @@ public class DVServlet extends HttpServlet {
 	private final static String XPATH_featureId = "//ogc:FeatureId/@fid";
         private final static String XPATH_observedProperty = "//om:observedProperty/@fid";
 	private static final String XPATH_observationId = "//wml:ObservationId";
-
 	private final static Pattern PATTERN_cornerSplit = Pattern.compile("\\s+");
-
 	private final static XMLOutputFactory2 xmlOutputFactory;
-
-
 
 	static {
 		xmlOutputFactory = new WstxOutputFactory();
@@ -167,6 +160,58 @@ public class DVServlet extends HttpServlet {
 					outputStream.flush();
 				}
 				break;
+			case GetDataAvailablity_Time:
+				parameterMap = USGS_OGC_BusinessRules.cleanFeatureId(parameterMap);
+
+				try {
+					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("dataMapper.dataSelect", parameterMap);
+					XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
+					XMLStreamUtils.copy(streamReader, streamWriter);
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					outputStream.flush();
+				}
+                                break;
+			case GetDataAvailablity_Feature:
+				parameterMap = USGS_OGC_BusinessRules.cleanFeatureId(parameterMap);
+
+				try {
+					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("dataMapper.dataFeatureSelect", parameterMap);
+					XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
+					XMLStreamUtils.copy(streamReader, streamWriter);
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					outputStream.flush();
+				}
+                                break;
+			case GetDataAvailablity_Property:
+				parameterMap = USGS_OGC_BusinessRules.cleanFeatureId(parameterMap);
+
+				try {
+					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("dataMapper.dataPropertySelect", parameterMap);
+					XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
+					XMLStreamUtils.copy(streamReader, streamWriter);
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					outputStream.flush();
+				}
+                                break;
+			case GetHistoricalData:
+				parameterMap = USGS_OGC_BusinessRules.cleanFeatureId(parameterMap);
+
+				try {
+					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("dataMapper.dataHistorySelect", parameterMap);
+					XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
+					XMLStreamUtils.copy(streamReader, streamWriter);
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					outputStream.flush();
+				}
+                                break;
 			case GetCapabilities:
 			{
 				Map<String, String> replacementMap = new HashMap<String, String>();
