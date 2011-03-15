@@ -120,6 +120,15 @@
                                 <dt><b>DescribeSensor</b></dt>
                                 <dd><a href="<%=baseURL%>/sos/uv?request=DescribeSensor"><%=baseURL%>/sos/uv?request=DescribeSensor</a></dd>
                     </dl>
+                    <dl>
+                                <dt><b>GetDataAvailablity</b> - featureID, observedProperty, beginPosition and endPostion are all optional. If not used, all the features/properties in the SWIE will be displayed</dt>
+                                <dd>General:</dd>
+                                <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity"><%=baseURL%>/sos/uv?request=GetDataAvailablity</a></dd>
+                                <dd>Examples using optional parameters:</dd>
+                                <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity&featureID=05568500"><%=baseURL%>/sos/uv?request=GetDataAvailablity&featureID=05568500</a></dd>
+                                <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity&featureID=05568500&observedProperty=00060"><%=baseURL%>/sos/uv?request=GetDataAvailablity&featureID=05568500&observedProperty=00060</a></dd>
+                                </dd>
+                    </dl>
 
                     <p></p>
                     <font size="4" ><li><strong>Sensor Observation Service - Daily Mean Values (DV)</strong></li></font>
@@ -143,31 +152,29 @@
                       <dd>  <form name="input" action="<%=baseURL%>/sos/dv?request=GetObservation" method="post">
                                 <textarea name="xml" rows="10" cols="90">
 <?xml version="1.0" ?>
-<sos:GetObservation version="1.0.0" service="SOS" srsName="urn:ogc:def:crs:EPSG:4326"
-    xmlns:sos="http://www.opengis.net/sos/1.0"
-    xmlns:ogc="http://www.opengis.net/ogc"
-    xmlns:gml="http://www.opengis.net/gml"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <sos:offering>observationOffering3</sos:offering>
-  <sos:observedProperty>urn:ogc:def:property:OGC:Discharge</sos:observedProperty>
-  <sos:featureOfInterest>
-    <ogc:BBOX>
-      <ogc:PropertyName>urn:ogc:data:location</ogc:PropertyName>
-      <gml:Envelope srsName="urn:ogc:def:crs:EPSG:4326">
-        <gml:lowerCorner>40.82638889 -75.08250000</gml:lowerCorner>
-        <gml:upperCorner>40.82638889 -75.08250000</gml:upperCorner>
-      </gml:Envelope>
-    </ogc:BBOX>
-  </sos:featureOfInterest>
-  <sos:responseFormat>text/xml; subtype="om/1.0.0"</sos:responseFormat>
-</sos:GetObservation>
-
-                                                </textarea><br />
+<GetObservation xmlns="http://www.opengis.net/sos/1.0"
+ xmlns:ows="http://www.opengis.net/ows/1.1"
+ xmlns:gml="http://www.opengis.net/gml"
+ xmlns:ogc="http://www.opengis.net/ogc"
+ xmlns:om="http://www.opengis.net/om/1.0"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.opengis.net/sos/1.0
+ http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd"
+ service="SOS" version="1.0.0" srsName="urn:ogc:def:crs:EPSG:4326">
+    <offering>Discharge</offering>
+    <procedure>urn:ogc:object:feature:Sensor:IFGI:ifgi-sensor-1</procedure>
+    <observedProperty>urn:ogc:def:property:OGC:Discharge</observedProperty>
+    <featureOfInterest>
+        <ObjectID>USGS.01446500</ObjectID>
+    </featureOfInterest>
+    <responseFormat>text/xml;subtype=&quot;om/1.0.0&quot;</responseFormat>
+</GetObservation>
+                                            </textarea><br />
                                             <input type="submit" value="Submit" />
                                         </form>
                     </dd>
-                    <p />
--->
+                    <p />-->
+
                     <dl>
                                 <dt><b>GetCapabilities</b></dt>
                                 <dd><a href="<%=baseURL%>/sos/dv?request=GetCapabilities"><%=baseURL%>/sos/dv?request=GetCapabilities</a></dd>
@@ -178,17 +185,11 @@
                     </dl>
                     <dl>
                                 <dt><b>GetDataAvailablity</b> - featureID, observedProperty, beginPosition and endPostion are all optional. If not used, all the features/properties in the SWIE will be displayed</dt>
-                                <dd><b><i>Work-in-progress:</i></b><br />
                                 <dd>General:</dd>
-                                <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity_Time"><%=baseURL%>/sos/dv?request=GetDataAvailablity_Time</a></dd>
-                                <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity_Feature"><%=baseURL%>/sos/dv?request=GetDataAvailablity_Feature</a></dd>
-                                <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity_Property"><%=baseURL%>/sos/dv?request=GetDataAvailablity_Property</a></dd>
-                                <br />
-                                <dd>Examples using parameters:</dd>
-                                <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity_Time&featureID=05568500"><%=baseURL%>/sos/dv?request=GetDataAvailablity_Time&featureID=05568500</a></dd>
-                                <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity_Time&featureID=05568500&observedProperty=GageHeight"><%=baseURL%>/sos/dv?request=GetDataAvailablity_Time&featureID=05568500&observedProperty=GageHeight</a></dd>
-                                <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity_Feature&observedProperty=Discharge"><%=baseURL%>/sos/dv?request=GetDataAvailablity_Feature&observedProperty=Discharge</a></dd>
-                                <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity_Property&featureID=05568500"><%=baseURL%>/sos/dv?request=GetDataAvailablity_Property&featureID=05568500</a></dd>
+                                <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity"><%=baseURL%>/sos/dv?request=GetDataAvailablity</a></dd>
+                                <dd>Examples using optional parameters:</dd>
+                                <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity&featureID=05568500"><%=baseURL%>/sos/dv?request=GetDataAvailablity&featureID=05568500</a></dd>
+                                <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity&featureID=05568500&observedProperty=00065"><%=baseURL%>/sos/dv?request=GetDataAvailablity&featureID=05568500&observedProperty=00065</a></dd>
                                 </dd>
                     </dl>
                     <p></p>

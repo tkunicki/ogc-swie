@@ -75,7 +75,7 @@ http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
 			<ows:DCP>
 				<ows:HTTP>
 					<ows:Get xlink:href="${base.url}/sos/uv?"/>
-					<ows:Post xlink:href="${base.url}/sos/uv?"/>
+					<ows:Post xlink:href="${base.url}/sos/uv"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="version">
@@ -124,11 +124,64 @@ http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
 				<ows:AnyValue/>
 			</ows:Parameter>
 		</ows:Operation>
+		<ows:Operation name="GetDataAvailablity">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Get xlink:href="${base.url}/sos/uv?"/>
+					<ows:Post xlink:href="${base.url}/sos/uv"/>
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="version">
+				<ows:AllowedValues>
+					<ows:Value>2.0.0</ows:Value>
+                                        <ows:Value>1.0.0</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+			<ows:Parameter name="service">
+				<ows:AllowedValues>
+					<ows:Value>SOS</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+			<ows:Parameter name="request">
+				<ows:AllowedValues>
+					<ows:Value>GetDataAvailablity</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+			<ows:Parameter name="responseFormat">
+				<ows:AllowedValues>
+					<ows:Value>text/xml;subtype="om/2.0.0"</ows:Value>
+                                        <ows:Value>text/xml;subtype="om/1.0.0"</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+			<ows:Parameter name="resultType">
+				<ows:AllowedValues>
+					<ows:Value>inline</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+			<ows:Parameter name="bbox">
+				<ows:AnyValue/>
+			</ows:Parameter>
+			<ows:Parameter name="featureId">
+				<ows:AnyValue/>
+			</ows:Parameter>
+			<ows:Parameter name="observedProperty">
+				<ows:Value>Discharge</ows:Value>
+                                <ows:Value>GageHeight</ows:Value>
+                                <ows:Value>Temperature</ows:Value>
+                                <ows:Value>Precipitation</ows:Value>
+			</ows:Parameter>
+			<ows:Parameter name="beginPosition">
+				<ows:AnyValue/>
+			</ows:Parameter>
+			<ows:Parameter name="endPosition">
+				<ows:AnyValue/>
+			</ows:Parameter>
+		</ows:Operation>
 		<ows:Operation name="GetObservationById">
 			<ows:DCP>
 				<ows:HTTP>
 					<ows:Get xlink:href="${base.url}/sos/uv?"/>
-					<ows:Post xlink:href="${base.url}/sos/uv?"/>
+					<ows:Post xlink:href="${base.url}/sos/uv"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="version">
@@ -182,7 +235,7 @@ http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
 			<ows:DCP>
 				<ows:HTTP>
 					<ows:Get xlink:href="${base.url}/sos/uv?"/>
-					<ows:Post xlink:href="${base.url}/sos/uv?"/>
+					<ows:Post xlink:href="${base.url}/sos/uv"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="version">

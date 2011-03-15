@@ -34,6 +34,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
 	</resultMap>
+
+	<resultMap id="UVdataResultMap_1" type="XMLMap" extends="UVdataBaseMap">
+                <association property="UNUSED" column="{featureId=featureId,observedProperty=observedProperty,beginPosition=beginPosition, endPosition = endPosition}" select="UVdataSelect" javaType="list" />
+                <association property="UNUSED" column="{featureId=featureId,observedProperty=observedProperty,beginPosition=beginPosition, endPosition = endPosition}" select="UVdataPropertySelect" javaType="list" />
+                <association property="UNUSED" column="{featureId=featureId,observedProperty=observedProperty,beginPosition=beginPosition, endPosition = endPosition}" select="UVdataFeatureSelect" javaType="list" />
+
+	</resultMap>
 	
 	<resultMap id="UVdataResultMap" type="XMLMap" extends="UVdataBaseMap">
 
@@ -73,10 +80,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			property="}gda:featurePropertyRelationship/gda:FeaturePropertyTemporalRelationship/gda:targetProperty#xlink:title"
 			column="parameter_nm"
 			javaType="string" />
-
-<!--               <association property="UNUSED" column="parameter_cd" select="dataPropertySelect" javaType="list" />
-               <association property="UNUSED" column="site_no" select="dataFeatureSelect" javaType="list" />-->
-
 	</resultMap>
 
 	<resultMap id="UVdataPropertyMap" type="XMLMap" extends="UVdataBaseMap">
@@ -125,9 +128,44 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="string" />
         </resultMap>
 
-<!-- So, for debugging until I figure out associations....choose the 'select' map you want to use, and call it dataSelect-->
+        <select id="UVdataSelect_1" parameterType="map" resultMap="UVdataResultMap_1" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
+            SELECT
+            <choose>
+                 <when test="featureId != null">
+                    #{featureId[0]} as featureId,
+                </when>
+                <otherwise>
+                    null as featureId,
+                </otherwise>
+            </choose>
+            <choose>
+                 <when test="observedProperty != null">
+                    #{observedProperty[0]} as observedProperty,
+                </when>
+                <otherwise>
+                    null as observedProperty,
+                </otherwise>
+            </choose>
+            <choose>
+                 <when test="beginPosition != null">
+                    #{beginPosition[0]} as beginPosition,
+                </when>
+                <otherwise>
+                    null as beginPosition,
+                </otherwise>
+            </choose>
+            <choose>
+                 <when test="endPosition != null">
+                    #{endPosition[0]} as endPosition
+                </when>
+                <otherwise>
+                    null as endPosition
+                </otherwise>
+            </choose>
+            FROM dual
 
-<!--	<select id="dataFPTRSelect" parameterType="map" resultMap="dataResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">-->
+        </select>
+
 	<select id="UVdataSelect" parameterType="map" resultMap="UVdataResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
             SELECT c.site_no,
             c.station_nm,
@@ -145,7 +183,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
             <choose>
                   <when test="featureId != null">
-                            WHERE c.site_no IN (#{featureId[0]})
+                            WHERE c.site_no IN (#{featureId})
                   </when>
 
                   <when test="bBox != null">
@@ -170,15 +208,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
              </choose>
 
             <if test="observedProperty != null">
-                AND a.parameter_cd = (#{observedProperty[0]})
+                AND a.parameter_cd = (#{observedProperty})
             </if>
 
             <if test="beginPosition != null">
-                AND b.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{beginPosition[0]}, '%Y-%m-%d')
+                AND b.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{beginPosition}, '%Y-%m-%d')
             </if>
 
             <if test="endPosition != null">
-                AND b.result_dt <![CDATA[ <= ]]> STR_TO_DATE(#{endPosition[0]}, '%Y-%m-%d')
+                AND b.result_dt <![CDATA[ <= ]]> STR_TO_DATE(#{endPosition}, '%Y-%m-%d')
             </if>
 
             AND a.site_id = b.site_id
@@ -192,7 +230,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 	</select>
 
-<!--	<select id="dataSelect" parameterType="map" resultMap="dataPropertyMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">-->
 	<select id="UVdataPropertySelect" parameterType="map" resultMap="UVdataPropertyMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
             SELECT c.site_no,
             e.parameter_nm,
@@ -209,7 +246,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
             <choose>
                   <when test="featureId != null">
-                            WHERE c.site_no IN (#{featureId[0]})
+                            WHERE c.site_no IN (#{featureId})
                   </when>
 
                   <when test="bBox != null">
@@ -238,8 +275,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             AND c.site_id = a.site_id
             AND a.parameter_cd = e.parameter_cd
             AND a.access_cd = '0'
+
             <if test="observedProperty != null">
-                AND a.parameter_cd = (#{observedProperty[0]})
+                AND a.parameter_cd = (#{observedProperty})
             </if>
 
             GROUP BY c.site_no, a.parameter_cd
@@ -248,7 +286,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="UVdataFeatureSelect" parameterType="map" resultMap="UVdataFeatureMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
-<!--	<select id="dataSelect" parameterType="map" resultMap="dataFeatureMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">-->
             SELECT c.site_no,
             c.agency_cd,
             c.station_nm,
@@ -264,7 +301,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
             <choose>
                   <when test="featureId != null">
-                            WHERE c.site_no IN (#{featureId[0]})
+                            WHERE c.site_no IN (#{featureId})
                   </when>
 
                   <when test="bBox != null">
@@ -295,7 +332,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             AND a.access_cd = '0'
 
             <if test="observedProperty != null">
-                AND a.parameter_cd = (#{observedProperty[0]})
+                AND a.parameter_cd = (#{observedProperty})
             </if>
 
             GROUP BY c.site_no, a.parameter_cd

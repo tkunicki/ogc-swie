@@ -34,6 +34,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
 	</resultMap>
+
+	<resultMap id="dataResultMap_1" type="XMLMap" extends="dataBaseMap">
+                <association property="UNUSED" column="{featureId=featureId,observedProperty=observedProperty,beginPosition=beginPosition, endPosition = endPosition}" select="dataSelect" javaType="list" />
+                <association property="UNUSED" column="{featureId=featureId,observedProperty=observedProperty,beginPosition=beginPosition, endPosition = endPosition}" select="dataPropertySelect" javaType="list" />
+                <association property="UNUSED" column="{featureId=featureId,observedProperty=observedProperty,beginPosition=beginPosition, endPosition = endPosition}" select="dataFeatureSelect" javaType="list" />
+
+	</resultMap>
 	
 	<resultMap id="dataResultMap" type="XMLMap" extends="dataBaseMap">
 
@@ -73,9 +80,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			property="}gda:featurePropertyRelationship/gda:FeaturePropertyTemporalRelationship/gda:targetProperty#xlink:title"
 			column="parameter_nm"
 			javaType="string" />
-
-<!--               <association property="UNUSED" column="parameter_cd" select="dataPropertySelect" javaType="list" />
-               <association property="UNUSED" column="site_no" select="dataFeatureSelect" javaType="list" />-->
 
 	</resultMap>
 
@@ -172,10 +176,44 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="string" />
         </resultMap>
 
+        <select id="dataSelect_1" parameterType="map" resultMap="dataResultMap_1" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
+            SELECT
+            <choose>
+                 <when test="featureId != null">
+                    #{featureId[0]} as featureId,
+                </when>
+                <otherwise>
+                    null as featureId,
+                </otherwise>
+            </choose>
+            <choose>
+                 <when test="observedProperty != null">
+                    #{observedProperty[0]} as observedProperty,
+                </when>
+                <otherwise>
+                    null as observedProperty,
+                </otherwise>
+            </choose>
+            <choose>
+                 <when test="beginPosition != null">
+                    #{beginPosition[0]} as beginPosition,
+                </when>
+                <otherwise>
+                    null as beginPosition,
+                </otherwise>
+            </choose>
+            <choose>
+                 <when test="endPosition != null">
+                    #{endPosition[0]} as endPosition
+                </when>
+                <otherwise>
+                    null as endPosition
+                </otherwise>
+            </choose>
+            FROM dual
 
-<!-- So, for debugging until I figure out associations....choose the 'select' map you want to use, and call it dataSelect-->
+        </select>
 
-<!--	<select id="dataFPTRSelect" parameterType="map" resultMap="dataResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">-->
 	<select id="dataSelect" parameterType="map" resultMap="dataResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
             SELECT c.site_no,
             c.station_nm,
@@ -193,7 +231,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
             <choose>
                   <when test="featureId != null">
-                            WHERE c.site_no IN (#{featureId[0]})
+                            WHERE c.site_no IN (#{featureId})
                   </when>
 
                   <when test="bBox != null">
@@ -218,15 +256,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
              </choose>
 
             <if test="observedProperty != null">
-                AND a.parameter_cd = (#{observedProperty[0]})
+                AND a.parameter_cd = (#{observedProperty})
             </if>
 
             <if test="beginPosition != null">
-                AND b.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{beginPosition[0]}, '%Y-%m-%d')
+                AND b.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{beginPosition}, '%Y-%m-%d')
             </if>
 
             <if test="endPosition != null">
-                AND b.result_dt <![CDATA[ <= ]]> STR_TO_DATE(#{endPosition[0]}, '%Y-%m-%d')
+                AND b.result_dt <![CDATA[ <= ]]> STR_TO_DATE(#{endPosition}, '%Y-%m-%d')
             </if>
 
             AND a.site_id = b.site_id
@@ -240,7 +278,61 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 	</select>
 
-<!--	<select id="dataSelect" parameterType="map" resultMap="dataPropertyMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">-->
+	<select id="dataFeatureSelect" parameterType="map" resultMap="dataFeatureMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
+            SELECT c.site_no,
+            c.agency_cd,
+            c.station_nm,
+            e.parameter_nm,
+            CONCAT(e.parameter_cd,'_',c.site_no) AS parameterSite,
+            CONCAT(e.parameter_nm,': ',c.station_nm) AS parameterSiteTitle
+
+            FROM
+            nwisweb.DV_DD_CONF a,
+            nwisweb.DV b,
+            nwisweb.SITEFILE c,
+            nwisweb.PARAM_REF e
+
+            <choose>
+                  <when test="featureId != null">
+                            WHERE c.site_no IN (#{featureId})
+                  </when>
+
+                  <when test="bBox != null">
+                            WHERE c.dec_long_va BETWEEN #{bBox[0]} AND #{bBox[2]} AND c.dec_lat_va BETWEEN #{bBox[1]} AND #{bBox[3]}
+                  </when>
+
+                  <otherwise>
+                            WHERE c.site_no IN (
+                                        '01427207','01427510','01434000','01438500','01457500','01463500'
+                                    '04073365','04073500','04082400','04084445','040851385','05344500',
+                                    '05378500','05389500','05391000','05395000','05404000','05407000',
+                                    '05420500','05543500','05543830','05545750','05551540','05552500',
+                                    '05558300','05568500','05586100','07010000','07020500',
+                                    '07022000','05051500','05054000','05082500','04269000','040851385',
+                                    '04010500','04024000','04024430','04027000','04027500','04040000','04045500','04059000',
+                                    '04059500','04067500','04069500','04071765','04085427','04086000','04087000','04092750','04095090',
+                                    '04102500','04121970','04122200','04122500','04137500','04142000','04157000','04159492','04165500',
+                                    '04174500','04176500','04193500','04195820','04198000','04199000','04199500','04200500','04201500',
+                                    '04208000','04212100','04213500','04218000','04231600','04249000','04260500','04263000','04265432'
+                                        )
+                    </otherwise>
+             </choose>
+
+            AND a.site_id = b.site_id
+            AND a.dd_nu = b.dd_nu
+            AND c.site_id = a.site_id
+            AND a.parameter_cd = e.parameter_cd
+            AND a.access_cd = '0'
+
+            <if test="observedProperty != null">
+                AND a.parameter_cd = (#{observedProperty})
+            </if>
+
+            GROUP BY c.site_no, a.parameter_cd
+            ORDER BY c.site_no
+
+	</select>
+
 	<select id="dataPropertySelect" parameterType="map" resultMap="dataPropertyMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
             SELECT c.site_no,
             e.parameter_nm,
@@ -257,7 +349,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
             <choose>
                   <when test="featureId != null">
-                            WHERE c.site_no IN (#{featureId[0]})
+                            WHERE c.site_no IN (#{featureId})
                   </when>
 
                   <when test="bBox != null">
@@ -287,7 +379,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             AND a.parameter_cd = e.parameter_cd
             AND a.access_cd = '0'
             <if test="observedProperty != null">
-                AND a.parameter_cd = (#{observedProperty[0]})
+                AND a.parameter_cd = (#{observedProperty})
             </if>
 
             GROUP BY c.site_no, a.parameter_cd
@@ -295,63 +387,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 	</select>
 
-	<select id="dataFeatureSelect" parameterType="map" resultMap="dataFeatureMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
-<!--	<select id="dataSelect" parameterType="map" resultMap="dataFeatureMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">-->
-            SELECT c.site_no,
-            c.agency_cd,
-            c.station_nm,
-            e.parameter_nm,
-            CONCAT(e.parameter_cd,'_',c.site_no) AS parameterSite,
-            CONCAT(e.parameter_nm,': ',c.station_nm) AS parameterSiteTitle
-
-            FROM
-            nwisweb.DV_DD_CONF a,
-            nwisweb.DV b,
-            nwisweb.SITEFILE c,
-            nwisweb.PARAM_REF e
-
-            <choose>
-                  <when test="featureId != null">
-                            WHERE c.site_no IN (#{featureId[0]})
-                  </when>
-
-                  <when test="bBox != null">
-                            WHERE c.dec_long_va BETWEEN #{bBox[0]} AND #{bBox[2]} AND c.dec_lat_va BETWEEN #{bBox[1]} AND #{bBox[3]}
-                  </when>
-
-                  <otherwise>
-                            WHERE c.site_no IN (
-                                        '01427207','01427510','01434000','01438500','01457500','01463500'
-                                    '04073365','04073500','04082400','04084445','040851385','05344500',
-                                    '05378500','05389500','05391000','05395000','05404000','05407000',
-                                    '05420500','05543500','05543830','05545750','05551540','05552500',
-                                    '05558300','05568500','05586100','07010000','07020500',
-                                    '07022000','05051500','05054000','05082500','04269000','040851385',
-                                    '04010500','04024000','04024430','04027000','04027500','04040000','04045500','04059000',
-                                    '04059500','04067500','04069500','04071765','04085427','04086000','04087000','04092750','04095090',
-                                    '04102500','04121970','04122200','04122500','04137500','04142000','04157000','04159492','04165500',
-                                    '04174500','04176500','04193500','04195820','04198000','04199000','04199500','04200500','04201500',
-                                    '04208000','04212100','04213500','04218000','04231600','04249000','04260500','04263000','04265432'
-                                        )
-                    </otherwise>
-             </choose>
-
-            AND a.site_id = b.site_id
-            AND a.dd_nu = b.dd_nu
-            AND c.site_id = a.site_id
-            AND a.parameter_cd = e.parameter_cd
-            AND a.access_cd = '0'
-
-            <if test="observedProperty != null">
-                AND a.parameter_cd = (#{observedProperty[0]})
-            </if>
-
-            GROUP BY c.site_no, a.parameter_cd
-            ORDER BY c.site_no
-
-	</select>
 	<select id="dataHistorySelect" parameterType="map" resultMap="dataHistoryMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
-<!--	<select id="dataSelect" parameterType="map" resultMap="dataHistoryMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">-->
             SELECT DISTINCT b.site_no,
                 b.station_nm,
 <!--                STR_TO_DATE(SYSDATE(),'%Y-%m-%d') as dateStamp,-->

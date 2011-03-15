@@ -245,8 +245,8 @@
                         var html = html_header + table_1;
 
                         var history_url = base_url + "/sos/dv?request=GetHistoricalData&featureID=" + siteCode + '&beginPosition=' + today + '&endPosition=' + today + '&observedProperty=Discharge';
-                        var gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity_Time&featureID=" + siteCode;
-                        var gdaUV_url = base_url + "/sos/uv?request=GetDataAvailablity_Time&featureID=" + siteCode;
+                        var gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity&featureID=" + siteCode;
+                        var gdaUV_url = base_url + "/sos/uv?request=GetDataAvailablity&featureID=" + siteCode;
 
                         var table_2 = "<b><center> Available Properties: Daily Mean</center></b><center><table border='1'><tr><td><b><center>Property</center></b></td><td><b><center>Start Date</center></b></td><td><b><center>End Date</b></center></td></tr>";
                         var table_3 = "<br /><center><b>Historical Information for " + Today_long + "</b></center><center><table border='1'><tr><td><b><center>Mean</center></b></td><td><b><center>Min</center></b></td><td><b><center>Max</b></center></td>" + '<td>' + '<b><center>20 %</b></center>' + '</td><td>' + '<b><center>50 %</b></center>' + '</td><td>' + '<b><center>80 %</b></center>' + '</td></tr>';

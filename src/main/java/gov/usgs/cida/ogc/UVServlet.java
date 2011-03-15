@@ -166,37 +166,11 @@ public class UVServlet extends HttpServlet {
 					outputStream.flush();
 				}
 				break;
-			case GetDataAvailablity_Time:
+			case GetDataAvailablity:
 				parameterMap = USGS_OGC_BusinessRules.cleanFeatureId(parameterMap);
 
 				try {
-					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("UVdataMapper.UVdataSelect", parameterMap);
-					XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
-					XMLStreamUtils.copy(streamReader, streamWriter);
-				} catch (Exception e) {
-					e.printStackTrace();
-				} finally {
-					outputStream.flush();
-				}
-                                break;
-			case GetDataAvailablity_Feature:
-				parameterMap = USGS_OGC_BusinessRules.cleanFeatureId(parameterMap);
-
-				try {
-					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("UVdataMapper.UVdataFeatureSelect", parameterMap);
-					XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
-					XMLStreamUtils.copy(streamReader, streamWriter);
-				} catch (Exception e) {
-					e.printStackTrace();
-				} finally {
-					outputStream.flush();
-				}
-                                break;
-			case GetDataAvailablity_Property:
-				parameterMap = USGS_OGC_BusinessRules.cleanFeatureId(parameterMap);
-
-				try {
-					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("UVdataMapper.UVdataPropertySelect", parameterMap);
+					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("UVdataMapper.UVdataSelect_1", parameterMap);
 					XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
 					XMLStreamUtils.copy(streamReader, streamWriter);
 				} catch (Exception e) {
