@@ -124,9 +124,10 @@
                                 <dt><b>GetDataAvailablity</b> - featureID, observedProperty, beginPosition and endPostion are all optional. If not used, all the features/properties in the SWIE will be displayed</dt>
                                 <dd>General:</dd>
                                 <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity"><%=baseURL%>/sos/uv?request=GetDataAvailablity</a></dd>
-                                <dd>Examples using optional parameters:</dd>
+                                <dd>GetDataAvailablity by feature ID:</dd>
                                 <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity&featureID=05568500"><%=baseURL%>/sos/uv?request=GetDataAvailablity&featureID=05568500</a></dd>
-                                <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity&featureID=05568500&observedProperty=00060"><%=baseURL%>/sos/uv?request=GetDataAvailablity&featureID=05568500&observedProperty=00060</a></dd>
+                                <dd>GetDataAvailablity by observed property and feature ID:</dd>
+                                <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500"><%=baseURL%>/sos/uv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500</a></dd>
                                 </dd>
                     </dl>
 
@@ -187,9 +188,10 @@
                                 <dt><b>GetDataAvailablity</b> - featureID, observedProperty, beginPosition and endPostion are all optional. If not used, all the features/properties in the SWIE will be displayed</dt>
                                 <dd>General:</dd>
                                 <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity"><%=baseURL%>/sos/dv?request=GetDataAvailablity</a></dd>
-                                <dd>Examples using optional parameters:</dd>
+                                <dd>GetDataAvailablity by feature ID:</dd>
                                 <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity&featureID=05568500"><%=baseURL%>/sos/dv?request=GetDataAvailablity&featureID=05568500</a></dd>
-                                <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity&featureID=05568500&observedProperty=00065"><%=baseURL%>/sos/dv?request=GetDataAvailablity&featureID=05568500&observedProperty=00065</a></dd>
+                                <dd>GetDataAvailablity by observed property and feature ID:</dd>
+                                <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500"><%=baseURL%>/sos/dv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500</a></dd>
                                 </dd>
                     </dl>
                     <p></p>

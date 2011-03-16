@@ -175,7 +175,7 @@
                                 var URL_array = USGS_URL.split("/");
                                 var stateNM = URL_array[3];
                                 var point = new GLatLng(latitude, longitude);
-                                var marker = createMarker(point, siteName,  stateNM, siteCode, USGS_URL);
+                                var marker = createTabbedMarker(point, siteName,  stateNM, siteCode, USGS_URL);
                                 map.addOverlay(marker);
                                 makeSidebar();
                         });
@@ -205,6 +205,99 @@
                     });
                 }
 
+// ========================Create a tabbed marker============================================
+      function createTabbedMarker(point, name, StateNM, Site_no, USGS_URL)
+      {
+	//var marker = new GMarker(point, {icon: gicons[StateNM]});
+        var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
+        var marker = new GMarker(point, newIcon);
+        marker.mycategory = StateNM;
+        marker.myname = name;
+        var label1 = 'Current';
+	var label2 = 'DV';
+        var label3 = 'UV';
+        var label4 = 'Plot';
+        var site = Site_no;
+
+	GEvent.addListener(marker, "click", function() {
+                var sos_url = base_url + "/sos/uv?request=GetObservation&featureId=" + site + "&beginPosition=" + today + '&observedProperty=Discharge';
+                $.get(sos_url, function(xml) {
+                    $(xml).find("[nodeName=wml2:WaterMonitoringObservation],WaterMonitoringObservation").each(function(){
+                        var watershed = $(this).find("[nodeName=om:value]").text();
+                        var name = $(this).find("[nodeName=gml:name]").text();
+                        var USGS_link = $(this).find("[nodeName=sf:sampledFeature]").attr("xlink:href");
+                        var units = $(this).find("[nodeName=wml2:unitOfMeasure]").attr("xlink:href");
+                        var time = $(this).find("[nodeName=wml2:time]:first").text();
+                        var value = $(this).find("[nodeName=wml2:value]").first().text();
+                        var comment = $(this).find("[nodeName=wml2:comment]:first").text();
+
+                        var USGS_picture = '<img src = "USGS.gif" width="84" height="32"/>';
+                        var USGS_link = '<a href = "' + USGS_URL + '" >' + Site_no + '</a>';
+                        var Title = '<table cellpadding="10"><tr><td>' + USGS_picture + '</td><td>' + USGS_link + '</td></table>';
+
+                        var Name_html = '<b>' + name + '</b><br />';
+                        var Watershed_html = '<b>' + watershed + ' Watershed</b><br />';
+
+                        var WML2_link_uv = '<li><a href =' + base_url + '/sos/uv?request=GetObservation&featureId=' + Site_no + '&observedProperty=Discharge&beginPosition=' + old_day + '>GetObservation - Instantaneous Values</a></li>';
+                        var WML2_link_dv = '<li><a href =' + base_url + '/sos/dv?request=GetObservation&featureId=' + Site_no + '&observedProperty=Discharge&beginPosition=' + old_day + '>GetObservation - Daily Mean Values</a></li>';
+                        var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + Site_no + '>GetFeature</a></li>';
+
+                        var html_header = Title + Name_html + Watershed_html + '<br />';
+                        var table_1 = "<center><table border='1'><tr><th colspan='2'> Current Data:<br />" + time.substr(0,16) + '</tr></th><tr><td>Discharge</td><td>' + value + ' ' + units + ' <b>' + comment +'</b></td></tr></table></center>';
+                        //var table_1 = "Current Data:<b>"  + value + ' ' + units + '</b> at ' + time.substr(0,16) + '<br /><b>' + comment + '<b/><br />';
+                        var html_getObs = '<strong>WaterML2:</strong><br />' + WML2_link_uv + WML2_link_dv;
+
+                        var html = html_header + table_1;
+
+                        var gda_url = base_url + "/sos/dv?request=GetDataAvailablity_Time&featureID=" + Site_no;
+
+                        var gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity&featureID=" + Site_no;
+                        var gdaUV_url = base_url + "/sos/uv?request=GetDataAvailablity&featureID=" + Site_no;
+
+                        var table_2 = "<b><center> Available Properties: Daily Mean</center></b><center><table border='1'><tr><td><b><center>Property</center></b></td><td><b><center>Start Date</center></b></td><td><b><center>End Date</b></center></td></tr>";
+                        var table_3 = "<center><b>Historical Information for " + Today_long + "</b></center><center><table border='1'><tr><td><b><center>Mean</center></b></td><td><b><center>Min</center></b></td><td><b><center>Max</b></center></td>" + '<td>' + '<b><center>20 %</b></center>' + '</td><td>' + '<b><center>50 %</b></center>' + '</td><td>' + '<b><center>80 %</b></center>' + '</td></tr>';
+                        var table_4 = "<b><center> Available Properties: Instantaneous</center></b><center><table border='1'><tr><td><b><center>Property</center></b></td><td><b><center>Start Date</center></b></td><td><b><center>End Date</b></center></td></tr>";
+
+                        $.get(gdaDV_url, function(xml_gda) {
+                            $(xml_gda).find("[nodeName=gda:FeaturePropertyTemporalRelationship],FeaturePropertyTemporalRelationship").each(function(){
+                                var Property = $(this).find("[nodeName=gda:targetProperty]");
+                                var Prop = Property.attr("xlink:title");
+                                var Parameter_cd_long = Property.attr("xlink:href");
+                                var Parameter_cd_array = Parameter_cd_long.split("_");
+                                var Parameter_cd = Parameter_cd_array[1];
+                                var beginTime = $(this).find("[nodeName=gml:beginPosition]").text();
+                                var endTime = $(this).find("[nodeName=gml:endPosition]").text();
+                                var Property_html = "<a href=" + base_url + '/sos/dv?request=GetObservation&featureId=' + Site_no + '&observedProperty=' + Parameter_cd + '&beginPosition=' + beginTime + '&endPosition=' + endTime + '>' + Prop + '</a>';
+                                table_2 = table_2 + '<tr><td>' + Property_html + '</td><td>' + beginTime + '</td><td>' + endTime + '</td></tr>';
+                            });
+                                $.get(gdaUV_url, function(xml_UV) {
+                                    $(xml_UV).find("[nodeName=gda:FeaturePropertyTemporalRelationship],FeaturePropertyTemporalRelationship").each(function() {
+                                        var Property = $(this).find("[nodeName=gda:targetProperty]");
+                                        var Prop = Property.attr("xlink:title");
+                                        var Parameter_cd_long = Property.attr("xlink:href");
+                                        var Parameter_cd_array = Parameter_cd_long.split("_");
+                                        var Parameter_cd = Parameter_cd_array[1];
+                                        var beginTime_long = $(this).find("[nodeName=gml:beginPosition]").text();
+                                        var beginTime = beginTime_long.substr(0,16);
+                                        var beginDate = beginTime.split(" ")[0];
+                                        var endTime_long = $(this).find("[nodeName=gml:endPosition]").text();
+                                        var endTime = endTime_long.substr(0,16);
+                                        var endDate = endTime.split(" ")[0];
+                                        var Property_html = "<a href=" + base_url + '/sos/uv?request=GetObservation&featureId=' + Site_no + '&observedProperty=' + Parameter_cd  + '&beginPosition=' + beginDate + '&endPosition=' + endDate + '>' + Prop + '</a>';
+                                        table_4 = table_4 + '<tr><td>' + Property_html + '</td><td>' + beginTime + '</td><td>' + endTime + '</td></tr>';
+                                    });
+                                    marker.openInfoWindowTabsHtml([new GInfoWindowTab(label1,(html)), new GInfoWindowTab(label2,(html_header + table_2 + '</table></center>')),new GInfoWindowTab(label3,(html_header + table_4 + '</table></center>'))]);
+
+                                });
+                        });
+                    });
+                });
+            });
+
+            gmarkers.push(marker);
+            return marker;
+        }
+
 // ========================Create a marker============================================
         function createMarker(point, name, StateNM, Site_no, USGS_URL) {
             //var marker = new GMarker(point, {icon: gicons[StateNM]});
@@ -220,33 +313,31 @@
                         var watershed = $(this).find("[nodeName=om:value]").text();
                         var name = $(this).find("[nodeName=gml:name]").text();
                         var USGS_link = $(this).find("[nodeName=sf:sampledFeature]").attr("xlink:href");
-                        var site = $(this).find("[nodeName=gml:Point]").attr("gml:id");
-                        var siteCode = site.substring(7);
                         var units = $(this).find("[nodeName=wml2:unitOfMeasure]").attr("xlink:href");
                         var time = $(this).find("[nodeName=wml2:time]:first").text();
                         var value = $(this).find("[nodeName=wml2:value]").first().text();
                         var comment = $(this).find("[nodeName=wml2:comment]:first").text();
 
                         var USGS_picture = '<img src = "USGS.gif" width="84" height="32"/>';
-                        var USGS_link = '<a href = "' + USGS_URL + '" >' + siteCode + '</a>';
+                        var USGS_link = '<a href = "' + USGS_URL + '" >' + Site_no + '</a>';
                         var Title = '<table cellpadding="10"><tr><td>' + USGS_picture + '</td><td>' + USGS_link + '</td></table>';
 
                         var Name_html = '<b>' + name + '</b><br />';
                         var Watershed_html = '<b>' + watershed + ' Watershed</b><br />';
 
-                        var WML2_link_uv = '<li><a href =' + base_url + '/sos/uv?request=GetObservation&featureId=' + siteCode + '&observedProperty=Discharge&beginPosition=' + old_day + '>GetObservation - Instantaneous Values</a></li>';
-                        var WML2_link_dv = '<li><a href =' + base_url + '/sos/dv?request=GetObservation&featureId=' + siteCode + '&observedProperty=Discharge&beginPosition=' + old_day + '>GetObservation - Daily Mean Values</a></li>';
-                        var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + siteCode + '>GetFeature</a></li>';
+                        var WML2_link_uv = '<li><a href =' + base_url + '/sos/uv?request=GetObservation&featureId=' + Site_no + '&observedProperty=Discharge&beginPosition=' + old_day + '>GetObservation - Instantaneous Values</a></li>';
+                        var WML2_link_dv = '<li><a href =' + base_url + '/sos/dv?request=GetObservation&featureId=' + Site_no + '&observedProperty=Discharge&beginPosition=' + old_day + '>GetObservation - Daily Mean Values</a></li>';
+                        var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + Site_no + '>GetFeature</a></li>';
 
                         var html_header = Title + Name_html + Watershed_html;
-                        var table_1 = "Current Data:<b>"  + value + ' ' + units + '</b> at ' + time + '<br />';
+                        var table_1 = "Current Data:<b>"  + value + ' ' + units + '</b> at ' + time + '<br /><b>' + comment + '</b><br />';
                         var html_getObs = '<strong>WaterML2:</strong><br />' + WML2_link_uv + WML2_link_dv;
 
                         var html = html_header + table_1;
 
-                        var history_url = base_url + "/sos/dv?request=GetHistoricalData&featureID=" + siteCode + '&beginPosition=' + today + '&endPosition=' + today + '&observedProperty=Discharge';
-                        var gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity&featureID=" + siteCode;
-                        var gdaUV_url = base_url + "/sos/uv?request=GetDataAvailablity&featureID=" + siteCode;
+                        var history_url = base_url + "/sos/dv?request=GetHistoricalData&featureID=" + Site_no + '&beginPosition=' + today + '&endPosition=' + today + '&observedProperty=Discharge';
+                        var gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity&featureID=" + Site_no;
+                        var gdaUV_url = base_url + "/sos/uv?request=GetDataAvailablity&featureID=" + Site_no;
 
                         var table_2 = "<b><center> Available Properties: Daily Mean</center></b><center><table border='1'><tr><td><b><center>Property</center></b></td><td><b><center>Start Date</center></b></td><td><b><center>End Date</b></center></td></tr>";
                         var table_3 = "<br /><center><b>Historical Information for " + Today_long + "</b></center><center><table border='1'><tr><td><b><center>Mean</center></b></td><td><b><center>Min</center></b></td><td><b><center>Max</b></center></td>" + '<td>' + '<b><center>20 %</b></center>' + '</td><td>' + '<b><center>50 %</b></center>' + '</td><td>' + '<b><center>80 %</b></center>' + '</td></tr>';
@@ -261,24 +352,9 @@
                                 var Parameter_cd = Parameter_cd_array[1];
                                 var beginTime = $(this).find("[nodeName=gml:beginPosition]").text();
                                 var endTime = $(this).find("[nodeName=gml:endPosition]").text();
-                                var Property_html = "<a href=" + base_url + '/sos/dv?request=GetObservation&featureId=' + siteCode + '&observedProperty=' + Parameter_cd + '&beginPosition=' + beginTime + '&endPosition=' + endTime + '>' + Prop + '</a>';
+                                var Property_html = "<a href=" + base_url + '/sos/dv?request=GetObservation&featureId=' + Site_no + '&observedProperty=' + Parameter_cd + '&beginPosition=' + beginTime + '&endPosition=' + endTime + '>' + Prop + '</a>';
                                 table_2 = table_2 + '<tr><td>' + Property_html + '</td><td>' + beginTime + '</td><td>' + endTime + '</td></tr>';
                             });
-
-                            $.get(history_url, function(xml_history) {
-                                $(xml_history).find("[nodeName=gda:HistoricalEntryPoint],HistoricalEntryPoint").each(function() {
-
-                                    var MeanValue = $(this).find("[nodeName=gml:MeanValue]").text();
-                                    var MinValue = $(this).find("[nodeName=gml:MinValue]").text();
-                                    var MaxValue = $(this).find("[nodeName=gml:MaxValue]").text();
-
-                                    var p20 = $(this).find("[nodeName=gml:Value20]").text();
-                                    var p50 = $(this).find("[nodeName=gml:Value50]").text();
-                                    var p80 = $(this).find("[nodeName=gml:Value80]").text();
-
-                                    table_3 = table_3 + '<tr><td>' + MeanValue + ' ' + units + '</td><td>' + MinValue + ' ' + units + '</td><td>' + MaxValue + ' ' + units + '</td>';
-                                    table_3 = table_3 + '<td>' + p20 + ' ' + units + '</td><td>' + p50 + ' ' + units + '</td><td>' + p80 + ' ' + units + '</td></tr>';
-                                });
 
                                 $.get(gdaUV_url, function(xml_UV) {
                                     $(xml_UV).find("[nodeName=gda:FeaturePropertyTemporalRelationship],FeaturePropertyTemporalRelationship").each(function() {
@@ -293,14 +369,13 @@
                                         var endTime_long = $(this).find("[nodeName=gml:endPosition]").text();
                                         var endTime = endTime_long.substr(0,16);
                                         var endDate = endTime.split(" ")[0];
-                                        var Property_html = "<a href=" + base_url + '/sos/uv?request=GetObservation&featureId=' + siteCode + '&observedProperty=' + Parameter_cd + '&beginPosition=' + beginDate + '&endPosition=' + endDate + '>' + Prop + '</a>';
+                                        var Property_html = "<a href=" + base_url + '/sos/uv?request=GetObservation&featureId=' + Site_no + '&observedProperty=' + Parameter_cd + '&beginPosition=' + beginDate + '&endPosition=' + endDate + '>' + Prop + '</a>';
                                         table_4 = table_4 + '<tr><td>' + Property_html + '</td><td>' + beginTime + '</td><td>' + endTime + '</td></tr>';
                                     });
                                     var html_6 = html + table_2 + '</table></center><br />' + table_4 + '</table></center>';
                                     marker.openInfoWindowHtml(html_6);
                                 });
                             });
-                        });
                     });
                 });
             });
