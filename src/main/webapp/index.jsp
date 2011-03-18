@@ -24,7 +24,6 @@
     else {
         Day_str = Integer.toString(old_Day);
        };
-    // probably should add oldYear at some point...
     String Old_Date = Integer.toString(Year) + '-' + Month_str + '-' + Day_str;
 
  %>
@@ -81,7 +80,7 @@
 
 <!===============================Create Table=========================================>
     <font face="Arial">
-    <h1>Surface Water IE 1.3</h1>
+    <h1>Surface Water IE 1.4</h1>
     <table border=0>
         <tr>
           <td>
@@ -100,14 +99,17 @@
                     <dl>
                         <dt><b>GetObservation</b> - featureID(required), beginPosition(optional), endPosition(optional), observedProperty(required)</dt>
                         <dt>Allowed observedProperty are: Discharge, GageHeight, Temperature, Precipitation</dt>
-                        <dt>Not every station will have all observedProperty options available<br /></dt>
-                        <dd><i>Instantaneous gage height observation by feature ID and begin time:</i><br />
+                        <dt>Not every station will have all observedProperty options available, use GetDataAvailablity to find out which stations offer which properties<br />
+                        <i>Instantaneous gage height observation by feature ID and begin time:</i></dt>
+                        <dd>
                             <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=01446500&observedProperty=GageHeight&beginPosition=<%=Old_Date%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=01446500&observedProperty=GageHeight&beginPosition=<%=Old_Date%></a>
                         </dd>
-                        <dd><i>Instantaneous resolution discharge observation by feature ID and begin time:</i><br />
+                        <i>Instantaneous resolution discharge observation by feature ID and begin time:</i><br />
+                        <dd>
                             <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=01446500&observedProperty=Discharge&beginPosition=<%=Old_Date%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=01446500&observedProperty=Discharge&beginPosition=<%=Old_Date%></a>
                         </dd>
-                        <dd><i>Instantaneous temperature observation by feature ID and begin time:</i><br />
+                        <i>Instantaneous temperature observation by feature ID and begin time:</i><br />
+                        <dd>
                             <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=05407000&observedProperty=Temperature&beginPosition=<%=Old_Date%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=05407000&observedProperty=Temperature&beginPosition=<%=Old_Date%></a>
                         </dd>
 
@@ -122,11 +124,11 @@
                     </dl>
                     <dl>
                                 <dt><b>GetDataAvailablity</b> - featureID, observedProperty, beginPosition and endPostion are all optional. If not used, all the features/properties in the SWIE will be displayed</dt>
-                                <dd>General:</dd>
+                                <i>General:</i>
                                 <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity"><%=baseURL%>/sos/uv?request=GetDataAvailablity</a></dd>
-                                <dd>GetDataAvailablity by feature ID:</dd>
+                                <i>GetDataAvailablity by feature ID:</i>
                                 <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity&featureID=05568500"><%=baseURL%>/sos/uv?request=GetDataAvailablity&featureID=05568500</a></dd>
-                                <dd>GetDataAvailablity by observed property and feature ID:</dd>
+                                <i>GetDataAvailablity by observed property and feature ID:</i>
                                 <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500"><%=baseURL%>/sos/uv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500</a></dd>
                                 </dd>
                     </dl>
@@ -147,8 +149,8 @@
                             <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=05407000&observedProperty=Precipitation&beginPosition=<%=Old_Date%>"><%=baseURL%>/sos/dv?request=GetObservation&featureId=05407000&observedProperty=Precipitation&beginPosition=<%=Old_Date%></a>
                         </dd>
                     </dl>
-<!--
-                    <p />
+
+<!--                    <p />
                    <dt><i>GetObservation by via XML HTTP body POST:</i><br /></dt>
                       <dd>  <form name="input" action="<%=baseURL%>/sos/dv?request=GetObservation" method="post">
                                 <textarea name="xml" rows="10" cols="90">
@@ -186,11 +188,11 @@
                     </dl>
                     <dl>
                                 <dt><b>GetDataAvailablity</b> - featureID, observedProperty, beginPosition and endPostion are all optional. If not used, all the features/properties in the SWIE will be displayed</dt>
-                                <dd>General:</dd>
+                                <i>General:</i>
                                 <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity"><%=baseURL%>/sos/dv?request=GetDataAvailablity</a></dd>
-                                <dd>GetDataAvailablity by feature ID:</dd>
+                                <i>GetDataAvailablity by feature ID:</i>
                                 <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity&featureID=05568500"><%=baseURL%>/sos/dv?request=GetDataAvailablity&featureID=05568500</a></dd>
-                                <dd>GetDataAvailablity by observed property and feature ID:</dd>
+                                <i>GetDataAvailablity by observed property and feature ID:</i>
                                 <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500"><%=baseURL%>/sos/dv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500</a></dd>
                                 </dd>
                     </dl>
@@ -220,7 +222,7 @@
                         <p></p>
                     </dl>
                     <dl>
-                        <dd>GetFeature by via XML HTTP body POST:<br />
+                        <dd>GetFeature via XML HTTP body POST:<br />
 
                         <form name="input" action="<%=baseURL%>/wfs?request=GetFeature" method="post">
                                 <textarea name="xml" rows="10" cols="90">
@@ -268,15 +270,19 @@
 
                                 </li>
                                 <li><strong>Log</strong>
-                                   <dl>Version 1.3 March 10th, 2011 <br />
+                                   <dl>Version 1.4 March 16th, 2011 <br />
+                                        <dd> * Updated GetDataObservation </dd>
+                                        <dd> * Included GetObservation by XML HTTP body POST </dd>
+                                    </dl>
+                                    <dl>Version 1.3 March 10th, 2011 <br />
                                         <dd> * Began work on GetDataObservation </dd>
                                         <dd> * removed time from daily mean values </dd>
                                     </dl>
-                                    <dl>Version 1.2 February 25th, 2011 <br />
+<!--                                    <dl>Version 1.2 February 25th, 2011 <br />
                                         <dd> * Added daily mean value option - mean daily results can be found in /sos/dv </dd>
                                         <dd> * Instantaneous values (variable resolution, depending on the station) are now found at /sos/uv </dd>
                                         <dd> * Added observedProperty option to url.  Discharge, GageHeight....</dd>
-                                    </dl>
+                                    </dl>-->
 <!--                                    <dl>Version 1.1 February 15th, 2011 <br />
                                         <dd> * Updated maps to work in Chrome/Safari </dd>
                                         <dd> * Updated getObservation to properly account for P/A qualifiers </dd>
@@ -402,7 +408,9 @@
                     var Title = 'Station: ' + USGS_link + '<br />';
                     var WML2_link_uv = '<li><a href =' + base_url + '/sos/uv?request=GetObservation&featureId=' + Site_no + '&observedProperty=Discharge&beginPosition=' + old_date + '>GetObservation - Instantaneous</a></li>';
                     var WML2_link_dv = '<li><a href =' + base_url + '/sos/dv?request=GetObservation&featureId=' + Site_no + '&observedProperty=Discharge&beginPosition=' + old_date + '>GetObservation - Daily Mean</a></li>';
-                    var html = USGS_picture + Title + Name + WML2_link_uv + WML2_link_dv + GetFeature;
+                    var GDA_link_dv = '<li><a href =' + base_url + '/sos/dv?request=GetDataAvailablity&featureId=' + Site_no +'>GetDataAvailablity - Daily Mean</a></li>';
+                    var GDA_link_uv = '<li><a href =' + base_url + '/sos/uv?request=GetDataAvailablity&featureId=' + Site_no +'>GetDataAvailablity - Instantaneous</a></li>';
+                    var html = USGS_picture + Title + Name + WML2_link_uv + WML2_link_dv + GDA_link_dv + GDA_link_uv;
 
                     return html
                 }
