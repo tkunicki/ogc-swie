@@ -8,7 +8,9 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 
 public abstract class OGCBinding {
-	
+
+    // These namespaces are for SOS 1.0
+    // TODO: [IK] rename this to GetObservation_1_0_NamespaceContext
 	public static class GetObservationNamespaceContext implements NamespaceContext {
 
 		public final static Map<String, String> namespaceMap; 
@@ -21,6 +23,42 @@ public abstract class OGCBinding {
 			namespaceMap.put("wfs", "http://www.opengis.net/wfs");
 		}
 		
+		@Override
+		public String getNamespaceURI(String prefix) {
+			if (prefix == null) {
+				throw new NullPointerException("prefix is null");
+			}
+			String namespaceURI = namespaceMap.get(prefix);
+			if (namespaceURI == null) {
+				namespaceURI = XMLConstants.NULL_NS_URI;
+			}
+			return namespaceURI;
+		}
+
+		@Override
+		public String getPrefix(String namespaceURI) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Iterator<String> getPrefixes(String namespaceURI) {
+			throw new UnsupportedOperationException();
+		}
+	}
+
+        	public static class GetObservation_2_0_NamespaceContext implements NamespaceContext {
+
+		public final static Map<String, String> namespaceMap;
+		static {
+                    // TODO: Laura fills this out
+			namespaceMap = new HashMap<String, String>();
+			namespaceMap.put("gml", "http://www.opengis.net/gml");
+			namespaceMap.put("ogc", "http://www.opengis.net/ogc");
+			namespaceMap.put("sa", "http://www.opengis.net/sampling/1.0");
+			namespaceMap.put("sos", "http://www.opengis.net/sos/1.0");
+			namespaceMap.put("wfs", "http://www.opengis.net/wfs");
+		}
+
 		@Override
 		public String getNamespaceURI(String prefix) {
 			if (prefix == null) {

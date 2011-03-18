@@ -150,33 +150,37 @@
                         </dd>
                     </dl>
 
-<!--                    <p />
+                   <p />
                    <dt><i>GetObservation by via XML HTTP body POST:</i><br /></dt>
                       <dd>  <form name="input" action="<%=baseURL%>/sos/dv?request=GetObservation" method="post">
                                 <textarea name="xml" rows="10" cols="90">
 <?xml version="1.0" ?>
-<GetObservation xmlns="http://www.opengis.net/sos/1.0"
- xmlns:ows="http://www.opengis.net/ows/1.1"
- xmlns:gml="http://www.opengis.net/gml"
- xmlns:ogc="http://www.opengis.net/ogc"
- xmlns:om="http://www.opengis.net/om/1.0"
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://www.opengis.net/sos/1.0
- http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd"
- service="SOS" version="1.0.0" srsName="urn:ogc:def:crs:EPSG:4326">
-    <offering>Discharge</offering>
-    <procedure>urn:ogc:object:feature:Sensor:IFGI:ifgi-sensor-1</procedure>
-    <observedProperty>urn:ogc:def:property:OGC:Discharge</observedProperty>
-    <featureOfInterest>
-        <ObjectID>USGS.01446500</ObjectID>
-    </featureOfInterest>
-    <responseFormat>text/xml;subtype=&quot;om/1.0.0&quot;</responseFormat>
-</GetObservation>
+<sos:GetObservation version="1.0.0" service="SOS"
+    maxFeatures="3"
+    xmlns:sos="http://schemas.opengis.net/sos/1.0.0/"
+    xmlns:wfs="http://www.opengis.net/wfs"
+    xmlns:ogc="http://www.opengis.net/ogc"
+    xmlns:gml="http://www.opengis.net/gml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:om="http://www.opengis.net/om/2.0"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    >
+    <gml:identifier>01446500</gml:identifier>
+    <om:observedProperty xlink:title="Discharge"></om:observedProperty>
+    <om:result>
+        <sos:domainExtent xlink:href="ts_period">
+            <gml:TimePeriod gml:id="USGS.TP.01446500">
+                <gml:beginPosition>1970-01-01</gml:beginPosition>
+                <gml:endPosition>1980-01-01</gml:endPosition>
+            </gml:TimePeriod>
+        </sos:domainExtent>
+    </om:result>
+</sos:GetObservation>
                                             </textarea><br />
                                             <input type="submit" value="Submit" />
                                         </form>
                     </dd>
-                    <p />-->
+                    <p />
 
                     <dl>
                                 <dt><b>GetCapabilities</b></dt>
@@ -233,7 +237,7 @@
     xmlns:ogc="http://www.opengis.net/ogc"
     xmlns:gml="http://www.opengis.net/gml"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <wfs:Query typeName="swml:Discharge">
+  <wfs:Query>
     <ogc:Filter>
       <ogc:BBOX>
         <gml:Envelope>
