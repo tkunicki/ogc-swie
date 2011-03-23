@@ -42,26 +42,26 @@ import org.w3c.dom.Node;
 public class UVServlet extends HttpServlet {
 
 	private static final String OBSERVATION_ID = "observationId";
-
 	private static final String DEFAULT_ENCODING = "UTF-8";
-
 	private static final long serialVersionUID = 1L;
 
 	//private final static String XPATH_Envelope = "//sos:GetObservation/sos:featureOfInterest/ogc:BBOX[ogc:PropertyName='gml:location']/gml:Envelope";
-	private final static String XPATH_Envelope = "//sos:GetObservation/wml:featureOfInterest/ogc:BBOX/gml:Envelope";
-	private final static String XPATH_cornerLower = "gml:lowerCorner/text()";
-	private final static String XPATH_upperCorner = "gml:upperCorner/text()";
-	//private final static String XPATH_filter = "//ogc:Filter";
-	private final static String XPATH_eventTime = "//wml:eventTime";
-	private final static String XPATH_featureId = "//ogc:FeatureId/@fid";
-        private final static String XPATH_observedProperty = "//om:observedProperty/@fid";
-	private static final String XPATH_observationId = "//wml:ObservationId";
+//	private final static String XPATH_Envelope = "//sos:GetObservation/wml:featureOfInterest/ogc:BBOX/gml:Envelope";
+//	private final static String XPATH_cornerLower = "gml:lowerCorner/text()";
+//	private final static String XPATH_upperCorner = "gml:upperCorner/text()";
+//	//private final static String XPATH_filter = "//ogc:Filter";
+//	private final static String XPATH_eventTime = "//wml:eventTime";
+//	private final static String XPATH_featureId = "//ogc:FeatureId/@fid";
+//        private final static String XPATH_observedProperty = "//om:observedProperty/@fid";
+//	private static final String XPATH_observationId = "//wml:ObservationId";
+//	private final static Pattern PATTERN_cornerSplit = Pattern.compile("\\s+");
 
-	private final static Pattern PATTERN_cornerSplit = Pattern.compile("\\s+");
+        private final static XMLOutputFactory2 xmlOutputFactory;
 
-	private final static XMLOutputFactory2 xmlOutputFactory;
-
-
+        public static final String XPATH_FEATURE_ID = "//sos:featureOfInterest/text()";
+        public static final String XPATH_observedProperty = "//sos:observedProperty/text()";
+        public static final String XPATH_beginPosition = "//gml:TimeInstant[@gml:id='beginPosition']/gml:timePosition/text()";
+        public static final String XPATH_endPosition = "//gml:TimeInstant[@gml:id='endPosition']/gml:timePosition/text()";
 
 	static {
 		xmlOutputFactory = new WstxOutputFactory();
@@ -240,47 +240,16 @@ public class UVServlet extends HttpServlet {
 
 		XPathFactory xpathFactory = XPathFactory.newInstance();
 		XPath xpath = xpathFactory.newXPath();
-		xpath.setNamespaceContext(new OGCBinding.GetObservationNamespaceContext());
-
-		{ // parse service
-			XPathExpression serviceExpression = xpath.compile("/*");
-			Node serviceNode = (Node) serviceExpression.evaluate(document, XPathConstants.NODE);
-			parameterMap.put("request", new String[] {serviceNode.getLocalName()});
-		}
-
-
-		// XPath expressions for the container of the bounding box and the upper and lower corners
-		XPathExpression envelopeExpression =  xpath.compile(XPATH_Envelope);
-		Object envelopeResult = envelopeExpression.evaluate(document, XPathConstants.NODE);
-		if (envelopeResult != null && envelopeResult instanceof Node) {
-
-			// We are necessarily in the GetObservations element, by the expression for XPATH_Envelope
-			{	// bad logic. Refactor out
-				parameterMap.put("request", new String[] {"GetObservation"});
-			}
-
-			extractBBox(parameterMap, xpath, (Node) envelopeResult);
-		} else {
-			System.out.println(XPATH_Envelope + " : not found.");
-		}
-		{
-			// Handle observation ID
-			XPathExpression obsIdExpression = xpath.compile(XPATH_observationId);
-			Object obsIDResult = obsIdExpression.evaluate(document, XPathConstants.NODE);
-			if (obsIDResult != null && obsIDResult instanceof Node) {
-				Node obsIdNode = (Node)obsIDResult;
-				String obsId = obsIdNode.getTextContent();
-				parameterMap.put("observationId", new String[] {obsId});
-			}
-		}
+		xpath.setNamespaceContext(new OGCBinding.GetObservation_2_0_NamespaceContext());
 
 		{
 			// Handle feature ID
-			XPathExpression featureIdExpression = xpath.compile(XPATH_featureId);
+			XPathExpression featureIdExpression = xpath.compile(XPATH_FEATURE_ID);
 			Object featureIDResult = featureIdExpression.evaluate(document, XPathConstants.NODE);
 			if (featureIDResult != null && featureIDResult instanceof Node) {
 				Node featureIdNode = (Node)featureIDResult;
 				String featureId = featureIdNode.getTextContent();
+
 				parameterMap.put(OGCBusinessRules.FEATURE_ID, new String[] {featureId});
 			}
 		}
@@ -292,44 +261,35 @@ public class UVServlet extends HttpServlet {
 			if (observedPropertyResult != null && observedPropertyResult instanceof Node) {
 				Node observedPropertyNode = (Node)observedPropertyResult;
 				String observedProperty = observedPropertyNode.getTextContent();
-                                        if (observedProperty.equalsIgnoreCase("Discharge")) {
-                                            observedProperty = "00060";
-                                        } else if (observedProperty.equalsIgnoreCase("GageHeight")) {
-                                            observedProperty = "00065";
-                                        } else if (observedProperty.equalsIgnoreCase("Temperature")) {
-                                            observedProperty = "00010";
-                                        } else if (observedProperty.equalsIgnoreCase("Precipitation")) {
-                                            observedProperty = "00045";
-                                        }
-                                parameterMap.put(OGCBusinessRules.observedProperty, new String[] {observedProperty});				
+
+                                parameterMap.put(OGCBusinessRules.observedProperty, new String[] {observedProperty});
 			}
 		}
 
-		{
-			//Handle Filter
-			XPathExpression filterExpression = xpath.compile(XPATH_eventTime);
-			Object filterResult = filterExpression.evaluate(document, XPathConstants.NODE);
-			Map<String, String[]> filters = parseOGCTemporalFilter(xpath, filterResult);
-			parameterMap.putAll(filters);
+                {
+			// Handle beginPosition
+			XPathExpression beginPositionExpression = xpath.compile(XPATH_beginPosition);
+			Object beginPositionResult = beginPositionExpression.evaluate(document, XPathConstants.NODE);
+			if (beginPositionResult != null && beginPositionResult instanceof Node) {
+				Node beginPositionNode = (Node)beginPositionResult;
+				String beginPosition = beginPositionNode.getTextContent();
+
+                                parameterMap.put("beginPosition", new String[] {beginPosition});
+			}
 		}
 
-		{
-			// Handle the value constraints
+                {
+			// Handle endPosition
+			XPathExpression endPositionExpression = xpath.compile(XPATH_endPosition);
+			Object endPositionResult = endPositionExpression.evaluate(document, XPathConstants.NODE);
+			if (endPositionResult != null && endPositionResult instanceof Node) {
+				Node endPositionNode = (Node)endPositionResult;
+				String endPosition = endPositionNode.getTextContent();
 
-			//			parse for sos:result
-			//			parse for greaterThan, PropertyIsEqualTo?
-			//					PropertyIsLessThan?
-			//							PropertyIsNotEqualTo?
-			//							PropertyIsGreaterThan?
-			//							PropertyIsLessThanOrEqualTo?
-			//							PropertyIsGreaterThanOrEqualTo?
-			//							PropertyIsBetween?
-			//			into 4 params:
-			//				greaterThan, greaterThanOrEqual, lessThan, lessThanOrEqual
-			//			and then process
-
-
+                                parameterMap.put("endPosition", new String[] {endPosition});
+			}
 		}
+
 		return parameterMap;
 	}
 
@@ -429,52 +389,52 @@ public class UVServlet extends HttpServlet {
 		return null; // unrecognized time format
 	}
 
-	protected void extractBBox(Map<String, String[]> parameterMap, XPath xpath, Node envelopeNode)
-	throws XPathExpressionException {
-		XPathExpression lowerCornerExpression =  xpath.compile(XPATH_cornerLower);
-		XPathExpression upperCornerExpression =  xpath.compile(XPATH_upperCorner);
-
-		String lowerCornerString = lowerCornerExpression.evaluate(envelopeNode);
-		String upperCornerString = upperCornerExpression.evaluate(envelopeNode);
-
-		// Parse the coordinates of the bounding box corner parameters
-		if (lowerCornerString != null && upperCornerString != null) {
-			String[] lowerSplit = PATTERN_cornerSplit.split(lowerCornerString.trim());
-			String[] upperSplit = PATTERN_cornerSplit.split(upperCornerString.trim());
-			if (lowerSplit.length == 2 && upperSplit.length == 2) {
-				try {
-					float lon0 = Float.parseFloat(lowerSplit[0]);
-					float lat0 = Float.parseFloat(lowerSplit[1]);
-					float lon1 = Float.parseFloat(upperSplit[0]);
-					float lat1 = Float.parseFloat(upperSplit[1]);
-					if (Float.isNaN(lon0) || Float.isNaN(lat0) || Float.isNaN(lon1) || Float.isNaN(lat1)) {
-						System.err.println("invalid number format");
-					} else {
-						if (lon0 < lon1) {
-							parameterMap.put("east", new String[] { upperSplit[0]} );
-							parameterMap.put("west", new String[] { lowerSplit[0]} );
-						} else {
-							parameterMap.put("east", new String[] { lowerSplit[0] } );
-							parameterMap.put("west", new String[] { upperSplit[0] } );
-						}
-						if (lat0 < lat1) {
-							parameterMap.put("south", new String[] { lowerSplit[1] } );
-							parameterMap.put("north", new String[] { upperSplit[1] } );
-						} else {
-							parameterMap.put("south", new String[] { upperSplit[1] } );
-							parameterMap.put("north", new String[] { lowerSplit[1] } );
-						}
-					}
-				} catch (NumberFormatException e) {
-					System.out.println(XPATH_cornerLower + " or " + XPATH_upperCorner + " contain value with invalid number format");
-				}
-			} else {
-				System.out.println(XPATH_cornerLower + " or " + XPATH_upperCorner + " contain an invalid parameter count (expected 2, whitespace delimited).");
-			}
-		} else {
-			System.out.println(XPATH_cornerLower + " or " + XPATH_upperCorner + " not found.");
-		}
-	}
+//	protected void extractBBox(Map<String, String[]> parameterMap, XPath xpath, Node envelopeNode)
+//	throws XPathExpressionException {
+//		XPathExpression lowerCornerExpression =  xpath.compile(XPATH_cornerLower);
+//		XPathExpression upperCornerExpression =  xpath.compile(XPATH_upperCorner);
+//
+//		String lowerCornerString = lowerCornerExpression.evaluate(envelopeNode);
+//		String upperCornerString = upperCornerExpression.evaluate(envelopeNode);
+//
+//		// Parse the coordinates of the bounding box corner parameters
+//		if (lowerCornerString != null && upperCornerString != null) {
+//			String[] lowerSplit = PATTERN_cornerSplit.split(lowerCornerString.trim());
+//			String[] upperSplit = PATTERN_cornerSplit.split(upperCornerString.trim());
+//			if (lowerSplit.length == 2 && upperSplit.length == 2) {
+//				try {
+//					float lon0 = Float.parseFloat(lowerSplit[0]);
+//					float lat0 = Float.parseFloat(lowerSplit[1]);
+//					float lon1 = Float.parseFloat(upperSplit[0]);
+//					float lat1 = Float.parseFloat(upperSplit[1]);
+//					if (Float.isNaN(lon0) || Float.isNaN(lat0) || Float.isNaN(lon1) || Float.isNaN(lat1)) {
+//						System.err.println("invalid number format");
+//					} else {
+//						if (lon0 < lon1) {
+//							parameterMap.put("east", new String[] { upperSplit[0]} );
+//							parameterMap.put("west", new String[] { lowerSplit[0]} );
+//						} else {
+//							parameterMap.put("east", new String[] { lowerSplit[0] } );
+//							parameterMap.put("west", new String[] { upperSplit[0] } );
+//						}
+//						if (lat0 < lat1) {
+//							parameterMap.put("south", new String[] { lowerSplit[1] } );
+//							parameterMap.put("north", new String[] { upperSplit[1] } );
+//						} else {
+//							parameterMap.put("south", new String[] { upperSplit[1] } );
+//							parameterMap.put("north", new String[] { lowerSplit[1] } );
+//						}
+//					}
+//				} catch (NumberFormatException e) {
+//					System.out.println(XPATH_cornerLower + " or " + XPATH_upperCorner + " contain value with invalid number format");
+//				}
+//			} else {
+//				System.out.println(XPATH_cornerLower + " or " + XPATH_upperCorner + " contain an invalid parameter count (expected 2, whitespace delimited).");
+//			}
+//		} else {
+//			System.out.println(XPATH_cornerLower + " or " + XPATH_upperCorner + " not found.");
+//		}
+//	}
 
 	private XMLStreamReaderDAO getXMLStreamReaderDAO() throws ServletException {
 		XMLStreamReaderDAO xmlStreamReaderDAO = null;

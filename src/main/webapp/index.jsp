@@ -2,29 +2,18 @@
 <% String baseURL = request.getRequestURL().toString().replaceAll("/[^/]*$", "");%>
 <%@ page  language="java" import="java.util.*,java.text.*"%>
 <%
-    Calendar ca = new GregorianCalendar();
-    int Day=ca.get(Calendar.DATE);
-    int Year=ca.get(Calendar.YEAR);
-    int Month=ca.get(Calendar.MONTH)+1;
-    int old_Day = Day - 3;
-    if (old_Day < 0) {
-        old_Day = 1;
-        };
-    String Month_str = "";
-    if (Month < 10) {
-        Month_str = '0' + Integer.toString(Month);
-        }
-    else {
-           Month_str = Integer.toString(Month);
-       };
-    String Day_str = "";
-    if (old_Day < 10) {
-        Day_str = '0' + Integer.toString(old_Day);
-        }
-    else {
-        Day_str = Integer.toString(old_Day);
-       };
-    String Old_Date = Integer.toString(Year) + '-' + Month_str + '-' + Day_str;
+    Calendar lastWeek = new GregorianCalendar();
+    lastWeek.add(Calendar.DAY_OF_YEAR, -7);
+
+    Date now = new Date();
+
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+    String todayFormated = formatter.format(now);
+    String lastWeekFormated = formatter.format(lastWeek.getTime());
+
+    String Today = todayFormated;
+    String LastWeek = lastWeekFormated;
 
  %>
 
@@ -80,7 +69,7 @@
 
 <!===============================Create Table=========================================>
     <font face="Arial">
-    <h1>Surface Water IE 1.4</h1>
+    <h1>Surface Water IE 1.5</h1>
     <table border=0>
         <tr>
           <td>
@@ -102,18 +91,53 @@
                         <dt>Not every station will have all observedProperty options available, use GetDataAvailablity to find out which stations offer which properties<br />
                         <i>Instantaneous gage height observation by feature ID and begin time:</i></dt>
                         <dd>
-                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=01446500&observedProperty=GageHeight&beginPosition=<%=Old_Date%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=01446500&observedProperty=GageHeight&beginPosition=<%=Old_Date%></a>
+                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=01446500&observedProperty=GageHeight&beginPosition=<%=LastWeek%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=01446500&observedProperty=GageHeight&beginPosition=<%=LastWeek%></a>
                         </dd>
                         <i>Instantaneous resolution discharge observation by feature ID and begin time:</i><br />
                         <dd>
-                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=01446500&observedProperty=Discharge&beginPosition=<%=Old_Date%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=01446500&observedProperty=Discharge&beginPosition=<%=Old_Date%></a>
+                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=01446500&observedProperty=Discharge&beginPosition=<%=LastWeek%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=01446500&observedProperty=Discharge&beginPosition=<%=LastWeek%></a>
                         </dd>
                         <i>Instantaneous temperature observation by feature ID and begin time:</i><br />
                         <dd>
-                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=05407000&observedProperty=Temperature&beginPosition=<%=Old_Date%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=05407000&observedProperty=Temperature&beginPosition=<%=Old_Date%></a>
+                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=05407000&observedProperty=Temperature&beginPosition=<%=LastWeek%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=05407000&observedProperty=Temperature&beginPosition=<%=LastWeek%></a>
                         </dd>
 
                     </dl>
+                   <p />
+                   <dt><i>GetObservation via XML HTTP body POST:</i><br /></dt>
+                      <dd>  <form name="input" action="<%=baseURL%>/sos/uv?request=GetObservation" method="post">
+                                <textarea name="xml" rows="10" cols="90">
+<?xml version="1.0" ?>
+<sos:GetObservation version="2.0.0" service="SOS"
+    maxFeatures="3"
+    xmlns:sos="http://schemas.opengis.net/sos/2.0.0/"
+    xmlns:wfs="http://www.opengis.net/wfs"
+    xmlns:ogc="http://www.opengis.net/ogc"
+    xmlns:gml="http://www.opengis.net/gml/3.2"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:om="http://www.opengis.net/om/2.0"
+    xmlns:fes="http://www.opengis.net/fes/2.0"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xsi:schemaLocation="http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0.0/sos.xsd">
+    <sos:featureOfInterest>01446500</sos:featureOfInterest>
+    <sos:observedProperty>Discharge</sos:observedProperty>
+    <sos:temporalFilter>
+        <fes:ValueReference>phenomenonTime</fes:ValueReference>
+        <gml:TimeInstant gml:id='beginPosition'>
+            <gml:timePosition><%=LastWeek%></gml:timePosition>
+        </gml:TimeInstant>
+        <gml:TimeInstant gml:id='endPosition'>
+            <gml:timePosition><%=Today%></gml:timePosition>
+        </gml:TimeInstant>
+    </sos:temporalFilter>
+</sos:GetObservation>
+
+                                            </textarea><br />
+                                            <input type="submit" value="Submit" />
+                                        </form>
+                    </dd>
+                    <p />
+
                     <dl>
                                 <dt><b>GetCapabilities</b></dt>
                                 <dd><a href="<%=baseURL%>/sos/uv?request=GetCapabilities"><%=baseURL%>/sos/uv?request=GetCapabilities</a></dd>
@@ -130,7 +154,7 @@
                                 <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity&featureID=05568500"><%=baseURL%>/sos/uv?request=GetDataAvailablity&featureID=05568500</a></dd>
                                 <i>GetDataAvailablity by observed property and feature ID:</i>
                                 <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500"><%=baseURL%>/sos/uv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500</a></dd>
-                                </dd>
+                                
                     </dl>
 
                     <p></p>
@@ -146,36 +170,39 @@
                         </dd>
                         <i>Daily mean precipitation observation by feature ID and begin time:</i><br />
                         <dd>
-                            <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=05407000&observedProperty=Precipitation&beginPosition=<%=Old_Date%>"><%=baseURL%>/sos/dv?request=GetObservation&featureId=05407000&observedProperty=Precipitation&beginPosition=<%=Old_Date%></a>
+                            <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=05407000&observedProperty=Precipitation&beginPosition=<%=LastWeek%>"><%=baseURL%>/sos/dv?request=GetObservation&featureId=05407000&observedProperty=Precipitation&beginPosition=<%=LastWeek%></a>
                         </dd>
                     </dl>
 
                    <p />
-                   <dt><i>GetObservation by via XML HTTP body POST:</i><br /></dt>
+                   <dt><i>GetObservation via XML HTTP body POST:</i><br /></dt>
                       <dd>  <form name="input" action="<%=baseURL%>/sos/dv?request=GetObservation" method="post">
                                 <textarea name="xml" rows="10" cols="90">
 <?xml version="1.0" ?>
-<sos:GetObservation version="1.0.0" service="SOS"
+<sos:GetObservation version="2.0.0" service="SOS"
     maxFeatures="3"
-    xmlns:sos="http://schemas.opengis.net/sos/1.0.0/"
+    xmlns:sos="http://schemas.opengis.net/sos/2.0.0/"
     xmlns:wfs="http://www.opengis.net/wfs"
     xmlns:ogc="http://www.opengis.net/ogc"
-    xmlns:gml="http://www.opengis.net/gml"
+    xmlns:gml="http://www.opengis.net/gml/3.2"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:om="http://www.opengis.net/om/2.0"
+    xmlns:fes="http://www.opengis.net/fes/2.0"
     xmlns:xlink="http://www.w3.org/1999/xlink"
-    >
-    <gml:identifier>01446500</gml:identifier>
-    <om:observedProperty xlink:title="Discharge"></om:observedProperty>
-    <om:result>
-        <sos:domainExtent xlink:href="ts_period">
-            <gml:TimePeriod gml:id="USGS.TP.01446500">
-                <gml:beginPosition>1970-01-01</gml:beginPosition>
-                <gml:endPosition>1980-01-01</gml:endPosition>
-            </gml:TimePeriod>
-        </sos:domainExtent>
-    </om:result>
+    xsi:schemaLocation="http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0.0/sos.xsd">
+    <sos:featureOfInterest>01446500</sos:featureOfInterest>
+    <sos:observedProperty>Discharge</sos:observedProperty>
+    <sos:temporalFilter>
+        <fes:ValueReference>phenomenonTime</fes:ValueReference>
+        <gml:TimeInstant gml:id='beginPosition'>
+            <gml:timePosition><%=LastWeek%></gml:timePosition>
+        </gml:TimeInstant>
+        <gml:TimeInstant gml:id='endPosition'>
+            <gml:timePosition><%=Today%></gml:timePosition>
+        </gml:TimeInstant>
+    </sos:temporalFilter>
 </sos:GetObservation>
+
                                             </textarea><br />
                                             <input type="submit" value="Submit" />
                                         </form>
@@ -198,7 +225,7 @@
                                 <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity&featureID=05568500"><%=baseURL%>/sos/dv?request=GetDataAvailablity&featureID=05568500</a></dd>
                                 <i>GetDataAvailablity by observed property and feature ID:</i>
                                 <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500"><%=baseURL%>/sos/dv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500</a></dd>
-                                </dd>
+                                
                     </dl>
                     <p></p>
 
@@ -274,14 +301,18 @@
 
                                 </li>
                                 <li><strong>Log</strong>
+                                   <dl>Version 1.5 March 22th, 2011 <br />
+                                        <dd> * Included a minimal implementation of GetObservation via XML HTTP body POST </dd>
+                                        <dd> * Included plot links </dd>
+                                    </dl>
                                    <dl>Version 1.4 March 16th, 2011 <br />
                                         <dd> * Updated GetDataObservation </dd>
                                         <dd> * Included GetObservation by XML HTTP body POST </dd>
                                     </dl>
-                                    <dl>Version 1.3 March 10th, 2011 <br />
+<!--                                    <dl>Version 1.3 March 10th, 2011 <br />
                                         <dd> * Began work on GetDataObservation </dd>
                                         <dd> * removed time from daily mean values </dd>
-                                    </dl>
+                                    </dl>-->
 <!--                                    <dl>Version 1.2 February 25th, 2011 <br />
                                         <dd> * Added daily mean value option - mean daily results can be found in /sos/dv </dd>
                                         <dd> * Instantaneous values (variable resolution, depending on the station) are now found at /sos/uv </dd>
@@ -326,7 +357,7 @@
         if (GBrowserIsCompatible()) {
           var gmarkers = [];
           var base_url = '<%=baseURL%>';
-          var old_date = '<%=Old_Date%>';
+          var LastWeekStr = '<%=LastWeek%>';
           var wfs_url = base_url + "/wfs?request=GetFeature";
 
           function LoadXML(filename){
@@ -410,8 +441,8 @@
                     var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + Site_no + '>GetFeature</a></li>';
                     var USGS_link = '<a href = "' + USGS_URL + '" >' + Site_no + '</a>';
                     var Title = 'Station: ' + USGS_link + '<br />';
-                    var WML2_link_uv = '<li><a href =' + base_url + '/sos/uv?request=GetObservation&featureId=' + Site_no + '&observedProperty=Discharge&beginPosition=' + old_date + '>GetObservation - Instantaneous</a></li>';
-                    var WML2_link_dv = '<li><a href =' + base_url + '/sos/dv?request=GetObservation&featureId=' + Site_no + '&observedProperty=Discharge&beginPosition=' + old_date + '>GetObservation - Daily Mean</a></li>';
+                    var WML2_link_uv = '<li><a href =' + base_url + '/sos/uv?request=GetObservation&featureId=' + Site_no + '&observedProperty=Discharge&beginPosition=' + LastWeekStr + '>GetObservation - Instantaneous</a></li>';
+                    var WML2_link_dv = '<li><a href =' + base_url + '/sos/dv?request=GetObservation&featureId=' + Site_no + '&observedProperty=Discharge&beginPosition=' + LastWeekStr + '>GetObservation - Daily Mean</a></li>';
                     var GDA_link_dv = '<li><a href =' + base_url + '/sos/dv?request=GetDataAvailablity&featureId=' + Site_no +'>GetDataAvailablity - Daily Mean</a></li>';
                     var GDA_link_uv = '<li><a href =' + base_url + '/sos/uv?request=GetDataAvailablity&featureId=' + Site_no +'>GetDataAvailablity - Instantaneous</a></li>';
                     var html = USGS_picture + Title + Name + WML2_link_uv + WML2_link_dv + GDA_link_dv + GDA_link_uv;

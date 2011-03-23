@@ -2,32 +2,18 @@
 <% String baseURL = request.getRequestURL().toString().replaceAll("/[^/]*$", "");%>
 <%@ page  language="java" import="java.util.*,java.text.*"%>
 <%
-    Calendar ca = new GregorianCalendar();
-    //ca = ca.set(Calendar.DATE, -7)
-    int Day=ca.get(Calendar.DATE);
-    int Year=ca.get(Calendar.YEAR);
-    int Month=ca.get(Calendar.MONTH)+1;
-    String Today = Integer.toString(Year) + '-' + Integer.toString(Month) + '-' + Integer.toString(Day);
+    Calendar lastWeek = new GregorianCalendar();
+    lastWeek.add(Calendar.DAY_OF_YEAR, -7);
 
-    int old_Day = Day - 3;
-    if (old_Day < 0) {
-        old_Day = 1;
-        };
-    String Month_str = "";
-    if (Month < 10) {
-        Month_str = '0' + Integer.toString(Month);
-        }
-    else {
-           Month_str = Integer.toString(Month);
-       };
-    String Day_str = "";
-    if (old_Day < 10) {
-        Day_str = '0' + Integer.toString(old_Day);
-        }
-    else {
-        Day_str = Integer.toString(old_Day);
-       };
-    String Old_Date = Integer.toString(Year) + '-' + Month_str + '-' + Day_str;
+    Date now = new Date();
+
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+    String todayFormated = formatter.format(now);
+    String lastWeekFormated = formatter.format(lastWeek.getTime());
+
+    String Today = todayFormated;
+    String LastWeek = lastWeekFormated;
  %>
 <html>
     <head>
@@ -53,7 +39,6 @@
         <script type="text/javascript" src="jquery-1.4.4.js"></script>
         <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>
         <script src="mapiconmaker.js" type="text/javascript"></script>
-        <script src="date.f-0.5.0.js" type="text/javascript"></script>
     </head>
 
 <body>
@@ -135,82 +120,86 @@
 
         <script>
     //<![CDATA[
-        if (GBrowserIsCompatible()) {
-          var gmarkers = [];
-          var base = '<%=baseURL%>';
-          var d1 = new Date();
-          var Today_long = d1.f("MMM d");
-          var today = '<%=Today%>';
-          var old_day = '<%=Old_Date%>';
-          var test = base.length - 10;    // Gets rid of /GoogleMap/ from baseURL
-          var base_url = base.substring(0,test);
+if (GBrowserIsCompatible()) {
 
-          function LoadXML(filename){
-      	    if (window.XMLHttpRequest) {
-      	        xhttp = new XMLHttpRequest();
-      	    }
-      	    else {
-      	        xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-      	    }
-      	    xhttp.open("GET", filename, false);
-      	    xhttp.send("");
+      var gmarkers = [];
+      var base = '<%=baseURL%>';
+      var today = '<%=Today%>';
+      var test = base.length - 10;    // Gets rid of /GoogleMap/ from baseURL
+      var base_url = base.substring(0,test);
+      var LastWeekStr = '<%=LastWeek%>';
 
-      	    return xhttp.responseXML;
-         }
+      function LoadXML(filename){
+        if (window.XMLHttpRequest) {
+            xhttp = new XMLHttpRequest();
+        }
+        else {
+            xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xhttp.open("GET", filename, false);
+        xhttp.send("");
 
-          function parseXml(xml){
-                $(xml).find("[nodeName=wfs:FeatureCollection],FeatureCollection").each(function()
+        return xhttp.responseXML;
+     }
+
+      function parseXml(xml){
+            $(xml).find("[nodeName=wfs:FeatureCollection],FeatureCollection").each(function()
+                {
+                    $(xml).find("[nodeName=wfs:member],member").each(function()
                     {
-                        $(xml).find("[nodeName=wfs:member],member").each(function()
-                        {
-                                var siteName = $("[nodeName=gml:name]", this).text();
-                                var pos = $("[nodeName=gml:pos]", this).text();
-                                var pos_array = pos.split(" ");
-                                var latitude = pos_array[0];
-                                var longitude = pos_array[1];
-                                var pos_name = $("[nodeName=gml:pos]", this).attr("srsName");
-                                var siteCode_long = $("[nodeName=wml2:WaterMonitoringPoint]", this).attr("gml:id");
-                                var siteCode_array = siteCode_long.split(".");
-                                var siteCode = siteCode_array[2];
-                                var USGS_URL = $("[nodeName=sf:sampledFeature]", this).attr("xlink:ref");
-                                var URL_array = USGS_URL.split("/");
-                                var stateNM = URL_array[3];
-                                var point = new GLatLng(latitude, longitude);
-                                var marker = createTabbedMarker(point, siteName,  stateNM, siteCode, USGS_URL);
-                                map.addOverlay(marker);
-                                makeSidebar();
-                        });
+                            var siteName = $("[nodeName=gml:name]", this).text();
+                            var pos = $("[nodeName=gml:pos]", this).text();
+                            var pos_array = pos.split(" ");
+                            var latitude = pos_array[0];
+                            var longitude = pos_array[1];
+                            var pos_name = $("[nodeName=gml:pos]", this).attr("srsName");
+                            var siteCode_long = $("[nodeName=wml2:WaterMonitoringPoint]", this).attr("gml:id");
+                            var siteCode_array = siteCode_long.split(".");
+                            var siteCode = siteCode_array[2];
+                            var USGS_URL = $("[nodeName=sf:sampledFeature]", this).attr("xlink:ref");
+                            var URL_array = USGS_URL.split("/");
+                            var stateNM = URL_array[3];
+                            var point = new GLatLng(latitude, longitude);
+                            var marker = createTabbedMarker(point, siteName,  stateNM, siteCode, USGS_URL);
+                            map.addOverlay(marker);
+                            makeSidebar();
                     });
-                }
+                });
+            }
 
-            function parseXml_Coastal(xml){
-                $(xml).find("[nodeName=wfs:FeatureCollection],FeatureCollection").each(function()
-                    {
-                        $(xml).find("[nodeName=wfs:member],member").each(function()
-                        {
-                                var siteName = $("[nodeName=gml:name]", this).text();
-                                var pos = $("[nodeName=gml:pos]", this).text();
-                                var pos_array = pos.split(" ");
-                                var latitude = pos_array[0];
-                                var longitude = pos_array[1];
-                                var pos_name = $("[nodeName=gml:pos]", this).attr("srsName");
-                                var siteCode = $("[nodeName=wml2:WaterMonitoringPoint]", this).attr("gml:id");
-                                var USGS_URL = $("[nodeName=sf:sampledFeature]", this).attr("xlink:ref");
-                                var URL_array = USGS_URL.split("/");
-                                var stateNM = "Coastal";
-                                var point = new GLatLng(latitude, longitude);
-                                var marker = createCoastalMarker(point, siteName,  stateNM, siteCode, USGS_URL);
-                                map.addOverlay(marker);
-                                makeSidebar();
-                         });
-                    });
-                }
+    function parseXml_Coastal(xml){
+        $(xml).find("[nodeName=wfs:FeatureCollection],FeatureCollection").each(function()
+            {
+                $(xml).find("[nodeName=wfs:member],member").each(function()
+                {
+                        var siteName = $("[nodeName=gml:name]", this).text();
+                        var pos = $("[nodeName=gml:pos]", this).text();
+                        var pos_array = pos.split(" ");
+                        var latitude = pos_array[0];
+                        var longitude = pos_array[1];
+                        var pos_name = $("[nodeName=gml:pos]", this).attr("srsName");
+                        var siteCode = $("[nodeName=wml2:WaterMonitoringPoint]", this).attr("gml:id");
+                        var USGS_URL = $("[nodeName=sf:sampledFeature]", this).attr("xlink:ref");
+                        var URL_array = USGS_URL.split("/");
+                        var stateNM = "Coastal";
+                        var point = new GLatLng(latitude, longitude);
+                        var marker = createTabbedMarker(point, siteName,  stateNM, siteCode, USGS_URL);
+                        map.addOverlay(marker);
+                        makeSidebar();
+                 });
+            });
+        }
 
 // ========================Create a tabbed marker============================================
       function createTabbedMarker(point, name, StateNM, Site_no, USGS_URL)
       {
 	//var marker = new GMarker(point, {icon: gicons[StateNM]});
-        var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
+        if (StateNM == 'Coastal') {
+             var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
+        }
+        else {
+            var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
+        }
         var marker = new GMarker(point, newIcon);
         marker.mycategory = StateNM;
         marker.myname = name;
@@ -218,6 +207,7 @@
 	var label2 = 'DV Properties';
         var label3 = 'UV Properties';
         var site = Site_no;
+        var USGS_picture = '<img src = "USGS.gif" width="84" height="32"/>';
 
 	GEvent.addListener(marker, "click", function() {
                 var sos_url = base_url + "/sos/uv?request=GetObservation&featureId=" + site + "&beginPosition=" + today + '&observedProperty=Discharge';
@@ -233,143 +223,68 @@
                         var value = $(this).find("[nodeName=wml2:value]").first().text();
                         var comment = $(this).find("[nodeName=wml2:comment]:first").text();
 
-                        var USGS_picture = '<img src = "USGS.gif" width="84" height="32"/>';
                         var USGS_link = '<a href = "' + USGS_URL + '" >' + Site_no + '</a>';
                         var Title = '<table cellpadding="10"><tr><td>' + USGS_picture + '</td><td>' + USGS_link + '</td></table>';
-
                         var Name_html = '<b>' + name + '</b><br />';
                         var Watershed_html = '<b>' + watershed + ' Watershed</b><br />';
 
-                        var WML2_link_uv = '<li><a href =' + base_url + '/sos/uv?request=GetObservation&featureId=' + Site_no + '&observedProperty=Discharge&beginPosition=' + old_day + '>GetObservation - Instantaneous Values</a></li>';
-                        var WML2_link_dv = '<li><a href =' + base_url + '/sos/dv?request=GetObservation&featureId=' + Site_no + '&observedProperty=Discharge&beginPosition=' + old_day + '>GetObservation - Daily Mean Values</a></li>';
-                        
-                        var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + Site_no + '>GetFeature</a></li>';
+                        var html_header = Title + Name_html + Watershed_html;
+                        var table_1 = "<center><table border='1'><tr><th colspan='2'> Current Data:<br />" + time + '</tr></th><tr><td>Discharge</td><td>' + value + ' ' + units + ' <b>' + comment +'</b></td></tr></table></center>';
 
-                        var html_header = Title + Name_html + Watershed_html + '<br />';
-                        var table_1 = "<center><table border='1'><tr><th colspan='2'> Current Data:<br />" + time.substr(0,16) + '</tr></th><tr><td>Discharge</td><td>' + value + ' ' + units + ' <b>' + comment +'</b></td></tr></table></center>';
-                        //var table_1 = "Current Data:<b>"  + value + ' ' + units + '</b> at ' + time.substr(0,16) + '<br /><b>' + comment + '<b/><br />';
-                        var html_getObs = '<strong>WaterML2:</strong><br />' + WML2_link_uv + WML2_link_dv;
-
-                        var html = html_header + table_1 + '<br />';
-
-                        var gda_url = base_url + "/sos/dv?request=GetDataAvailablity_Time&featureID=" + Site_no;
-
+                        var html = html_header + table_1 + '<br />Available data (links to plot)***:<br /><i><font size="1">***links work in Firefox and Chrome (IE and Safari coming soon)</i></font>';
                         var gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity&featureID=" + Site_no;
                         var gdaUV_url = base_url + "/sos/uv?request=GetDataAvailablity&featureID=" + Site_no;
 
-                        var table_2 = "<b><center> Available Properties: Daily Mean</center></b><center><table border='1'><tr><td><b><center>Property</center></b></td><td><b><center>Start Date</center></b></td><td><b><center>End Date</b></center></td></tr>";
-                        var table_3 = "<center><b>Historical Information for " + Today_long + "</b></center><center><table border='1'><tr><td><b><center>Mean</center></b></td><td><b><center>Min</center></b></td><td><b><center>Max</b></center></td>" + '<td>' + '<b><center>20 %</b></center>' + '</td><td>' + '<b><center>50 %</b></center>' + '</td><td>' + '<b><center>80 %</b></center>' + '</td></tr>';
-                        var table_4 = "<b><center> Available Properties: Instantaneous</center></b><center><table border='1'><tr><td><b><center>Property</center></b></td><td><b><center>Start Date</center></b></td><td><b><center>End Date</b></center></td></tr>";
-
-                        $.get(gdaDV_url, function(xml_gda) {
-                            $(xml_gda).find("[nodeName=gda:FeaturePropertyTemporalRelationship],FeaturePropertyTemporalRelationship").each(function(){
+                        var Plot_table_UV = "<center><table border='1'><tr><td><center><b>Recent Data</b></center></td><td>Begin Time</td><td>End Time</td></tr>";
+                        var Plot_table_DV = "<center><table border='1'><tr><td><b><center>Daily Mean</b></center></td><td>Begin Time</td><td>End Time</td></tr>";
+                        var xml_UV = LoadXML(gdaUV_url);
+                        $(xml_UV).find("[nodeName=gda:FeaturePropertyTemporalRelationship],FeaturePropertyTemporalRelationship").each(function(){
                                 var Property = $(this).find("[nodeName=gda:targetProperty]");
                                 var Prop = Property.attr("xlink:title");
                                 var Parameter_cd_long = Property.attr("xlink:href");
                                 var Parameter_cd_array = Parameter_cd_long.split("_");
                                 var Parameter_cd = Parameter_cd_array[1];
-                                var beginTime = $(this).find("[nodeName=gml:beginPosition]").text();
-                                var endTime = $(this).find("[nodeName=gml:endPosition]").text();
-                                var Property_html = "<a href=" + base_url + '/sos/dv?request=GetObservation&featureId=' + Site_no + '&observedProperty=' + Parameter_cd + '&beginPosition=' + beginTime + '&endPosition=' + endTime + '>' + Prop + '</a>';
-                                table_2 = table_2 + '<tr><td>' + Property_html + '</td><td>' + beginTime + '</td><td>' + endTime + '</td></tr>';
+                                var beginTime_long = $(this).find("[nodeName=gml:beginPosition]").text();
+                                var beginTime = beginTime_long.substr(0,16);
+                                var beginDate = beginTime.split(" ")[0];
+                                var endTime_long = $(this).find("[nodeName=gml:endPosition]").text();
+                                var endTime = endTime_long.substr(0,16);
+                                var endDate = endTime.split(" ")[0];
+                                var Plot_links_UV = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?offering=UV&featureID=' + site + '&observedProperty=' + Parameter_cd + '&beginPosition=' + LastWeekStr + '&endPosition=' + endDate + '>' + Prop + '</a>';
+                                Plot_table_UV = Plot_table_UV + '<tr><td>' + Plot_links_UV + '</td><td>' + beginDate + '</td><td>' + endDate + '</td></tr>';
                             });
-                                $.get(gdaUV_url, function(xml_UV) {
-                                    $(xml_UV).find("[nodeName=gda:FeaturePropertyTemporalRelationship],FeaturePropertyTemporalRelationship").each(function() {
-                                        var Property = $(this).find("[nodeName=gda:targetProperty]");
-                                        var Prop = Property.attr("xlink:title");
-                                        var Parameter_cd_long = Property.attr("xlink:href");
-                                        var Parameter_cd_array = Parameter_cd_long.split("_");
-                                        var Parameter_cd = Parameter_cd_array[1];
-                                        var beginTime_long = $(this).find("[nodeName=gml:beginPosition]").text();
-                                        var beginTime = beginTime_long.substr(0,16);
-                                        var beginDate = beginTime.split(" ")[0];
-                                        var endTime_long = $(this).find("[nodeName=gml:endPosition]").text();
-                                        var endTime = endTime_long.substr(0,16);
-                                        var endDate = endTime.split(" ")[0];
-                                        var Property_html = "<a href=" + base_url + '/sos/uv?request=GetObservation&featureId=' + Site_no + '&observedProperty=' + Parameter_cd  + '&beginPosition=' + beginDate + '&endPosition=' + endDate + '>' + Prop + '</a>';
-                                        table_4 = table_4 + '<tr><td>' + Property_html + '</td><td>' + beginTime + '</td><td>' + endTime + '</td></tr>';
-                                    });
-                                    marker.openInfoWindowTabsHtml([new GInfoWindowTab(label1,(html)), new GInfoWindowTab(label2,(html_header + table_2 + '</table></center>')),new GInfoWindowTab(label3,(html_header + table_4 + '</table></center>'))]);
 
-                                });
+                            var xml_DV = LoadXML(gdaDV_url);
+                            $(xml_DV).find("[nodeName=gda:FeaturePropertyTemporalRelationship],FeaturePropertyTemporalRelationship").each(function(){
+                                var Property_DV = $(this).find("[nodeName=gda:targetProperty]");
+                                var Prop_DV = Property_DV.attr("xlink:title");
+                                var Parameter_cd_long_DV = Property_DV.attr("xlink:href");
+                                var Parameter_cd_array_DV = Parameter_cd_long_DV.split("_");
+                                var Parameter_cd_DV = Parameter_cd_array_DV[1];
+                                var beginTime_long_DV = $(this).find("[nodeName=gml:beginPosition]").text();
+                                var beginTime_DV = beginTime_long_DV.substr(0,16);
+                                var beginDate_DV = beginTime_DV.split(" ")[0];
+                                var endTime_long_DV = $(this).find("[nodeName=gml:endPosition]").text();
+                                var endTime_DV = endTime_long_DV.substr(0,16);
+                                var endDate_DV = endTime_DV.split(" ")[0];
+                                var endDateYear = parseInt(endTime_DV.split("-")[0]) - 1;
+                                var beginDateLink = endDateYear.toString() + '-' + endTime_DV.split("-")[1] + '-' + endTime_DV.split("-")[2];
+
+                                Plot_links_DV = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?offering=DV&featureID=' + site + '&observedProperty=' + Parameter_cd_DV + '&beginPosition=' + beginDateLink + '&endPosition=' + endDate_DV + '>' + Prop_DV + '</a>';
+                                Plot_table_DV = Plot_table_DV + '<tr><td>' + Plot_links_DV + '</td><td>' + beginDate_DV + '</td><td>' + endDate_DV + '</td></tr>';
+                            });
+
+                            var table_1 = '<br />' + Plot_table_UV + '</table></center><br />' + Plot_table_DV + '</table></center><br />';
+                            marker.openInfoWindowTabsHtml([new GInfoWindowTab(label1,(html + table_1))]);
+
                         });
                     });
                 });
-            });
 
             gmarkers.push(marker);
             return marker;
         }
 
-        function createCoastalMarker(point, name, StateNM, Site_no, USGS_URL) {
-            var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
-            var marker = new GMarker(point, newIcon);
-            marker.mycategory = StateNM;
-            marker.myname = name;
-            GEvent.addListener(marker, "click", function() {
-
-               var USGS_picture = '<img src = "USGS.gif" width="84" height="32"/>';
-               var USGS_link = '<a href = "' + USGS_URL + '" >' + Site_no + '</a>';
-               var Title = '<table cellpadding="10"><tr><td>' + USGS_picture + '</td><td>' + USGS_link + '</td></table>';
-
-               var Name_html = '<b>' + name + '</b><br />';
-
-                var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + Site_no + '>GetFeature</a></li>';
-                var WML2_link_uv = '<li><a href =' + base_url + '/sos/uv?request=GetObservation&featureId=' + Site_no + '&observedProperty=Discharge>GetObservation - Instantaneous</a></li>';
-                var WML2_link_dv = '<li><a href =' + base_url + '/sos/dv?request=GetObservation&featureId=' + Site_no + '&observedProperty=Discharge>GetObservation - Daily Mean</a></li>';
-
-                var html_header = Title + Name_html;
-
-                var html_getObs = '<strong>WaterML2:</strong><br />' + WML2_link_uv + WML2_link_dv;
-
-                var html = html_header + '<br />';
-
-                var gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity&featureID=" + Site_no;
-                var gdaUV_url = base_url + "/sos/uv?request=GetDataAvailablity&featureID=" + Site_no;
-
-                var table_2 = "<b><center> Available Properties: Daily Mean</center></b><center><table border='1'><tr><td><b><center>Property</center></b></td><td><b><center>Start Date</center></b></td><td><b><center>End Date</b></center></td></tr>";
-                var table_3 = "<br /><center><b>Historical Information for " + Today_long + "</b></center><center><table border='1'><tr><td><b><center>Mean</center></b></td><td><b><center>Min</center></b></td><td><b><center>Max</b></center></td>" + '<td>' + '<b><center>20 %</b></center>' + '</td><td>' + '<b><center>50 %</b></center>' + '</td><td>' + '<b><center>80 %</b></center>' + '</td></tr>';
-                var table_4 = "<b><center> Available Properties: Instantaneous</center></b><center><table border='1'><tr><td><b><center>Property</center></b></td><td><b><center>Start Date</center></b></td><td><b><center>End Date</b></center></td></tr>";
-
-                $.get(gdaDV_url, function(xml_gda) {
-                            $(xml_gda).find("[nodeName=gda:FeaturePropertyTemporalRelationship],FeaturePropertyTemporalRelationship").each(function(){
-                                var Property = $(this).find("[nodeName=gda:targetProperty]");
-                                var Prop = Property.attr("xlink:title");
-                                var Parameter_cd_long = Property.attr("xlink:href");
-                                var Parameter_cd_array = Parameter_cd_long.split("_");
-                                var Parameter_cd = Parameter_cd_array[1];
-                                var beginTime = $(this).find("[nodeName=gml:beginPosition]").text();
-                                var endTime = $(this).find("[nodeName=gml:endPosition]").text();
-                                var Property_html = "<a href=" + base_url + '/sos/dv?request=GetObservation&featureId=' + Site_no + '&observedProperty=' + Parameter_cd + '&beginPosition=' + beginTime + '&endPosition=' + endTime + '>' + Prop + '</a>';
-                                table_2 = table_2 + '<tr><td>' + Property_html + '</td><td>' + beginTime + '</td><td>' + endTime + '</td></tr>';
-
-                                });
-
-                                $.get(gdaUV_url, function(xml_UV) {
-                                    $(xml_UV).find("[nodeName=gda:FeaturePropertyTemporalRelationship],FeaturePropertyTemporalRelationship").each(function() {
-                                        var Property = $(this).find("[nodeName=gda:targetProperty]");
-                                        var Prop = Property.attr("xlink:title");
-                                        var Parameter_cd_long = Property.attr("xlink:href");
-                                        var Parameter_cd_array = Parameter_cd_long.split("_");
-                                        var Parameter_cd = Parameter_cd_array[1];
-                                        var beginTime_long = $(this).find("[nodeName=gml:beginPosition]").text();
-                                        var beginTime = beginTime_long.substr(0,16);
-                                        var beginDate = beginTime.split(" ")[0];
-                                        var endTime_long = $(this).find("[nodeName=gml:endPosition]").text();
-                                        var endTime = endTime_long.substr(0,16);
-                                        var endDate = endTime.split(" ")[0];
-                                        var Property_html = "<a href=" + base_url + '/sos/uv?request=GetObservation&featureId=' + Site_no + '&observedProperty=' + Parameter_cd + '&beginPosition=' + beginDate + '&endPosition=' + endDate + '>' + Prop + '</a>';
-                                        table_4 = table_4 + '<tr><td>' + Property_html + '</td><td>' + beginTime + '</td><td>' + endTime + '</td></tr>';
-                                    });
-                                    var html_6 = html + table_2 + '</table></center><br />' + table_4 + '</table></center>';
-                                    marker.openInfoWindowHtml(html_6);
-                                });
-                            });
-                });
-            gmarkers.push(marker);
-            show("Coastal");
-            return marker;
-        }
 
        function createInactiveMarker(point, html, name, category) {
             var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#33CC66"});

@@ -52,11 +52,15 @@ public abstract class OGCBinding {
 		static {
                     // TODO: Laura fills this out
 			namespaceMap = new HashMap<String, String>();
-			namespaceMap.put("gml", "http://www.opengis.net/gml");
+			namespaceMap.put("gml", "http://www.opengis.net/gml/3.2");
 			namespaceMap.put("ogc", "http://www.opengis.net/ogc");
-			namespaceMap.put("sa", "http://www.opengis.net/sampling/1.0");
-			namespaceMap.put("sos", "http://www.opengis.net/sos/1.0");
+			namespaceMap.put("om", "http://www.opengis.net/om/2.0");
+			namespaceMap.put("sos", "http://schemas.opengis.net/sos/2.0.0/");
 			namespaceMap.put("wfs", "http://www.opengis.net/wfs");
+                        namespaceMap.put("xlink", "http://www.w3.org/1999/xlink");
+                        namespaceMap.put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+                        namespaceMap.put("fes", "http://www.opengis.net/fes/2.0");
+
 		}
 
 		@Override

@@ -2,33 +2,19 @@
 <% String baseURL = request.getRequestURL().toString().replaceAll("/[^/]*$", "");%>
 <%@ page  language="java" import="java.util.*,java.text.*"%>
 <%
-    Calendar ca = new GregorianCalendar();
-    //ca = ca.set(Calendar.DATE, -7)
-    int Day=ca.get(Calendar.DATE);
-    int Year=ca.get(Calendar.YEAR);
-    int Month=ca.get(Calendar.MONTH)+1;
+    Calendar lastWeek = new GregorianCalendar();
+    lastWeek.add(Calendar.DAY_OF_YEAR, -7);
 
-    String Today = Integer.toString(Year) + '-' + Integer.toString(Month) + '-' + Integer.toString(Day);
+    Date now = new Date();
 
-    int old_Day = Day - 3;
-    if (old_Day < 0) {
-        old_Day = 1;
-        };
-    String Month_str = "";
-    if (Month < 10) {
-        Month_str = '0' + Integer.toString(Month);
-        }
-    else {
-           Month_str = Integer.toString(Month);
-       };
-    String Day_str = "";
-    if (old_Day < 10) {
-        Day_str = '0' + Integer.toString(old_Day);
-        }
-    else {
-        Day_str = Integer.toString(old_Day);
-       };
-    String Old_Date = Integer.toString(Year) + '-' + Month_str + '-' + Day_str;
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+    String todayFormated = formatter.format(now);
+    String lastWeekFormated = formatter.format(lastWeek.getTime());
+
+    String Today = todayFormated;
+    String LastWeek = lastWeekFormated;
+
  %>
 <html>
     <head>
@@ -54,7 +40,6 @@
         <script type="text/javascript" src="jquery-1.4.4.js"></script>
         <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>
         <script src="mapiconmaker.js" type="text/javascript"></script>
-        <script src="date.f-0.5.0.js" type="text/javascript"></script>
     </head>
 
 <body>
@@ -138,14 +123,12 @@
         <script>
     //<![CDATA[
         if (GBrowserIsCompatible()) {
-          var d1 = new Date();
-          var Today_long = d1.f("MMM d");
           var gmarkers = [];
           var base = '<%=baseURL%>';
           var today = '<%=Today%>';
-          var old_day = '<%=Old_Date%>';
           var test = base.length - 10;    // Gets rid of /GoogleMap/ from baseURL
           var base_url = base.substring(0,test);
+          var LastWeekStr = '<%=LastWeek%>';
 
           var gicons = [];
           gicons["WI"] = MapIconMaker.createMarkerIcon({primaryColor: "#33CC66"});
@@ -229,7 +212,7 @@
                         var table_1 = "<center><table border='1'><tr><th colspan='2'> Current Data:<br />" + time + '</tr></th><tr><td>Discharge</td><td>' + value + ' ' + units + ' <b>' + comment +'</b></td></tr></table></center>';
 
 
-                        var html = html_header + table_1 + '<br />Available Data:';
+                        var html = html_header + table_1 + '<br />Available data (links to plot)***:<br /><i><font size="1">***links work in Firefox and Chrome (IE and Safari coming soon)</i></font>';
 
 //                        var history_url = base_url + "/sos/dv?request=GetHistoricalData&featureID=" + Site_no + '&beginPosition=' + today + '&endPosition=' + today + '&observedProperty=Discharge';
                         var gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity&featureID=" + Site_no;
@@ -251,8 +234,8 @@
 //                                    table_3 = table_3 + '<td>' + p20 + ' ' + units + '</td><td>' + p50 + ' ' + units + '</td><td>' + p80 + ' ' + units + '</td></tr>';
 //                                });
 
-                                    var Plot_table_UV = "<center><table border='1'><tr><td><center><b>Recent Data</b></center></td></tr>";
-                                    var Plot_table_DV = "<center><table border='1'><tr><td><b><center>Historical Data</b></center></td></tr>";
+                                    var Plot_table_UV = "<center><table border='1'><tr><td><center><b>Recent Data</b></center></td><td>Begin Time</td><td>End Time</td></tr>";
+                                    var Plot_table_DV = "<center><table border='1'><tr><td><b><center>Daily Mean</b></center></td><td>Begin Time</td><td>End Time</td></tr>";
                                     var xml_UV = LoadXML(gdaUV_url);
                                     $(xml_UV).find("[nodeName=gda:FeaturePropertyTemporalRelationship],FeaturePropertyTemporalRelationship").each(function(){
                                             var Property = $(this).find("[nodeName=gda:targetProperty]");
@@ -266,8 +249,8 @@
                                             var endTime_long = $(this).find("[nodeName=gml:endPosition]").text();
                                             var endTime = endTime_long.substr(0,16);
                                             var endDate = endTime.split(" ")[0];
-                                            var Plot_links_UV = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?offering=UV&featureID=' + site + '&observedProperty=' + Parameter_cd + '&beginPosition=' + beginDate + '&endPosition=' + endDate + '>' + Prop + '</a>';
-                                            Plot_table_UV = Plot_table_UV + '<tr><td>' + Plot_links_UV + '</td></tr>';
+                                            var Plot_links_UV = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?offering=UV&featureID=' + site + '&observedProperty=' + Parameter_cd + '&beginPosition=' + LastWeekStr + '&endPosition=' + endDate + '>' + Prop + '</a>';
+                                            Plot_table_UV = Plot_table_UV + '<tr><td>' + Plot_links_UV + '</td><td>' + beginDate + '</td><td>' + endDate + '</td></tr>';
                                         });
 
                                     var xml_DV = LoadXML(gdaDV_url);
@@ -283,12 +266,16 @@
                                         var endTime_long_DV = $(this).find("[nodeName=gml:endPosition]").text();
                                         var endTime_DV = endTime_long_DV.substr(0,16);
                                         var endDate_DV = endTime_DV.split(" ")[0];
+                                        var endDateYear = parseInt(endTime_DV.split("-")[0]) - 1;
+                                        var beginDateLink = endDateYear.toString() + '-' + endTime_DV.split("-")[1] + '-' + endTime_DV.split("-")[2];
 
-                                        Plot_links_DV = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?offering=DV&featureID=' + site + '&observedProperty=' + Parameter_cd_DV + '&beginPosition=' + beginDate_DV + '&endPosition=' + endDate_DV + '>' + Prop_DV + '</a>';
-                                        Plot_table_DV = Plot_table_DV + '<tr><td>' + Plot_links_DV + '</td></tr>';
+
+                                        Plot_links_DV = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?offering=DV&featureID=' + site + '&observedProperty=' + Parameter_cd_DV + '&beginPosition=' + beginDateLink + '&endPosition=' + endDate_DV + '>' + Prop_DV + '</a>';
+                                        Plot_table_DV = Plot_table_DV + '<tr><td>' + Plot_links_DV + '</td><td>' + beginDate_DV + '</td><td>' + endDate_DV + '</td></tr>';
                                     });
 
-                                    var table_1 = '<br /><table cellpadding = "10"><tr><td>' + Plot_table_UV + '</table></center></td><td>' + Plot_table_DV + '</table></center></td></tr></table></center><br />';
+                                    //var table_1 = '<br /><table cellpadding = "10"><tr><td>' + Plot_table_UV + '</table></center></td><td>' + Plot_table_DV + '</table></center></td></tr></table></center><br />';
+                                    var table_1 = '<br />' + Plot_table_UV + '</table></center><br />' + Plot_table_DV + '</table></center><br />';
                                     marker.openInfoWindowTabsHtml([new GInfoWindowTab(label1,(html + table_1))]);
 
                                 });
