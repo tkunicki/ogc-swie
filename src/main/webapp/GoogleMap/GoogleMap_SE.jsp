@@ -249,7 +249,7 @@
                                             var endTime_long = $(this).find("[nodeName=gml:endPosition]").text();
                                             var endTime = endTime_long.substr(0,16);
                                             var endDate = endTime.split(" ")[0];
-                                            var Plot_links_UV = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?offering=UV&featureID=' + site + '&observedProperty=' + Parameter_cd + '&beginPosition=' + LastWeekStr + '&endPosition=' + endDate + '>' + Prop + '</a>';
+                                            var Plot_links_UV = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?featureID=' + site + '&observedProperty=' + Parameter_cd + ',UV&beginPosition=' + LastWeekStr + '&endPosition=' + endDate + '>' + Prop + '</a>';
                                             Plot_table_UV = Plot_table_UV + '<tr><td>' + Plot_links_UV + '</td><td>' + beginDate + '</td><td>' + endDate + '</td></tr>';
                                         });
 
@@ -270,7 +270,7 @@
                                         var beginDateLink = endDateYear.toString() + '-' + endTime_DV.split("-")[1] + '-' + endTime_DV.split("-")[2];
 
 
-                                        Plot_links_DV = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?offering=DV&featureID=' + site + '&observedProperty=' + Parameter_cd_DV + '&beginPosition=' + beginDateLink + '&endPosition=' + endDate_DV + '>' + Prop_DV + '</a>';
+                                        Plot_links_DV = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?featureID=' + site + '&observedProperty=' + Parameter_cd_DV + ',DV&beginPosition=' + beginDateLink + '&endPosition=' + endDate_DV + '>' + Prop_DV + '</a>';
                                         Plot_table_DV = Plot_table_DV + '<tr><td>' + Plot_links_DV + '</td><td>' + beginDate_DV + '</td><td>' + endDate_DV + '</td></tr>';
                                     });
 

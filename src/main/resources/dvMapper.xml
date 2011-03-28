@@ -6,7 +6,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 	<resultMap id="dvResultMap" type="XMLMap">
             <result
-	    	property="wml2:WaterMonitoringObservation"
+	    	property="wml2:TimeseriesObservation"
 	    	column="%ROOT_ELEMENT"
 			javaType="string" />
 	    <result
@@ -234,7 +234,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			typeHandler="ISODateTypeHandler" />
 
 		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:unitOfMeasure#xlink:href=%s"
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:unitOfMeasure#uom=%s"
 			column="units"
 			javaType="string" />
 		<result

@@ -69,7 +69,7 @@
 
 <!===============================Create Table=========================================>
     <font face="Arial">
-    <h1>Surface Water IE 1.5</h1>
+    <h1>Surface Water IE 1.5.1</h1>
     <table border=0>
         <tr>
           <td>
@@ -334,7 +334,7 @@
            Markers represent USGS gaging stations on the Mississippi, Delaware, Fox, Wisconsin, Illinois, Red River of the North, NASQAN Coastal Subnetwork, and others near the Great Lakes.
            Clicking on a marker brings up a box with the station name, and links to GetObservation, GetFeature, and the public USGS website.*<br />
            <p></p>
-           <a href="<%=baseURL%>/GoogleMap/GoogleMap.jsp">Larger Google Map*</a>
+           <a href="<%=baseURL%>/GoogleMap/GoogleMap.jsp">Larger Map*</a>
 
         </td>
       </tr>
@@ -507,7 +507,9 @@
 
        <!-- Page Contact Information: <a href="http://water.usgs.gov/user_feedback_form.html">Water Webserver Team</a><br />-->
 
-        Page Last Modified: Tuesday, 15-Feb-2011 11:45:46 CST
+       <script>
+            document.write("Last updated: " + document.lastModified +"");
+        </script>
       </p>
 </div>
 

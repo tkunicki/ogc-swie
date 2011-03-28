@@ -1,14 +1,62 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@ page  language="java" import="java.util.*,java.text.*"%>
 
-<% String baseURL = request.getRequestURL().toString().replaceAll("/[^/]*$", "");%>
-
-<% 
+<%
     String featureID = request.getParameter("featureID");
     String Property = request.getParameter("observedProperty");
     String beginPosition = request.getParameter("beginPosition");
     String endPosition = request.getParameter("endPosition");
-    String offering = request.getParameter("offering");
+
+    String observedProperty = Property.split(",")[0];
+    String offering = Property.split(",")[1];
+
+    String compare = request.getParameter("compare");
+
+    String baseURL = request.getRequestURL().toString().replaceAll("/[^/]*$", "");
+    int test = baseURL.length() - 10;    // Gets rid of /GoogleMap/ from baseURL
+    String base_url = baseURL.substring(0,test);
+    String sos_url;
+
+
+    if (offering.equalsIgnoreCase("DV")) {
+        sos_url = base_url + "/sos/dv?request=GetObservation&featureId=" + featureID;
+    } else if (offering.equalsIgnoreCase("UV")) {
+        sos_url = base_url + "/sos/uv?request=GetObservation&featureId=" + featureID;
+    } else {
+        sos_url = base_url + "/sos/uv?request=GetObservation&featureId=" + featureID;
+    }
+
+    if (beginPosition != null) {
+        if (beginPosition.equalsIgnoreCase("null") || beginPosition.equalsIgnoreCase("")) {
+            sos_url = sos_url;
+        } else {
+            sos_url = sos_url + "&beginPosition=" + beginPosition;
+        }
+    }
+
+
+    if (endPosition != null) {
+        if (endPosition.equalsIgnoreCase("null") || endPosition.equalsIgnoreCase("")) {
+            sos_url = sos_url;
+        } else {
+            sos_url = sos_url + "&endPosition=" + endPosition;
+        }
+    }
+
+    if (compare == null){
+        if (observedProperty == null) {
+            sos_url = sos_url + "&observedProperty=Discharge";
+        } else {
+            sos_url = sos_url + "&observedProperty=" + observedProperty;
+        }
+    } else {
+        sos_url = sos_url + "&observedProperty=" + observedProperty;
+    }
+
+    String Data_link = "<a href =" + sos_url + ">Link to plot data</a>";
+    String wfs_url = base_url + "/wfs?request=GetFeature&featureId=" + featureID;
+    String gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity&featureID=" + featureID;
+    String gdaUV_url = base_url + "/sos/uv?request=GetDataAvailablity&featureID=" + featureID;
 
 %>
 
@@ -18,9 +66,7 @@
     lastWeek.add(Calendar.DAY_OF_YEAR, -7);
 
     Date now = new Date();
-
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-
     String todayFormated = formatter.format(now);
     String lastWeekFormated = formatter.format(lastWeek.getTime());
 
@@ -51,179 +97,148 @@
         <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 
         <title>OGC Services SWIE</title>
-        <script type="text/javascript" src="jquery-1.4.4.js"></script>
         <script type='text/javascript' src='https://www.google.com/jsapi'></script>
+        <script type="text/javascript" src="jquery-1.4.4.js"></script>
+        <%--script src="newjavascript.js"></script--%>
         <script type='text/javascript'>
-        google.load('visualization', '1', {'packages':['annotatedtimeline']});
-        google.setOnLoadCallback(drawChart);
+//           google.load("jquery", "1.4.4");
+           google.load('visualization', '1', {'packages':['annotatedtimeline']});
 
-        var base = '<%=baseURL%>';
-        var test = base.length - 10;    // Gets rid of /GoogleMap/ from baseURL
-        var base_url = base.substring(0,test);
-        var site = '<%=featureID%>';
-        var Property = '<%=Property%>';
-        var beginPosition = '<%=beginPosition%>';
-        var endPosition = '<%=endPosition%>';
-        var offering = '<%=offering%>';
+           google.setOnLoadCallback(function() {
+                $(function() {
+                    var data = new google.visualization.DataTable();
+                    var sos_url = '<%=sos_url%>';
 
-        if (offering == 'DV') {
-            var sos_url = base_url + "/sos/dv?request=GetObservation&featureId=" + site;
-        }
-        else if (offering == 'UV') {
-            var sos_url = base_url + "/sos/uv?request=GetObservation&featureId=" + site;
-        }
-        else {
-            var sos_url = base_url + "/sos/uv?request=GetObservation&featureId=" + site;
-        }
+                    var xml = LoadXML(sos_url);
+                    var units = $(xml).find("[nodeName=wml2:unitOfMeasure]", this).attr("uom");
+                    var PropertyName = $(xml).find("[nodeName=om:observedProperty]", this).attr("xlink:title");
 
-        if (Property == 'null') {
-            var sos_url = sos_url + '&observedProperty=Discharge';
-        }
-        else {
-            var sos_url = sos_url + '&observedProperty=' + Property;
-        }
+                    var wfs_url = '<%=wfs_url%>';
+                    var gdaDV_url = '<%=gdaDV_url%>';
+                    var gdaUV_url = '<%=gdaUV_url%>';
+                    var offering = '<%=offering%>';
+                    var observedProperty = '<%=observedProperty%>';
 
-        if (beginPosition != 'null') {
-            var sos_url = sos_url + '&beginPosition=' + beginPosition;
-        }
+                    var Title = PropertyName + ' (' + units + ')';
+                    data.addColumn('datetime', 'Date');
+                    data.addColumn('number', Title);
 
-        if (endPosition != 'null') {
-            var sos_url = sos_url + '&endPosition=' + endPosition;
-        }
-        var Data_link = '<a href =' + sos_url + '>Link to plot data</a>';
-
-        function LoadXML(filename){
-            if (window.XMLHttpRequest) {
-                xhttp = new XMLHttpRequest();
-            }
-            else {
-                xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xhttp.open("GET", filename, false);
-            xhttp.send("");
-
-            return xhttp.responseXML;
-        }
-
-        function drawChart() {
-            var data = new google.visualization.DataTable();
-
-            var time = [];
-            var value = [];
-            var index = [];
-            var name = '';
-            var units = '';
-            var PropertyName = '';
-            var i = 0;
-            var xml = LoadXML(sos_url);
-            $(xml).find("[nodeName=wml2:WaterMonitoringObservation],WaterMonitoringObservation").each(function()
-            {
-                name = $("[nodeName=gml:name]", this).text();
-                PropertyName = $("[nodeName=om:observedProperty]", this).attr("xlink:title");
-                $(xml).find("[nodeName=wml2:Timeseries],Timeseries").each(function()
-                {
-                    units = $("[nodeName=wml2:unitOfMeasure]", this).attr("xlink:href");
-                    
                     $(xml).find("[nodeName=wml2:point],point").each(function()
-                            {
-                                i = i + 1;
-                                index[i] = i;
-                                var temp = $("[nodeName=wml2:time]", this).text();
-                                time[i] = temp.substr(0, 16)
-                                var temp2 = $("[nodeName=wml2:value]", this).text();
-                                value[i] = parseFloat(temp2);
-                            });
-                });
-            });
+                    {
+                        var temp = $("[nodeName=wml2:time]", this).text();
+                        var value = parseFloat($("[nodeName=wml2:value]", this).text());
+                        var timestamp = temp.substr(0, 16);
+                        var date = new Date();
+                        var UTCOffsetHours = parseInt(temp.substr(17, 2));
 
-            var Title = PropertyName + ' (' + units + ')';
-            data.addColumn('datetime', 'Date');
-            data.addColumn('number', Title);
-            data.addRows(i);
-            for (var j = 0; j < i; j++) {
-                data.setValue(j,0,new Date(time[j]));
-                data.setValue(j,1,value[j]);
-            }
+                        if (offering == 'UV') {
+                            var temp2 = timestamp.split("T");
+                            var time = temp2[1].split(":");
+                            var fullDate = temp2[0].split("-");
+                            date.setMonth(fullDate[1] - 1);
+                            date.setFullYear(fullDate[0]);
+                            date.setDate(fullDate[2]);
+                            date.setHours(time[0]);
+                            date.setMinutes(time[1]);
+                            date.setSeconds(0);
+                        } else {
+                            var fullDate = timestamp.split("-");
+                            date.setMonth(fullDate[1] - 1);
+                            date.setFullYear(fullDate[0]);
+                            date.setDate(fullDate[2]);
+                        }
+                        data.addRow([date,value]);
+                    });
 
-            var chart = new google.visualization.AnnotatedTimeLine(document.getElementById('chart_div'));
-            chart.draw(data, {
-                displayAnnotations: true
-                });
-            makeSidebar();
-          }
+                    var xml_wfs = LoadXML(wfs_url);
+                    var name = $(xml_wfs).find("[nodeName=gml:name]", this).text();
+                    var Watershed = $(xml_wfs).find("[nodeName=om:value]", this).text();
+                    var Location = $(xml_wfs).find("[nodeName=gml:pos]", this).text();
+                    var Org = $(xml_wfs).find("[nodeName=gmd:CharacterString]", this).text();
 
-      function makeSidebar() {
-        var wfs_url = base_url + "/wfs?request=GetFeature&featureId=" + site;
+                    html = '<b>' + name + '<br />' + Watershed + ' Watershed </b><br /><b>Location: </b>' + Location + '<br /><b>Managed by: </b>' + Org + '<br /><br />';
+                    var html_2 = '<b>' + name + '<br />';
+                    document.getElementById("Station_name").innerHTML = (html_2);
 
-        var html = '';
+                    var Plot_table_UV = "<table border='1' cellpadding='2'><tr><td></td><td><center><b>Real Time</b></center></td><td>Begin date</td><td>End date</td></tr>";
+                    var Plot_table_DV = "<table border='1' cellpadding='2'><tr><td></td><td><b><center>Daily Mean</b></center></td><td>Begin date</td><td>End date</td></tr>";
 
-        var gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity&featureID=" + site;
-        var gdaUV_url = base_url + "/sos/uv?request=GetDataAvailablity&featureID=" + site;
+                    var xml_UV = LoadXML(gdaUV_url);
+                    $(xml_UV).find("[nodeName=gda:FeaturePropertyTemporalRelationship],FeaturePropertyTemporalRelationship").each(function(){
+                            var Property = $(this).find("[nodeName=gda:targetProperty]");
+                            var Prop = Property.attr("xlink:title");
+                            var Parameter_cd_long = Property.attr("xlink:href");
+                            var Parameter_cd_array = Parameter_cd_long.split("_");
+                            var Parameter_cd = Parameter_cd_array[1];
+                            var beginTime_long = $(this).find("[nodeName=gml:beginPosition]").text();
+                            var beginTime = beginTime_long.substr(0,16);
+                            var beginDate = beginTime.split(" ")[0];
+                            var endTime_long = $(this).find("[nodeName=gml:endPosition]").text();
+                            var endTime = endTime_long.substr(0,16);
+                            var endDate = endTime.split(" ")[0];
+                            if (Parameter_cd == observedProperty && offering == 'UV') {
+                                var radio = '<input type="radio" name="observedProperty" value="' + Parameter_cd + ',UV" checked/>';
+                            }
+                            else {
+                                var radio = '<input type="radio" name="observedProperty" value="' + Parameter_cd + ',UV"/>';
+                            }
+                            Plot_table_UV = Plot_table_UV + '<tr><td>' + radio + '</td><td>' + Prop + '</td><td>' + beginDate + '</td><td>' + endDate + '</tr>';
+                        });
 
-        var xml_wfs = LoadXML(wfs_url);
-        $(xml_wfs).find("[nodeName=wfs:member],member").each(function(){
-            var name = $("[nodeName=gml:name]", this).text();
-            var Watershed = $("[nodeName=om:value]", this).text();
-            var Location = $("[nodeName=gml:pos]", this).text();
-            var Org = $("[nodeName=gmd:CharacterString]", this).text();
-            
-            html = '<b>' + name + '<br />' + Watershed + ' Watershed </b><br /><b>Location: </b>' + Location + '<br /><b>Managed by: </b>' + Org + '<br /><br />';
-            var html_2 = '<b>' + name + '<br />';
-            document.getElementById("Station_name").innerHTML = (html_2);
-            document.getElementById("Plot_data").innerHTML = (Data_link);
+                    var xml_DV = LoadXML(gdaDV_url);
+                    $(xml_DV).find("[nodeName=gda:FeaturePropertyTemporalRelationship],FeaturePropertyTemporalRelationship").each(function(){
+                            var Property_DV = $(this).find("[nodeName=gda:targetProperty]");
+                            var Prop_DV = Property_DV.attr("xlink:title");
+                            var Parameter_cd_long_DV = Property_DV.attr("xlink:href");
+                            var Parameter_cd_array_DV = Parameter_cd_long_DV.split("_");
+                            var Parameter_cd_DV = Parameter_cd_array_DV[1];
+                            var beginTime_long_DV = $(this).find("[nodeName=gml:beginPosition]").text();
+                            var beginTime_DV = beginTime_long_DV.substr(0,16);
+                            var beginDate_DV = beginTime_DV.split(" ")[0];
+                            var endTime_long_DV = $(this).find("[nodeName=gml:endPosition]").text();
+                            var endTime_DV = endTime_long_DV.substr(0,16);
+                            var endDate_DV = endTime_DV.split(" ")[0];
+                            if (Parameter_cd_DV == observedProperty && offering == 'DV') {
+                                var radio_DV = '<input type="radio" name="observedProperty" value="' + Parameter_cd_DV + ',DV" checked/>';
+                            }
+                            else {
+                                var radio_DV = '<input type="radio" name="observedProperty" value="' + Parameter_cd_DV + ',DV"/>';
+                            }
+
+                            Plot_table_DV = Plot_table_DV+ '<tr><td>' + radio_DV + '</td><td>' + Prop_DV + '</td><td>' + beginDate_DV + '</td><td>' + endDate_DV + '</tr>';
+
+                    });
+
+                    var table_1 = 'Available data:<br />' + Plot_table_UV + '</table><br />' + Plot_table_DV + '</table><br />';
+                    document.getElementById("side_bar_header").innerHTML = (html);
+                    document.getElementById("side_bar").innerHTML = (table_1 );
+
+                    var chart = new google.visualization.AnnotatedTimeLine(document.getElementById("chart_div"));
+                    chart.draw(data,
+                        {
+                        'displayAnnotations': true,
+                        'scaleType':'maximized'
+    //                    'scaleColumns':[0,1]
+                        });
+              });
         });
 
-        var Plot_table_UV = "<table border='1'><tr><td><center><b>Recent Data</b></center></td><td>Begin date</td><td>End date</td></tr>";
-        var Plot_table_DV = "<table border='1'><tr><td><b><center>Historical Data</b></center></td><td>Begin date</td><td>End date</td></tr>";
-        var xml_UV = LoadXML(gdaUV_url);
-        $(xml_UV).find("[nodeName=gda:FeaturePropertyTemporalRelationship],FeaturePropertyTemporalRelationship").each(function(){
-                var Property = $(this).find("[nodeName=gda:targetProperty]");
-                var Prop = Property.attr("xlink:title");
-                var Parameter_cd_long = Property.attr("xlink:href");
-                var Parameter_cd_array = Parameter_cd_long.split("_");
-                var Parameter_cd = Parameter_cd_array[1];
-                var beginTime_long = $(this).find("[nodeName=gml:beginPosition]").text();
-                var beginTime = beginTime_long.substr(0,16);
-                var beginDate = beginTime.split(" ")[0];
-                var endTime_long = $(this).find("[nodeName=gml:endPosition]").text();
-                var endTime = endTime_long.substr(0,16);
-                var endDate = endTime.split(" ")[0];
-                var Plot_links_UV = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?offering=UV&featureID=' + site + '&observedProperty=' + Parameter_cd + '&beginPosition=' + beginDate + '&endPosition=' + endDate + '>' + Prop + '</a>';
-                Plot_table_UV = Plot_table_UV + '<tr><td>' + Plot_links_UV + '</td><td>' + beginDate + '</td><td>' + endDate + '</tr>';
-            });
+           function LoadXML(filename){
+                    if (window.XMLHttpRequest) {
+                        xhttp = new XMLHttpRequest();
+                    }
+                    else {
+                        xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+                    xhttp.open("GET", filename, false);
+                    xhttp.send("");
+                    return xhttp.responseXML;
+                };
 
-        var xml_DV = LoadXML(gdaDV_url);
-        $(xml_DV).find("[nodeName=gda:FeaturePropertyTemporalRelationship],FeaturePropertyTemporalRelationship").each(function(){
-            var Property_DV = $(this).find("[nodeName=gda:targetProperty]");
-            var Prop_DV = Property_DV.attr("xlink:title");
-            var Parameter_cd_long_DV = Property_DV.attr("xlink:href");
-            var Parameter_cd_array_DV = Parameter_cd_long_DV.split("_");
-            var Parameter_cd_DV = Parameter_cd_array_DV[1];
-            var beginTime_long_DV = $(this).find("[nodeName=gml:beginPosition]").text();
-            var beginTime_DV = beginTime_long_DV.substr(0,16);
-            var beginDate_DV = beginTime_DV.split(" ")[0];
-            var endTime_long_DV = $(this).find("[nodeName=gml:endPosition]").text();
-            var endTime_DV = endTime_long_DV.substr(0,16);
-            var endDate_DV = endTime_DV.split(" ")[0];
 
-            Plot_links_DV = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?offering=DV&featureID=' + site + '&observedProperty=' + Parameter_cd_DV + '&beginPosition=' + beginDate_DV + '&endPosition=' + endDate_DV + '>' + Prop_DV + '</a>';
-            Plot_table_DV = Plot_table_DV + '<tr><td>' + Plot_links_DV + '</td><td>' + beginDate_DV + '</td><td>' + endDate_DV + '</tr>';
-                
-        });
-
-        var table_1 = 'Period of record plot links:<br />' + Plot_table_UV + '</table><br />' + Plot_table_DV + '</table><br />';
-
-        document.getElementById("side_bar").innerHTML = (html + table_1 );
-        var radio_html = '<input type="radio" name="offering" value="UV" checked/> Instantaneous<br /><input type="radio" name="offering" value="DV"/> Daily Mean<br />';
-
-        if (offering == 'DV'){
-            radio_html = '<input type="radio" name="offering" value="UV" /> Instantaneous<br /><input type="radio" name="offering" value="DV" checked/> Daily Mean<br />';
-        }
-        document.getElementById("radio").innerHTML = (radio_html);
-        
-      }
 
         </script>
+
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>JSP Page</title>
     </head>
@@ -255,33 +270,29 @@
             </tr>
         </table>
         <h1>Surface Water IE Plot using GetObservation</h1>
-        <center><table border=1" cellpadding="30">
+
+        <table border=1" cellpadding="5">
             <tr>
                 <td>
                     <div id='Station_name' ></div><br />
                     <div id='chart_div' style='width: 800px; height: 450px;'>Loading...</div><br />
-                    Provisional data subject to revision<br />
-                    <div id='Plot_data' ></div>
+                    Provisional data subject to revision<br /><%=Data_link%>
                 </td>
                 <td>
-                    <div id='side_bar'style="overflow:auto">></div>
-                    <table border="1" cellpadding = "10">
-                        <td>
-                            <form>
-                                Station ID: <input type="text" name="featureID" value="<%=featureID%>"/><br />
-                                Observed Property:<br />
-                                <input type="text" name="observedProperty" value="<%=Property%>"/><br />
-                                Begin Date: <input type="text" name="beginPosition" value="<%=beginPosition%>"/><br />
-                                End Date: <input type="text" name="endPosition" value="<%=endPosition%>"/><br />
-                                <div id='radio'></div>
-                                <input type="submit" value="Submit" />
-                            </form>
-                        </td>
-                    </table>
+                    <div id='side_bar_header'style="overflow:auto">Loading...</div>
 
+                    <form action="DischargePlot.jsp" >
+                        <table>
+                            <tr><td>Station ID: </td><td><input type="text" name="featureID" value="<%=featureID%>"/></td></tr>
+                            <tr><td>Begin Date: </td><td><input type="text" name="beginPosition" value="<%=beginPosition%>"/></td></tr>
+                            <tr><td>End Date: </td><td><input type="text" name="endPosition" value="<%=endPosition%>"/></td></tr>
+                        </table>
+                        <div id='side_bar'style="overflow:auto">Loading...</div>
+                        <input type="submit" value="Submit" />
+                     </form>
                 </td>
             </tr>
-        </table></center>
+        </table>
 
         <span> <font size="0.5"><br />* References to non-U.S. Department of the Interior (DOI) products do not constitute an endorsement by the DOI. By viewing the Google Visualization API on this web site the user agrees to these
         <a href="http://code.google.com/apis/visualization/terms.html" target="_blank" title="Opens a new browser window.">Terms of Service set forth by Google</a>.<br /></font></span>
