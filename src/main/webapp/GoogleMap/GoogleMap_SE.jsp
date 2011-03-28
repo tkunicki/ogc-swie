@@ -192,11 +192,11 @@
 	GEvent.addListener(marker, "click", function() {
                 var sos_url = base_url + "/sos/uv?request=GetObservation&featureId=" + site + "&beginPosition=" + today + '&observedProperty=Discharge';
                 $.get(sos_url, function(xml) {
-                    $(xml).find("[nodeName=wml2:WaterMonitoringObservation],WaterMonitoringObservation").each(function(){
+                    $(xml).find("[nodeName=wml2:TimeseriesObservation],TimeseriesObservation").each(function(){
                         var watershed = $(this).find("[nodeName=om:value]").text();
                         var name = $(this).find("[nodeName=gml:name]").text();
                         var USGS_link = $(this).find("[nodeName=sf:sampledFeature]").attr("xlink:href");
-                        var units = $(this).find("[nodeName=wml2:unitOfMeasure]").attr("xlink:href");
+                        var units = $(this).find("[nodeName=wml2:unitOfMeasure]").attr("uom");
                         var time_long = $(this).find("[nodeName=wml2:time]:first").text();
                         var time = time_long.substr(0,16);
                         time = time.replace("T"," ");
@@ -212,7 +212,7 @@
                         var table_1 = "<center><table border='1'><tr><th colspan='2'> Current Data:<br />" + time + '</tr></th><tr><td>Discharge</td><td>' + value + ' ' + units + ' <b>' + comment +'</b></td></tr></table></center>';
 
 
-                        var html = html_header + table_1 + '<br />Available data (links to plot)***:<br /><i><font size="1">***links work in Firefox and Chrome (IE and Safari coming soon)</i></font>';
+                        var html = html_header + table_1 + '<br />Available data:';
 
 //                        var history_url = base_url + "/sos/dv?request=GetHistoricalData&featureID=" + Site_no + '&beginPosition=' + today + '&endPosition=' + today + '&observedProperty=Discharge';
                         var gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity&featureID=" + Site_no;

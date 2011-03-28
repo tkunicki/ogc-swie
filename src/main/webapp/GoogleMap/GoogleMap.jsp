@@ -216,7 +216,7 @@ if (GBrowserIsCompatible()) {
                         var watershed = $(this).find("[nodeName=om:value]").text();
                         var name = $(this).find("[nodeName=gml:name]").text();
                         var USGS_link = $(this).find("[nodeName=sf:sampledFeature]").attr("xlink:href");
-                        var units = $(this).find("[nodeName=wml2:unitOfMeasure]").attr("xlink:href");
+                        var units = $(this).find("[nodeName=wml2:unitOfMeasure]").attr("uom");
                         var time_long = $(this).find("[nodeName=wml2:time]:first").text();
                         var time = time_long.substr(0,16);
                         time = time.replace("T"," ");
@@ -229,9 +229,10 @@ if (GBrowserIsCompatible()) {
                         var Watershed_html = '<b>' + watershed + ' Watershed</b><br />';
 
                         var html_header = Title + Name_html + Watershed_html;
-                        var table_1 = "<center><table border='1'><tr><th colspan='2'> Current Data:<br />" + time + '</tr></th><tr><td>Discharge</td><td>' + value + ' ' + units + ' <b>' + comment +'</b></td></tr></table></center>';
 
-                        var html = html_header + table_1 + '<br />Available data (links to plot)***:<br /><i><font size="1">***links work in Firefox and Chrome (IE and Safari coming soon)</i></font>';
+                        var table_1 = "<center><table border='1'><tr><th colspan='2'> Current Data:<br />" + time + '</tr></th><tr><td>Discharge</td><td>' + value + ' ' + units + ' <b>' + comment +'</b></td></tr></table></center>';
+                        
+                        var html = html_header + table_1 + '<br />Available data:';
                         var gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity&featureID=" + Site_no;
                         var gdaUV_url = base_url + "/sos/uv?request=GetDataAvailablity&featureID=" + Site_no;
 

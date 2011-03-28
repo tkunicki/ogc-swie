@@ -54,6 +54,7 @@
     }
 
     String Data_link = "<a href =" + sos_url + ">Link to plot data</a>";
+    String mapLink = "<a href =" + base_url + "/GoogleMap/GoogleMap.jsp>Return to map</a>";
     String wfs_url = base_url + "/wfs?request=GetFeature&featureId=" + featureID;
     String gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity&featureID=" + featureID;
     String gdaUV_url = base_url + "/sos/uv?request=GetDataAvailablity&featureID=" + featureID;
@@ -243,6 +244,7 @@
         <title>JSP Page</title>
     </head>
     <body>
+
         <table cellpadding="0" cellspacing="0" width="100%">
             <tr>
                 <td width="100%" valign="top"><!-- START header and top navigation section -->
@@ -276,7 +278,7 @@
                 <td>
                     <div id='Station_name' ></div><br />
                     <div id='chart_div' style='width: 800px; height: 450px;'>Loading...</div><br />
-                    Provisional data subject to revision<br /><%=Data_link%>
+                    Provisional data subject to revision<br /><%=Data_link%><br /><%=mapLink%>
                 </td>
                 <td>
                     <div id='side_bar_header'style="overflow:auto">Loading...</div>
