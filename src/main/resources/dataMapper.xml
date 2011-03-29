@@ -272,6 +272,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             AND c.site_id = a.site_id
             AND a.parameter_cd = e.parameter_cd
             AND a.access_cd = '0'
+            AND b.stat_cd = '00003'
 
             GROUP BY c.site_no, a.parameter_cd
             ORDER BY a.parameter_cd
@@ -323,6 +324,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             AND c.site_id = a.site_id
             AND a.parameter_cd = e.parameter_cd
             AND a.access_cd = '0'
+            AND b.stat_cd = '00003'
 
             <if test="observedProperty != null">
                 AND a.parameter_cd = (#{observedProperty})
@@ -378,6 +380,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             AND c.site_id = a.site_id
             AND a.parameter_cd = e.parameter_cd
             AND a.access_cd = '0'
+            AND b.stat_cd = '00003'
             <if test="observedProperty != null">
                 AND a.parameter_cd = (#{observedProperty})
             </if>

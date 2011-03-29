@@ -161,47 +161,47 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="parameter_nm"
 			javaType="string" />
 		<result
-			property="om:featureOfInterest/wml2:WaterMonitoringPoint#gml:id=USGS.WMP.%s"
+			property="om:featureOfInterest/wml2:MonitoringPoint#gml:id=USGS.WMP.%s"
 			column="site_no"
 			javaType="string" />
                 <result
-                        property="om:featureOfInterest/wml2:WaterMonitoringPoint/sf:sampledFeature#xlink:href=%s"
+                        property="om:featureOfInterest/wml2:MonitoringPoint/sf:sampledFeature#xlink:href=%s"
  			column="state_site"
 			typeHandler="USGS_URL_TypeHandler" />
 		<result
-			property="om:featureOfInterest/wml2:WaterMonitoringPoint/sf:parameter/om:NamedValue/om:name#xlink:title=Watershed"
+			property="om:featureOfInterest/wml2:MonitoringPoint/sf:parameter/om:NamedValue/om:name#xlink:title=Watershed"
 			column="huc_nm"
 			javaType="string" />
 		<result
-			property="om:featureOfInterest/wml2:WaterMonitoringPoint/sf:parameter/om:NamedValue/om:value"
+			property="om:featureOfInterest/wml2:MonitoringPoint/sf:parameter/om:NamedValue/om:value"
 			column="huc_nm"
 			javaType="string" />
                 <result
-                        property="om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/gml:Point#gml:id=USGS.P.%s"
+                        property="om:featureOfInterest/wml2:MonitoringPoint/sams:shape/gml:Point#gml:id=USGS.P.%s"
  			column="site_no"
 			javaType="string" />
                <result
-                        property="om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/gml:Point/gml:pos#srsName=%s"
+                        property="om:featureOfInterest/wml2:MonitoringPoint/sams:shape/gml:Point/gml:pos#srsName=%s"
  			column="coord_datum"
 			javaType="string" />
                 <result
-                        property="om:featureOfInterest/wml2:WaterMonitoringPoint/sams:shape/gml:Point/gml:pos"
+                        property="om:featureOfInterest/wml2:MonitoringPoint/sams:shape/gml:Point/gml:pos"
  			column="pos"
 			javaType="string" />
                 <result
-                        property="om:featureOfInterest/wml2:WaterMonitoringPoint/wml2:descriptionReference#xlink:href=http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/SurfacewaterInteroperabilityExperiment#Use_Case_2"
+                        property="om:featureOfInterest/wml2:MonitoringPoint/wml2:descriptionReference#xlink:href=http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/SurfacewaterInteroperabilityExperiment#Use_Case_2"
  			column="station_nm"
 			javaType="string" />
                 <result
-                        property="om:featureOfInterest/wml2:WaterMonitoringPoint/wml2:descriptionReference#xlink:title=This wiki page describes the IE"
+                        property="om:featureOfInterest/wml2:MonitoringPoint/wml2:descriptionReference#xlink:title=This wiki page describes the IE"
  			column="station_nm"
 			javaType="string" />
 		<result
-			property="om:featureOfInterest/wml2:WaterMonitoringPoint/wml2:timeZone/wml2:TimeZone/wml2:zoneOffset"
+			property="om:featureOfInterest/wml2:MonitoringPoint/wml2:timeZone/wml2:TimeZone/wml2:zoneOffset"
 			column="result_tz_offset"
 			javaType="string" />
                 <result
-			property="om:featureOfInterest/wml2:WaterMonitoringPoint/wml2:timeZone/wml2:TimeZone/wml2:zoneAbbreviation"
+			property="om:featureOfInterest/wml2:MonitoringPoint/wml2:timeZone/wml2:TimeZone/wml2:zoneAbbreviation"
 			column="zoneAbbreviation"
 			javaType="string" />
                 <result
@@ -281,7 +281,8 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 	</resultMap>
 	
 	<select id="uvSelect" parameterType="map" resultMap="uvObservationResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
-		select f.station_nm,
+		SELECT DISTINCT
+                f.station_nm,
                 CONCAT('USGS.',CONVERT(f.site_no,CHAR)) as FeatureID,
                 f.site_no,
                 f.tz_cd as zoneAbbreviation,

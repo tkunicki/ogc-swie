@@ -136,17 +136,22 @@
                             var temp2 = timestamp.split("T");
                             var time = temp2[1].split(":");
                             var fullDate = temp2[0].split("-");
-                            date.setMonth(fullDate[1] - 1);
-                            date.setFullYear(fullDate[0]);
-                            date.setDate(fullDate[2]);
-                            date.setHours(time[0]);
-                            date.setMinutes(time[1]);
-                            date.setSeconds(0);
+                            var month = parseFloat(fullDate[1]) - 1;
+                            var year = fullDate[0];
+                            var day = fullDate[2];
+                            var hours = time[0];
+                            var minutes = time[1];
+                            var seconds = 0;
+                            date.setFullYear(year,month,day);
+                            date.setHours(hours, minutes, 0, 0);
+
                         } else {
                             var fullDate = timestamp.split("-");
-                            date.setMonth(fullDate[1] - 1);
-                            date.setFullYear(fullDate[0]);
-                            date.setDate(fullDate[2]);
+                            var year = fullDate[0];
+                            var month = parseFloat(fullDate[1])-1;
+                            var day = fullDate[2].replace(/^0+(?=\d\.)/, '');
+                            date.setFullYear(year,month,day);
+
                         }
                         data.addRow([date,value]);
                     });
