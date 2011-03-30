@@ -87,7 +87,7 @@
                 <p />
                     <dl>
                         <dt><b>GetObservation</b> - featureID(required), beginPosition(optional), endPosition(optional), observedProperty(required)</dt>
-                        <dt>Allowed observedProperty are: Discharge, GageHeight, Temperature, Precipitation</dt>
+                        <dt>Allowed observedProperty are: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH</dt>
                         <dt>Not every station will have all observedProperty options available, use GetDataAvailablity to find out which stations offer which properties<br />
                         <i>Instantaneous gage height observation by feature ID and begin time:</i></dt>
                         <dd>
@@ -161,16 +161,16 @@
                     <font size="4" ><li><strong>Sensor Observation Service - Daily Mean Values (DV)</strong></li></font>
                     <p />
                     <dl>
-                        <dt><b>GetObservation</b> - featureID(required), beginPosition(optional), endPosition(optional), observedProperty(required)</dt>
-                        <dt>Allowed observedProperty are: Discharge, GageHeight, Temperature, Precipitation</dt>
-                        <dt>Not every station will have all observedProperty options available<br />
-                        <i>Daily mean discharge observation by feature ID with begin and end time:</i><br /></dt>
+                        <dt><b>GetObservation</b> - featureID(required), offering(required), beginPosition(optional), endPosition(optional), observedProperty(required)</dt>
+                        <dd>Allowed observedProperty: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH</dd>
+                        <dd>Not every station will have all observedProperty options available<br /></dd>
+                        <i>Daily mean discharge observation by feature ID with begin and end time:</i><br />
                         <dd>
-                            <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=01446500&observedProperty=Discharge&beginPosition=1970-01-01&endPosition=1980-01-01"><%=baseURL%>/sos/dv?request=GetObservation&featureId=01446500&observedProperty=Discharge&beginPosition=1970-01-01&endPosition=1980-01-01</a>
+                            <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=01446500&observedProperty=Discharge&beginPosition=1970-01-01&endPosition=1980-01-01&offering=Mean"><%=baseURL%>/sos/dv?request=GetObservation&featureId=01446500&observedProperty=Discharge&beginPosition=1970-01-01&endPosition=1980-01-01&offering=Mean</a>
                         </dd>
-                        <i>Daily mean precipitation observation by feature ID and begin time:</i><br />
+                        <i>Daily maximum temperature observations by feature ID and begin time:</i><br />
                         <dd>
-                            <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=05407000&observedProperty=Precipitation&beginPosition=<%=LastWeek%>"><%=baseURL%>/sos/dv?request=GetObservation&featureId=05407000&observedProperty=Precipitation&beginPosition=<%=LastWeek%></a>
+                            <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=05082500&observedProperty=Temperature&beginPosition=2010-01-01&offering=Maximum"><%=baseURL%>/sos/dv?request=GetObservation&featureId=05407000&observedProperty=Precipitation&beginPosition=2010-01-01&offering=Maximum</a>
                         </dd>
                     </dl>
 
@@ -180,7 +180,6 @@
                                 <textarea name="xml" rows="10" cols="90">
 <?xml version="1.0" ?>
 <sos:GetObservation version="2.0.0" service="SOS"
-    maxFeatures="3"
     xmlns:sos="http://schemas.opengis.net/sos/2.0.0/"
     xmlns:wfs="http://www.opengis.net/wfs"
     xmlns:ogc="http://www.opengis.net/ogc"
@@ -208,7 +207,6 @@
                                         </form>
                     </dd>
                     <p />
-
                     <dl>
                                 <dt><b>GetCapabilities</b></dt>
                                 <dd><a href="<%=baseURL%>/sos/dv?request=GetCapabilities"><%=baseURL%>/sos/dv?request=GetCapabilities</a></dd>
@@ -221,11 +219,35 @@
                                 <dt><b>GetDataAvailablity</b> - featureID, observedProperty, beginPosition and endPostion are all optional. If not used, all the features/properties in the SWIE will be displayed</dt>
                                 <i>General:</i>
                                 <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity"><%=baseURL%>/sos/dv?request=GetDataAvailablity</a></dd>
-                                <i>GetDataAvailablity by feature ID:</i>
-                                <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity&featureID=05568500"><%=baseURL%>/sos/dv?request=GetDataAvailablity&featureID=05568500</a></dd>
+                                <i>GetDataAvailablity by feature ID and offering:</i>
+                                <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity&featureID=05082500&offering=mean"><%=baseURL%>/sos/dv?request=GetDataAvailablity&featureID=05082500&offering=mean</a></dd>
                                 <i>GetDataAvailablity by observed property and feature ID:</i>
                                 <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500"><%=baseURL%>/sos/dv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500</a></dd>
-                                
+                   <dt><i>GetDataAvailablity via XML HTTP body POST:</i><br /></dt>
+                      <dd>  <form name="input" action="<%=baseURL%>/sos/dv?request=GetDataAvailability" method="post">
+                                <textarea name="xml" rows="10" cols="90">
+<?xml version="1.0" ?>
+<sos:GetDataAvailablity version="2.0.0" service="SOS"
+    maxFeatures="3"
+    xmlns:sos="http://schemas.opengis.net/sos/2.0.0/"
+    xmlns:wfs="http://www.opengis.net/wfs"
+    xmlns:ogc="http://www.opengis.net/ogc"
+    xmlns:gml="http://www.opengis.net/gml/3.2"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:om="http://www.opengis.net/om/2.0"
+    xmlns:fes="http://www.opengis.net/fes/2.0"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xsi:schemaLocation="http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0.0/sos.xsd">
+    <sos:featureOfInterest>05082500</sos:featureOfInterest>
+    <sos:observedProperty>Discharge</sos:observedProperty>
+    <sos:offering>00003</sos:offering>
+</sos:GetDataAvailablity>
+
+                                            </textarea><br />
+                                            <input type="submit" value="Submit" />
+                                        </form>
+                    </dd>
+                    <p />
                     </dl>
                     <p></p>
 
@@ -301,14 +323,18 @@
 
                                 </li>
                                 <li><strong>Log</strong>
+                                   <dl>Version 1.5.1 March 22th, 2011 <br />
+                                        <dd> * Added offering to daily data service (getObservation and getDataAvailability  </dd>
+                                        <dd> * Continued to try to improve the efficiency of plot displays </dd>
+                                    </dl>
                                    <dl>Version 1.5 March 22th, 2011 <br />
                                         <dd> * Included a minimal implementation of GetObservation via XML HTTP body POST </dd>
                                         <dd> * Included plot links </dd>
                                     </dl>
-                                   <dl>Version 1.4 March 16th, 2011 <br />
+<!--                                   <dl>Version 1.4 March 16th, 2011 <br />
                                         <dd> * Updated GetDataObservation </dd>
                                         <dd> * Included GetObservation by XML HTTP body POST </dd>
-                                    </dl>
+                                    </dl>-->
 <!--                                    <dl>Version 1.3 March 10th, 2011 <br />
                                         <dd> * Began work on GetDataObservation </dd>
                                         <dd> * removed time from daily mean values </dd>
@@ -442,8 +468,8 @@
                     var USGS_link = '<a href = "' + USGS_URL + '" >' + Site_no + '</a>';
                     var Title = 'Station: ' + USGS_link + '<br />';
                     var WML2_link_uv = '<li><a href =' + base_url + '/sos/uv?request=GetObservation&featureId=' + Site_no + '&observedProperty=Discharge&beginPosition=' + LastWeekStr + '>GetObservation - Instantaneous</a></li>';
-                    var WML2_link_dv = '<li><a href =' + base_url + '/sos/dv?request=GetObservation&featureId=' + Site_no + '&observedProperty=Discharge&beginPosition=' + LastWeekStr + '>GetObservation - Daily Mean</a></li>';
-                    var GDA_link_dv = '<li><a href =' + base_url + '/sos/dv?request=GetDataAvailablity&featureId=' + Site_no +'>GetDataAvailablity - Daily Mean</a></li>';
+                    var WML2_link_dv = '<li><a href =' + base_url + '/sos/dv?request=GetObservation&featureId=' + Site_no + '&observedProperty=Discharge&beginPosition=' + LastWeekStr + '&offering=mean>GetObservation - Daily Mean</a></li>';
+                    var GDA_link_dv = '<li><a href =' + base_url + '/sos/dv?request=GetDataAvailablity&featureId=' + Site_no +'&offering=mean>GetDataAvailablity - Daily Mean</a></li>';
                     var GDA_link_uv = '<li><a href =' + base_url + '/sos/uv?request=GetDataAvailablity&featureId=' + Site_no +'>GetDataAvailablity - Instantaneous</a></li>';
                     var html = USGS_picture + Title + Name + WML2_link_uv + WML2_link_dv + GDA_link_dv + GDA_link_uv;
 

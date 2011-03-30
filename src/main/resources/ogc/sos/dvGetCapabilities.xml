@@ -115,6 +115,23 @@ http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
                                 <ows:Value>GageHeight</ows:Value>
                                 <ows:Value>Temperature</ows:Value>
                                 <ows:Value>Precipitation</ows:Value>
+                                <ows:Value>DO</ows:Value>
+                                <ows:Value>Turbidity</ows:Value>
+                                <ows:Value>pH</ows:Value>
+			</ows:Parameter>
+			<ows:Parameter name="offering">
+                            <ows:Value>MEAN</ows:Value>
+                            <ows:Value>MAXIMUM</ows:Value>
+                            <ows:Value>MINIMUM</ows:Value>
+                            <ows:Value>SUM</ows:Value>
+                            <ows:Value>MODE</ows:Value>
+                            <ows:Value>MEDIAN</ows:Value>
+                            <ows:Value>STD</ows:Value>
+                            <ows:Value>VARIANCE</ows:Value>
+                            <ows:Value>HIGHTIDE</ows:Value>
+                            <ows:Value>LOWTIDE</ows:Value>
+                            <ows:Value>TIDAL_LOW_HIGH</ows:Value>
+                            <ows:Value>TIDAL_HIGH_LOW</ows:Value>
 			</ows:Parameter>
 			<ows:Parameter name="beginPosition">
 				<ows:AnyValue/>
@@ -174,8 +191,24 @@ http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
                                 <ows:Value>GageHeight</ows:Value>
                                 <ows:Value>Temperature</ows:Value>
                                 <ows:Value>Precipitation</ows:Value>
+                                <ows:Value>DO</ows:Value>
+                                <ows:Value>Turbidity</ows:Value>
+                                <ows:Value>pH</ows:Value>
 			</ows:Parameter>
-
+			<ows:Parameter name="offering">
+                            <ows:Value>MEAN</ows:Value>
+                            <ows:Value>MAXIMUM</ows:Value>
+                            <ows:Value>MINIMUM</ows:Value>
+                            <ows:Value>SUM</ows:Value>
+                            <ows:Value>MODE</ows:Value>
+                            <ows:Value>MEDIAN</ows:Value>
+                            <ows:Value>STD</ows:Value>
+                            <ows:Value>VARIANCE</ows:Value>
+                            <ows:Value>HIGHTIDE</ows:Value>
+                            <ows:Value>LOWTIDE</ows:Value>
+                            <ows:Value>TIDAL_LOW_HIGH</ows:Value>
+                            <ows:Value>TIDAL_HIGH_LOW</ows:Value>
+			</ows:Parameter>
 		</ows:Operation>
 		<ows:Operation name="GetDataAvailablity">
 			<ows:DCP>
@@ -222,6 +255,23 @@ http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
                                 <ows:Value>GageHeight</ows:Value>
                                 <ows:Value>Temperature</ows:Value>
                                 <ows:Value>Precipitation</ows:Value>
+                                <ows:Value>DO</ows:Value>
+                                <ows:Value>Turbidity</ows:Value>
+                                <ows:Value>pH</ows:Value>
+			</ows:Parameter>
+			<ows:Parameter name="offering">
+				<ows:Value>MEAN</ows:Value>
+                                <ows:Value>MAXIMUM</ows:Value>
+                                <ows:Value>MINIMUM</ows:Value>
+                                <ows:Value>SUM</ows:Value>
+                                <ows:Value>MODE</ows:Value>
+                                <ows:Value>MEDIAN</ows:Value>
+                                <ows:Value>STD</ows:Value>
+                                <ows:Value>VARIANCE</ows:Value>
+                                <ows:Value>HIGHTIDE</ows:Value>
+                                <ows:Value>LOWTIDE</ows:Value>
+                                <ows:Value>TIDAL_LOW_HIGH</ows:Value>
+                                <ows:Value>TIDAL_HIGH_LOW</ows:Value>
 			</ows:Parameter>
 			<ows:Parameter name="beginPosition">
 				<ows:AnyValue/>
@@ -308,6 +358,9 @@ http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
                                 <sos:observedProperty xlink:href="Discharge"/>
                                 <sos:observedProperty xlink:href="Temperature"/>
                                 <sos:observedProperty xlink:href="Precipitation"/>
+                                <sos:observedProperty xlink:href="Turbidity"/>
+                                <sos:observedProperty xlink:href="pH"/>
+                                <sos:observedProperty xlink:href="DO"/>
 				<sos:featureOfInterest xlink:href="${base.url}/wfs?request=GetFeature"/>
 				<sos:responseFormat>text/xml; subtype="om/1.0.0"</sos:responseFormat>
 				<sos:responseMode>inline</sos:responseMode>

@@ -9,6 +9,8 @@
 
     String observedProperty = Property.split(",")[0];
     String offering = Property.split(",")[1];
+    String service = offering.substring(0,2);
+    String stat_cd = offering.substring(2);
 
     String compare = request.getParameter("compare");
 
@@ -18,9 +20,11 @@
     String sos_url;
 
 
-    if (offering.equalsIgnoreCase("DV")) {
-        sos_url = base_url + "/sos/dv?request=GetObservation&featureId=" + featureID;
-    } else if (offering.equalsIgnoreCase("UV")) {
+    if (service.equalsIgnoreCase("DV")) {
+
+        sos_url = base_url + "/sos/dv?request=GetObservation&featureId=" + featureID + "&offering=" + stat_cd;
+
+    } else if (service.equalsIgnoreCase("UV")) {
         sos_url = base_url + "/sos/uv?request=GetObservation&featureId=" + featureID;
     } else {
         sos_url = base_url + "/sos/uv?request=GetObservation&featureId=" + featureID;
@@ -117,7 +121,8 @@
                     var wfs_url = '<%=wfs_url%>';
                     var gdaDV_url = '<%=gdaDV_url%>';
                     var gdaUV_url = '<%=gdaUV_url%>';
-                    var offering = '<%=offering%>';
+                    var service = '<%=service%>';
+                    var stat_cd = '<%=stat_cd%>';
                     var observedProperty = '<%=observedProperty%>';
 
                     var Title = PropertyName + ' (' + units + ')';
@@ -132,7 +137,7 @@
                         var date = new Date();
                         var UTCOffsetHours = parseInt(temp.substr(17, 2));
 
-                        if (offering == 'UV') {
+                        if (service == 'UV') {
                             var temp2 = timestamp.split("T");
                             var time = temp2[1].split(":");
                             var fullDate = temp2[0].split("-");
@@ -167,7 +172,7 @@
                     document.getElementById("Station_name").innerHTML = (html_2);
 
                     var Plot_table_UV = "<table border='1' cellpadding='2'><tr><td></td><td><center><b>Real Time</b></center></td><td>Begin date</td><td>End date</td></tr>";
-                    var Plot_table_DV = "<table border='1' cellpadding='2'><tr><td></td><td><b><center>Daily Mean</b></center></td><td>Begin date</td><td>End date</td></tr>";
+                    var Plot_table_DV = "<table border='1' cellpadding='2'><tr><td></td><td><b><center>Daily</b></center></td><td>Begin date</td><td>End date</td></tr>";
 
                     var xml_UV = LoadXML(gdaUV_url);
                     $(xml_UV).find("[nodeName=gda:FeaturePropertyTemporalRelationship],FeaturePropertyTemporalRelationship").each(function(){
@@ -182,7 +187,7 @@
                             var endTime_long = $(this).find("[nodeName=gml:endPosition]").text();
                             var endTime = endTime_long.substr(0,16);
                             var endDate = endTime.split(" ")[0];
-                            if (Parameter_cd == observedProperty && offering == 'UV') {
+                            if (Parameter_cd == observedProperty && service == 'UV') {
                                 var radio = '<input type="radio" name="observedProperty" value="' + Parameter_cd + ',UV" checked/>';
                             }
                             else {
@@ -198,17 +203,18 @@
                             var Parameter_cd_long_DV = Property_DV.attr("xlink:href");
                             var Parameter_cd_array_DV = Parameter_cd_long_DV.split("_");
                             var Parameter_cd_DV = Parameter_cd_array_DV[1];
+                            var stat_cd_DV = Parameter_cd_array_DV[2];
                             var beginTime_long_DV = $(this).find("[nodeName=gml:beginPosition]").text();
                             var beginTime_DV = beginTime_long_DV.substr(0,16);
                             var beginDate_DV = beginTime_DV.split(" ")[0];
                             var endTime_long_DV = $(this).find("[nodeName=gml:endPosition]").text();
                             var endTime_DV = endTime_long_DV.substr(0,16);
                             var endDate_DV = endTime_DV.split(" ")[0];
-                            if (Parameter_cd_DV == observedProperty && offering == 'DV') {
-                                var radio_DV = '<input type="radio" name="observedProperty" value="' + Parameter_cd_DV + ',DV" checked/>';
+                            if (Parameter_cd_DV == observedProperty && service == 'DV' && stat_cd == stat_cd_DV) {
+                                var radio_DV = '<input type="radio" name="observedProperty" value="' + Parameter_cd_DV + ',DV' + stat_cd_DV + '" checked/>';
                             }
                             else {
-                                var radio_DV = '<input type="radio" name="observedProperty" value="' + Parameter_cd_DV + ',DV"/>';
+                                var radio_DV = '<input type="radio" name="observedProperty" value="' + Parameter_cd_DV + ',DV' + stat_cd_DV + '"/>';
                             }
 
                             Plot_table_DV = Plot_table_DV+ '<tr><td>' + radio_DV + '</td><td>' + Prop_DV + '</td><td>' + beginDate_DV + '</td><td>' + endDate_DV + '</tr>';

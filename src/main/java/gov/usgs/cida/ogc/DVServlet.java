@@ -45,18 +45,6 @@ public class DVServlet extends HttpServlet {
 	private static final String DEFAULT_ENCODING = "UTF-8";
 	private static final long serialVersionUID = 1L;
         private final static String XPATH_request = "local-name(/*)";
-//	//private final static String XPATH_Envelope = "//sos:GetObservation/sos:featureOfInterest/ogc:BBOX[ogc:PropertyName='gml:location']/gml:Envelope";
-//	private final static String XPATH_Envelope = "//sos:GetObservation/sos:featureOfInterest/ogc:BBOX/gml:Envelope";
-//	private final static String XPATH_cornerLower = "gml:lowerCorner/text()";
-//	private final static String XPATH_upperCorner = "gml:upperCorner/text()";
-//	//private final static String XPATH_filter = "//ogc:Filter";
-//	private final static String XPATH_eventTime = "//wml:eventTime";
-//	private final static String XPATH_featureId = "//sos:GetObservation/gml:identifier/text()";
-//        private final static String XPATH_observedProperty = "//om:observedProperty/@xlink:title";
-//	private static final String XPATH_observationId = "//sos:ObservationId";
-//        private static final String XPATH_beginPosition = "//om:result/sos:domainExtent/gml:TimePeriod/gml:beginPosition/text()";
-//        private static final String XPATH_endPosition = "//om:result/sos:domainExtent/gml:TimePeriod/gml:endPosition/text()";
-//	private final static Pattern PATTERN_cornerSplit = Pattern.compile("\\s+");
 	private final static XMLOutputFactory2 xmlOutputFactory;
 
         public static final String XPATH_FEATURE_ID = "//sos:featureOfInterest/text()";
@@ -121,18 +109,28 @@ public class DVServlet extends HttpServlet {
             if (observedProperties != null && observedProperties.length > 0){
                 String observedProperty = observedProperties[0];
             
-                if (observedProperty.equalsIgnoreCase("Discharge")) {
-                    observedProperty = "00060";
-                } else if (observedProperty.equalsIgnoreCase("GageHeight")) {
-                    observedProperty = "00065";
-                } else if (observedProperty.equalsIgnoreCase("Temperature")) {
-                    observedProperty = "00010";
-                } else if (observedProperty.equalsIgnoreCase("Precipitation")) {
-                    observedProperty = "00045";
+                try {
+                    observedProperty = ObservedProperties.valueOf(observedProperty.toUpperCase()).code;
+                } catch (IllegalArgumentException e) {
+                    // property not found in list...
                 }
 
                 parameters.put(OGCBusinessRules.observedProperty, new String[] {observedProperty});
             }
+
+            String[] offerings = parameters.get(OGCBusinessRules.offering);
+            if (offerings != null && offerings.length > 0){
+                String offering = offerings[0];
+
+                try {
+                    offering = Offerings.valueOf(offering.toUpperCase()).code;
+                } catch (IllegalArgumentException e) {
+                    // property not found in list...
+                }
+
+                parameters.put(OGCBusinessRules.offering, new String[] {offering});
+            }
+
             return parameters;
 
         }
@@ -253,6 +251,10 @@ public class DVServlet extends HttpServlet {
 
 		// LinkedHashMap retains iteration order, useful for diffing debug output. It's Tom's favorite
 		Map<String, String[]> parameterMap = new LinkedHashMap<String, String[]>();
+
+
+                String request = document.getDocumentElement().getLocalName();
+                parameterMap.put("request", new String[] { request } );
 
 		XPathFactory xpathFactory = XPathFactory.newInstance();
 		XPath xpath = xpathFactory.newXPath();

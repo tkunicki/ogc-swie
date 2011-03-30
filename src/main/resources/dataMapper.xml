@@ -36,9 +36,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
 	<resultMap id="dataResultMap_1" type="XMLMap" extends="dataBaseMap">
-                <association property="UNUSED" column="{featureId=featureId,observedProperty=observedProperty,beginPosition=beginPosition, endPosition = endPosition}" select="dataSelect" javaType="list" />
-                <association property="UNUSED" column="{featureId=featureId,observedProperty=observedProperty,beginPosition=beginPosition, endPosition = endPosition}" select="dataPropertySelect" javaType="list" />
-                <association property="UNUSED" column="{featureId=featureId,observedProperty=observedProperty,beginPosition=beginPosition, endPosition = endPosition}" select="dataFeatureSelect" javaType="list" />
+                <association property="UNUSED" column="{featureId=featureId,observedProperty=observedProperty,beginPosition=beginPosition, endPosition = endPosition,offering = offering}" select="dataSelect" javaType="list" />
+                <association property="UNUSED" column="{featureId=featureId,observedProperty=observedProperty,beginPosition=beginPosition, endPosition = endPosition,offering = offering}" select="dataPropertySelect" javaType="list" />
+                <association property="UNUSED" column="{featureId=featureId,observedProperty=observedProperty,beginPosition=beginPosition, endPosition = endPosition,offering = offering}" select="dataFeatureSelect" javaType="list" />
 
 	</resultMap>
 	
@@ -204,10 +204,18 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             </choose>
             <choose>
                  <when test="endPosition != null">
-                    #{endPosition[0]} as endPosition
+                    #{endPosition[0]} as endPosition,
                 </when>
                 <otherwise>
-                    null as endPosition
+                    null as endPosition,
+                </otherwise>
+            </choose>
+            <choose>
+                 <when test="offering != null">
+                    #{offering[0]} as offering
+                </when>
+                <otherwise>
+                    null as offering
                 </otherwise>
             </choose>
             FROM dual
@@ -217,17 +225,18 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<select id="dataSelect" parameterType="map" resultMap="dataResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
             SELECT c.site_no,
             c.station_nm,
-            e.parameter_nm,
-            e.parameter_cd,
+            CONCAT (e.parameter_nm,' (',d.stat_nm,')') AS parameter_nm,
+            CONCAT (e.parameter_cd,'_',b.stat_cd) AS parameter_cd,
             MIN(b.result_dt) AS BeginPosition,
             MAX(b.result_dt) AS EndPosition,
-            CONCAT(e.parameter_cd,'_',c.site_no) AS parameterSite
+            CONCAT(e.parameter_cd,'_',c.site_no,'_',b.stat_cd) AS parameterSite
 
             FROM
             nwisweb.DV_DD_CONF a,
             nwisweb.DV b,
             nwisweb.SITEFILE c,
-            nwisweb.PARAM_REF e
+            nwisweb.PARAM_REF e,
+            nwisweb.STAT d
 
             <choose>
                   <when test="featureId != null">
@@ -257,6 +266,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
             <if test="observedProperty != null">
                 AND a.parameter_cd = (#{observedProperty})
+            </if>
+
+            <if test="offering != null">
+                AND b.stat_cd = (#{offering})
             </if>
 
             <if test="beginPosition != null">
@@ -272,9 +285,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             AND c.site_id = a.site_id
             AND a.parameter_cd = e.parameter_cd
             AND a.access_cd = '0'
-            AND b.stat_cd = '00003'
+            AND b.stat_cd = d.stat_cd
+<!--            AND b.stat_cd = '00003'-->
 
-            GROUP BY c.site_no, a.parameter_cd
+            GROUP BY c.site_no, a.parameter_cd, d.stat_nm
             ORDER BY a.parameter_cd
 
 	</select>
@@ -283,15 +297,16 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             SELECT c.site_no,
             c.agency_cd,
             c.station_nm,
-            e.parameter_nm,
-            CONCAT(e.parameter_cd,'_',c.site_no) AS parameterSite,
+            CONCAT (e.parameter_nm,' (',d.stat_nm,')') AS parameter_nm,
+            CONCAT(e.parameter_cd,'_',c.site_no,'_',d.stat_cd) AS parameterSite,
             CONCAT(e.parameter_nm,': ',c.station_nm) AS parameterSiteTitle
 
             FROM
             nwisweb.DV_DD_CONF a,
             nwisweb.DV b,
             nwisweb.SITEFILE c,
-            nwisweb.PARAM_REF e
+            nwisweb.PARAM_REF e,
+            nwisweb.STAT d
 
             <choose>
                   <when test="featureId != null">
@@ -324,30 +339,35 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             AND c.site_id = a.site_id
             AND a.parameter_cd = e.parameter_cd
             AND a.access_cd = '0'
-            AND b.stat_cd = '00003'
+            AND d.stat_cd = b.stat_cd
+<!--            AND b.stat_cd = '00003'-->
 
             <if test="observedProperty != null">
                 AND a.parameter_cd = (#{observedProperty})
             </if>
 
-            GROUP BY c.site_no, a.parameter_cd
+            <if test="offering != null">
+                AND d.stat_cd = (#{offering})
+            </if>
+
+            GROUP BY c.site_no, a.parameter_cd, d.stat_nm
             ORDER BY c.site_no
 
 	</select>
 
 	<select id="dataPropertySelect" parameterType="map" resultMap="dataPropertyMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
             SELECT c.site_no,
-            e.parameter_nm,
+            CONCAT (e.parameter_nm,' (',d.stat_nm,')') AS parameter_nm,
             e.parameter_cd,
-            CONCAT(e.parameter_cd,'_',c.site_no) AS parameterSite,
+            CONCAT(e.parameter_cd,'_',c.site_no,'_',d.stat_cd) AS parameterSite,
             c.station_nm
 
             FROM
             nwisweb.DV_DD_CONF a,
             nwisweb.DV b,
             nwisweb.SITEFILE c,
-            nwisweb.PARAM_REF e
-
+            nwisweb.PARAM_REF e,
+            nwisweb.STAT d
 
             <choose>
                   <when test="featureId != null">
@@ -380,12 +400,17 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             AND c.site_id = a.site_id
             AND a.parameter_cd = e.parameter_cd
             AND a.access_cd = '0'
-            AND b.stat_cd = '00003'
+            AND d.stat_cd = b.stat_cd
+<!--            AND b.stat_cd = '00003'-->
             <if test="observedProperty != null">
                 AND a.parameter_cd = (#{observedProperty})
             </if>
 
-            GROUP BY c.site_no, a.parameter_cd
+            <if test="offering != null">
+                AND d.stat_cd = (#{offering})
+            </if>
+
+            GROUP BY c.site_no, a.parameter_cd, d.stat_nm
             ORDER BY a.parameter_cd
 
 	</select>
@@ -393,7 +418,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<select id="dataHistorySelect" parameterType="map" resultMap="dataHistoryMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
             SELECT DISTINCT b.site_no,
                 b.station_nm,
-<!--                STR_TO_DATE(SYSDATE(),'%Y-%m-%d') as dateStamp,-->
                 STR_TO_DATE((CONCAT(CONVERT(a.month_nu,CHAR),'-',CONVERT(a.day_nu,CHAR))),'%m-%d') AS date,
                 a.p20_va,
                 a.p50_va,

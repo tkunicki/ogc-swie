@@ -363,6 +363,14 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                             AND j.parameter_cd = '00060'
                         </otherwise>
                     </choose>
+                    <choose>
+                        <when test="offering != null">
+                            AND a.stat_cd = (#{offering[0]})
+                        </when>
+                        <otherwise>
+                            AND a.stat_cd = '00003'
+                        </otherwise>
+                    </choose>
 
                     <if test="beginPosition != null">
                             AND a.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{beginPosition[0]}, '%Y-%m-%d')
@@ -376,7 +384,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                     AND j.site_id = b.site_id
                     AND j.dd_nu = a.dd_nu
                     AND j.access_cd = '0'
-                    AND a.stat_cd = '00003'
+<!--                    AND a.stat_cd = '00003'-->
                     GROUP BY a.site_id) s,
 
 		nwisweb.PARAM_REF d,
@@ -397,7 +405,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                     AND (g.result_dt <![CDATA[ <= ]]> c.end_dt OR c.end_dt = '0000-00-00 00:00:00'))
 
 		WHERE s.site_id = g.site_id
-                AND g.stat_cd = '00003'
+<!--                AND g.stat_cd = '00003'-->
                 AND f.site_id = s.site_id
                 AND e.site_id = s.site_id
 		AND d.parameter_cd = e.parameter_cd
@@ -405,6 +413,16 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 AND e.access_cd = '0'
                 AND h.huc_cd = f.huc_cd
                 AND h.state_cd = f.state_cd
+
+                <choose>
+                    <when test="offering != null">
+                        AND g.stat_cd = (#{offering[0]})
+                    </when>
+                    <otherwise>
+                        AND g.stat_cd = '00003'
+                    </otherwise>
+                </choose>
+
 
                 <choose>
                     <when test="observedProperty != null">

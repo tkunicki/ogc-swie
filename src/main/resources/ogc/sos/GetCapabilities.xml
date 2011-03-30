@@ -116,6 +116,9 @@ http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
                                 <ows:Value>GageHeight</ows:Value>
                                 <ows:Value>Temperature</ows:Value>
                                 <ows:Value>Precipitation</ows:Value>
+                                <ows:Value>DO</ows:Value>
+                                <ows:Value>Turbidity</ows:Value>
+                                <ows:Value>pH</ows:Value>
 			</ows:Parameter>
 			<ows:Parameter name="beginPosition">
 				<ows:AnyValue/>
@@ -169,6 +172,9 @@ http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
                                 <ows:Value>GageHeight</ows:Value>
                                 <ows:Value>Temperature</ows:Value>
                                 <ows:Value>Precipitation</ows:Value>
+                                <ows:Value>DO</ows:Value>
+                                <ows:Value>Turbidity</ows:Value>
+                                <ows:Value>pH</ows:Value>
 			</ows:Parameter>
 			<ows:Parameter name="beginPosition">
 				<ows:AnyValue/>
@@ -228,6 +234,9 @@ http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
                                 <ows:Value>GageHeight</ows:Value>
                                 <ows:Value>Temperature</ows:Value>
                                 <ows:Value>Precipitation</ows:Value>
+                                <ows:Value>DO</ows:Value>
+                                <ows:Value>Turbidity</ows:Value>
+                                <ows:Value>pH</ows:Value>
 			</ows:Parameter>
 
 		</ows:Operation>
@@ -310,6 +319,9 @@ http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
                                 <sos:observedProperty xlink:href="Discharge"/>
                                 <sos:observedProperty xlink:href="Temperature"/>
                                 <sos:observedProperty xlink:href="Precipitation"/>
+                                <sos:observedProperty xlink:href="Turbidity"/>
+                                <sos:observedProperty xlink:href="pH"/>
+                                <sos:observedProperty xlink:href="DO"/>
 				<sos:featureOfInterest xlink:href="${base.url}/wfs?request=GetFeature"/>
 				<sos:responseFormat>text/xml; subtype="om/1.0.0"</sos:responseFormat>
                                 <sos:responseFormat>text/xml; subtype="WML2"</sos:responseFormat>
