@@ -215,8 +215,8 @@
                         var html = html_header + table_1 + '<br />Available data:';
 
 //                        var history_url = base_url + "/sos/dv?request=GetHistoricalData&featureID=" + Site_no + '&beginPosition=' + today + '&endPosition=' + today + '&observedProperty=Discharge';
-                        var gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity&featureID=" + Site_no;
-                        var gdaUV_url = base_url + "/sos/uv?request=GetDataAvailablity&featureID=" + Site_no;
+                        var gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity&featureID=" + Site_no + "&offering=00003";
+                        var gdaUV_url = base_url + "/sos/uv?request=GetDataAvailablity&featureID=" + Site_no + "&offering=00003";
 
 
 //                            $.get(history_url, function(xml_history) {
@@ -256,7 +256,8 @@
                                     var xml_DV = LoadXML(gdaDV_url);
                                     $(xml_DV).find("[nodeName=gda:FeaturePropertyTemporalRelationship],FeaturePropertyTemporalRelationship").each(function(){
                                         var Property_DV = $(this).find("[nodeName=gda:targetProperty]");
-                                        var Prop_DV = Property_DV.attr("xlink:title");
+                                        var Prop_test = Property_DV.attr("xlink:title");
+                                        var Prop_DV = Prop_test.substring(0,Prop_test.lastIndexOf(' ('));
                                         var Parameter_cd_long_DV = Property_DV.attr("xlink:href");
                                         var Parameter_cd_array_DV = Parameter_cd_long_DV.split("_");
                                         var Parameter_cd_DV = Parameter_cd_array_DV[1];
@@ -270,7 +271,7 @@
                                         var beginDateLink = endDateYear.toString() + '-' + endTime_DV.split("-")[1] + '-' + endTime_DV.split("-")[2];
 
 
-                                        Plot_links_DV = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?featureID=' + site + '&observedProperty=' + Parameter_cd_DV + ',DV&beginPosition=' + beginDateLink + '&endPosition=' + endDate_DV + '>' + Prop_DV + '</a>';
+                                        Plot_links_DV = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?featureID=' + site + '&observedProperty=' + Parameter_cd_DV + ',DV00003&beginPosition=' + beginDateLink + '&endPosition=' + endDate_DV + '>' + Prop_DV + '</a>';
                                         Plot_table_DV = Plot_table_DV + '<tr><td>' + Plot_links_DV + '</td><td>' + beginDate_DV + '</td><td>' + endDate_DV + '</td></tr>';
                                     });
 

@@ -48,6 +48,7 @@ public class DVServlet extends HttpServlet {
 	private final static XMLOutputFactory2 xmlOutputFactory;
 
         public static final String XPATH_FEATURE_ID = "//sos:featureOfInterest/text()";
+        public static final String XPATH_OFFERING = "//sos:offering/text()";
         public static final String XPATH_observedProperty = "//sos:observedProperty/text()";
         public static final String XPATH_beginPosition = "//gml:TimeInstant[@gml:id='beginPosition']/gml:timePosition/text()";
         public static final String XPATH_endPosition = "//gml:TimeInstant[@gml:id='endPosition']/gml:timePosition/text()";
@@ -281,6 +282,18 @@ public class DVServlet extends HttpServlet {
 				String observedProperty = observedPropertyNode.getTextContent();    
 
                                 parameterMap.put(OGCBusinessRules.observedProperty, new String[] {observedProperty});				
+			}
+		}
+
+                {
+			// Handle offering
+			XPathExpression offeringExpression = xpath.compile(XPATH_OFFERING);
+			Object offeringResult = offeringExpression.evaluate(document, XPathConstants.NODE);
+			if (offeringResult != null && offeringResult instanceof Node) {
+				Node offeringNode = (Node)offeringResult;
+				String offering = offeringNode.getTextContent();
+
+                                parameterMap.put(OGCBusinessRules.offering, new String[] {offering});
 			}
 		}
 

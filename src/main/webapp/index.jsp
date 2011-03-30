@@ -189,8 +189,9 @@
     xmlns:fes="http://www.opengis.net/fes/2.0"
     xmlns:xlink="http://www.w3.org/1999/xlink"
     xsi:schemaLocation="http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0.0/sos.xsd">
-    <sos:featureOfInterest>01446500</sos:featureOfInterest>
-    <sos:observedProperty>Discharge</sos:observedProperty>
+    <sos:featureOfInterest>05082500</sos:featureOfInterest>
+    <sos:observedProperty>DO</sos:observedProperty>
+    <sos:offering>Maximum</sos:offering>
     <sos:temporalFilter>
         <fes:ValueReference>phenomenonTime</fes:ValueReference>
         <gml:TimeInstant gml:id='beginPosition'>
