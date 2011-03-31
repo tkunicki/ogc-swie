@@ -132,6 +132,22 @@ public class DVServlet extends HttpServlet {
                 parameters.put(OGCBusinessRules.offering, new String[] {offering});
             }
 
+//            String[] interval = parameters.get(OGCBusinessRules.interval);
+//            if (interval != null && interval.length > 0){
+//                String INTERVAL = interval[0];
+//
+//                try {
+//                    INTERVAL = Interval.valueOf(INTERVAL.toUpperCase()).code;
+//                } catch (IllegalArgumentException e) {
+//                    // property not found in list...
+//                }
+//
+//                parameters.put(OGCBusinessRules.interval, new String[] {INTERVAL});
+//            }
+
+
+
+
             return parameters;
 
         }
@@ -252,7 +268,6 @@ public class DVServlet extends HttpServlet {
 
 		// LinkedHashMap retains iteration order, useful for diffing debug output. It's Tom's favorite
 		Map<String, String[]> parameterMap = new LinkedHashMap<String, String[]>();
-
 
                 String request = document.getDocumentElement().getLocalName();
                 parameterMap.put("request", new String[] { request } );

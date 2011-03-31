@@ -59,6 +59,7 @@ public class UVServlet extends HttpServlet {
         private final static XMLOutputFactory2 xmlOutputFactory;
 
         public static final String XPATH_FEATURE_ID = "//sos:featureOfInterest/text()";
+        public static final String XPATH_INTERVAL = "//sos:interval/text()";
         public static final String XPATH_observedProperty = "//sos:observedProperty/text()";
         public static final String XPATH_beginPosition = "//gml:TimeInstant[@gml:id='beginPosition']/gml:timePosition/text()";
         public static final String XPATH_endPosition = "//gml:TimeInstant[@gml:id='endPosition']/gml:timePosition/text()";
@@ -120,17 +121,39 @@ public class UVServlet extends HttpServlet {
             if (observedProperties != null && observedProperties.length > 0){
                 String observedProperty = observedProperties[0];
 
-                if (observedProperty.equalsIgnoreCase("Discharge")) {
-                    observedProperty = "00060";
-                } else if (observedProperty.equalsIgnoreCase("GageHeight")) {
-                    observedProperty = "00065";
-                } else if (observedProperty.equalsIgnoreCase("Temperature")) {
-                    observedProperty = "00010";
-                } else if (observedProperty.equalsIgnoreCase("Precipitation")) {
-                    observedProperty = "00045";
+                try {
+                    observedProperty = ObservedProperties.valueOf(observedProperty.toUpperCase()).code;
+                } catch (IllegalArgumentException e) {
+                    // property not found in list...
                 }
 
                 parameters.put(OGCBusinessRules.observedProperty, new String[] {observedProperty});
+            }
+
+            String[] offerings = parameters.get(OGCBusinessRules.offering);
+            if (offerings != null && offerings.length > 0){
+                String offering = offerings[0];
+
+                try {
+                    offering = Offerings.valueOf(offering.toUpperCase()).code;
+                } catch (IllegalArgumentException e) {
+                    // property not found in list...
+                }
+
+                parameters.put(OGCBusinessRules.offering, new String[] {offering});
+            }
+
+            String[] interval = parameters.get(OGCBusinessRules.interval);
+            if (interval != null && interval.length > 0){
+                String INTERVAL = interval[0];
+
+                try {
+                    INTERVAL = Interval.valueOf(INTERVAL.toUpperCase()).code;
+                } catch (IllegalArgumentException e) {
+                    // property not found in list...
+                }
+
+                parameters.put(OGCBusinessRules.interval, new String[] {INTERVAL});
             }
             return parameters;
 
@@ -238,6 +261,9 @@ public class UVServlet extends HttpServlet {
 		// LinkedHashMap retains iteration order, useful for diffing debug output. It's Tom's favorite
 		Map<String, String[]> parameterMap = new LinkedHashMap<String, String[]>();
 
+                String request = document.getDocumentElement().getLocalName();
+                parameterMap.put("request", new String[] { request } );
+
 		XPathFactory xpathFactory = XPathFactory.newInstance();
 		XPath xpath = xpathFactory.newXPath();
 		xpath.setNamespaceContext(new OGCBinding.GetObservation_2_0_NamespaceContext());
@@ -266,6 +292,29 @@ public class UVServlet extends HttpServlet {
 			}
 		}
 
+//                {
+//			// Handle offering
+//			XPathExpression offeringExpression = xpath.compile(XPATH_OFFERING);
+//			Object offeringResult = offeringExpression.evaluate(document, XPathConstants.NODE);
+//			if (offeringResult != null && offeringResult instanceof Node) {
+//				Node offeringNode = (Node)offeringResult;
+//				String offering = offeringNode.getTextContent();
+//
+//                                parameterMap.put(OGCBusinessRules.offering, new String[] {offering});
+//			}
+//		}
+                {
+			// Handle interval
+			XPathExpression intervalExpression = xpath.compile(XPATH_INTERVAL);
+			Object intervalResult = intervalExpression.evaluate(document, XPathConstants.NODE);
+			if (intervalResult != null && intervalResult instanceof Node) {
+				Node intervalNode = (Node)intervalResult;
+				String interval = intervalNode.getTextContent();
+
+                                parameterMap.put(OGCBusinessRules.interval, new String[] {interval});
+			}
+		}
+
                 {
 			// Handle beginPosition
 			XPathExpression beginPositionExpression = xpath.compile(XPATH_beginPosition);
@@ -277,6 +326,7 @@ public class UVServlet extends HttpServlet {
                                 parameterMap.put("beginPosition", new String[] {beginPosition});
 			}
 		}
+
 
                 {
 			// Handle endPosition

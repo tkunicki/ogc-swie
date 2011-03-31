@@ -41,7 +41,7 @@
 
     <style type="text/css">
         body {
-                background: #f0f0f0;
+/*                background: #f0f0f0;*/
                 margin: 8px;
                 padding: 0;
 /*                font: 12px normal Verdana, Arial, Helvetica, sans-serif;*/
@@ -128,6 +128,15 @@
     <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>
     <script src="GoogleMap/mapiconmaker.js" type="text/javascript"></script>
     <script type="text/javascript" src="GoogleMap/jquery-1.4.4.js"></script>
+
+    <script src="GoogleMap/LoadXML.js" type="text/javascript"></script>
+    <script src="GoogleMap/CreateTabbedMarker.js" type="text/javascript"></script>
+    <script src="GoogleMap/createInactiveMarker.js" type="text/javascript"></script>
+    <script src="GoogleMap/parseXML.js" type="text/javascript"></script>
+    <script src="GoogleMap/parseInactiveSites.js" type="text/javascript"></script>
+    <script src="GoogleMap/parseXML_Coastal.js" type="text/javascript"></script>
+
+
     <script type="text/javascript">
 
         $(document).ready(function() {
@@ -175,34 +184,24 @@
 <!-- END USGS Header Template -->
 
 <!===============================Create Table=========================================>
-<!--    <font face="Arial">-->
 
     <h1>Surface Water IE 1.5.1</h1>
-    <ul>
-        <li> <strong>Warning </strong>
-            <dt> The services provided on this page are primarily intended for surface water interoperability experiments for implementing WaterML2
-            and other trial OGC standards such as SOS 2.0.  Since these standards are in flux, the output formatting on this page may change at any time.
-            There is no guarantee that the output will validate with the latest standards. Check the version and log at the bottom of the page for changes and news.
-            </dt>
-        </li>
-    </ul>
-    <p />
-
     <table>
         <tr>
             <td>
                 <div class="container">
 
                     <ul class="tabs">
-                        <li><a href="#tab1">SOS Real-time</a></li>
-                        <li><a href="#tab2">SOS Daily</a></li>
-                        <li><a href="#tab3">WFS</a></li>
-                        <li><a href="#tab4">Map</a></li>
+                        <li><a href="#tabRealTime">SOS Real-time</a></li>
+                        <li><a href="#tabDaily">SOS Daily</a></li>
+                        <li><a href="#tabWFS">WFS</a></li>
+                        <li><a href="#tabMap">Map</a></li>
+                        <li><a href="#tabMisc">Miscellaneous</a></li>
                     </ul>
 
 
                 <div class="tab_container">
-                        <div id="tab1" class="tab_content">
+                        <div id="tabRealTime" class="tab_content">
                             <font size="4" ><li><strong> Sensor Observation Service - Instantaneous Values (UV)</strong></li> </font>
                                 <p />
                                     <dl>
@@ -267,17 +266,16 @@
                                     </dl>
                                     <dl>
                                                 <dt><b>GetDataAvailablity</b> - featureID, observedProperty, beginPosition and endPostion are all optional. If not used, all the features/properties in the SWIE will be displayed</dt>
-                                                <br /><i>General:</i>
-                                                <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity"><%=baseURL%>/sos/uv?request=GetDataAvailablity</a></dd>
                                                 <br /><i>GetDataAvailablity by feature ID:</i>
                                                 <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity&featureID=05568500"><%=baseURL%>/sos/uv?request=GetDataAvailablity&featureID=05568500</a></dd>
                                                 <br /><i>GetDataAvailablity by observed property and feature ID:</i>
                                                 <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500"><%=baseURL%>/sos/uv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500</a></dd>
-
+                                                <br /><i>General (very large file / long load time):</i>
+                                                <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity"><%=baseURL%>/sos/uv?request=GetDataAvailablity</a></dd>
                                     </dl>
 
                         </div>
-                        <div id="tab2" class="tab_content">
+                        <div id="tabDaily" class="tab_content">
                             <font size="4" ><li><strong>Sensor Observation Service - Daily Values (DV)</strong></li></font>
 
                             <dl>
@@ -336,14 +334,14 @@
                                                 <dd><a href="<%=baseURL%>/sos/dv?request=DescribeSensor"><%=baseURL%>/sos/dv?request=DescribeSensor</a></dd>
                                     </dl>
                                     <dl>
-                                                <dt><b>GetDataAvailablity</b> - featureID, observedProperty, beginPosition and endPostion are all optional. If not used, all the features/properties in the SWIE will be displayed</dt>
-                                                <br /><i>General:</i>
-                                                <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity"><%=baseURL%>/sos/dv?request=GetDataAvailablity</a></dd>
+                                                <dt><b>GetDataAvailablity</b> - featureID, offering, observedProperty, beginPosition and endPostion are all optional. If not used, all the features/properties in the SWIE will be displayed</dt>
                                                 <br /><i>GetDataAvailablity by feature ID and offering:</i>
                                                 <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity&featureID=05082500&offering=mean"><%=baseURL%>/sos/dv?request=GetDataAvailablity&featureID=05082500&offering=mean</a></dd>
                                                 <br /><i>GetDataAvailablity by observed property and feature ID:</i>
                                                 <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500"><%=baseURL%>/sos/dv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500</a></dd>
-                                   <dt><i>GetDataAvailablity via XML HTTP body POST:</i><br /></dt>
+                                                <br /><i>General (very large file / long load time):</i>
+                                                <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity"><%=baseURL%>/sos/dv?request=GetDataAvailablity</a></dd>
+                                                <br /><i>GetDataAvailablity via XML HTTP body POST:</i><br />
                                       <dd>  <form name="input" action="<%=baseURL%>/sos/dv?request=GetDataAvailability" method="post">
                                                 <textarea name="xml" rows="10" cols="90">
 <?xml version="1.0" ?>
@@ -371,7 +369,7 @@
                                     </dl>
 
                         </div>
-                        <div id="tab3" class="tab_content">
+                        <div id="tabWFS" class="tab_content">
                             <font size="4" ><li><strong>Web Feature Service</strong></li></font>
 
                                     <dl>
@@ -425,23 +423,44 @@
                                                         </dd>
                                                     </dl>
                         </div>
-                        <div id="tab4" class="tab_content">
-                            <div id="map" style="width: 660px; height: 460px"></div>
-                           Markers represent USGS gaging stations on the Mississippi, Delaware, Fox, Wisconsin, Illinois, Red River of the North, NASQAN Coastal Subnetwork, and others near the Great Lakes.
-                           Clicking on a marker brings up a box with the station name, and links to GetObservation, GetFeature, and the public USGS website.*<br />
-                           <p></p>
-                           <a href="<%=baseURL%>/GoogleMap/GoogleMap.jsp">Map with additional features</a><br />
+                        <div id="tabMap" class="tab_content">
+                            <center>
+                                <table border=1>
+                                      <tr>
+                                        <td>
+                                           <div id="map" style="width: 840px; height: 500px"></div>
+                                        </td>
+                                        <td width = 350 valign="top" style="text-decoration: underline; color: #4444ff;">
+                                           <div id="side_bar" style="overflow:auto; height:500px;">></div>
+                                        </td>
+                                      </tr>
+                                    </table>
+                            </center>
+
+                            <!-- ===========================Create Check Boxes==================================-->
+                                    <form action="#">
+                                      NASQAN Coastal Subnetwork: <input type="checkbox" id="Coastalbox" onclick="boxclick(this,'Coastal')" />&nbsp;&nbsp;
+                                      Inactive Gage Stations: <input type="checkbox" id="Inactivebox" onclick="boxclick(this,'Inactive')" /><br />
+                                      WI Rivers: <input type="checkbox" id="WIbox" onclick="boxclick(this,'WI')" />&nbsp;&nbsp;
+                                      MI Rivers: <input type="checkbox" id="MIbox" onclick="boxclick(this,'MI')" />&nbsp;&nbsp;
+                                      PA Rivers: <input type="checkbox" id="PAbox" onclick="boxclick(this,'PA')" />&nbsp;&nbsp;
+                                      NY Rivers: <input type="checkbox" id="NYbox" onclick="boxclick(this,'NY')" /><br />
+                                      NJ Rivers: <input type="checkbox" id="NJbox" onclick="boxclick(this,'NJ')" />&nbsp;&nbsp;
+                                      MN Rivers: <input type="checkbox" id="MNbox" onclick="boxclick(this,'MN')" />&nbsp;&nbsp;
+                                      MO Rivers: <input type="checkbox" id="MObox" onclick="boxclick(this,'MO')" />&nbsp;&nbsp;
+                                      IL Rivers: <input type="checkbox" id="ILbox" onclick="boxclick(this,'IL')" /><br />
+                                      IA Rivers: <input type="checkbox" id="IAbox" onclick="boxclick(this,'IA')" />&nbsp;&nbsp;
+                                      ND Rivers: <input type="checkbox" id="NDbox" onclick="boxclick(this,'ND')" />&nbsp;&nbsp;
+                                      OH Rivers: <input type="checkbox" id="OHbox" onclick="boxclick(this,'OH')" />&nbsp;&nbsp;
+                                      IN Rivers: <input type="checkbox" id="INbox" onclick="boxclick(this,'IN')" /><br />
+                                    </form>
 
 
                         <span> <font size="0.5"><br />* References to non-U.S. Department of the Interior (DOI) products do not constitute an endorsement by the DOI. By viewing the Google Maps API on this web site the user agrees to these
                         <a href="http://code.google.com/apis/maps/terms.html" target="_blank" title="Opens a new browser window.">Terms of Service set forth by Google</a>.<br /></font></span>
                         </div>
-                    </div>
-                </div>
-
-</td></tr>
-<tr><td>
-
+                    
+                    <div id="tabMisc" class="tab_content">
         <li><strong>Additional Services</strong>
              <dl>
                         <dt>Example output with comments about content:</dt>
@@ -460,20 +479,24 @@
             <p />
         </li>
         <li><strong>Log</strong>
-           <dl>Version 1.5.1 March 22th, 2011 <br />
+            <dl>Version 1.5.1 March 22th, 2011 <br />
                 <dd> * Added offering to daily data service (getObservation and getDataAvailability  </dd>
                 <dd> * Continued to try to improve the efficiency of plot displays </dd>
             </dl>
-           <dl>Version 1.5 March 22th, 2011 <br />
+            <dl>Version 1.5 March 22th, 2011 <br />
                 <dd> * Included a minimal implementation of GetObservation via XML HTTP body POST </dd>
                 <dd> * Included plot links </dd>
             </dl>
-            <p />
         </li>
+            </div>
+        </div>
+   </div>
+
 </td></tr>
+
 </table>
-<!--    </font>-->
-<! ==========================Message if JavaScript is not enabled=======================>
+
+<!--==========================Message if JavaScript is not enabled=======================-->
 
     <noscript><b>JavaScript must be enabled in order for you to use Google Maps.</b>
       However, it seems JavaScript is either disabled or not supported by your browser.
@@ -482,130 +505,110 @@
     </noscript>
 
 
-<! ==============================With compatable browsers, do the following===============>
-        <script>
+<!--==============================With compatable browsers, do the following===============-->
+        <script type="text/javascript">
+if (GBrowserIsCompatible()) {
 
-     //<![CDATA[
-        if (GBrowserIsCompatible()) {
-          var gmarkers = [];
-          var base_url = '<%=baseURL%>';
-          var LastWeekStr = '<%=LastWeek%>';
-          var wfs_url = base_url + "/wfs?request=GetFeature";
+    var gmarkers = [];
+    var base = '<%=baseURL%>';
+    var today = '<%=Today%>';
+    var test = base.length;    // Gets rid of /GoogleMap/ from baseURL
+    var base_url = base.substring(0,test);
+    var LastWeekStr = '<%=LastWeek%>';
 
-          function LoadXML(filename){
-                if (window.XMLHttpRequest) {
-                    xhttp = new XMLHttpRequest();
-                }
-                else {
-                    xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-                }
-                xhttp.open("GET", filename, false);
-                xhttp.send("");
 
-                return xhttp.responseXML;
+    // ===================================== Shows markers =================================
+    function show(category) {
+        for (var i=0; i<gmarkers.length; i++) {
+            if (gmarkers[i].mycategory == category) {
+                gmarkers[i].show();
             }
-
-            function parseXml(xml){
-                $(xml).find("[nodeName=wfs:FeatureCollection],FeatureCollection").each(function()
-                    {
-                        $(xml).find("[nodeName=wfs:member],member").each(function()
-                        {
-                                var siteName = $("[nodeName=gml:name]", this).text();
-                                var pos = $("[nodeName=gml:pos]", this).text();
-                                var pos_array = pos.split(" ");
-                                var latitude = pos_array[0];
-                                var longitude = pos_array[1];
-                                var pos_name = $("[nodeName=gml:pos]", this).attr("srsName");
-                                var siteCode_long = $("[nodeName=wml2:WaterMonitoringPoint]", this).attr("gml:id");
-                                var siteCode_array = siteCode_long.split(".");
-                                var siteCode = siteCode_array[2];
-                                var USGS_URL = $("[nodeName=sf:sampledFeature]", this).attr("xlink:ref");
-                                var URL_array = USGS_URL.split("/");
-                                var stateNM = URL_array[3];
-                                var point = new GLatLng(latitude, longitude);
-                                var marker = createMarker(point, siteName,  stateNM, siteCode, USGS_URL);
-                                map.addOverlay(marker);
-
-                        });
-                    });
-                }
-
-            function parseXml_Coastal(xml){
-                $(xml).find("[nodeName=wfs:FeatureCollection],FeatureCollection").each(function()
-                    {
-                        $(xml).find("[nodeName=wfs:member],member").each(function()
-                        {
-                                var siteName = $("[nodeName=gml:name]", this).text();
-                                var pos = $("[nodeName=gml:pos]", this).text();
-                                var pos_array = pos.split(" ");
-                                var latitude = pos_array[0];
-                                var longitude = pos_array[1];
-                                var pos_name = $("[nodeName=gml:pos]", this).attr("srsName");
-                                var siteCode = $("[nodeName=wml2:WaterMonitoringPoint]", this).attr("gml:id");
-                                var USGS_URL = $("[nodeName=sf:sampledFeature]", this).attr("xlink:ref");
-                                var URL_array = USGS_URL.split("/");
-                                var stateNM = "Coastal";
-                                var point = new GLatLng(latitude, longitude);
-                                var marker = createMarker(point, siteName,  stateNM, siteCode, USGS_URL);
-                                map.addOverlay(marker);
-                         });
-                    });
-                }
-
-// ========================Create a marker============================================
-            function createMarker(point, name, StateNM, Site_no, USGS_URL) {
-                var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
-                var marker = new GMarker(point, newIcon);
-                marker.mycategory = StateNM;
-                marker.myname = name;
-                GEvent.addListener(marker, "click", function() {
-                    var html = SimpleMarkerHTML(Site_no, USGS_URL, name);
-                    marker.openInfoWindowHtml(html);
-                    });
-                gmarkers.push(marker);
-                return marker;
-            }
-
-//====================================Create Marker HTML==================================
-        function SimpleMarkerHTML(Site_no, USGS_URL, Site_nm){
-                    var USGS_picture = '<img src = "GoogleMap/USGS.gif" width="84" height="32"/>';
-                    var Name = '<b>' + Site_nm + '</b><br />';
-                    var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + Site_no + '>GetFeature</a></li>';
-                    var USGS_link = '<a href = "' + USGS_URL + '" >' + Site_no + '</a>';
-                    var Title = 'Station: ' + USGS_link + '<br />';
-                    var WML2_link_uv = '<li><a href =' + base_url + '/sos/uv?request=GetObservation&featureId=' + Site_no + '&observedProperty=Discharge&beginPosition=' + LastWeekStr + '>GetObservation - Instantaneous</a></li>';
-                    var WML2_link_dv = '<li><a href =' + base_url + '/sos/dv?request=GetObservation&featureId=' + Site_no + '&observedProperty=Discharge&beginPosition=' + LastWeekStr + '&offering=mean>GetObservation - Daily Mean</a></li>';
-                    var GDA_link_dv = '<li><a href =' + base_url + '/sos/dv?request=GetDataAvailablity&featureId=' + Site_no +'&offering=mean>GetDataAvailablity - Daily Mean</a></li>';
-                    var GDA_link_uv = '<li><a href =' + base_url + '/sos/uv?request=GetDataAvailablity&featureId=' + Site_no +'>GetDataAvailablity - Instantaneous</a></li>';
-                    var html = USGS_picture + Title + Name + WML2_link_uv + WML2_link_dv + GDA_link_dv + GDA_link_uv;
-
-                    return html
-                }
-
-//==========================================Create the map================================
-      	var map = new GMap2(document.getElementById("map"));
-      	map.addControl(new GLargeMapControl());
-      	map.addControl(new GMapTypeControl());
-      	map.addMapType(G_PHYSICAL_MAP);
-        map.setCenter(new GLatLng(40.55972222, -88.613888889), 4, G_PHYSICAL_MAP);
-      	map.enableScrollWheelZoom();
-
-        xml = LoadXML(wfs_url);
-        parseXml(xml);
-
-        xml_coastal = LoadXML("GoogleMap/wfs_coastal.xml");
-        parseXml_Coastal(xml_coastal);
-
-    }
-    else {
-            alert("Sorry, the Google Maps API is not compatible with this browser");
         }
+        document.getElementById(category+"box").checked = true;
+    }
 
-    //]]>
+    // ===================================== Hides markers ===================================
+    function hide(category) {
+        for (var i=0; i<gmarkers.length; i++) {
+            if (gmarkers[i].mycategory == category) {
+                gmarkers[i].hide();
+            }
+        }
+        document.getElementById(category+"box").checked = false;
+        map.closeInfoWindow();
+    }
 
+    // =================================== Checkbox has been clicked =======================
+    function boxclick(box,category) {
+        if (box.checked) {
+            show(category);
+        } else {
+            hide(category);
+        }
+        // == rebuild the side bar
+        makeSidebar();
+    }
+
+    // =======================================Click identifier ==============================
+    function myclick(i) {
+        GEvent.trigger(gmarkers[i], "click");
+    }
+
+    //================================= Rebuilds sidebar =======================================
+    function makeSidebar() {
+        var html = "";
+        for (var i=0; i<gmarkers.length; i++) {
+            if (!gmarkers[i].isHidden()) {
+                html += '<a href="javascript:myclick(' + i + ')">' + gmarkers[i].myname + '<\/a><br>';
+            }
+        }
+        document.getElementById("side_bar").innerHTML = html;
+    }
+
+    //==========================================Create the map================================
+    var map = new GMap2(document.getElementById("map"));
+    map.addControl(new GLargeMapControl());
+    map.addControl(new GMapTypeControl());
+    map.addMapType(G_PHYSICAL_MAP);
+    map.setCenter(new GLatLng(40.55972222, -95.613888889), 4, G_PHYSICAL_MAP);
+    map.enableScrollWheelZoom();
+
+    parseInactiveSites();
+    var wfs_url = base_url + "/wfs?request=GetFeature";
+    xml = LoadXML(wfs_url);
+    parseXml(xml);
+    xml_coastal = LoadXML("GoogleMap/wfs_coastal.xml");
+    parseXml_Coastal(xml_coastal);
+
+    show("WI");
+    show("MI");
+    show("NJ");
+    show("PA");
+    show("MN");
+    show("MO");
+    show("IL");
+    show("IA");
+    show("ND");
+    show("IN");
+    show("OH");
+    show("NY");
+    show("Coastal");
+
+}
+else {
+    alert("Sorry, the Google Maps API is not compatible with this browser");
+}
         </script>
+    <ul>
+        <li> <strong>Warning </strong>
+            <dt> The services provided on this page are primarily intended for surface water interoperability experiments for implementing WaterML2
+            and other trial OGC standards such as SOS 2.0.  Since these standards are in flux, the output formatting on this page may change at any time.
+            There is no guarantee that the output will validate with the latest standards. Check the version and log at the bottom of the page for changes and news.
+            </dt>
+        </li>
+        <p />
+    </ul>
 
-        <br />
         <!-- BEGIN USGS Footer Template -->
 
 <div id="linksfooterbar">
@@ -637,7 +640,7 @@
 
        <!-- Page Contact Information: <a href="http://water.usgs.gov/user_feedback_form.html">Water Webserver Team</a><br />-->
 
-       <script>
+       <script type="text/javascript">
             document.write("Last updated: " + document.lastModified +"");
         </script>
       </p>

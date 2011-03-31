@@ -58,7 +58,7 @@
     }
 
     String Data_link = "<a href =" + sos_url + ">Link to plot data</a>";
-    String mapLink = "<a href =" + base_url + "/GoogleMap/GoogleMap.jsp>Return to map</a>";
+    String mapLink = "<a href =" + base_url + ">Return to home</a>";
     String wfs_url = base_url + "/wfs?request=GetFeature&featureId=" + featureID;
     String gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity&featureID=" + featureID;
     String gdaUV_url = base_url + "/sos/uv?request=GetDataAvailablity&featureID=" + featureID;

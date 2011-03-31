@@ -39,6 +39,12 @@
         <script type="text/javascript" src="jquery-1.4.4.js"></script>
         <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>
         <script src="mapiconmaker.js" type="text/javascript"></script>
+        <script src="LoadXML.js" type="text/javascript"></script>
+        <script src="CreateTabbedMarker.js" type="text/javascript"></script>
+        <script src="createInactiveMarker.js" type="text/javascript"></script>
+        <script src="parseXML.js" type="text/javascript"></script>
+        <script src="parseInactiveSites.js" type="text/javascript"></script>
+        <script src="parseXML_Coastal.js" type="text/javascript"></script>
     </head>
 
 <body>
@@ -107,9 +113,6 @@
           ND Rivers: <input type="checkbox" id="NDbox" onclick="boxclick(this,'ND')" />&nbsp;&nbsp;
           OH Rivers: <input type="checkbox" id="OHbox" onclick="boxclick(this,'OH')" />&nbsp;&nbsp;
           IN Rivers: <input type="checkbox" id="INbox" onclick="boxclick(this,'IN')" /><br />
-
-
-    <!--      Inactive Gage Stations: <input type="checkbox" id="Inactivebox" onclick="boxclick(this,'Inactive')" /><br />-->
         </form>
 
         <noscript><b>JavaScript must be enabled in order for you to use Google Maps.</b>
@@ -117,293 +120,101 @@
           To view Google Maps, enable JavaScript by changing your browser options, and then
           try again.
         </noscript>
+    </font>
 
-        <script>
-    //<![CDATA[
+        <script type="text/javascript">
 if (GBrowserIsCompatible()) {
 
-      var gmarkers = [];
-      var base = '<%=baseURL%>';
-      var today = '<%=Today%>';
-      var test = base.length - 10;    // Gets rid of /GoogleMap/ from baseURL
-      var base_url = base.substring(0,test);
-      var LastWeekStr = '<%=LastWeek%>';
-
-      function LoadXML(filename){
-        if (window.XMLHttpRequest) {
-            xhttp = new XMLHttpRequest();
-        }
-        else {
-            xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xhttp.open("GET", filename, false);
-        xhttp.send("");
-
-        return xhttp.responseXML;
-     }
-
-      function parseXml(xml){
-            $(xml).find("[nodeName=wfs:FeatureCollection],FeatureCollection").each(function()
-                {
-                    $(xml).find("[nodeName=wfs:member],member").each(function()
-                    {
-                            var siteName = $("[nodeName=gml:name]", this).text();
-                            var pos = $("[nodeName=gml:pos]", this).text();
-                            var pos_array = pos.split(" ");
-                            var latitude = pos_array[0];
-                            var longitude = pos_array[1];
-                            var pos_name = $("[nodeName=gml:pos]", this).attr("srsName");
-                            var siteCode_long = $("[nodeName=wml2:WaterMonitoringPoint]", this).attr("gml:id");
-                            var siteCode_array = siteCode_long.split(".");
-                            var siteCode = siteCode_array[2];
-                            var USGS_URL = $("[nodeName=sf:sampledFeature]", this).attr("xlink:ref");
-                            var URL_array = USGS_URL.split("/");
-                            var stateNM = URL_array[3];
-                            var point = new GLatLng(latitude, longitude);
-                            var marker = createTabbedMarker(point, siteName,  stateNM, siteCode, USGS_URL);
-                            map.addOverlay(marker);
-                            makeSidebar();
-                    });
-                });
-            }
-
-    function parseXml_Coastal(xml){
-        $(xml).find("[nodeName=wfs:FeatureCollection],FeatureCollection").each(function()
-            {
-                $(xml).find("[nodeName=wfs:member],member").each(function()
-                {
-                        var siteName = $("[nodeName=gml:name]", this).text();
-                        var pos = $("[nodeName=gml:pos]", this).text();
-                        var pos_array = pos.split(" ");
-                        var latitude = pos_array[0];
-                        var longitude = pos_array[1];
-                        var pos_name = $("[nodeName=gml:pos]", this).attr("srsName");
-                        var siteCode = $("[nodeName=wml2:WaterMonitoringPoint]", this).attr("gml:id");
-                        var USGS_URL = $("[nodeName=sf:sampledFeature]", this).attr("xlink:ref");
-                        var URL_array = USGS_URL.split("/");
-                        var stateNM = "Coastal";
-                        var point = new GLatLng(latitude, longitude);
-                        var marker = createTabbedMarker(point, siteName,  stateNM, siteCode, USGS_URL);
-                        map.addOverlay(marker);
-                        makeSidebar();
-                 });
-            });
-        }
-
-// ========================Create a tabbed marker============================================
-      function createTabbedMarker(point, name, StateNM, Site_no, USGS_URL)
-      {
-	//var marker = new GMarker(point, {icon: gicons[StateNM]});
-        if (StateNM == 'Coastal') {
-             var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
-        }
-        else {
-            var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
-        }
-        var marker = new GMarker(point, newIcon);
-        marker.mycategory = StateNM;
-        marker.myname = name;
-        var label1 = 'Current';
-	var label2 = 'DV Properties';
-        var label3 = 'UV Properties';
-        var site = Site_no;
-        var USGS_picture = '<img src = "USGS.gif" width="84" height="32"/>';
-
-	GEvent.addListener(marker, "click", function() {
-                var sos_url = base_url + "/sos/uv?request=GetObservation&featureId=" + site + "&beginPosition=" + today + '&observedProperty=Discharge';
-                $.get(sos_url, function(xml) {
-                    $(xml).find("[nodeName=wml2:TimeseriesObservation],TimeseriesObservation").each(function(){
-                        var watershed = $(this).find("[nodeName=om:value]").text();
-                        var name = $(this).find("[nodeName=gml:name]").text();
-                        var USGS_link = $(this).find("[nodeName=sf:sampledFeature]").attr("xlink:href");
-                        var units = $(this).find("[nodeName=wml2:unitOfMeasure]").attr("uom");
-                        var time_long = $(this).find("[nodeName=wml2:time]:first").text();
-                        var time = time_long.substr(0,16);
-                        time = time.replace("T"," ");
-                        var value = $(this).find("[nodeName=wml2:value]").first().text();
-                        var comment = $(this).find("[nodeName=wml2:comment]:first").text();
-
-                        var USGS_link = '<a href = "' + USGS_URL + '" >' + Site_no + '</a>';
-                        var Title = '<table cellpadding="10"><tr><td>' + USGS_picture + '</td><td>' + USGS_link + '</td></table>';
-                        var Name_html = '<b>' + name + '</b><br />';
-                        var Watershed_html = '<b>' + watershed + ' Watershed</b><br />';
-
-                        var html_header = Title + Name_html + Watershed_html;
-
-                        var table_1 = "<center><table border='1'><tr><th colspan='2'> Current Data:<br />" + time + '</tr></th><tr><td>Discharge</td><td>' + value + ' ' + units + ' <b>' + comment +'</b></td></tr></table></center>';
-                        
-                        var html = html_header + table_1 + '<br />Available data:';
-                        var gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity&featureID=" + Site_no + "&offering=00003";
-                        var gdaUV_url = base_url + "/sos/uv?request=GetDataAvailablity&featureID=" + Site_no + "&offering=00003";
-
-                        var Plot_table_UV = "<center><table border='1'><tr><td><center><b>Recent Data</b></center></td><td>Begin Time</td><td>End Time</td></tr>";
-                        var Plot_table_DV = "<center><table border='1'><tr><td><b><center>Daily Mean</b></center></td><td>Begin Time</td><td>End Time</td></tr>";
-                        var xml_UV = LoadXML(gdaUV_url);
-                        $(xml_UV).find("[nodeName=gda:FeaturePropertyTemporalRelationship],FeaturePropertyTemporalRelationship").each(function(){
-                                var Property = $(this).find("[nodeName=gda:targetProperty]");
-                                var Prop = Property.attr("xlink:title");
-                                var Parameter_cd_long = Property.attr("xlink:href");
-                                var Parameter_cd_array = Parameter_cd_long.split("_");
-                                var Parameter_cd = Parameter_cd_array[1];
-                                var beginTime_long = $(this).find("[nodeName=gml:beginPosition]").text();
-                                var beginTime = beginTime_long.substr(0,16);
-                                var beginDate = beginTime.split(" ")[0];
-                                var endTime_long = $(this).find("[nodeName=gml:endPosition]").text();
-                                var endTime = endTime_long.substr(0,16);
-                                var endDate = endTime.split(" ")[0];
-                                var Plot_links_UV = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?&featureID=' + site + '&observedProperty=' + Parameter_cd + ',UV&beginPosition=' + LastWeekStr + '&endPosition=' + endDate + '>' + Prop + '</a>';
-                                Plot_table_UV = Plot_table_UV + '<tr><td>' + Plot_links_UV + '</td><td>' + beginDate + '</td><td>' + endDate + '</td></tr>';
-                            });
-
-                            var xml_DV = LoadXML(gdaDV_url);
-                            $(xml_DV).find("[nodeName=gda:FeaturePropertyTemporalRelationship],FeaturePropertyTemporalRelationship").each(function(){
-                                var Property_DV = $(this).find("[nodeName=gda:targetProperty]");
-                                var Prop_test = Property_DV.attr("xlink:title");
-                                var Prop_DV = Prop_test.substring(0,Prop_test.lastIndexOf(' ('));
-                                var Parameter_cd_long_DV = Property_DV.attr("xlink:href");
-                                var Parameter_cd_array_DV = Parameter_cd_long_DV.split("_");
-                                var Parameter_cd_DV = Parameter_cd_array_DV[1];
-                                var beginTime_long_DV = $(this).find("[nodeName=gml:beginPosition]").text();
-                                var beginTime_DV = beginTime_long_DV.substr(0,16);
-                                var beginDate_DV = beginTime_DV.split(" ")[0];
-                                var endTime_long_DV = $(this).find("[nodeName=gml:endPosition]").text();
-                                var endTime_DV = endTime_long_DV.substr(0,16);
-                                var endDate_DV = endTime_DV.split(" ")[0];
-                                var endDateYear = parseInt(endTime_DV.split("-")[0]) - 1;
-                                var beginDateLink = endDateYear.toString() + '-' + endTime_DV.split("-")[1] + '-' + endTime_DV.split("-")[2];
-
-                                Plot_links_DV = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?featureID=' + site + '&observedProperty=' + Parameter_cd_DV + ',DV00003&beginPosition=' + beginDateLink + '&endPosition=' + endDate_DV + '>' + Prop_DV + '</a>';
-                                Plot_table_DV = Plot_table_DV + '<tr><td>' + Plot_links_DV + '</td><td>' + beginDate_DV + '</td><td>' + endDate_DV + '</td></tr>';
-                            });
-
-                            var table_1 = '<br />' + Plot_table_UV + '</table></center><br />' + Plot_table_DV + '</table></center><br />';
-                            marker.openInfoWindowTabsHtml([new GInfoWindowTab(label1,(html + table_1))]);
-
-                        });
-                    });
-                });
-
-            gmarkers.push(marker);
-            return marker;
-        }
+    var gmarkers = [];
+    var base = '<%=baseURL%>';
+    var today = '<%=Today%>';
+    var test = base.length - 10;    // Gets rid of /GoogleMap/ from baseURL
+    var base_url = base.substring(0,test);
+    var LastWeekStr = '<%=LastWeek%>';
 
 
-       function createInactiveMarker(point, html, name, category) {
-            var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#33CC66"});
-            var marker = new GMarker(point, newIcon);
-            marker.mycategory = category;
-            marker.myname = name;
-            GEvent.addListener(marker, "click", function() {
-                marker.openInfoWindowHtml(html);
-            });
-            gmarkers.push(marker);
-            return marker;
-        }
-
-// ===================================== Shows markers =================================
-      function show(category) {
+    // ===================================== Shows markers =================================
+    function show(category) {
         for (var i=0; i<gmarkers.length; i++) {
-          if (gmarkers[i].mycategory == category) {
-            gmarkers[i].show();
-          }
+            if (gmarkers[i].mycategory == category) {
+                gmarkers[i].show();
+            }
         }
         document.getElementById(category+"box").checked = true;
-      }
+    }
 
-// ===================================== Hides markers ===================================
-          function hide(category) {
-            for (var i=0; i<gmarkers.length; i++) {
-              if (gmarkers[i].mycategory == category) {
+    // ===================================== Hides markers ===================================
+    function hide(category) {
+        for (var i=0; i<gmarkers.length; i++) {
+            if (gmarkers[i].mycategory == category) {
                 gmarkers[i].hide();
-              }
             }
-            document.getElementById(category+"box").checked = false;
-            map.closeInfoWindow();
-          }
+        }
+        document.getElementById(category+"box").checked = false;
+        map.closeInfoWindow();
+    }
 
-// =================================== Checkbox has been clicked =======================
-      function boxclick(box,category) {
+    // =================================== Checkbox has been clicked =======================
+    function boxclick(box,category) {
         if (box.checked) {
-          show(category);
+            show(category);
         } else {
-          hide(category);
+            hide(category);
         }
         // == rebuild the side bar
         makeSidebar();
-      }
+    }
 
-// =======================================Click identifier ==============================
-      function myclick(i) {
+    // =======================================Click identifier ==============================
+    function myclick(i) {
         GEvent.trigger(gmarkers[i], "click");
-      }
+    }
 
-//================================= Rebuilds sidebar =======================================
-      function makeSidebar() {
+    //================================= Rebuilds sidebar =======================================
+    function makeSidebar() {
         var html = "";
         for (var i=0; i<gmarkers.length; i++) {
-          if (!gmarkers[i].isHidden()) {
-            html += '<a href="javascript:myclick(' + i + ')">' + gmarkers[i].myname + '<\/a><br>';
-          }
+            if (!gmarkers[i].isHidden()) {
+                html += '<a href="javascript:myclick(' + i + ')">' + gmarkers[i].myname + '<\/a><br>';
+            }
         }
         document.getElementById("side_bar").innerHTML = html;
-      }
-
-//==========================================Create the map================================
-      	var map = new GMap2(document.getElementById("map"));
-      	map.addControl(new GLargeMapControl());
-      	map.addControl(new GMapTypeControl());
-      	map.addMapType(G_PHYSICAL_MAP);
-        map.setCenter(new GLatLng(40.55972222, -95.613888889), 4, G_PHYSICAL_MAP);
-      	map.enableScrollWheelZoom();
-
-        GDownloadUrl("InactiveSites.csv", function(doc) {
-            lines = doc.split("\n");
-            for (var i = 0; i < lines.length; i++) {
-                if (lines[i].length > 1) {
-                    parts = lines[i].split(",");
-                    var Lat = parseFloat(parts[0]);
-                    var Long = parseFloat(parts[1]);
-                    var name_in = parts[2];
-                    var point = new GLatLng(Lat, Long);
-                    var html = "Inactive USGS site: <br />" + name_in;
-                    var marker = createInactiveMarker(point, html, name_in, "Inactive");
-                    map.addOverlay(marker);
-                }
-            }
-            hide("Inactive");
-        });
-
-        var wfs_url = base_url + "/wfs?request=GetFeature";
-        xml = LoadXML(wfs_url);
-        parseXml(xml);
-        
-        xml_coastal = LoadXML("wfs_coastal.xml");
-        parseXml_Coastal(xml_coastal);
-
-        show("WI");
-        show("MI");
-        show("NJ");
-        show("PA");
-        show("MN");
-        show("MO");
-        show("IL");
-        show("IA");
-        show("ND");
-        show("IN");
-        show("OH");
-        show("NY");
-        show("Coastal");
-
     }
-    else {
-            alert("Sorry, the Google Maps API is not compatible with this browser");
-        }
 
-    //]]>
+    //==========================================Create the map================================
+    var map = new GMap2(document.getElementById("map"));
+    map.addControl(new GLargeMapControl());
+    map.addControl(new GMapTypeControl());
+    map.addMapType(G_PHYSICAL_MAP);
+    map.setCenter(new GLatLng(40.55972222, -95.613888889), 4, G_PHYSICAL_MAP);
+    map.enableScrollWheelZoom();
 
+    parseInactiveSites();
+    var wfs_url = base_url + "/wfs?request=GetFeature";
+    xml = LoadXML(wfs_url);
+    parseXml(xml);
+    xml_coastal = LoadXML("wfs_coastal.xml");
+    parseXml_Coastal(xml_coastal);
+
+    show("WI");
+    show("MI");
+    show("NJ");
+    show("PA");
+    show("MN");
+    show("MO");
+    show("IL");
+    show("IA");
+    show("ND");
+    show("IN");
+    show("OH");
+    show("NY");
+    show("Coastal");
+
+}
+else {
+    alert("Sorry, the Google Maps API is not compatible with this browser");
+}
         </script>
-
-
         <span> <font size="0.5"><br />* References to non-U.S. Department of the Interior (DOI) products do not constitute an endorsement by the DOI. By viewing the Google Maps API on this web site the user agrees to these
         <a href="http://code.google.com/apis/maps/terms.html" target="_blank" title="Opens a new browser window.">Terms of Service set forth by Google</a>.<br /></font></span>
         <br />
