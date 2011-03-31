@@ -39,9 +39,116 @@
 
     <title>OGC Services SWIE</title>
 
+    <style type="text/css">
+        body {
+                background: #f0f0f0;
+                margin: 8px;
+                padding: 0;
+/*                font: 12px normal Verdana, Arial, Helvetica, sans-serif;*/
+/*                color: #444;*/
+        }
+        h1 {font-size: 3em;
+            margin: 8px 0;
+            font: 18px Helvetica;
+        }
+        .container {width: 1200px; margin: 10px auto;}
+        ul.tabs {
+                margin: 0;
+                padding: 0;
+                float: left;
+                list-style: none;
+                height: 32px;
+                border-bottom: 1px solid #999;
+                border-left: 1px solid #999;
+                width: 100%;
+        }
+        ul.tabs li {
+                float: left;
+                margin: 0;
+                padding: 0;
+                height: 31px;
+                line-height: 31px;
+                border: 1px solid #999;
+                border-left: none;
+                margin-bottom: -1px;
+                background: #e0e0e0;
+                overflow: hidden;
+                position: relative;
+        }
+        ul.tabs li a {
+                text-decoration: none;
+                color: #000;
+                display: block;
+                font-size: 1.2em;
+                padding: 0 20px;
+                border: 1px solid #fff;
+                outline: none;
+        }
+        ul.tabs li a:hover {
+                background: #ccc;
+        }
+        html ul.tabs li.active, html ul.tabs li.active a:hover  {
+                background: #fff;
+                border-bottom: 1px solid #fff;
+        }
+        .tab_container {
+                border: 1px solid #999;
+                border-top: none;
+                clear: both;
+                float: left;
+                width: 100%;
+                background: #fff;
+                -moz-border-radius-bottomright: 5px;
+                -khtml-border-radius-bottomright: 5px;
+                -webkit-border-bottom-right-radius: 5px;
+                -moz-border-radius-bottomleft: 5px;
+                -khtml-border-radius-bottomleft: 5px;
+                -webkit-border-bottom-left-radius: 5px;
+        }
+        .tab_content {
+                padding: 20px;
+/*                font-size: 1.2em;*/
+        }
+/*        .tab_content h2 {
+                font-weight: normal;
+                padding-bottom: 10px;
+                border-bottom: 1px dashed #ddd;
+                font-size: 1.8em;
+        }
+        .tab_content h3 a{
+                color: #254588;
+        }*/
+/*        .tab_content img {
+                float: left;
+                margin: 0 20px 20px 0;
+                border: 1px solid #ddd;
+                padding: 5px;
+        }*/
+</style>
     <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>
     <script src="GoogleMap/mapiconmaker.js" type="text/javascript"></script>
     <script type="text/javascript" src="GoogleMap/jquery-1.4.4.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+
+                //Default Action
+                $(".tab_content").hide(); //Hide all content
+                $("ul.tabs li:first").addClass("active").show(); //Activate first tab
+                $(".tab_content:first").show(); //Show first tab content
+
+                //On Click Event
+                $("ul.tabs li").click(function() {
+                        $("ul.tabs li").removeClass("active"); //Remove any "active" class
+                        $(this).addClass("active"); //Add "active" class to selected tab
+                        $(".tab_content").hide(); //Hide all tab content
+                        var activeTab = $(this).find("a").attr("href"); //Find the rel attribute value to identify the active tab + content
+                        $(activeTab).fadeIn(); //Fade in the active content
+                        return false;
+                });
+
+        });
+    </script>
 
   </head>
 
@@ -68,45 +175,57 @@
 <!-- END USGS Header Template -->
 
 <!===============================Create Table=========================================>
-    <font face="Arial">
+<!--    <font face="Arial">-->
+
     <h1>Surface Water IE 1.5.1</h1>
-    <table border=0>
+    <ul>
+        <li> <strong>Warning </strong>
+            <dt> The services provided on this page are primarily intended for surface water interoperability experiments for implementing WaterML2
+            and other trial OGC standards such as SOS 2.0.  Since these standards are in flux, the output formatting on this page may change at any time.
+            There is no guarantee that the output will validate with the latest standards. Check the version and log at the bottom of the page for changes and news.
+            </dt>
+        </li>
+    </ul>
+    <p />
+
+    <table>
         <tr>
-          <td>
+            <td>
+                <div class="container">
 
-            <ul>
-                <li> <strong>Warning </strong>
-                    <dt> The services provided on this page are primarily intended for surface water interoperability experiments for implementing WaterML2
-                    and other trial OGC standards such as SOS 2.0.  Since these standards are in flux, the output formatting on this page may change at any time.
-                    There is no guarantee that the output will validate with the latest standards. Check the version and log at the bottom of the page for changes and news.
-                    </dt>
+                    <ul class="tabs">
+                        <li><a href="#tab1">SOS Real-time</a></li>
+                        <li><a href="#tab2">SOS Daily</a></li>
+                        <li><a href="#tab3">WFS</a></li>
+                        <li><a href="#tab4">Map</a></li>
+                    </ul>
 
-                </li>
-                <p></p>
-                <font size="4" ><li><strong> Sensor Observation Service - Instantaneous Values (UV)</strong></li> </font>
-                <p />
-                    <dl>
-                        <dt><b>GetObservation</b> - featureID(required), beginPosition(optional), endPosition(optional), observedProperty(required)</dt>
-                        <dt>Allowed observedProperty are: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH</dt>
-                        <dt>Not every station will have all observedProperty options available, use GetDataAvailablity to find out which stations offer which properties<br />
-                        <i>Instantaneous gage height observation by feature ID and begin time:</i></dt>
-                        <dd>
-                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=01446500&observedProperty=GageHeight&beginPosition=<%=LastWeek%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=01446500&observedProperty=GageHeight&beginPosition=<%=LastWeek%></a>
-                        </dd>
-                        <i>Instantaneous resolution discharge observation by feature ID and begin time:</i><br />
-                        <dd>
-                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=01446500&observedProperty=Discharge&beginPosition=<%=LastWeek%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=01446500&observedProperty=Discharge&beginPosition=<%=LastWeek%></a>
-                        </dd>
-                        <i>Instantaneous temperature observation by feature ID and begin time:</i><br />
-                        <dd>
-                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=05407000&observedProperty=Temperature&beginPosition=<%=LastWeek%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=05407000&observedProperty=Temperature&beginPosition=<%=LastWeek%></a>
-                        </dd>
 
-                    </dl>
-                   <p />
-                   <dt><i>GetObservation via XML HTTP body POST:</i><br /></dt>
-                      <dd>  <form name="input" action="<%=baseURL%>/sos/uv?request=GetObservation" method="post">
-                                <textarea name="xml" rows="10" cols="90">
+                <div class="tab_container">
+                        <div id="tab1" class="tab_content">
+                            <font size="4" ><li><strong> Sensor Observation Service - Instantaneous Values (UV)</strong></li> </font>
+                                <p />
+                                    <dl>
+                                        <dt><b>GetObservation</b> - featureID(required), beginPosition(optional), endPosition(optional), observedProperty(required)</dt>
+                                        <dd>observedProperty: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH</dd>
+                                        <br /><i>Instantaneous gage height observation by feature ID and begin time:</i>
+                                        <dd>
+                                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=01446500&observedProperty=GageHeight&beginPosition=<%=LastWeek%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=01446500&observedProperty=GageHeight&beginPosition=<%=LastWeek%></a>
+                                        </dd>
+                                        <br /><i>Instantaneous resolution discharge observation by feature ID and begin time:</i><br />
+                                        <dd>
+                                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=01446500&observedProperty=Discharge&beginPosition=<%=LastWeek%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=01446500&observedProperty=Discharge&beginPosition=<%=LastWeek%></a>
+                                        </dd>
+                                        <br /><i>Instantaneous temperature observation by feature ID and begin time:</i><br />
+                                        <dd>
+                                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=05407000&observedProperty=Temperature&beginPosition=<%=LastWeek%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=05407000&observedProperty=Temperature&beginPosition=<%=LastWeek%></a>
+                                        </dd>
+
+                                    </dl>
+                                   <p />
+                                   <dt><i>GetObservation via XML HTTP body POST:</i><br /></dt>
+                                      <dd>  <form name="input" action="<%=baseURL%>/sos/uv?request=GetObservation" method="post">
+                                                <textarea name="xml" rows="10" cols="90">
 <?xml version="1.0" ?>
 <sos:GetObservation version="2.0.0" service="SOS"
     maxFeatures="3"
@@ -132,52 +251,52 @@
     </sos:temporalFilter>
 </sos:GetObservation>
 
-                                            </textarea><br />
-                                            <input type="submit" value="Submit" />
-                                        </form>
-                    </dd>
-                    <p />
+                                                            </textarea><br />
+                                                            <input type="submit" value="Submit" />
+                                                        </form>
+                                    </dd>
+                                    <p />
 
-                    <dl>
-                                <dt><b>GetCapabilities</b></dt>
-                                <dd><a href="<%=baseURL%>/sos/uv?request=GetCapabilities"><%=baseURL%>/sos/uv?request=GetCapabilities</a></dd>
-                    </dl>
-                    <dl>
-                                <dt><b>DescribeSensor</b></dt>
-                                <dd><a href="<%=baseURL%>/sos/uv?request=DescribeSensor"><%=baseURL%>/sos/uv?request=DescribeSensor</a></dd>
-                    </dl>
-                    <dl>
-                                <dt><b>GetDataAvailablity</b> - featureID, observedProperty, beginPosition and endPostion are all optional. If not used, all the features/properties in the SWIE will be displayed</dt>
-                                <i>General:</i>
-                                <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity"><%=baseURL%>/sos/uv?request=GetDataAvailablity</a></dd>
-                                <i>GetDataAvailablity by feature ID:</i>
-                                <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity&featureID=05568500"><%=baseURL%>/sos/uv?request=GetDataAvailablity&featureID=05568500</a></dd>
-                                <i>GetDataAvailablity by observed property and feature ID:</i>
-                                <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500"><%=baseURL%>/sos/uv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500</a></dd>
-                                
-                    </dl>
+                                    <dl>
+                                                <dt><b>GetCapabilities</b></dt>
+                                                <dd><a href="<%=baseURL%>/sos/uv?request=GetCapabilities"><%=baseURL%>/sos/uv?request=GetCapabilities</a></dd>
+                                    </dl>
+                                    <dl>
+                                                <dt><b>DescribeSensor</b></dt>
+                                                <dd><a href="<%=baseURL%>/sos/uv?request=DescribeSensor"><%=baseURL%>/sos/uv?request=DescribeSensor</a></dd>
+                                    </dl>
+                                    <dl>
+                                                <dt><b>GetDataAvailablity</b> - featureID, observedProperty, beginPosition and endPostion are all optional. If not used, all the features/properties in the SWIE will be displayed</dt>
+                                                <br /><i>General:</i>
+                                                <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity"><%=baseURL%>/sos/uv?request=GetDataAvailablity</a></dd>
+                                                <br /><i>GetDataAvailablity by feature ID:</i>
+                                                <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity&featureID=05568500"><%=baseURL%>/sos/uv?request=GetDataAvailablity&featureID=05568500</a></dd>
+                                                <br /><i>GetDataAvailablity by observed property and feature ID:</i>
+                                                <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500"><%=baseURL%>/sos/uv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500</a></dd>
 
-                    <p></p>
-                    <font size="4" ><li><strong>Sensor Observation Service - Daily Mean Values (DV)</strong></li></font>
-                    <p />
-                    <dl>
-                        <dt><b>GetObservation</b> - featureID(required), offering(required), beginPosition(optional), endPosition(optional), observedProperty(required)</dt>
-                        <dd>Allowed observedProperty: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH</dd>
-                        <dd>Not every station will have all observedProperty options available<br /></dd>
-                        <i>Daily mean discharge observation by feature ID with begin and end time:</i><br />
-                        <dd>
-                            <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=01446500&observedProperty=Discharge&beginPosition=1970-01-01&endPosition=1980-01-01&offering=Mean"><%=baseURL%>/sos/dv?request=GetObservation&featureId=01446500&observedProperty=Discharge&beginPosition=1970-01-01&endPosition=1980-01-01&offering=Mean</a>
-                        </dd>
-                        <i>Daily maximum temperature observations by feature ID and begin time:</i><br />
-                        <dd>
-                            <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=05082500&observedProperty=Temperature&beginPosition=2010-01-01&offering=Maximum"><%=baseURL%>/sos/dv?request=GetObservation&featureId=05407000&observedProperty=Precipitation&beginPosition=2010-01-01&offering=Maximum</a>
-                        </dd>
-                    </dl>
+                                    </dl>
 
-                   <p />
-                   <dt><i>GetObservation via XML HTTP body POST:</i><br /></dt>
-                      <dd>  <form name="input" action="<%=baseURL%>/sos/dv?request=GetObservation" method="post">
-                                <textarea name="xml" rows="10" cols="90">
+                        </div>
+                        <div id="tab2" class="tab_content">
+                            <font size="4" ><li><strong>Sensor Observation Service - Daily Values (DV)</strong></li></font>
+
+                            <dl>
+                                <dt><b>GetObservation</b> - featureID(required), offering(required), beginPosition(optional), endPosition(optional), observedProperty(required)</dt>
+                                <dd>observedProperty: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH</dd>
+                                <dd>offering: Mean, Maximum, Minimum, Variance, Mode, STD, SUM</dd>
+                                <br /><i>Daily mean discharge observation by feature ID with begin and end time:</i><br />
+                                <dd>
+                                    <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=01446500&observedProperty=Discharge&beginPosition=1970-01-01&endPosition=1980-01-01&offering=Mean"><%=baseURL%>/sos/dv?request=GetObservation&featureId=01446500&observedProperty=Discharge&beginPosition=1970-01-01&endPosition=1980-01-01&offering=Mean</a>
+                                </dd>
+                                <br /><i>Daily maximum temperature observations by feature ID and begin time:</i><br />
+                                <dd>
+                                    <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=05082500&observedProperty=Temperature&beginPosition=2010-01-01&offering=Maximum"><%=baseURL%>/sos/dv?request=GetObservation&featureId=05407000&observedProperty=Precipitation&beginPosition=2010-01-01&offering=Maximum</a>
+                                </dd>
+                            </dl>
+                            <p />
+                            <dt><i>GetObservation via XML HTTP body POST:</i><br /></dt>
+                            <dd>  <form name="input" action="<%=baseURL%>/sos/dv?request=GetObservation" method="post">
+                                                <textarea name="xml" rows="10" cols="90">
 <?xml version="1.0" ?>
 <sos:GetObservation version="2.0.0" service="SOS"
     xmlns:sos="http://schemas.opengis.net/sos/2.0.0/"
@@ -203,30 +322,30 @@
     </sos:temporalFilter>
 </sos:GetObservation>
 
-                                            </textarea><br />
-                                            <input type="submit" value="Submit" />
-                                        </form>
-                    </dd>
-                    <p />
-                    <dl>
-                                <dt><b>GetCapabilities</b></dt>
-                                <dd><a href="<%=baseURL%>/sos/dv?request=GetCapabilities"><%=baseURL%>/sos/dv?request=GetCapabilities</a></dd>
-                    </dl>
-                    <dl>
-                                <dt><b>DescribeSensor</b></dt>
-                                <dd><a href="<%=baseURL%>/sos/dv?request=DescribeSensor"><%=baseURL%>/sos/dv?request=DescribeSensor</a></dd>
-                    </dl>
-                    <dl>
-                                <dt><b>GetDataAvailablity</b> - featureID, observedProperty, beginPosition and endPostion are all optional. If not used, all the features/properties in the SWIE will be displayed</dt>
-                                <i>General:</i>
-                                <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity"><%=baseURL%>/sos/dv?request=GetDataAvailablity</a></dd>
-                                <i>GetDataAvailablity by feature ID and offering:</i>
-                                <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity&featureID=05082500&offering=mean"><%=baseURL%>/sos/dv?request=GetDataAvailablity&featureID=05082500&offering=mean</a></dd>
-                                <i>GetDataAvailablity by observed property and feature ID:</i>
-                                <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500"><%=baseURL%>/sos/dv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500</a></dd>
-                   <dt><i>GetDataAvailablity via XML HTTP body POST:</i><br /></dt>
-                      <dd>  <form name="input" action="<%=baseURL%>/sos/dv?request=GetDataAvailability" method="post">
-                                <textarea name="xml" rows="10" cols="90">
+                                                            </textarea><br />
+                                                            <input type="submit" value="Submit" />
+                                                        </form>
+                                    </dd>
+                                    <p />
+                                    <dl>
+                                                <dt><b>GetCapabilities</b></dt>
+                                                <dd><a href="<%=baseURL%>/sos/dv?request=GetCapabilities"><%=baseURL%>/sos/dv?request=GetCapabilities</a></dd>
+                                    </dl>
+                                    <dl>
+                                                <dt><b>DescribeSensor</b></dt>
+                                                <dd><a href="<%=baseURL%>/sos/dv?request=DescribeSensor"><%=baseURL%>/sos/dv?request=DescribeSensor</a></dd>
+                                    </dl>
+                                    <dl>
+                                                <dt><b>GetDataAvailablity</b> - featureID, observedProperty, beginPosition and endPostion are all optional. If not used, all the features/properties in the SWIE will be displayed</dt>
+                                                <br /><i>General:</i>
+                                                <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity"><%=baseURL%>/sos/dv?request=GetDataAvailablity</a></dd>
+                                                <br /><i>GetDataAvailablity by feature ID and offering:</i>
+                                                <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity&featureID=05082500&offering=mean"><%=baseURL%>/sos/dv?request=GetDataAvailablity&featureID=05082500&offering=mean</a></dd>
+                                                <br /><i>GetDataAvailablity by observed property and feature ID:</i>
+                                                <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500"><%=baseURL%>/sos/dv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500</a></dd>
+                                   <dt><i>GetDataAvailablity via XML HTTP body POST:</i><br /></dt>
+                                      <dd>  <form name="input" action="<%=baseURL%>/sos/dv?request=GetDataAvailability" method="post">
+                                                <textarea name="xml" rows="10" cols="90">
 <?xml version="1.0" ?>
 <sos:GetDataAvailablity version="2.0.0" service="SOS"
     maxFeatures="3"
@@ -239,47 +358,49 @@
     xmlns:fes="http://www.opengis.net/fes/2.0"
     xmlns:xlink="http://www.w3.org/1999/xlink"
     xsi:schemaLocation="http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0.0/sos.xsd">
-    <sos:featureOfInterest>05082500</sos:featureOfInterest>
-    <sos:observedProperty>Discharge</sos:observedProperty>
-    <sos:offering>00003</sos:offering>
+<sos:featureOfInterest>05082500</sos:featureOfInterest>
+<sos:observedProperty>Discharge</sos:observedProperty>
+<sos:offering>00003</sos:offering>
 </sos:GetDataAvailablity>
 
-                                            </textarea><br />
-                                            <input type="submit" value="Submit" />
-                                        </form>
-                    </dd>
-                    <p />
-                    </dl>
-                    <p></p>
+                                                            </textarea><br />
+                                                            <input type="submit" value="Submit" />
+                                                        </form>
+                                    </dd>
+                                    <p />
+                                    </dl>
 
-                <font size="4" ><li><strong>Web Feature Service</strong></li></font>
-                    <dl>
-                                <dt>GetCapabilities</dt>
-                                <dd><a href="<%=baseURL%>/wfs?request=GetCapabilities"><%=baseURL%>/wfs?request=GetCapabilities</a></dd>
-                    </dl>
-                    <dl>
-                                <dt>DescribeFeatureType</dt>
-                                <dd><a href="<%=baseURL%>/wfs?request=DescribeFeatureType"><%=baseURL%>/wfs?request=DescribeFeatureType</a></dd>
-                    </dl>
+                        </div>
+                        <div id="tab3" class="tab_content">
+                            <font size="4" ><li><strong>Web Feature Service</strong></li></font>
 
-                    <dt>GetFeature</dt>
-                    <dl>
-                        <dd>All features related to SWIE:<br />
-                        <a href="<%=baseURL%>/wfs?request=GetFeature"><%=baseURL%>/wfs?request=GetFeature</a>
-                        </dd>
-                        <p></p>
-                    </dl>
-                    <dl>
-                        <dd>GetFeature by feature ID:<br />
-                        <a href="<%=baseURL%>/wfs?request=GetFeature&featureId=01446500"><%=baseURL%>/wfs?request=GetFeature&featureId=01446500</a>
-                        </dd>
-                        <p></p>
-                    </dl>
-                    <dl>
-                        <dd>GetFeature via XML HTTP body POST:<br />
+                                    <dl>
+                                                <dt>GetCapabilities</dt>
+                                                <dd><a href="<%=baseURL%>/wfs?request=GetCapabilities"><%=baseURL%>/wfs?request=GetCapabilities</a></dd>
+                                    </dl>
+                                    <dl>
+                                                <dt>DescribeFeatureType</dt>
+                                                <dd><a href="<%=baseURL%>/wfs?request=DescribeFeatureType"><%=baseURL%>/wfs?request=DescribeFeatureType</a></dd>
+                                    </dl>
 
-                        <form name="input" action="<%=baseURL%>/wfs?request=GetFeature" method="post">
-                                <textarea name="xml" rows="10" cols="90">
+                                    <dt>GetFeature</dt>
+                                    <dl>
+                                        <dd>All features related to SWIE:<br />
+                                        <a href="<%=baseURL%>/wfs?request=GetFeature"><%=baseURL%>/wfs?request=GetFeature</a>
+                                        </dd>
+                                        <p></p>
+                                    </dl>
+                                    <dl>
+                                        <dd>GetFeature by feature ID:<br />
+                                        <a href="<%=baseURL%>/wfs?request=GetFeature&featureId=01446500"><%=baseURL%>/wfs?request=GetFeature&featureId=01446500</a>
+                                        </dd>
+                                        <p></p>
+                                    </dl>
+                                    <dl>
+                                        <dd>GetFeature via XML HTTP body POST:<br />
+
+                                        <form name="input" action="<%=baseURL%>/wfs?request=GetFeature" method="post">
+                                                <textarea name="xml" rows="10" cols="90">
 <?xml version="1.0" ?>
 <wfs:GetFeature version="1.1.0" service="WFS"
         maxFeatures="3"
@@ -298,76 +419,60 @@
     </ogc:Filter>
   </wfs:Query>
 </wfs:GetFeature>
-                                                </textarea><br></br>
-                                            <input type="submit" value="Submit" />
-                                        </form>
-                                        </dd>
-                                    </dl>
-                                    <p></p>
-                                
-                                <li><strong>Additional Services</strong>
-                                     <dl>
-                                                <dt>Example output with comments about content:</dt>
-                                                <dd><a href="<%=baseURL%>/sos?request=wml2_Example"><%=baseURL%>/sos?request=wml2_Example</a></dd>
-                                    </dl>
-                                    <dl>Required External Schemas<br />
-                                        <dd>
-                                            <a href="WaterML2_Schemas.jsp">WaterML2 and other external schemas</a>
-                                        </dd>
-                                    </dl>
-                                    <dl>CSIRO WaterML2 validation tool (external link)<br />
-                                        <dd>
-                                            <a href="http://services.iwis.csiro.au/WaterML2Validation/">CSIRO WaterML2 Validation</a>
-                                        </dd>
-                                    </dl>
-                                    <p></p>
+                                                                </textarea><br></br>
+                                                            <input type="submit" value="Submit" />
+                                                        </form>
+                                                        </dd>
+                                                    </dl>
+                        </div>
+                        <div id="tab4" class="tab_content">
+                            <div id="map" style="width: 660px; height: 460px"></div>
+                           Markers represent USGS gaging stations on the Mississippi, Delaware, Fox, Wisconsin, Illinois, Red River of the North, NASQAN Coastal Subnetwork, and others near the Great Lakes.
+                           Clicking on a marker brings up a box with the station name, and links to GetObservation, GetFeature, and the public USGS website.*<br />
+                           <p></p>
+                           <a href="<%=baseURL%>/GoogleMap/GoogleMap.jsp">Map with additional features</a><br />
 
-                                </li>
-                                <li><strong>Log</strong>
-                                   <dl>Version 1.5.1 March 22th, 2011 <br />
-                                        <dd> * Added offering to daily data service (getObservation and getDataAvailability  </dd>
-                                        <dd> * Continued to try to improve the efficiency of plot displays </dd>
-                                    </dl>
-                                   <dl>Version 1.5 March 22th, 2011 <br />
-                                        <dd> * Included a minimal implementation of GetObservation via XML HTTP body POST </dd>
-                                        <dd> * Included plot links </dd>
-                                    </dl>
-<!--                                   <dl>Version 1.4 March 16th, 2011 <br />
-                                        <dd> * Updated GetDataObservation </dd>
-                                        <dd> * Included GetObservation by XML HTTP body POST </dd>
-                                    </dl>-->
-<!--                                    <dl>Version 1.3 March 10th, 2011 <br />
-                                        <dd> * Began work on GetDataObservation </dd>
-                                        <dd> * removed time from daily mean values </dd>
-                                    </dl>-->
-<!--                                    <dl>Version 1.2 February 25th, 2011 <br />
-                                        <dd> * Added daily mean value option - mean daily results can be found in /sos/dv </dd>
-                                        <dd> * Instantaneous values (variable resolution, depending on the station) are now found at /sos/uv </dd>
-                                        <dd> * Added observedProperty option to url.  Discharge, GageHeight....</dd>
-                                    </dl>-->
-<!--                                    <dl>Version 1.1 February 15th, 2011 <br />
-                                        <dd> * Updated maps to work in Chrome/Safari </dd>
-                                        <dd> * Updated getObservation to properly account for P/A qualifiers </dd>
-                                        <dd> * Updated Master Feature List </dd>
-                                    </dl>-->
-                                    <p></p>
 
-                                </li>
-                    </ul>
-                 </td>
+                        <span> <font size="0.5"><br />* References to non-U.S. Department of the Interior (DOI) products do not constitute an endorsement by the DOI. By viewing the Google Maps API on this web site the user agrees to these
+                        <a href="http://code.google.com/apis/maps/terms.html" target="_blank" title="Opens a new browser window.">Terms of Service set forth by Google</a>.<br /></font></span>
+                        </div>
+                    </div>
+                </div>
 
-        <td width = 500 valign="top" >
-           <div id="map" style="width: 460px; height: 360px"></div>
-           Markers represent USGS gaging stations on the Mississippi, Delaware, Fox, Wisconsin, Illinois, Red River of the North, NASQAN Coastal Subnetwork, and others near the Great Lakes.
-           Clicking on a marker brings up a box with the station name, and links to GetObservation, GetFeature, and the public USGS website.*<br />
-           <p></p>
-           <a href="<%=baseURL%>/GoogleMap/GoogleMap.jsp">Larger Map*</a>
+</td></tr>
+<tr><td>
 
-        </td>
-      </tr>
-    </table>
-    </font>
-
+        <li><strong>Additional Services</strong>
+             <dl>
+                        <dt>Example output with comments about content:</dt>
+                        <dd><a href="<%=baseURL%>/sos?request=wml2_Example"><%=baseURL%>/sos?request=wml2_Example</a></dd>
+            </dl>
+            <dl>Required External Schemas<br />
+                <dd>
+                    <a href="WaterML2_Schemas.jsp">WaterML2 and other external schemas</a>
+                </dd>
+            </dl>
+            <dl>CSIRO WaterML2 validation tool (external link)<br />
+                <dd>
+                    <a href="http://services.iwis.csiro.au/WaterML2Validation/">CSIRO WaterML2 Validation</a>
+                </dd>
+            </dl>
+            <p />
+        </li>
+        <li><strong>Log</strong>
+           <dl>Version 1.5.1 March 22th, 2011 <br />
+                <dd> * Added offering to daily data service (getObservation and getDataAvailability  </dd>
+                <dd> * Continued to try to improve the efficiency of plot displays </dd>
+            </dl>
+           <dl>Version 1.5 March 22th, 2011 <br />
+                <dd> * Included a minimal implementation of GetObservation via XML HTTP body POST </dd>
+                <dd> * Included plot links </dd>
+            </dl>
+            <p />
+        </li>
+</td></tr>
+</table>
+<!--    </font>-->
 <! ==========================Message if JavaScript is not enabled=======================>
 
     <noscript><b>JavaScript must be enabled in order for you to use Google Maps.</b>
@@ -463,7 +568,7 @@
 
 //====================================Create Marker HTML==================================
         function SimpleMarkerHTML(Site_no, USGS_URL, Site_nm){
-                    var USGS_picture = '<img src = "GoogleMap/USGS.gif" width="84" height="32"/>';                
+                    var USGS_picture = '<img src = "GoogleMap/USGS.gif" width="84" height="32"/>';
                     var Name = '<b>' + Site_nm + '</b><br />';
                     var GetFeature = '<li><a href =' + base_url + '/wfs?request=GetFeature&featureId=' + Site_no + '>GetFeature</a></li>';
                     var USGS_link = '<a href = "' + USGS_URL + '" >' + Site_no + '</a>';
@@ -500,8 +605,6 @@
 
         </script>
 
-        <span> <font size="0.5"><br />* References to non-U.S. Department of the Interior (DOI) products do not constitute an endorsement by the DOI. By viewing the Google Maps API on this web site the user agrees to these
-        <a href="http://code.google.com/apis/maps/terms.html" target="_blank" title="Opens a new browser window.">Terms of Service set forth by Google</a>.<br /></font></span>
         <br />
         <!-- BEGIN USGS Footer Template -->
 

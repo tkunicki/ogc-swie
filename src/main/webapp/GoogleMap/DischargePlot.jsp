@@ -342,7 +342,6 @@
 
                <!-- Page Contact Information: <a href="http://water.usgs.gov/user_feedback_form.html">Water Webserver Team</a><br />-->
 
-                Page Last Modified: Tuesday, 16-March-2011 16:45:46 CST
               </p>
         </div>
     </body>
