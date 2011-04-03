@@ -1,34 +1,35 @@
 // ========================Create a tabbed marker============================================
-function createTabbedMarker(point, name, StateNM, Site_no, USGS_URL, base_url)
+function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watershed)
 {
     //var marker = new GMarker(point, {icon: gicons[StateNM]});
-    var newIcon = '';
-    if (StateNM == 'Coastal') {
-        newIcon = MapIconMaker.createMarkerIcon({
-            primaryColor: "#660000"
-        });
-    }
-    else {
-        newIcon = MapIconMaker.createMarkerIcon({
-            primaryColor: "#3366FF"
-        });
-    }
+//    var newIcon = '';
+//    if (StateNM == 'Coastal') {
+//        newIcon = MapIconMaker.createMarkerIcon({
+//            primaryColor: "#660000"
+//        });
+//    }
+//    else {
+//        newIcon = MapIconMaker.createMarkerIcon({
+//            primaryColor: "#3366FF"
+//        });
+//    }
+
     var marker = new GMarker(point, newIcon);
+
     marker.mycategory = StateNM;
     marker.myname = name;
-    var label1 = 'Current';
-    var label2 = 'DV Properties';
-    var label3 = 'UV Properties';
+    
+    var label1 = 'Site information';
     var site = Site_no;
     var USGS_picture = '<img src = "USGS.gif" width="84" height="32"/>';
 
     GEvent.addListener(marker, "click", function() {
-        var sos_url = base_url + "/sos/uv?request=GetObservation&featureId=" + site + "&beginPosition=" + today + '&observedProperty=Discharge';
+        ActiveMarker.hide();
+        ActiveMarker = new GMarker(point, clickedIcon);
+
+        var sos_url = base_url + "/sos/uv?request=GetObservation&featureId=" + site + "&observedProperty=Discharge&latest";
         $.get(sos_url, function(xml) {
             $(xml).find("[nodeName=wml2:TimeseriesObservation],TimeseriesObservation").each(function(){
-                var watershed = $(this).find("[nodeName=om:value]").text();
-                var name = $(this).find("[nodeName=gml:name]").text();
-                var USGS_link = $(this).find("[nodeName=sf:sampledFeature]").attr("xlink:href");
                 var units = $(this).find("[nodeName=wml2:unitOfMeasure]").attr("uom");
                 var time_long = $(this).find("[nodeName=wml2:time]:first").text();
                 var time = time_long.substr(0,16);
@@ -90,8 +91,14 @@ function createTabbedMarker(point, name, StateNM, Site_no, USGS_URL, base_url)
                     Plot_table_DV = Plot_table_DV + '<tr><td>' + Plot_links_DV + '</td><td>' + beginDate_DV + '</td><td>' + endDate_DV + '</td></tr>';
                 });
 
-                var table_1 = '<br />' + Plot_table_UV + '</table></center><br />' + Plot_table_DV + '</table></center><br />';
-                marker.openInfoWindowTabsHtml([new GInfoWindowTab(label1,(html + table_1))]);
+                var table_2 = '<br />' + Plot_table_UV + '</table></center><br />' + Plot_table_DV + '</table></center><br />';
+                html = html + table_2;
+//
+                
+                map.addOverlay(ActiveMarker);   //This adds a new marker over the old one...not allowing you to re-click...need to find better way....
+                //marker.openInfoWindowTabsHtml([new GInfoWindowTab(label1,html)]);
+                document.getElementById("side_bar").innerHTML = html;
+                
 
             });
         });

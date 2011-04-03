@@ -13,8 +13,9 @@ function parseXml_Coastal(xml){
             var USGS_URL = $("[nodeName=sf:sampledFeature]", this).attr("xlink:ref");
             var URL_array = USGS_URL.split("/");
             var stateNM = "Coastal";
+            var watershed = "Coastal"
             var point = new GLatLng(latitude, longitude);
-            var marker = createTabbedMarker(point, siteName,  stateNM, siteCode, USGS_URL, base_url);
+            var marker = createMarker(point, siteName,  stateNM, siteCode, USGS_URL, base_url, watershed);
             map.addOverlay(marker);
             makeSidebar();
         });

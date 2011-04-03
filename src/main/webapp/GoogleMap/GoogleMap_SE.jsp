@@ -41,7 +41,7 @@
         <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>
         <script src="mapiconmaker.js" type="text/javascript"></script>
         <script src="LoadXML.js" type="text/javascript"></script>
-        <script src="CreateTabbedMarker.js" type="text/javascript"></script>
+        <script src="CreateMarker.js" type="text/javascript"></script>
         <script src="parseXML.js" type="text/javascript"></script>
     </head>
 
@@ -83,7 +83,7 @@
             <td>
                <div id="map" style="width: 840px; height: 500px"></div>
             </td>
-            <td width = 350 valign="top" style="text-decoration: underline; color: #4444ff;">
+            <td width = 350 valign="top">
                <div id="side_bar" style="overflow:auto; height:500px;">></div>
             </td>
           </tr>
@@ -109,21 +109,25 @@
         <script>
 
         if (GBrowserIsCompatible()) {
-          var gmarkers = [];
-          var base = '<%=baseURL%>';
-          var today = '<%=Today%>';
-          var test = base.length - 10;    // Gets rid of /GoogleMap/ from baseURL
-          var base_url = base.substring(0,test);
-          var LastWeekStr = '<%=LastWeek%>';
+            var clickedIcon = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
+            var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
+            var point_ini = new GLatLng(0, 0);
+            var ActiveMarker = new GMarker(point_ini, clickedIcon);
+            var gmarkers = [];
+            var base = '<%=baseURL%>';
+            var today = '<%=Today%>';
+            var test = base.length - 10;    // Gets rid of /GoogleMap/ from baseURL
+            var base_url = base.substring(0,test);
+            var LastWeekStr = '<%=LastWeek%>';
 
-          var gicons = [];
-          gicons["WI"] = MapIconMaker.createMarkerIcon({primaryColor: "#33CC66"});
-          gicons["MI"] = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
-          gicons["TN"] = MapIconMaker.createMarkerIcon({primaryColor: "#FF9933"});
-          gicons["NC"] = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
-          gicons["AL"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
-          gicons["GA"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
-          gicons["SC"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
+            var gicons = [];
+            gicons["WI"] = MapIconMaker.createMarkerIcon({primaryColor: "#33CC66"});
+            gicons["MI"] = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
+            gicons["TN"] = MapIconMaker.createMarkerIcon({primaryColor: "#FF9933"});
+            gicons["NC"] = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
+            gicons["AL"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
+            gicons["GA"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
+            gicons["SC"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
 
 // ===================================== Shows markers =================================
       function show(category) {
@@ -183,7 +187,7 @@
       	map.enableScrollWheelZoom();
 
         xml_SE = LoadXML("wfs_SE.xml");
-        parseXml(xml_SE);
+        parseXML(xml_SE);
 
         show("WI");
         show("TN");

@@ -48,7 +48,7 @@
 /*                color: #444;*/
         }
         h1 {font-size: 3em;
-            margin: 8px 0;
+            margin: 1px 0;
             font: 18px Helvetica;
         }
         .container {width: 1200px; margin: 10px auto;}
@@ -57,7 +57,7 @@
                 padding: 0;
                 float: left;
                 list-style: none;
-                height: 32px;
+                height: 25px;
                 border-bottom: 1px solid #999;
                 border-left: 1px solid #999;
                 width: 100%;
@@ -66,8 +66,8 @@
                 float: left;
                 margin: 0;
                 padding: 0;
-                height: 31px;
-                line-height: 31px;
+                height: 24px;
+                line-height: 24px;
                 border: 1px solid #999;
                 border-left: none;
                 margin-bottom: -1px;
@@ -79,7 +79,7 @@
                 text-decoration: none;
                 color: #000;
                 display: block;
-                font-size: 1.2em;
+                font-size: 1.1em;
                 padding: 0 20px;
                 border: 1px solid #fff;
                 outline: none;
@@ -126,15 +126,17 @@
         }*/
 </style>
     <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>
+    
     <script src="GoogleMap/mapiconmaker.js" type="text/javascript"></script>
     <script type="text/javascript" src="GoogleMap/jquery-1.4.4.js"></script>
 
     <script src="GoogleMap/LoadXML.js" type="text/javascript"></script>
-    <script src="GoogleMap/CreateTabbedMarker.js" type="text/javascript"></script>
+    <script src="GoogleMap/CreateMarker.js" type="text/javascript"></script>
     <script src="GoogleMap/createInactiveMarker.js" type="text/javascript"></script>
     <script src="GoogleMap/parseXML.js" type="text/javascript"></script>
     <script src="GoogleMap/parseInactiveSites.js" type="text/javascript"></script>
     <script src="GoogleMap/parseXML_Coastal.js" type="text/javascript"></script>
+<!--<script src="http://gmaps-utility-library.googlecode.com/svn/trunk/markermanager/release/src/markermanager.js" type="text/javascript"></script>-->
 
 
     <script type="text/javascript">
@@ -197,27 +199,34 @@
                         <li><a href="#tabWFS">WFS</a></li>
                         <li><a href="#tabMap">Map</a></li>
                         <li><a href="#tabMisc">Miscellaneous</a></li>
+<!--                        <li><a href="#tabPlot">Plot</a></li>-->
                     </ul>
 
 
                 <div class="tab_container">
                         <div id="tabRealTime" class="tab_content">
-                            <font size="4" ><li><strong> Sensor Observation Service - Instantaneous Values (UV)</strong></li> </font>
+                            <font size="4" ><li><strong> Sensor Observation Service - Instantaneous Values</strong></li> </font>
                                 <p />
                                     <dl>
-                                        <dt><b>GetObservation</b> - featureID(required), beginPosition(optional), endPosition(optional), observedProperty(required)</dt>
+                                        <dt><b>GetObservation</b> - featureID(required), observedProperty(required), beginPosition(optional), endPosition(optional), Interval(optional), Latest(optional)</dt><br />
                                         <dd>observedProperty: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH</dd>
-                                        <br /><i>Instantaneous gage height observation by feature ID and begin time:</i>
+                                        <dd>Interval: Today, ThisWeek <i>Future plan to implement ISO-8601 Duration option</i></dd>
+                                        <dd>Latest: only the most recent data point is reported</dd>
+                                        <br /><i>Gage height observation by feature ID and begin time:</i>
                                         <dd>
                                             <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=01446500&observedProperty=GageHeight&beginPosition=<%=LastWeek%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=01446500&observedProperty=GageHeight&beginPosition=<%=LastWeek%></a>
                                         </dd>
-                                        <br /><i>Instantaneous resolution discharge observation by feature ID and begin time:</i><br />
+                                        <br /><i>Discharge observation by feature ID and begin time:</i><br />
                                         <dd>
                                             <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=01446500&observedProperty=Discharge&beginPosition=<%=LastWeek%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=01446500&observedProperty=Discharge&beginPosition=<%=LastWeek%></a>
                                         </dd>
-                                        <br /><i>Instantaneous temperature observation by feature ID and begin time:</i><br />
+                                        <br /><i>Latest discharge observation by feature ID:</i><br />
                                         <dd>
-                                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=05407000&observedProperty=Temperature&beginPosition=<%=LastWeek%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=05407000&observedProperty=Temperature&beginPosition=<%=LastWeek%></a>
+                                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=05407000&observedProperty=Discharge&Latest"><%=baseURL%>/sos/uv?request=GetObservation&featureId=05407000&observedProperty=Discharge&Latest</a>
+                                        </dd>
+                                        <br /><i>Temperature observation by feature ID for this week:</i><br />
+                                        <dd>
+                                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=05407000&observedProperty=Temperature&Interval=ThisWeek"><%=baseURL%>/sos/uv?request=GetObservation&featureId=05407000&observedProperty=Temperature&Interval=ThisWeek</a>
                                         </dd>
 
                                     </dl>
@@ -273,15 +282,41 @@
                                                 <br /><i>General (very large file / long load time):</i>
                                                 <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity"><%=baseURL%>/sos/uv?request=GetDataAvailablity</a></dd>
                                     </dl>
+                                                <br /><i>GetDataAvailablity via XML HTTP body POST:</i><br />
+                                      <dd>  <form name="input" action="<%=baseURL%>/sos/uv?request=GetDataAvailability" method="post">
+                                                <textarea name="xml" rows="10" cols="90">
+<?xml version="1.0" ?>
+<sos:GetDataAvailablity version="2.0.0" service="SOS"
+    maxFeatures="3"
+    xmlns:sos="http://schemas.opengis.net/sos/2.0.0/"
+    xmlns:wfs="http://www.opengis.net/wfs"
+    xmlns:ogc="http://www.opengis.net/ogc"
+    xmlns:gml="http://www.opengis.net/gml/3.2"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:om="http://www.opengis.net/om/2.0"
+    xmlns:fes="http://www.opengis.net/fes/2.0"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xsi:schemaLocation="http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0.0/sos.xsd">
+<sos:featureOfInterest>05082500</sos:featureOfInterest>
+<sos:observedProperty>Discharge</sos:observedProperty>
+</sos:GetDataAvailablity>
+
+                                                            </textarea><br />
+                                                            <input type="submit" value="Submit" />
+                                                        </form>
+                                    </dd>
+                                    <p />
 
                         </div>
                         <div id="tabDaily" class="tab_content">
-                            <font size="4" ><li><strong>Sensor Observation Service - Daily Values (DV)</strong></li></font>
+                            <font size="4" ><li><strong>Sensor Observation Service - Daily Values</strong></li></font>
 
                             <dl>
-                                <dt><b>GetObservation</b> - featureID(required), offering(required), beginPosition(optional), endPosition(optional), observedProperty(required)</dt>
+                                <dt><b>GetObservation</b> - featureID(required), offering(required), observedProperty(required), beginPosition(optional), endPosition(optional), Interval(optional), Latest(optional)</dt><br />
                                 <dd>observedProperty: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH</dd>
                                 <dd>offering: Mean, Maximum, Minimum, Variance, Mode, STD, SUM</dd>
+                                <dd>Interval: Today, ThisWeek, ThisYear <i>Future plan to implement ISO-8601 Duration option</i></dd>
+                                <dd>Latest: only the most recent data point is reported</dd>
                                 <br /><i>Daily mean discharge observation by feature ID with begin and end time:</i><br />
                                 <dd>
                                     <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=01446500&observedProperty=Discharge&beginPosition=1970-01-01&endPosition=1980-01-01&offering=Mean"><%=baseURL%>/sos/dv?request=GetObservation&featureId=01446500&observedProperty=Discharge&beginPosition=1970-01-01&endPosition=1980-01-01&offering=Mean</a>
@@ -289,6 +324,14 @@
                                 <br /><i>Daily maximum temperature observations by feature ID and begin time:</i><br />
                                 <dd>
                                     <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=05082500&observedProperty=Temperature&beginPosition=2010-01-01&offering=Maximum"><%=baseURL%>/sos/dv?request=GetObservation&featureId=05407000&observedProperty=Precipitation&beginPosition=2010-01-01&offering=Maximum</a>
+                                </dd>
+                                <br /><i>Daily mean discharge observations by feature ID this year:</i><br />
+                                <dd>
+                                    <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=05082500&observedProperty=Discharge&Interval=ThisYear&offering=Mean"><%=baseURL%>/sos/dv?request=GetObservation&featureId=05407000&observedProperty=Discharge&Interval=ThisYear&offering=Mean</a>
+                                </dd>
+                                <br /><i>Latest daily mean discharge observations by feature ID:</i><br />
+                                <dd>
+                                    <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=05082500&observedProperty=Discharge&offering=Mean&Latest"><%=baseURL%>/sos/dv?request=GetObservation&featureId=05407000&observedProperty=Discharge&offering=Mean&Latest</a>
                                 </dd>
                             </dl>
                             <p />
@@ -428,10 +471,10 @@
                                 <table border=1>
                                       <tr>
                                         <td>
-                                           <div id="map" style="width: 840px; height: 500px"></div>
+                                           <div id="map" style="width: 700px; height: 500px"></div>
                                         </td>
-                                        <td width = 350 valign="top" style="text-decoration: underline; color: #4444ff;">
-                                           <div id="side_bar" style="overflow:auto; height:500px;">></div>
+                                        <td width = 350 valign="top">
+                                           <div id="side_bar" style="overflow:auto; height:500px; width:400px">></div>
                                         </td>
                                       </tr>
                                     </table>
@@ -489,6 +532,9 @@
             </dl>
         </li>
             </div>
+<!--            <div id="tabPlot" class="tab_content">
+                <dd><a href="<%=baseURL%>/GoogleMap/DischargePlot.jsp?&featureID=05082500&observedProperty=00060,UV&beginPosition=2011-03-25&endPosition=2011-04-01">Link to plot....</a></dd>
+            </div>-->
         </div>
    </div>
 
@@ -508,14 +554,17 @@
 <!--==============================With compatable browsers, do the following===============-->
         <script type="text/javascript">
 if (GBrowserIsCompatible()) {
-
+    var clickedIcon = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
+    var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
+    var point_ini = new GLatLng(0, 0);
+    var ActiveMarker = new GMarker(point_ini, clickedIcon);
+    
     var gmarkers = [];
     var base = '<%=baseURL%>';
     var today = '<%=Today%>';
     var test = base.length;    // Gets rid of /GoogleMap/ from baseURL
     var base_url = base.substring(0,test);
     var LastWeekStr = '<%=LastWeek%>';
-
 
     // ===================================== Shows markers =================================
     function show(category) {
@@ -546,7 +595,7 @@ if (GBrowserIsCompatible()) {
             hide(category);
         }
         // == rebuild the side bar
-        makeSidebar();
+        //makeSidebar();
     }
 
     // =======================================Click identifier ==============================
@@ -572,11 +621,12 @@ if (GBrowserIsCompatible()) {
     map.addMapType(G_PHYSICAL_MAP);
     map.setCenter(new GLatLng(40.55972222, -95.613888889), 4, G_PHYSICAL_MAP);
     map.enableScrollWheelZoom();
-
+    map.addOverlay(ActiveMarker);
+//    var mgr = new MarkerManager(map);
     parseInactiveSites();
     var wfs_url = base_url + "/wfs?request=GetFeature";
     xml = LoadXML(wfs_url);
-    parseXml(xml);
+    parseXML(xml);
     xml_coastal = LoadXML("GoogleMap/wfs_coastal.xml");
     parseXml_Coastal(xml_coastal);
 

@@ -36,6 +36,11 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 /**
  * Servlet implementation class to handle WML requests
  */
@@ -144,17 +149,38 @@ public class UVServlet extends HttpServlet {
             }
 
             String[] interval = parameters.get(OGCBusinessRules.interval);
+            String INTERVAL = "";
+            Date now = new Date();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             if (interval != null && interval.length > 0){
-                String INTERVAL = interval[0];
-
-                try {
-                    INTERVAL = Interval.valueOf(INTERVAL.toUpperCase()).code;
-                } catch (IllegalArgumentException e) {
-                    // property not found in list...
+                if (interval[0].equalsIgnoreCase("Today"))
+                {
+                    String todayFormated = formatter.format(now);
+                    INTERVAL = todayFormated;
+                } else if (interval[0].equalsIgnoreCase("ThisWeek")) {
+                    Calendar lastWeek = new GregorianCalendar();
+                    lastWeek.add(Calendar.DAY_OF_YEAR, -7);
+                    String lastWeekFormated = formatter.format(lastWeek.getTime());
+                    INTERVAL = lastWeekFormated;
+                } else {
+//                    INTERVAL = null;
                 }
 
                 parameters.put(OGCBusinessRules.interval, new String[] {INTERVAL});
             }
+
+            String[] Latest = parameters.get(OGCBusinessRules.latest);
+            String LATEST = null;
+            if (Latest != null){
+                if (Latest[0].equalsIgnoreCase("True"))
+                {
+                    LATEST = "True";
+                } else {
+//                    LATEST = null;
+                }
+                parameters.put(OGCBusinessRules.latest, new String[] {LATEST});
+            }
+
             return parameters;
 
         }

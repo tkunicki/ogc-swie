@@ -40,7 +40,8 @@
         <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>
         <script src="mapiconmaker.js" type="text/javascript"></script>
         <script src="LoadXML.js" type="text/javascript"></script>
-        <script src="CreateTabbedMarker.js" type="text/javascript"></script>
+        <script src="CreateMarker.js" type="text/javascript"></script>
+        <script src="CreateSidebarGDA.js" type="text/javascript"></script>
         <script src="createInactiveMarker.js" type="text/javascript"></script>
         <script src="parseXML.js" type="text/javascript"></script>
         <script src="parseInactiveSites.js" type="text/javascript"></script>
@@ -85,8 +86,8 @@
             <td>
                <div id="map" style="width: 840px; height: 500px"></div>
             </td>
-            <td width = 350 valign="top" style="text-decoration: underline; color: #4444ff;">
-               <div id="side_bar" style="overflow:auto; height:500px;">></div>
+            <td width = 350 valign="top">
+               <div id="side_bar" style="overflow:auto; height:500px; width:400px">></div>
             </td>
           </tr>
         </table>
@@ -94,11 +95,6 @@
 
 <!-- ===========================Create Check Boxes==================================-->
         <form action="#">
-          <!--TN Rivers: <input type="checkbox" id="TNbox" onclick="boxclick(this,'TN')" />&nbsp;&nbsp;
-          NC Rivers: <input type="checkbox" id="NCbox" onclick="boxclick(this,'NC')" />&nbsp;&nbsp;
-          GA Rivers: <input type="checkbox" id="GAbox" onclick="boxclick(this,'GA')" />&nbsp;&nbsp;
-          SC Rivers: <input type="checkbox" id="SCbox" onclick="boxclick(this,'SC')" />&nbsp;&nbsp;
-          AL Rivers: <input type="checkbox" id="ALbox" onclick="boxclick(this,'AL')" /><br />-->
           NASQAN Coastal Subnetwork: <input type="checkbox" id="Coastalbox" onclick="boxclick(this,'Coastal')" />&nbsp;&nbsp;
           Inactive Gage Stations: <input type="checkbox" id="Inactivebox" onclick="boxclick(this,'Inactive')" /><br />
           WI Rivers: <input type="checkbox" id="WIbox" onclick="boxclick(this,'WI')" />&nbsp;&nbsp;
@@ -125,7 +121,12 @@
         <script type="text/javascript">
 if (GBrowserIsCompatible()) {
 
+    var clickedIcon = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
+    var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
+    var point_ini = new GLatLng(0, 0);
+    var ActiveMarker = new GMarker(point_ini, clickedIcon);
     var gmarkers = [];
+
     var base = '<%=baseURL%>';
     var today = '<%=Today%>';
     var test = base.length - 10;    // Gets rid of /GoogleMap/ from baseURL
@@ -162,11 +163,12 @@ if (GBrowserIsCompatible()) {
             hide(category);
         }
         // == rebuild the side bar
-        makeSidebar();
+        //makeSidebar();
     }
 
     // =======================================Click identifier ==============================
     function myclick(i) {
+
         GEvent.trigger(gmarkers[i], "click");
     }
 
@@ -178,6 +180,8 @@ if (GBrowserIsCompatible()) {
                 html += '<a href="javascript:myclick(' + i + ')">' + gmarkers[i].myname + '<\/a><br>';
             }
         }
+
+        //html = createSidebarGDA(point, name, StateNM, Site_no, USGS_URL, base_url)
         document.getElementById("side_bar").innerHTML = html;
     }
 
@@ -192,7 +196,7 @@ if (GBrowserIsCompatible()) {
     parseInactiveSites();
     var wfs_url = base_url + "/wfs?request=GetFeature";
     xml = LoadXML(wfs_url);
-    parseXml(xml);
+    parseXML(xml);
     xml_coastal = LoadXML("wfs_coastal.xml");
     parseXml_Coastal(xml_coastal);
 

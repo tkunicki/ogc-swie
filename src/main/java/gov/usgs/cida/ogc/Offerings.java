@@ -9,11 +9,11 @@ public enum Offerings {
             MODE("00007"),
             MEDIAN("00008"),
             STD("00009"),
-            VARIANCE("00010"),
-            HIGHTIDE("00021"),
-            LOWTIDE("00024"),
-            TIDAL_LOW_HIGH("00022"),
-            TIDAL_HIGH_LOW("00023");
+            VARIANCE("00010");
+//            HIGHTIDE("00021"),
+//            LOWTIDE("00024"),
+//            TIDAL_LOW_HIGH("00022"),
+//            TIDAL_HIGH_LOW("00023");
 
             final String code;
 

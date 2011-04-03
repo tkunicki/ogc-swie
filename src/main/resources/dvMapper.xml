@@ -238,12 +238,12 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="units"
 			javaType="string" />
 		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:dataType#xlink:href=http://www.opengis.net/def/timeseriesType/WaterML/2.0/AveragePrec"
-			column="loc_nu"
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:dataType#xlink:href=http://www.opengis.net/def/timeseriesType/WaterML/2.0/%s"
+			column="dataTypeLink"
 			javaType="string" />
 		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:dataType#xlink:title=Average in preceding interval"
-			column="loc_nu"
+			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:dataType#xlink:title"
+			column="dataTypeTitle"
 			javaType="string" />
 		<result
 			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:qualifier#xlink:href=http://waterdata.usgs.gov/%s/nwis/help"
@@ -256,7 +256,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		<result
 			property="om:result/wml2:Timeseries/^wml2:point/wml2:TimeValuePair/^wml2:time"
 			column="currentPosition"
-			typeHandler="ISODateTypeHandler" />
+			typeHandler="ISODateTimeTypeHandler" />
 		<result
 			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:value"
 			column="value"
@@ -328,13 +328,42 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                     WHEN f.dec_coord_datum_cd = 'NAD83' THEN 'urn:ogc:def:crs:EPSG:4269'
                     ELSE f.dec_coord_datum_cd
                 END) coord_datum,
+                (CASE
+                    WHEN g.stat_cd = '00003' THEN 'Average in preceding interval'
+                    WHEN g.stat_cd = '00001' THEN 'Maximum in preceding interval'
+                    WHEN g.stat_cd = '00002' THEN 'Minimum in preceding interval'
+                    WHEN g.stat_cd = '00006' THEN 'Preceding total'
+                    WHEN g.stat_cd = '00007' THEN 'Mode in preceding interval'
+                    WHEN g.stat_cd = '00008' THEN 'Median in preceding interval'
+                    WHEN g.stat_cd = '00009' THEN 'Standard deviation in preceding interval'
+                    WHEN g.stat_cd = '00010' THEN 'Variance in preceding interval'
+                    ELSE 'Unknown'
+                END) dataTypeTitle,
+                (CASE
+                    WHEN g.stat_cd = '00003' THEN 'AveragePrec'
+                    WHEN g.stat_cd = '00001' THEN 'MaxPrec'
+                    WHEN g.stat_cd = '00002' THEN 'MinPrec'
+                    WHEN g.stat_cd = '00006' THEN 'TotalPrec'
+                    WHEN g.stat_cd = '00007' THEN 'Mode'
+                    WHEN g.stat_cd = '00008' THEN 'Median'
+                    WHEN g.stat_cd = '00009' THEN 'STD'
+                    WHEN g.stat_cd = '00010' THEN 'Variance'
+                    ELSE 'Unknown'
+                END) dataTypeLink,
                 e.loc_nm,
                 e.loc_nu,
                 h.huc_nm
 
 		FROM
 		    (select b.site_id,
-		    MIN(a.result_dt) as startTime,
+                    <choose>
+                        <when test="latest != null">
+                            MAX(a.result_dt) as startTime,
+                        </when>
+                        <otherwise>
+                            MIN(a.result_dt) as startTime,
+                        </otherwise>
+                    </choose>
                     MAX(a.result_dt) as endTime,
                     (CASE
                         WHEN a.data_aging_cd != 'A' THEN a.data_aging_cd
@@ -378,6 +407,10 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 
                     <if test="endPosition != null">
                             AND a.result_dt <![CDATA[ <= ]]> STR_TO_DATE(#{endPosition[0]}, '%Y-%m-%d')
+                    </if>
+
+                    <if test="interval != null">
+                            AND a.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{interval[0]}, '%Y-%m-%d')
                     </if>
 
                     AND a.site_id = b.site_id
@@ -441,7 +474,15 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			AND g.result_dt <![CDATA[ <= ]]> STR_TO_DATE(#{endPosition[0]}, '%Y-%m-%d')
                 </if>
 
+                <if test="interval != null">
+                        AND g.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{interval[0]}, '%Y-%m-%d')
+		</if>
+
 		ORDER BY f.station_nm, e.loc_nu, currentPosition DESC
+
+                <if test="latest != null">
+                        LIMIT 1
+                </if>
 
 	</select>
 

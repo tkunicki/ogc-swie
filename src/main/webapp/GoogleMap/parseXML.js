@@ -1,4 +1,4 @@
-function parseXml(xml){
+function parseXML(xml){
     $(xml).find("[nodeName=wfs:FeatureCollection],FeatureCollection").each(function()
     {
         $(xml).find("[nodeName=wfs:member],member").each(function()
@@ -15,10 +15,11 @@ function parseXml(xml){
             var USGS_URL = $("[nodeName=sf:sampledFeature]", this).attr("xlink:ref");
             var URL_array = USGS_URL.split("/");
             var stateNM = URL_array[3];
+            var watershed = $("[nodeName=om:value]", this).text();
             var point = new GLatLng(latitude, longitude);
-            var marker = createTabbedMarker(point, siteName,  stateNM, siteCode, USGS_URL, base_url);
+            var marker = createMarker(point, siteName,  stateNM, siteCode, USGS_URL, base_url, watershed);
             map.addOverlay(marker);
             makeSidebar();
-        });
+        }); 
     });
 }

@@ -333,7 +333,15 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		
 		FROM
 		    (select b.site_id,
-		    MIN(a.result_dt) as startTime,
+                    <choose>
+                        <when test="latest != null">
+                            MAX(a.result_dt) as startTime,
+                        </when>  
+                        <otherwise>
+                            MIN(a.result_dt) as startTime,
+                        </otherwise>                        
+                    </choose>
+		    
                     MAX(a.result_dt) as endTime,
                     (CASE
                         WHEN a.data_aging_cd != 'P' THEN a.data_aging_cd
@@ -369,6 +377,10 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 
                     <if test="endPosition != null">
                             AND a.result_dt <![CDATA[ <= ]]> STR_TO_DATE(#{endPosition[0]}, '%Y-%m-%d')
+                    </if>
+
+                    <if test="interval != null">
+                            AND a.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{interval[0]}, '%Y-%m-%d')
                     </if>
 
                     AND a.site_id = b.site_id
@@ -420,7 +432,15 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			AND g.result_dt <![CDATA[ <= ]]> STR_TO_DATE(#{endPosition[0]}, '%Y-%m-%d')
                 </if>
 
+                <if test="interval != null">
+                        AND g.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{interval[0]}, '%Y-%m-%d')
+		</if>
+
 		ORDER BY f.station_nm, e.loc_nu, currentPosition DESC
+                
+                <if test="latest != null">
+                        LIMIT 1
+                </if>
 	  
 	</select>
 

@@ -6,5 +6,6 @@ public class OGCBusinessRules {
         public static final String observedProperty = "observedProperty";
         public static final String offering = "offering";
         public static final String interval = "interval";
+        public static final String latest = "latest";
 
 }
