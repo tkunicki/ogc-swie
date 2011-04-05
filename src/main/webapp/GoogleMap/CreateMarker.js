@@ -1,31 +1,22 @@
-// ========================Create a tabbed marker============================================
 function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watershed)
 {
-    //var marker = new GMarker(point, {icon: gicons[StateNM]});
-//    var newIcon = '';
-//    if (StateNM == 'Coastal') {
-//        newIcon = MapIconMaker.createMarkerIcon({
-//            primaryColor: "#660000"
-//        });
-//    }
-//    else {
-//        newIcon = MapIconMaker.createMarkerIcon({
-//            primaryColor: "#3366FF"
-//        });
-//    }
-
     var marker = new GMarker(point, newIcon);
 
     marker.mycategory = StateNM;
     marker.myname = name;
-    
+
     var label1 = 'Site information';
     var site = Site_no;
-    var USGS_picture = '<img src = "USGS.gif" width="84" height="32"/>';
 
     GEvent.addListener(marker, "click", function() {
-        ActiveMarker.hide();
-        ActiveMarker = new GMarker(point, clickedIcon);
+
+        var USGS_link = '<a href = "' + USGS_URL + '" >' + Site_no + '</a>';
+
+        var Name_html = '<b>' + name + '</b><br />';
+        var Watershed_html = '<b>' + watershed + ' Watershed</b><br />';
+        var html_header = Name_html + Watershed_html;
+        document.getElementById("StationInfo").innerHTML = html_header;
+        document.getElementById("AvailableData").innerHTML = "Loading...";
 
         var sos_url = base_url + "/sos/uv?request=GetObservation&featureId=" + site + "&observedProperty=Discharge&latest";
         $.get(sos_url, function(xml) {
@@ -36,17 +27,9 @@ function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watersh
                 time = time.replace("T"," ");
                 var value = $(this).find("[nodeName=wml2:value]").first().text();
                 var comment = $(this).find("[nodeName=wml2:comment]:first").text();
-
-                var USGS_link = '<a href = "' + USGS_URL + '" >' + Site_no + '</a>';
-                var Title = '<table cellpadding="10"><tr><td>' + USGS_picture + '</td><td>' + USGS_link + '</td></table>';
-                var Name_html = '<b>' + name + '</b><br />';
-                var Watershed_html = '<b>' + watershed + ' Watershed</b><br />';
-
-                var html_header = Title + Name_html + Watershed_html;
-
                 var table_1 = "Latest reading:<br /><center><table border='1'><tr><td>Discharge</td><td>" + time + '</td><td>' + value + ' ' + units + ' <b>' + comment +'</b></td></tr></table></center>';
 
-                var html = html_header + table_1 + '<br />Available data:';
+                var html = table_1 + '<br />Available data:';
                 var gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity&featureID=" + Site_no + "&offering=00003";
                 var gdaUV_url = base_url + "/sos/uv?request=GetDataAvailablity&featureID=" + Site_no + "&offering=00003";
 
@@ -91,14 +74,14 @@ function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watersh
                     Plot_table_DV = Plot_table_DV + '<tr><td>' + Plot_links_DV + '</td><td>' + beginDate_DV + '</td><td>' + endDate_DV + '</td></tr>';
                 });
 
-                var table_2 = '<br />' + Plot_table_UV + '</table></center><br />' + Plot_table_DV + '</table></center><br />';
-                html = html + table_2;
-//
-                
-                map.addOverlay(ActiveMarker);   //This adds a new marker over the old one...not allowing you to re-click...need to find better way....
+                var table_2 = html + '<br />' + Plot_table_UV + '</table></center><br />' + Plot_table_DV + '</table></center><br />';
+
                 //marker.openInfoWindowTabsHtml([new GInfoWindowTab(label1,html)]);
-                document.getElementById("side_bar").innerHTML = html;
-                
+                ActiveMarker.hide();
+                ActiveMarker = new GMarker(point, clickedIcon);
+                map.addOverlay(ActiveMarker);
+                document.getElementById("AvailableData").innerHTML = table_2;
+
 
             });
         });

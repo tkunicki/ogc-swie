@@ -77,8 +77,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="parameter_cd"
 			javaType="string" />
 		<result
-			property="}gda:featurePropertyRelationship/gda:FeaturePropertyTemporalRelationship/gda:targetProperty#xlink:title"
-			column="parameter_nm_stat"
+			property="gda:featurePropertyRelationship/gda:FeaturePropertyTemporalRelationship/gda:targetProperty#xlink:title"
+			column="parameter_nm"
+			javaType="string" />
+		<result
+			property="}gda:featurePropertyRelationship/gda:FeaturePropertyTemporalRelationship/gda:targetProperty#x-offering"
+			column="stat_nm"
 			javaType="string" />
 
 	</resultMap>
@@ -105,7 +109,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="station_nm"
 			javaType="string" />
 		<result
-			property="gda:propertyEntryPoint/gda:ObservedPropertyInfo/gda:observedFor#xlink:offering"
+			property="gda:propertyEntryPoint/gda:ObservedPropertyInfo/gda:observedFor#x-offering"
 			column="stat_nm"
 			javaType="string" />
         </resultMap>
@@ -132,7 +136,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="parameter_nm"
 			javaType="string" />
 		<result
-			property="gda:featureOfInterestEntryPoint/gda:FeatureOfInterestInfo/gda:relatedProperty#xlink:offering"
+			property="gda:featureOfInterestEntryPoint/gda:FeatureOfInterestInfo/gda:relatedProperty#x-offering"
 			column="stat_nm"
 			javaType="string" />
         </resultMap>

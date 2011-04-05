@@ -101,10 +101,8 @@
 
         <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 
-        <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>
-
-        <script type="text/javascript" src="jquery-1.4.4.js"></script>
-        <script type='text/javascript' src='https://www.google.com/jsapi'></script>
+        <script type="text/javascript"  src="jquery-1.4.4.js"></script>
+        <script type="text/javascript"  src="jsapi.js"></script>
         
         <script src="mapiconmaker.js" type="text/javascript"></script>
         <script src="LoadXML.js" type="text/javascript"></script>
@@ -115,113 +113,6 @@
         <script src="parseXML_Coastal.js" type="text/javascript"></script>
         <script src="createPlot.js" type="text/javascript" ></script>
 
-        <style type="text/css">
-            body {
-    /*                background: #f0f0f0;*/
-                    margin: 8px;
-                    padding: 0;
-    /*                font: 12px normal Verdana, Arial, Helvetica, sans-serif;*/
-    /*                color: #444;*/
-            }
-            h1 {font-size: 3em;
-                margin: 1px 0;
-                font: 18px Helvetica;
-            }
-            .container {width: 1200px; margin: 10px auto;}
-            ul.tabs {
-                    margin: 0;
-                    padding: 0;
-                    float: left;
-                    list-style: none;
-                    height: 25px;
-                    border-bottom: 1px solid #999;
-                    border-left: 1px solid #999;
-                    width: 100%;
-            }
-            ul.tabs li {
-                    float: left;
-                    margin: 0;
-                    padding: 0;
-                    height: 24px;
-                    line-height: 24px;
-                    border: 1px solid #999;
-                    border-left: none;
-                    margin-bottom: -1px;
-                    background: #e0e0e0;
-                    overflow: hidden;
-                    position: relative;
-            }
-            ul.tabs li a {
-                    text-decoration: none;
-                    color: #000;
-                    display: block;
-                    font-size: 1.1em;
-                    padding: 0 20px;
-                    border: 1px solid #fff;
-                    outline: none;
-            }
-            ul.tabs li a:hover {
-                    background: #ccc;
-            }
-            html ul.tabs li.active, html ul.tabs li.active a:hover  {
-                    background: #fff;
-                    border-bottom: 1px solid #fff;
-            }
-            .tab_container {
-                    border: 1px solid #999;
-                    border-top: none;
-                    clear: both;
-                    float: left;
-                    width: 100%;
-                    background: #fff;
-                    -moz-border-radius-bottomright: 5px;
-                    -khtml-border-radius-bottomright: 5px;
-                    -webkit-border-bottom-right-radius: 5px;
-                    -moz-border-radius-bottomleft: 5px;
-                    -khtml-border-radius-bottomleft: 5px;
-                    -webkit-border-bottom-left-radius: 5px;
-            }
-            .tab_content {
-                    padding: 20px;
-    /*                font-size: 1.2em;*/
-            }
-    /*        .tab_content h2 {
-                    font-weight: normal;
-                    padding-bottom: 10px;
-                    border-bottom: 1px dashed #ddd;
-                    font-size: 1.8em;
-            }
-            .tab_content h3 a{
-                    color: #254588;
-            }*/
-    /*        .tab_content img {
-                    float: left;
-                    margin: 0 20px 20px 0;
-                    border: 1px solid #ddd;
-                    padding: 5px;
-            }*/
-    </style>
-        <script type="text/javascript">
-
-            $(document).ready(function() {
-
-                    //Default Action
-                    $(".tab_content").hide(); //Hide all content
-                    $("ul.tabs li:last").addClass("active").show(); //Activate plot tab
-                    $(".tab_content:last").show(); //Show plot tab content
-
-                    //On Click Event
-                    $("ul.tabs li").click(function() {
-                            $("ul.tabs li").removeClass("active"); //Remove any "active" class
-                            $(this).addClass("active"); //Add "active" class to selected tab
-                            $(".tab_content").hide(); //Hide all tab content
-                            var activeTab = $(this).find("a").attr("href"); //Find the rel attribute value to identify the active tab + content
-                            $(activeTab).fadeIn(); //Fade in the active content
-                            return false;
-                    });
-
-            });
-        </script>
         <title>OGC Services SWIE</title>
         
 
@@ -260,44 +151,39 @@
         <h1>Surface Water IE 1.5.2</h1>
 <table>
     <tr><td>
-           <div class="container">
 
-                    <ul class="tabs">
-                        <li><a href="#tabPlot">Plot</a></li>
-                    </ul>
-                <div class="tab_container">
-                        <div id="tabPlot" class="tab_content">
-                            <table border=1" cellpadding="5">
-                                <tr>
-                                    <td>
-                                        <div id='Station_name' ></div><br />
-                                        <div id='chart_div' style='width: 700px; height: 500px;'>Loading...</div><br />
-                                        Provisional data subject to revision<br /><%=Data_link%><br /><%=mapLink%>
-                                    </td>
-                                    <td style="overflow:scroll; height:500px; width:400px">
-                                        <div id='side_bar_header'>Loading...</div>
+            <div id="tabPlot" class="tab_content">
+                <table border=1" cellpadding="5">
+                    <tr>
+                        <td>
+                            <div id='Station_name' ></div><br />
+                            <div id='chart_div' style='width: 700px; height: 500px;'>Loading...<img src = "ajax-loader.gif" /></div><br />
+                            Provisional data subject to revision<br /><%=Data_link%><br /><%=mapLink%>
+                        </td>
+                        <td style="overflow:scroll; height:500px; width:500px">
+                            <div id='side_bar_header'>Loading...</div>
 
-                                        <form action="DischargePlot.jsp" >
-                                            <table>
-                                                <tr><td>Station ID: </td><td><input type="text" name="featureID" value="<%=featureID%>"/></td></tr>
-                                                <tr><td>Begin Date: </td><td><input type="text" name="beginPosition" value="<%=beginPosition%>"/></td></tr>
-                                                <tr><td>End Date: </td><td><input type="text" name="endPosition" value="<%=endPosition%>"/></td></tr>
-                                            </table>
-                                            <div id='side_bar' style="overflow:scroll; height:400px">Loading...</div>
-                                            <input type="submit" value="Submit" />
-                                         </form>
-                                    </td>
-                                </tr>
-                            </table>
+                            <form action="DischargePlot.jsp" >
+                                <table>
+                                    <tr><td>Station ID: </td><td><input type="text" name="featureID" value="<%=featureID%>"/></td></tr>
+                                    <tr><td>Begin Date: </td><td><input type="text" name="beginPosition" value="<%=beginPosition%>"/></td></tr>
+                                    <tr><td>End Date: </td><td><input type="text" name="endPosition" value="<%=endPosition%>"/></td></tr>
+                                    <tr><td></td></tr>
+                                </table>
 
-                            <span> <font size="0.5"><br />* References to non-U.S. Department of the Interior (DOI) products do not constitute an endorsement by the DOI. By viewing the Google Visualization API on this web site the user agrees to these
-                            <a href="http://code.google.com/apis/visualization/terms.html" target="_blank" title="Opens a new browser window.">Terms of Service set forth by Google</a>.<br /></font></span>
-                            <br />
-                        </div>
-                </div>
-           </div>
-</td></tr>
+                                <div id='side_bar' style="overflow:scroll; height:400px">Loading...<img src = "ajax-loader.gif" /></div>
+                                <input type="submit" value="Submit" />
+                            </form>
+                        </td>
+                    </tr>
+                </table>
 
+                <span> <font size="0.5"><br />* References to non-U.S. Department of the Interior (DOI) products do not constitute an endorsement by the DOI. By viewing the Google Visualization API on this web site the user agrees to these
+                        <a href="http://code.google.com/apis/visualization/terms.html" target="_blank" title="Opens a new browser window.">Terms of Service set forth by Google</a>.<br /></font></span>
+                <br />
+            </div>
+
+        </td></tr>
 </table>
     <ul>
         <li> <strong>Warning </strong>

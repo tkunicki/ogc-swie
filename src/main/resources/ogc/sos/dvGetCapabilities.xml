@@ -268,10 +268,6 @@ http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
                                 <ows:Value>MEDIAN</ows:Value>
                                 <ows:Value>STD</ows:Value>
                                 <ows:Value>VARIANCE</ows:Value>
-                                <ows:Value>HIGHTIDE</ows:Value>
-                                <ows:Value>LOWTIDE</ows:Value>
-                                <ows:Value>TIDAL_LOW_HIGH</ows:Value>
-                                <ows:Value>TIDAL_HIGH_LOW</ows:Value>
 			</ows:Parameter>
 			<ows:Parameter name="beginPosition">
 				<ows:AnyValue/>
@@ -353,7 +349,14 @@ http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
 						<gml:endPosition indeterminatePosition='unknown'/>
 					</gml:TimePeriod>
 				</sos:time>
-				<sos:procedure xlink:href="DailyMean"/>
+				<sos:procedure xlink:href="Mean"/>
+                                <sos:procedure xlink:href="Maximum"/>
+                                <sos:procedure xlink:href="Minimum"/>
+                                <sos:procedure xlink:href="Sum"/>
+                                <sos:procedure xlink:href="Mode"/>
+                                <sos:procedure xlink:href="STD"/>
+                                <sos:procedure xlink:href="Variance"/>
+                                <sos:procedure xlink:href="Median"/>
 				<sos:observedProperty xlink:href="GageHeight"/>
                                 <sos:observedProperty xlink:href="Discharge"/>
                                 <sos:observedProperty xlink:href="Temperature"/>

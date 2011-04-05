@@ -1,10 +1,12 @@
 function createPlot(sos_url, wfs_url, gdaDV_url, gdaUV_url, service, stat_cd, observedProperty) {
     $(function() {
+
         var data = new google.visualization.DataTable();
 
         var xml = LoadXML(sos_url);
-        var units = $(xml).find("[nodeName=wml2:unitOfMeasure]", this).attr("uom");
-        var PropertyName = $(xml).find("[nodeName=om:observedProperty]", this).attr("xlink:title");
+        var units = $(xml).find("[nodeName=wml2:unitOfMeasure],unitOfMeasure", this).attr("uom");
+
+        var PropertyName = $(xml).find("[nodeName=om:observedProperty],observedProperty", this).attr("xlink:title");
         var Title = PropertyName + ' (' + units + ')';
         data.addColumn('datetime', 'Date');
         data.addColumn('number', Title);
@@ -43,7 +45,7 @@ function createPlot(sos_url, wfs_url, gdaDV_url, gdaUV_url, service, stat_cd, ob
         document.getElementById("Station_name").innerHTML = (html_2);
 
         var Plot_table_UV = "<table border='1' cellpadding='2'><tr><td></td><td><center><b>Real Time</b></center></td><td>Begin date</td><td>End date</td></tr>";
-        var Plot_table_DV = "<table border='1' cellpadding='2'><tr><td></td><td><b><center>Daily</b></center></td><td>Begin date</td><td>End date</td></tr>";
+        var Plot_table_DV = "<table border='1' cellpadding='2'><tr><td></td><td><b><center>Daily</b></center></td><td>Offering</td><td>Begin date</td><td>End date</td></tr>";
 
         var xml_UV = LoadXML(gdaUV_url);
         $(xml_UV).find("[nodeName=gda:FeaturePropertyTemporalRelationship],FeaturePropertyTemporalRelationship").each(function(){
@@ -71,6 +73,7 @@ function createPlot(sos_url, wfs_url, gdaDV_url, gdaUV_url, service, stat_cd, ob
         $(xml_DV).find("[nodeName=gda:FeaturePropertyTemporalRelationship],FeaturePropertyTemporalRelationship").each(function(){
             var Property_DV = $(this).find("[nodeName=gda:targetProperty]");
             var Prop_DV = Property_DV.attr("xlink:title");
+            var Offering = Property_DV.attr("x-offering");
             var Parameter_cd_long_DV = Property_DV.attr("xlink:href");
             var Parameter_cd_array_DV = Parameter_cd_long_DV.split("_");
             var Parameter_cd_DV = Parameter_cd_array_DV[1];
@@ -88,7 +91,7 @@ function createPlot(sos_url, wfs_url, gdaDV_url, gdaUV_url, service, stat_cd, ob
                 var radio_DV = '<input type="radio" name="observedProperty" value="' + Parameter_cd_DV + ',DV' + stat_cd_DV + '"/>';
             }
 
-            Plot_table_DV = Plot_table_DV+ '<tr><td>' + radio_DV + '</td><td>' + Prop_DV + '</td><td>' + beginDate_DV + '</td><td>' + endDate_DV + '</tr>';
+            Plot_table_DV = Plot_table_DV+ '<tr><td>' + radio_DV + '</td><td>' + Prop_DV + '</td><td>' + Offering + '</td><td>' + beginDate_DV + '</td><td>' + endDate_DV + '</tr>';
 
         });
 
