@@ -77,7 +77,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			column="parameter_cd"
 			javaType="string" />
 		<result
-			property="}gda:featurePropertyRelationship/gda:FeaturePropertyTemporalRelationship/gda:targetProperty#xlink:title"
+			property="gda:featurePropertyRelationship/gda:FeaturePropertyTemporalRelationship/gda:targetProperty#xlink:title"
+			column="parameter_nm"
+			javaType="string" />
+		<result
+			property="}gda:featurePropertyRelationship/gda:FeaturePropertyTemporalRelationship/gda:targetProperty#x-offering=UNIT"
 			column="parameter_nm"
 			javaType="string" />
 	</resultMap>
@@ -103,6 +107,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			property="gda:propertyEntryPoint/gda:ObservedPropertyInfo/gda:observedFor#xlink:title"
 			column="station_nm"
 			javaType="string" />
+		<result
+			property="gda:propertyEntryPoint/gda:ObservedPropertyInfo/gda:observedFor#x-offering=UNIT"
+			column="station_nm"
+			javaType="string" />
         </resultMap>
 
 	<resultMap id="UVdataFeatureMap" type="XMLMap" extends="UVdataBaseMap">
@@ -124,6 +132,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="string" />
 		<result
 			property="gda:featureOfInterestEntryPoint/gda:FeatureOfInterestInfo/gda:relatedProperty#xlink:title"
+			column="parameter_nm"
+			javaType="string" />
+		<result
+			property="gda:featureOfInterestEntryPoint/gda:FeatureOfInterestInfo/gda:relatedProperty#x-offering=UNIT"
 			column="parameter_nm"
 			javaType="string" />
         </resultMap>
@@ -162,6 +174,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                     null as endPosition
                 </otherwise>
             </choose>
+<!--            <choose>
+                 <when test="offering != null">
+                    #{offering[0]} as offering
+                </when>
+                <otherwise>
+                    null as offering
+                </otherwise>
+            </choose>-->
+
             FROM dual
 
         </select>
@@ -216,7 +237,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             </if>
 
             <if test="endPosition != null">
-                AND b.result_dt <![CDATA[ <= ]]> STR_TO_DATE(#{endPosition}, '%Y-%m-%d')
+                AND b.result_dt <![CDATA[ <= ]]> CONCAT(STR_TO_DATE(#{endPosition}, '%Y-%m-%d'), ' 23:45')
             </if>
 
             AND a.site_id = b.site_id
@@ -239,10 +260,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
             FROM
             nwisweb.UV_DD_CONF a,
-            nwisweb.UV b,
             nwisweb.SITEFILE c,
             nwisweb.PARAM_REF e
-
 
             <choose>
                   <when test="featureId != null">
@@ -270,8 +289,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                     </otherwise>
              </choose>
 
-            AND a.site_id = b.site_id
-            AND a.dd_nu = b.dd_nu
             AND c.site_id = a.site_id
             AND a.parameter_cd = e.parameter_cd
             AND a.access_cd = '0'
@@ -295,7 +312,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
             FROM
             nwisweb.UV_DD_CONF a,
-            nwisweb.UV b,
             nwisweb.SITEFILE c,
             nwisweb.PARAM_REF e
 
@@ -325,8 +341,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                     </otherwise>
              </choose>
 
-            AND a.site_id = b.site_id
-            AND a.dd_nu = b.dd_nu
             AND c.site_id = a.site_id
             AND a.parameter_cd = e.parameter_cd
             AND a.access_cd = '0'

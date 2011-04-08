@@ -37,7 +37,8 @@ public class USGS_URL_TypeHandler implements TypeHandler {
         int i = Integer.parseInt(state.trim())-1;
         String postal_nm = state_nm[i];
         String url = "http://waterdata.usgs.gov/".concat(postal_nm).concat("/nwis/uv/?site_no=").concat(site);
-        return url;
+        String url_new = "http://nwisvaws02.er.usgs.gov/ogc-swie/wfs?request=GetFeature&featureId=".concat(site);
+        return url_new;
     }
 
     @Override

@@ -94,7 +94,8 @@
             <td valign="top">
                 <center>
                     <img src = "USGS.gif" width="84" height="32"/><br />
-                    <div id="StationInfo" style="height:50px; width:400px">Click on a marker for data availability</div>
+                    <div id="StationInfo" style="height:60px; width:400px">Click on a marker for data availability</div>
+<!--                    Include latest readings (increases loading times): <input type="checkbox" id="IncludeLatest" value="checked"/><input type="submit" value="Refresh" />-->
                 </center>
 
             </td>
@@ -199,19 +200,20 @@ function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watersh
             var endTime_long = $(this).find("[nodeName=gml:endPosition]").text();
             var endTime = endTime_long.substr(0,16);
             var endDate = endTime.split(" ")[0];
-            var sos_url = sos_url_base + Parameter_cd;
-            var xml_SOS = LoadXML(sos_url);
-            $(xml_SOS).find("[nodeName=wml2:TimeseriesObservation],TimeseriesObservation").each(function(){
-                    var units = $(this).find("[nodeName=wml2:unitOfMeasure]").attr("uom");
-                    var time_long = $(this).find("[nodeName=wml2:time]:first").text();
-                    var Prop = $(this).find("[nodeName=om:observedProperty]").attr("xlink:title");
-                    time = time_long.substr(0,16);
-                    time = time.replace("T"," ");
-                    var value = $(this).find("[nodeName=wml2:value]").first().text();
-                    var comments = $(this).find("[nodeName=wml2:comment]:first").text();
-                    table_latest = table_latest + '<tr><td>' + Prop + '</td><td>' + value + ' ' + units + '</td><td>' + comments + '</td></tr>';
-             });
-
+            if (Parameter_cd == '00060' || Parameter_cd == '00065') {
+                var sos_url = sos_url_base + Parameter_cd;
+                var xml_SOS = LoadXML(sos_url);
+                $(xml_SOS).find("[nodeName=wml2:TimeseriesObservation],TimeseriesObservation").each(function(){
+                        var units = $(this).find("[nodeName=wml2:unitOfMeasure]").attr("uom");
+                        var time_long = $(this).find("[nodeName=wml2:time]:first").text();
+                        var Prop = $(this).find("[nodeName=om:observedProperty]").attr("xlink:title");
+                        time = time_long.substr(0,16);
+                        time = time.replace("T"," ");
+                        var value = $(this).find("[nodeName=wml2:value]").first().text();
+                        var comments = $(this).find("[nodeName=wml2:comment]:first").text();
+                        table_latest = table_latest + '<tr><td>' + Prop + '</td><td>' + value + ' ' + units + '</td><td>' + comments + '</td></tr>';
+                 });
+            }
             var Plot_links_UV = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?&featureID=' + Site_no + '&observedProperty=' + Parameter_cd + ',UV&beginPosition=' + LastWeekStr + '&endPosition=' + endDate + '>' + Prop + '</a>';
             Plot_table_DV = Plot_table_DV + '<tr><td>' + Plot_links_UV + '</td><td>UNIT</td><td>' + beginDate + '</td><td>' + endDate + '</td></tr>';
         });
@@ -270,7 +272,15 @@ function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watersh
             document.getElementById(category+"box").checked = false;
             map.closeInfoWindow();
           }
-
+// =================================== Checkbox has been clicked =======================
+      function include(box,category) {
+        if (box.checked) {
+          show(category);
+        } else {
+          hide(category);
+        }
+        // == rebuild the side bar
+      }
 // =================================== Checkbox has been clicked =======================
       function boxclick(box,category) {
         if (box.checked) {

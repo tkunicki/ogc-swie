@@ -406,7 +406,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                     </if>
 
                     <if test="endPosition != null">
-                            AND a.result_dt <![CDATA[ <= ]]> STR_TO_DATE(#{endPosition[0]}, '%Y-%m-%d')
+                            AND a.result_dt <![CDATA[ <= ]]> CONCAT(STR_TO_DATE(#{endPosition[0]}, '%Y-%m-%d'),':23:45')
                     </if>
 
                     <if test="interval != null">
@@ -471,7 +471,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		</if>
 
                 <if test="endPosition != null">
-			AND g.result_dt <![CDATA[ <= ]]> STR_TO_DATE(#{endPosition[0]}, '%Y-%m-%d')
+			AND g.result_dt <![CDATA[ <= ]]> CONCAT(STR_TO_DATE(#{endPosition[0]}, '%Y-%m-%d'),':23:45')
                 </if>
 
                 <if test="interval != null">

@@ -4,7 +4,7 @@ one directory up from the currently location.  To validate, the locations of the
 need to be adjusted.  For example, when using the CSIRO WaterML2 validation tool, the locations
 need to be adjusted to:
 file:///C:/OGC/SCHEMAS_OPENGIS_NET/om/2.0/observation.xsd -->
-<wml2:WaterMonitoringObservation 
+<wml2:TimeseriesObservation
 xmlns:gml="http://www.opengis.net/gml/3.2" 
 xmlns:om="http://www.opengis.net/om/2.0" 
 xmlns:sa="http://www.opengis.net/sampling/2.0" 
@@ -50,8 +50,8 @@ We are unsure how to use this here since often there will be provisional and acc
 	<om:phenomenonTime>
 <!-- "ts_period" is currently just a static value-->
 		<gml:TimePeriod gml:id="ts_period">
-			<gml:beginPosition>2010-10-26T00:00-07:00</gml:beginPosition>
-			<gml:endPosition>2011-02-23T09:15-07:00</gml:endPosition>
+			<gml:beginPosition>2010-10-26T00:00:00-07:00</gml:beginPosition>
+			<gml:endPosition>2011-02-23T09:15:00-07:00</gml:endPosition>
 		</gml:TimePeriod>
 	</om:phenomenonTime>
 
@@ -62,7 +62,7 @@ The currently is the time that the user sent the query to the database -->
 
         <om:resultTime>
 		<gml:TimeInstant gml:id="result_time">
-			<gml:timePosition>2011-02-23T09:15-07:00</gml:timePosition>
+			<gml:timePosition>2011-02-23T09:15:00-07:00</gml:timePosition>
 		</gml:TimeInstant>
 	</om:resultTime>
 	
@@ -76,9 +76,15 @@ Currently, the title is taken from the parameter name, based off of the observed
 	
 	<om:featureOfInterest>
 <!-- gml:id must be unique - in this case, WMP stands for water monitoring point-->	
-		<wml2:WaterMonitoringPoint gml:id="USGS.WMP.12332000">
+		<wml2:MonitoringPoint gml:id="USGS.WMP.12332000">
 <!-- xlink:ref references the USGS link to the site-->		
 			<sf:sampledFeature xlink:href="http://waterdata.usgs.gov/MT/nwis/uv/?site_no=12332000"/>
+                        <sf:parameter>
+                            <om:NamedValue>
+                                <om:name xlink:title="Watershed"/>
+                                <om:value>Flint-Rock</om:value>
+                            </om:NamedValue>
+                        </sf:parameter>
 			<sams:shape>
 <!-- gml:id must be unique - in this case, P stands for point-->			
 				<gml:Point gml:id="USGS.P.12332000">
@@ -94,7 +100,7 @@ Currently, references the SWIE - to emphasize this is an experimental site.  In 
 					<wml2:zoneAbbreviation>MST</wml2:zoneAbbreviation>
 				</wml2:TimeZone>
 			</wml2:timeZone>
-		</wml2:WaterMonitoringPoint>
+		</wml2:MonitoringPoint>
 	</om:featureOfInterest>
 	
 	<om:result>
@@ -109,8 +115,8 @@ Currently, references the SWIE - to emphasize this is an experimental site.  In 
 			<wml2:domainExtent xlink:href="ts_period">
 				<gml:TimePeriod gml:id="USGS.TP.12332000">
 <!-- gml:id must be unique - in this case, TP stands for time period....all of this seems redundent, but perhaps if there were several sensors, they might contain different begin/end time periods-->			
-					<gml:beginPosition>2010-10-26T00:00-07:00</gml:beginPosition>
-					<gml:endPosition>2011-02-23T09:15-07:00</gml:endPosition>
+					<gml:beginPosition>2010-10-26T00:00:00-07:00</gml:beginPosition>
+					<gml:endPosition>2011-02-23T09:15:00-07:00</gml:endPosition>
 				</gml:TimePeriod>
 			</wml2:domainExtent>
 
@@ -118,7 +124,7 @@ Currently, references the SWIE - to emphasize this is an experimental site.  In 
 			<wml2:defaultTimeValuePair>
 				<wml2:TimeValuePair>
 <!-- The unit of measure is taken from the PARAM_REF table based on the observedProperty.  There is not anything coded in to change the units within a timeseries.  -->
-                                    <wml2:unitOfMeasure xlink:href="cfs"/>
+                                    <wml2:unitOfMeasure uom="cfs"/>
 <!-- The dataType is statically set to 'Continuous/Instantaneous' for the instantaneous values, and 'Average in preceding interval' for daily mean values  -->
 					<wml2:dataType xlink:href="http://www.opengis.net/def/timeseriesType/WaterML/2.0/Continuous" xlink:title="Continuous/Instantaneous"/>
 <!-- The default qualifier is set to 'Provisional data subject to revision' for the instantaneous values, and 'Approved for publication. Processing and review completed' for daily mean values
@@ -129,7 +135,7 @@ The code will check and update each point below if it is different. -->
 			
 			<wml2:point>
 				<wml2:TimeValuePair>
-					<wml2:time>2011-02-23T09:15-07:00</wml2:time>
+					<wml2:time>2011-02-23T09:15:00-07:00</wml2:time>
 					<wml2:value>48</wml2:value>
 <!-- Comments for each data point are taken from the table_cd in the UV_STATUS or DV_STATUS table-->
 					<wml2:comment>Ice affected </wml2:comment>
@@ -138,7 +144,7 @@ The code will check and update each point below if it is different. -->
 			
 			<wml2:point>
 				<wml2:TimeValuePair>
-					<wml2:time>2011-02-23T09:00-07:00</wml2:time>
+					<wml2:time>2011-02-23T09:00:00-07:00</wml2:time>
 					<wml2:value>48</wml2:value>
 					<wml2:comment>Ice affected </wml2:comment>
 				</wml2:TimeValuePair>
@@ -148,7 +154,7 @@ The code will check and update each point below if it is different. -->
 			<wml2:point>
 				<wml2:TimeValuePair>
 <!-- Time is result_dt, value is result_va from either DV or UV table -->
-					<wml2:time>2010-10-26T00:30-07:00</wml2:time>
+					<wml2:time>2010-10-26T00:30:00-07:00</wml2:time>
 					<wml2:value>51</wml2:value>
 <!-- When the qualifier no longer matches the default, the output will update -->
 					<wml2:qualifier xlink:href="http://waterdata.usgs.gov/nwis/help" xlink:title="Approved for publication. Processing and review completed."/>
@@ -156,18 +162,18 @@ The code will check and update each point below if it is different. -->
 			</wml2:point>
 			<wml2:point>
 				<wml2:TimeValuePair>
-					<wml2:time>2010-10-26T00:15-07:00</wml2:time>
+					<wml2:time>2010-10-26T00:15:00-07:00</wml2:time>
 					<wml2:value>51</wml2:value>
 					<wml2:qualifier xlink:href="http://waterdata.usgs.gov/nwis/help" xlink:title="Approved for publication. Processing and review completed."/>
 				</wml2:TimeValuePair>
 			</wml2:point>
 			<wml2:point>
 				<wml2:TimeValuePair>
-					<wml2:time>2010-10-26T00:00-07:00</wml2:time>
+					<wml2:time>2010-10-26T00:00:00-07:00</wml2:time>
 					<wml2:value>51</wml2:value>
 					<wml2:qualifier xlink:href="http://waterdata.usgs.gov/nwis/help" xlink:title="Approved for publication. Processing and review completed."/>
 				</wml2:TimeValuePair>
 			</wml2:point>
 		</wml2:Timeseries>
 	</om:result>
-</wml2:WaterMonitoringObservation>
+</wml2:TimeseriesObservation>

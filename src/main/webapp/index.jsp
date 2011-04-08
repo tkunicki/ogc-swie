@@ -208,27 +208,28 @@
                             <font size="4" ><li><strong> Sensor Observation Service - Unit Values</strong></li> </font>
                                 <p />
                                     <dl>
-                                        <dt><b>GetObservation</b> - featureID(required), observedProperty(required), beginPosition(optional), endPosition(optional), Interval(optional), Latest(optional)</dt><br />
-                                        <dd>observedProperty: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH</dd>
-                                        <dd>beginPostion: YYYY-MM-DD, YYYY-MM, YYYY</dd>
-                                        <dd>endPostion: YYYY-MM-DD, YYYY-MM, YYYY</dd>
+                                        <dt><b>GetObservation</b> - featureID(required), observedProperty(required), offering (required), beginPosition(optional), endPosition(optional), Interval(optional), Latest(optional)</dt><br />
+                                        <dd>observedProperty: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH <i>(defaults to Discharge)</i></dd>
+                                        <dd>beginPostion: YYYY-MM-DD, YYYY-MM, YYYY <i>(defaults to earliest record)</i></dd>
+                                        <dd>endPostion: YYYY-MM-DD, YYYY-MM, YYYY <i>(defaults to most recent record)</i></dd>
                                         <dd>Interval: Today, ThisWeek <i>Future plan to implement ISO-8601 Duration option</i></dd>
                                         <dd>Latest: only the most recent data point is reported</dd>
+                                        <dd>offering: UNIT <i>(defaults to UNIT)</i></dd>
                                         <br /><i>Gage height observation by feature ID and begin time:</i>
                                         <dd>
-                                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=01446500&observedProperty=GageHeight&beginPosition=<%=LastWeek%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=01446500&observedProperty=GageHeight&beginPosition=<%=LastWeek%></a>
+                                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=01446500&observedProperty=GageHeight&offering=UNIT&beginPosition=<%=LastWeek%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=01446500&offering=UNIT&observedProperty=GageHeight&beginPosition=<%=LastWeek%></a>
                                         </dd>
                                         <br /><i>Discharge observation by feature ID and begin time:</i><br />
                                         <dd>
-                                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=01446500&observedProperty=Discharge&beginPosition=<%=LastWeek%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=01446500&observedProperty=Discharge&beginPosition=<%=LastWeek%></a>
+                                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=01446500&offering=UNIT&observedProperty=Discharge&beginPosition=<%=LastWeek%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=01446500&offering=UNIT&observedProperty=Discharge&beginPosition=<%=LastWeek%></a>
                                         </dd>
                                         <br /><i>Latest discharge observation by feature ID:</i><br />
                                         <dd>
-                                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=05407000&observedProperty=Discharge&Latest"><%=baseURL%>/sos/uv?request=GetObservation&featureId=05407000&observedProperty=Discharge&Latest</a>
+                                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=05407000&offering=UNIT&observedProperty=Discharge&Latest"><%=baseURL%>/sos/uv?request=GetObservation&featureId=05407000&offering=UNIT&observedProperty=Discharge&Latest</a>
                                         </dd>
                                         <br /><i>Temperature observation by feature ID for this week:</i><br />
                                         <dd>
-                                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=05407000&observedProperty=Temperature&Interval=ThisWeek"><%=baseURL%>/sos/uv?request=GetObservation&featureId=05407000&observedProperty=Temperature&Interval=ThisWeek</a>
+                                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=05407000&offering=UNIT&observedProperty=Temperature&Interval=ThisWeek"><%=baseURL%>/sos/uv?request=GetObservation&featureId=05407000&offering=UNIT&observedProperty=Temperature&Interval=ThisWeek</a>
                                         </dd>
 
                                     </dl>
@@ -276,9 +277,9 @@
                                                 <dd><a href="<%=baseURL%>/sos/uv?request=DescribeSensor"><%=baseURL%>/sos/uv?request=DescribeSensor</a></dd>
                                     </dl>
                                     <dl>
-                                                <dt><b>GetDataAvailablity</b> - featureID, observedProperty, beginPosition and endPostion are all optional. If not used, all the features/properties in the SWIE will be displayed</dt>
-                                                <br /><i>GetDataAvailablity by feature ID:</i>
-                                                <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity&featureID=05568500"><%=baseURL%>/sos/uv?request=GetDataAvailablity&featureID=05568500</a></dd>
+                                                <dt><b>GetDataAvailablity</b> - featureID, observedProperty, offering, beginPosition and endPostion are all optional. If not used, all the features/properties in the SWIE will be displayed</dt>
+                                                <br /><i>GetDataAvailablity by feature ID and offering:</i>
+                                                <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity&offering=UNIT&featureID=05568500"><%=baseURL%>/sos/uv?request=GetDataAvailablity&offering=UNIT&featureID=05568500</a></dd>
                                                 <br /><i>GetDataAvailablity by observed property and feature ID:</i>
                                                 <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500"><%=baseURL%>/sos/uv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500</a></dd>
                                                 <br /><i>General (very large file / long load time):</i>
@@ -315,10 +316,10 @@
 
                             <dl>
                                 <dt><b>GetObservation</b> - featureID(required), offering(required), observedProperty(required), beginPosition(optional), endPosition(optional), Interval(optional), Latest(optional)</dt><br />
-                                <dd>observedProperty: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH</dd>
-                                <dd>offering: Mean, Maximum, Minimum, Variance, Mode, STD, SUM</dd>
-                                <dd>beginPostion: YYYY-MM-DD, YYYY-MM, YYYY</dd>
-                                <dd>endPostion: YYYY-MM-DD, YYYY-MM, YYYY</dd>
+                                <dd>observedProperty: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH <i>(defaults to Discharge)</i></dd>
+                                <dd>offering: Mean, Maximum, Minimum, Variance, Mode, STD, SUM <i>(defaults to Mean)</i></dd>
+                                <dd>beginPostion: YYYY-MM-DD, YYYY-MM, YYYY <i>(defaults to earliest record)</i></dd>
+                                <dd>endPostion: YYYY-MM-DD, YYYY-MM, YYYY <i>(defaults to most recent record)</i></dd>
                                 <dd>Interval: Today, ThisWeek, ThisYear <i>Future plan to implement ISO-8601 Duration option</i></dd>
                                 <dd>Latest: only the most recent data point is reported</dd>
                                 <br /><i>Daily mean discharge observation by feature ID with begin and end time:</i><br />
@@ -545,6 +546,7 @@
 
 <!--==============================With compatable browsers, do the following===============-->
         <script type="text/javascript">
+//<![CDATA[
 if (GBrowserIsCompatible()) {
 
     var clickedIcon = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
@@ -621,19 +623,20 @@ function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watersh
             var endTime_long = $(this).find("[nodeName=gml:endPosition]").text();
             var endTime = endTime_long.substr(0,16);
             var endDate = endTime.split(" ")[0];
-            var sos_url = sos_url_base + Parameter_cd;
-            var xml_SOS = LoadXML(sos_url);
-            $(xml_SOS).find("[nodeName=wml2:TimeseriesObservation],TimeseriesObservation").each(function(){
-                    var units = $(this).find("[nodeName=wml2:unitOfMeasure]").attr("uom");
-                    var time_long = $(this).find("[nodeName=wml2:time]:first").text();
-                    var Prop = $(this).find("[nodeName=om:observedProperty]").attr("xlink:title");
-                    time = time_long.substr(0,16);
-                    time = time.replace("T"," ");
-                    var value = $(this).find("[nodeName=wml2:value]").first().text();
-                    var comments = $(this).find("[nodeName=wml2:comment]:first").text();
-                    table_latest = table_latest + '<tr><td>' + Prop + '</td><td>' + value + ' ' + units + '</td><td>' + comments + '</td></tr>';
-             });
-
+            if (Parameter_cd == '00060' || Parameter_cd == '00065') {
+                var sos_url = sos_url_base + Parameter_cd;
+                var xml_SOS = LoadXML(sos_url);
+                $(xml_SOS).find("[nodeName=wml2:TimeseriesObservation],TimeseriesObservation").each(function(){
+                        var units = $(this).find("[nodeName=wml2:unitOfMeasure]").attr("uom");
+                        var time_long = $(this).find("[nodeName=wml2:time]:first").text();
+                        var Prop = $(this).find("[nodeName=om:observedProperty]").attr("xlink:title");
+                        time = time_long.substr(0,16);
+                        time = time.replace("T"," ");
+                        var value = $(this).find("[nodeName=wml2:value]").first().text();
+                        var comments = $(this).find("[nodeName=wml2:comment]:first").text();
+                        table_latest = table_latest + '<tr><td>' + Prop + '</td><td>' + value + ' ' + units + '</td><td>' + comments + '</td></tr>';
+                 });
+            }
             var Plot_links_UV = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?&featureID=' + Site_no + '&observedProperty=' + Parameter_cd + ',UV&beginPosition=' + LastWeekStr + '&endPosition=' + endDate + '>' + Prop + '</a>';
             Plot_table_DV = Plot_table_DV + '<tr><td>' + Plot_links_UV + '</td><td>UNIT</td><td>' + beginDate + '</td><td>' + endDate + '</td></tr>';
         });
@@ -699,6 +702,7 @@ function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watersh
 else {
     alert("Sorry, the Google Maps API is not compatible with this browser");
 }
+//]]>
         </script>
     <ul>
         <li> <strong>Warning </strong>
