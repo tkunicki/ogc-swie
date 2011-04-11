@@ -317,7 +317,8 @@ function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watersh
         //map.setCenter(new GLatLng(35.96501528, -84.17866200), 7, G_PHYSICAL_MAP);
       	map.enableScrollWheelZoom();
 
-        xml_SE = LoadXML("wfs_SE.xml");
+        var wfs_url = base_url + "/wfs?request=GetFeature&boatersInfo";
+        xml_SE = LoadXML(wfs_url);
         parseXML(xml_SE);
 
         show("WI");

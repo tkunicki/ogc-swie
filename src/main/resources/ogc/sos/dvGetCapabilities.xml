@@ -128,10 +128,6 @@ http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
                             <ows:Value>MEDIAN</ows:Value>
                             <ows:Value>STD</ows:Value>
                             <ows:Value>VARIANCE</ows:Value>
-                            <ows:Value>HIGHTIDE</ows:Value>
-                            <ows:Value>LOWTIDE</ows:Value>
-                            <ows:Value>TIDAL_LOW_HIGH</ows:Value>
-                            <ows:Value>TIDAL_HIGH_LOW</ows:Value>
 			</ows:Parameter>
 			<ows:Parameter name="beginPosition">
 				<ows:AnyValue/>
@@ -204,10 +200,6 @@ http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
                             <ows:Value>MEDIAN</ows:Value>
                             <ows:Value>STD</ows:Value>
                             <ows:Value>VARIANCE</ows:Value>
-                            <ows:Value>HIGHTIDE</ows:Value>
-                            <ows:Value>LOWTIDE</ows:Value>
-                            <ows:Value>TIDAL_LOW_HIGH</ows:Value>
-                            <ows:Value>TIDAL_HIGH_LOW</ows:Value>
 			</ows:Parameter>
 		</ows:Operation>
 		<ows:Operation name="GetDataAvailablity">

@@ -142,8 +142,8 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			javaType="string" />
                 <result
 			property="om:resultTime/gml:TimeInstant/gml:timePosition"
-			column="endPosition"
-			typeHandler="ISODateTypeHandler" />
+			column="TimestampNow"
+			javaType="string" />
                 <result
 			property="om:procedure#xlink:href=http://www.nemi.gov"
 			column="station_nm"
@@ -291,6 +291,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 f.district_cd,
 		STR_TO_DATE(SYSDATE(),'%Y-%m-%d') as dateStamp,
                 CONCAT(DATE_FORMAT(SYSDATE(),'%Y-%m-%dT%H:%i'),f.tz_cd) as currentTimeStamp,
+                DATE_FORMAT(SYSDATE(),'%Y-%m-%dT%H:%i:%s') as TimestampNow,
 		CONCAT(CONVERT(f.DEC_LAT_VA,CHAR),' ',CONVERT(f.DEC_LONG_VA,CHAR)) AS pos,
                 CONCAT(CONVERT(DATE_FORMAT(s.startTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS beginPosition,
                 CONCAT(CONVERT(DATE_FORMAT(s.endTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS endPosition,
