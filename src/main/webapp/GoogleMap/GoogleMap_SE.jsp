@@ -38,11 +38,13 @@
     <title>OGC Services SWIE</title>
 
         <script type="text/javascript" src="jquery-1.4.4.js"></script>
+        <script src="LoadXML.js" type="text/javascript"></script>
+
+        <link rel="stylesheet" type="text/css" media="screen" href="tooltipv2.css" />
+
         <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>
         <script src="mapiconmaker.js" type="text/javascript"></script>
-        <script src="LoadXML.js" type="text/javascript"></script>
-<!--        <script src="CreateMarker.js" type="text/javascript"></script>
-        <script src="parseXML.js" type="text/javascript"></script>-->
+
     </head>
 
 <body>
@@ -81,7 +83,7 @@
         <tr>
             <th rowspan="2">
                 <div id="map" style="width: 700px; height: 500px"></div>
-                <form action="#">
+<!--                <form action="#">
                     TN Rivers: <input type="checkbox" id="TNbox" onclick="boxclick(this,'TN')" />&nbsp;&nbsp;
                     NC Rivers: <input type="checkbox" id="NCbox" onclick="boxclick(this,'NC')" />&nbsp;&nbsp;
                     GA Rivers: <input type="checkbox" id="GAbox" onclick="boxclick(this,'GA')" />&nbsp;&nbsp;
@@ -89,20 +91,29 @@
                     AL Rivers: <input type="checkbox" id="ALbox" onclick="boxclick(this,'AL')" /><br />
                     WI Rivers: <input type="checkbox" id="WIbox" onclick="boxclick(this,'WI')" />&nbsp;&nbsp;
                     MI Rivers: <input type="checkbox" id="MIbox" onclick="boxclick(this,'MI')" />&nbsp;&nbsp;
-                </form>
+                </form>-->
             </th>
             <td valign="top">
+                <table style="width:400px">
+                    <tr>
+                        <td>
+                            <i><b>Current Marker:</b></i>
+                        </td>
+                        <td align="right">
+                            <img src = "USGS.gif" width="84" height="31" alighn="right"/><br />
+                        </td>
+                    </tr>
+                </table>
                 <center>
-                    <img src = "USGS.gif" width="84" height="32"/><br />
-                    <div id="StationInfo" style="height:60px; width:400px">Click on a marker for data availability</div>
-<!--                    Include latest readings (increases loading times): <input type="checkbox" id="IncludeLatest" value="checked"/><input type="submit" value="Refresh" />-->
+                    <div id="StationInfo" style="height:40px; width:400px">Click on a marker for data availability</div>
                 </center>
 
             </td>
         </tr>
         <tr>
             <td>
-                <div id="AvailableData" style="overflow:scroll; height: 450px; width:400px"></div>
+                <i><b>Clicked Marker:</b></i><br />
+                <div id="AvailableData" style="overflow:scroll; height: 470px; width:400px">Click on a marker for GetDataAvailability demonstration</div>
             </td>
         </tr>
     </table>
@@ -131,14 +142,14 @@
             var base_url = base.substring(0,test);
             var LastWeekStr = '<%=LastWeek%>';
 
-            var gicons = [];
-            gicons["WI"] = MapIconMaker.createMarkerIcon({primaryColor: "#33CC66"});
-            gicons["MI"] = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
-            gicons["TN"] = MapIconMaker.createMarkerIcon({primaryColor: "#FF9933"});
-            gicons["NC"] = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
-            gicons["AL"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
-            gicons["GA"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
-            gicons["SC"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
+//            var gicons = [];
+//            gicons["WI"] = MapIconMaker.createMarkerIcon({primaryColor: "#33CC66"});
+//            gicons["MI"] = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
+//            gicons["TN"] = MapIconMaker.createMarkerIcon({primaryColor: "#FF9933"});
+//            gicons["NC"] = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
+//            gicons["AL"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
+//            gicons["GA"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
+//            gicons["SC"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
 
 function parseXML(xml){
     $(xml).find("[nodeName=wfs:FeatureCollection],FeatureCollection").each(function()
@@ -169,15 +180,25 @@ function parseXML(xml){
 function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watershed)
 {
     var marker = new GMarker(point, newIcon);
+    var USGS_link = 'Station number: <a href = "' + USGS_URL + '" >' + Site_no + '</a>';
+    var Name_html = '<b>' + name + '</b><br />';
+    var Watershed_html = '<b>' + watershed + ' Watershed</b><br />';
+    var html_header = Name_html + Watershed_html + USGS_link;
+
+    GEvent.addListener(marker,"mouseover", function() {
+        document.getElementById("StationInfo").innerHTML = Name_html;
+    });
+
+    GEvent.addListener(marker,"mouseout", function() {document.getElementById("StationInfo").innerHTML = ""});
 
     GEvent.addListener(marker, "click", function() {
-        var USGS_link = 'Station number: <a href = "' + USGS_URL + '" >' + Site_no + '</a>';
+//        var USGS_link = 'Station number: <a href = "' + USGS_URL + '" >' + Site_no + '</a>';
         var Properties = [];
-        var Name_html = '<b>' + name + '</b><br />';
-        var Watershed_html = '<b>' + watershed + ' Watershed</b><br />';
-        var html_header = Name_html + Watershed_html + USGS_link;
+//        var Name_html = '<b>' + name + '</b><br />';
+//        var Watershed_html = '<b>' + watershed + ' Watershed</b><br />';
+//        var html_header = Name_html + Watershed_html + USGS_link;
         var time = "";
-        document.getElementById("StationInfo").innerHTML = html_header;
+//        document.getElementById("StationInfo").innerHTML = html_header;
         document.getElementById("AvailableData").innerHTML = 'Loading...<img src = "ajax-loader.gif" />'; 
 
         var sos_url_base = base_url + "/sos/uv?request=GetObservation&featureId=" + Site_no + "&latest&observedProperty=";
@@ -241,7 +262,7 @@ function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watersh
         });
         var AvailableTable = html + Plot_table_DV + '</table></center><br />';
 
-        var LatestTable = 'Latest Data: ' + time + table_latest + '</table></center>';
+        var LatestTable = html_header + '<br /><br />Latest Data: ' + time + table_latest + '</table></center>';
         document.getElementById("AvailableData").innerHTML = LatestTable + AvailableTable;
 
         ActiveMarker.hide();
@@ -253,44 +274,44 @@ function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watersh
 }
 
 // ===================================== Shows markers =================================
-      function show(category) {
-        for (var i=0; i<gmarkers.length; i++) {
-          if (gmarkers[i].mycategory == category) {
-            gmarkers[i].show();
-          }
-        }
-        document.getElementById(category+"box").checked = true;
-      }
+//      function show(category) {
+//        for (var i=0; i<gmarkers.length; i++) {
+//          if (gmarkers[i].mycategory == category) {
+//            gmarkers[i].show();
+//          }
+//        }
+//        document.getElementById(category+"box").checked = true;
+//      }
 
 // ===================================== Hides markers ===================================
-          function hide(category) {
-            for (var i=0; i<gmarkers.length; i++) {
-              if (gmarkers[i].mycategory == category) {
-                gmarkers[i].hide();
-              }
-            }
-            document.getElementById(category+"box").checked = false;
-            map.closeInfoWindow();
-          }
+//          function hide(category) {
+//            for (var i=0; i<gmarkers.length; i++) {
+//              if (gmarkers[i].mycategory == category) {
+//                gmarkers[i].hide();
+//              }
+//            }
+//            document.getElementById(category+"box").checked = false;
+//            map.closeInfoWindow();
+//          }
 // =================================== Checkbox has been clicked =======================
-      function include(box,category) {
-        if (box.checked) {
-          show(category);
-        } else {
-          hide(category);
-        }
-        // == rebuild the side bar
-      }
+//      function include(box,category) {
+//        if (box.checked) {
+//          show(category);
+//        } else {
+//          hide(category);
+//        }
+//        // == rebuild the side bar
+//      }
 // =================================== Checkbox has been clicked =======================
-      function boxclick(box,category) {
-        if (box.checked) {
-          show(category);
-        } else {
-          hide(category);
-        }
-        // == rebuild the side bar
-        makeSidebar();
-      }
+//      function boxclick(box,category) {
+//        if (box.checked) {
+//          show(category);
+//        } else {
+//          hide(category);
+//        }
+//        // == rebuild the side bar
+//        makeSidebar();
+//      }
 
 // =======================================Click identifier ==============================
       function myclick(i) {
@@ -321,13 +342,13 @@ function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watersh
         xml_SE = LoadXML(wfs_url);
         parseXML(xml_SE);
 
-        show("WI");
-        show("TN");
-        show("NC");
-        show("AL");
-        show("GA");
-        show("SC");
-        show("MI");
+//        show("WI");
+//        show("TN");
+//        show("NC");
+//        show("AL");
+//        show("GA");
+//        show("SC");
+//        show("MI");
     }
     else {
             alert("Sorry, the Google Maps API is not compatible with this browser");

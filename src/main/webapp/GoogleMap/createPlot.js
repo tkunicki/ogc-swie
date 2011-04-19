@@ -1,15 +1,22 @@
-function createPlot(sos_url, wfs_url, gdaDV_url, gdaUV_url, service, stat_cd, observedProperty) {
+function createPlot(sos_url, gdaDV_url, gdaUV_url, service, stat_cd, observedProperty) {
     $(function() {
 
         var data = new google.visualization.DataTable();
 
         var xml = LoadXML(sos_url);
+        var name = $(xml).find("[nodeName=gml:name],name",this).text();
+        var Watershed = $(xml).find("[nodeName=om:value],value", this).text();
+        var Location = $(xml).find("[nodeName=gml:pos],pos", this).text();
+        var Org = $(xml).find("[nodeName=gmd:CharacterString],CharacterString", this).text();
         var units = $(xml).find("[nodeName=wml2:unitOfMeasure],unitOfMeasure", this).attr("uom");
-
         var PropertyName = $(xml).find("[nodeName=om:observedProperty],observedProperty", this).attr("xlink:title");
         var Title = PropertyName + ' (' + units + ')';
         data.addColumn('datetime', 'Date');
         data.addColumn('number', Title);
+        var html_2 = '<b>' + name + '<br />';
+        var html = html_2 + Watershed + ' Watershed </b><br /><b>Location: </b>' + Location + '<br /><b>Managed by: </b>' + Org + '<br /><br />';
+
+        document.getElementById("Station_name").innerHTML = (html_2);
 
         $(xml).find("[nodeName=wml2:point],point").each(function()
         {
@@ -33,16 +40,6 @@ function createPlot(sos_url, wfs_url, gdaDV_url, gdaUV_url, service, stat_cd, ob
 
             data.addRow([date,value]);
         });
-
-        var xml_wfs = LoadXML(wfs_url);
-        var name = $(xml_wfs).find("[nodeName=gml:name]", this).text();
-        var Watershed = $(xml_wfs).find("[nodeName=om:value]", this).text();
-        var Location = $(xml_wfs).find("[nodeName=gml:pos]", this).text();
-        var Org = $(xml_wfs).find("[nodeName=gmd:CharacterString]", this).text();
-
-        html = '<b>' + name + '<br />' + Watershed + ' Watershed </b><br /><b>Location: </b>' + Location + '<br /><b>Managed by: </b>' + Org + '<br /><br />';
-        var html_2 = '<b>' + name + '<br />';
-        document.getElementById("Station_name").innerHTML = (html_2);
 
         var Plot_table_UV = "<table border='1' cellpadding='2'><tr><td></td><td><center><b>Real Time</b></center></td><td>Begin date</td><td>End date</td></tr>";
         var Plot_table_DV = "<table border='1' cellpadding='2'><tr><td></td><td><b><center>Daily</b></center></td><td>Offering</td><td>Begin date</td><td>End date</td></tr>";

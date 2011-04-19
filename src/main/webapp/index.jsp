@@ -125,6 +125,11 @@
                 border: 1px solid #ddd;
                 padding: 5px;
         }*/
+        #StationName{
+            width:130px;
+            height:45px;
+            }
+
 </style>
     <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>    
     
@@ -479,17 +484,26 @@
                                             <div id="map" style="width: 660px; height: 500px"></div>
                                         </th>
                                         <td valign="top">
+                                            <table style="width:400px">
+                                                <tr>
+                                                    <td>
+                                                        <i><b>Current Marker:</b></i>
+                                                    </td>
+                                                    <td align="right">
+                                                        <img src = "USGS.gif" width="84" height="31" alighn="right"/><br />
+                                                    </td>
+                                                </tr>
+                                            </table>
                                             <center>
-                                                
-                                                <img src = "USGS.gif" width="84" height="32"/><br />
-                                                <div id="StationInfo" style="height:60px; width:400px">Click on a marker for GetDataAvailability demonstration</div>
+                                                <div id="StationInfo" style="height:40px; width:400px">Click on a marker for GetDataAvailability demonstration</div>
                                             </center>
                                             
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <div id="AvailableData" style="overflow:scroll; height: 400px; width:400px"></div>
+                                            <i><b>Clicked Marker:</b></i><br />
+                                            <div id="AvailableData" style="overflow:scroll; height: 420px; width:400px">Click on a marker for GetDataAvailability demonstration</div>
                                         </td>
                                     </tr>
                                 </table>
@@ -590,15 +604,22 @@ function parseXML(xml){
 function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watershed)
 {
     var marker = new GMarker(point, newIcon);
+    var USGS_link = 'Station number: <a href = "' + USGS_URL + '" >' + Site_no + '</a>';
+    var Name_html = '<b>' + name + '</b><br />';
+    var Watershed_html = '<b>' + watershed + ' Watershed</b><br />';
+    var html_header = Name_html + Watershed_html + USGS_link;
+
+    GEvent.addListener(marker,"mouseover", function() {
+        document.getElementById("StationInfo").innerHTML = Name_html;
+    });
+
+    GEvent.addListener(marker,"mouseout", function() {document.getElementById("StationInfo").innerHTML = ""});
 
     GEvent.addListener(marker, "click", function() {
-        var USGS_link = 'Station number: <a href = "' + USGS_URL + '" >' + Site_no + '</a>';
+
         var Properties = [];
-        var Name_html = '<b>' + name + '</b><br />';
-        var Watershed_html = '<b>' + watershed + ' Watershed</b><br />';
-        var html_header = Name_html + Watershed_html + USGS_link;
-        
-        document.getElementById("StationInfo").innerHTML = html_header;
+        var time = "";
+//        document.getElementById("StationInfo").innerHTML = html_header;
         document.getElementById("AvailableData").innerHTML = 'Loading...<img src = "GoogleMap/ajax-loader.gif" />';
 
 
@@ -664,7 +685,7 @@ function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watersh
         });
         var AvailableTable = html + Plot_table_DV + '</table></center><br />';
 
-        var LatestTable = 'Latest Data: ' + time + table_latest + '</table></center>';
+        var LatestTable = html_header + '<br /><br />Latest Data: ' + time + table_latest + '</table></center>';
         document.getElementById("AvailableData").innerHTML = LatestTable + AvailableTable;
 
         ActiveMarker.hide();
@@ -694,9 +715,6 @@ function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watersh
     var wfs_url = base_url + "/wfs?request=GetFeature";
     xml = LoadXML(wfs_url);
     parseXML(xml);
-    xml_coastal = LoadXML("GoogleMap/wfs_coastal.xml");
-    //parseXML(xml_coastal);
-
 
 }
 else {

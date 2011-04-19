@@ -296,7 +296,14 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		CONCAT(CONVERT(f.DEC_LAT_VA,CHAR),' ',CONVERT(f.DEC_LONG_VA,CHAR)) AS pos,
                 CONCAT(CONVERT(DATE_FORMAT(s.startTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS beginPosition,
                 CONCAT(CONVERT(DATE_FORMAT(s.endTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS endPosition,
-		CONCAT(CONVERT(DATE_FORMAT(g.result_dt,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) as currentPosition,
+            <choose>
+                <when test="latest != null">
+                    CONCAT(CONVERT(DATE_FORMAT(MAX(g.result_dt),'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) as currentPosition,
+                </when>
+                <otherwise>
+                    CONCAT(CONVERT(DATE_FORMAT(g.result_dt,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) as currentPosition,
+                </otherwise>
+            </choose>
 		g.result_va as value,
 		d.parameter_units as units,
 		d.parameter_nm,
@@ -438,10 +445,6 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		</if>
 
 		ORDER BY f.station_nm, e.loc_nu, currentPosition DESC
-                
-                <if test="latest != null">
-                        LIMIT 1
-                </if>
 	  
 	</select>
 

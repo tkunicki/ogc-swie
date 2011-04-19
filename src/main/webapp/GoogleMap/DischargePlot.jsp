@@ -58,8 +58,7 @@
     }
 
     String Data_link = "<a href =" + sos_url + ">Link to plot data</a>";
-    String mapLink = "<a href =" + base_url + ">Return to home</a>";
-    String wfs_url = base_url + "/wfs?request=GetFeature&featureId=" + featureID;
+    String mapLink = "<a href =" + base_url + ">Return home</a>";
     String gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity&featureID=" + featureID;
     String gdaUV_url = base_url + "/sos/uv?request=GetDataAvailablity&featureID=" + featureID;
 
@@ -103,14 +102,7 @@
 
         <script type="text/javascript"  src="jquery-1.4.4.js"></script>
         <script type="text/javascript"  src="jsapi.js"></script>
-        
-        <script src="mapiconmaker.js" type="text/javascript"></script>
         <script src="LoadXML.js" type="text/javascript"></script>
-        <script src="CreateMarker.js" type="text/javascript"></script>
-        <script src="createInactiveMarker.js" type="text/javascript"></script>
-        <script src="parseXML.js" type="text/javascript"></script>
-        <script src="parseInactiveSites.js" type="text/javascript"></script>
-        <script src="parseXML_Coastal.js" type="text/javascript"></script>
         <script src="createPlot.js" type="text/javascript" ></script>
 
         <title>OGC Services SWIE</title>
@@ -196,7 +188,6 @@
     </ul>
         <script type='text/javascript'>
             var sos_url = '<%=sos_url%>';
-            var wfs_url = '<%=wfs_url%>';
             var gdaDV_url = '<%=gdaDV_url%>';
             var gdaUV_url = '<%=gdaUV_url%>';
             var service = '<%=service%>';
@@ -204,7 +195,7 @@
             var observedProperty = '<%=observedProperty%>';
 
             google.load('visualization', '1', {'packages':['annotatedtimeline']});
-            google.setOnLoadCallback(createPlot (sos_url, wfs_url, gdaDV_url, gdaUV_url, service, stat_cd, observedProperty));
+            google.setOnLoadCallback(createPlot (sos_url, gdaDV_url, gdaUV_url, service, stat_cd, observedProperty));
 
         </script>
 
