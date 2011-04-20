@@ -657,7 +657,7 @@ function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watersh
                         table_latest = table_latest + '<tr><td>' + Prop + '</td><td>' + value + ' ' + units + '</td><td>' + comments + '</td></tr>';
                  });
             }
-            var Plot_links_UV = '<a href =' + base_url + '/GoogleMap/DischargePlot_test.jsp?&featureID=' + Site_no + '&observedProperty=' + Parameter_cd + ',UV&beginPosition=' + LastWeekStr + '&endPosition=' + endDate + '>' + Prop + '</a>';
+            var Plot_links_UV = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?&featureID=' + Site_no + '&observedProperty=' + Parameter_cd + ',UV&beginPosition=' + LastWeekStr + '&endPosition=' + endDate + '>' + Prop + '</a>';
             Plot_table_DV = Plot_table_DV + '<tr><td>' + Plot_links_UV + '</td><td>UNIT</td><td>' + beginDate + '</td><td>' + endDate + '</td></tr>';
         });
 
@@ -696,11 +696,6 @@ function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watersh
     return marker;
 }
 
-//    //================================= Rebuilds sidebar =======================================
-//    function makeSidebar() {
-//        var html = "";
-//        document.getElementById("AvailableData").innerHTML = html;
-//    }
 
     //==========================================Create the map================================
     var map = new GMap2(document.getElementById("map"));

@@ -231,7 +231,7 @@ function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watersh
                         table_latest = table_latest + '<tr><td>' + Prop + '</td><td>' + value + ' ' + units + '</td><td>' + comments + '</td></tr>';
                  });
             }
-            var Plot_links_UV = '<a href =' + base_url + '/GoogleMap/DischargePlot_test.jsp?&featureID=' + Site_no + '&observedProperty=' + Parameter_cd + ',UV&beginPosition=' + LastWeekStr + '&endPosition=' + endDate + '>' + Prop + '</a>';
+            var Plot_links_UV = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?&featureID=' + Site_no + '&observedProperty=' + Parameter_cd + ',UV&beginPosition=' + LastWeekStr + '&endPosition=' + endDate + '>' + Prop + '</a>';
             Plot_table_DV = Plot_table_DV + '<tr><td>' + Plot_links_UV + '</td><td>UNIT</td><td>' + beginDate + '</td><td>' + endDate + '</td></tr>';
         });
 
@@ -253,7 +253,7 @@ function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watersh
             var endDateYear = parseInt(endTime_DV.split("-")[0]) - 1;
             var beginDateLink = endDateYear.toString() + '-' + endTime_DV.split("-")[1] + '-' + endTime_DV.split("-")[2];
 
-            Plot_links_DV = '<a href =' + base_url + '/GoogleMap/DischargePlot_test.jsp?featureID=' + Site_no + '&observedProperty=' + Parameter_cd_DV + ',DV' + Offering_cd + '&beginPosition=' + beginDateLink + '&endPosition=' + endDate_DV + '>' + Prop_DV + '</a>';
+            Plot_links_DV = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?featureID=' + Site_no + '&observedProperty=' + Parameter_cd_DV + ',DV' + Offering_cd + '&beginPosition=' + beginDateLink + '&endPosition=' + endDate_DV + '>' + Prop_DV + '</a>';
             Plot_table_DV = Plot_table_DV + '<tr><td>' + Plot_links_DV + '</td><td>' + Offering + '</td><td>' + beginDate_DV + '</td><td>' + endDate_DV + '</td></tr>';
         });
         var AvailableTable = html + Plot_table_DV + '</table></center><br />';

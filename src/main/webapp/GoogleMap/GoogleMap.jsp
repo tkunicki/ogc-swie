@@ -36,7 +36,7 @@
 
     <title>OGC Services SWIE</title>
 
-        <script type="text/javascript" src="jquery-1.4.4.js"></script>
+        <script type="text/javascript" src="jquery-1.5.1.js"></script>
         <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>
         <script src="mapiconmaker.js" type="text/javascript"></script>
         <script src="LoadXML.js" type="text/javascript"></script>
@@ -85,22 +85,6 @@
         <tr>
             <th rowspan="2">
                 <div id="map" style="width: 700px; height: 500px"></div>
-                <form action="#">
-                    NASQAN Coastal Subnetwork: <input type="checkbox" id="Coastalbox" onclick="boxclick(this,'Coastal')" />&nbsp;&nbsp;
-                    Inactive Gage Stations: <input type="checkbox" id="Inactivebox" onclick="boxclick(this,'Inactive')" /><br />
-                    WI Rivers: <input type="checkbox" id="WIbox" onclick="boxclick(this,'WI')" />&nbsp;&nbsp;
-                    MI Rivers: <input type="checkbox" id="MIbox" onclick="boxclick(this,'MI')" />&nbsp;&nbsp;
-                    PA Rivers: <input type="checkbox" id="PAbox" onclick="boxclick(this,'PA')" />&nbsp;&nbsp;
-                    NY Rivers: <input type="checkbox" id="NYbox" onclick="boxclick(this,'NY')" /><br />
-                    NJ Rivers: <input type="checkbox" id="NJbox" onclick="boxclick(this,'NJ')" />&nbsp;&nbsp;
-                    MN Rivers: <input type="checkbox" id="MNbox" onclick="boxclick(this,'MN')" />&nbsp;&nbsp;
-                    MO Rivers: <input type="checkbox" id="MObox" onclick="boxclick(this,'MO')" />&nbsp;&nbsp;
-                    IL Rivers: <input type="checkbox" id="ILbox" onclick="boxclick(this,'IL')" /><br />
-                    IA Rivers: <input type="checkbox" id="IAbox" onclick="boxclick(this,'IA')" />&nbsp;&nbsp;
-                    ND Rivers: <input type="checkbox" id="NDbox" onclick="boxclick(this,'ND')" />&nbsp;&nbsp;
-                    OH Rivers: <input type="checkbox" id="OHbox" onclick="boxclick(this,'OH')" />&nbsp;&nbsp;
-                    IN Rivers: <input type="checkbox" id="INbox" onclick="boxclick(this,'IN')" /><br />
-                </form>
             </th>
             <td width = 350 valign="top">
                 <center>
@@ -120,22 +104,6 @@
 </center>
 
 <!-- ===========================Create Check Boxes==================================-->
-        <form action="#">
-          NASQAN Coastal Subnetwork: <input type="checkbox" id="Coastalbox" onclick="boxclick(this,'Coastal')" />&nbsp;&nbsp;
-          Inactive Gage Stations: <input type="checkbox" id="Inactivebox" onclick="boxclick(this,'Inactive')" /><br />
-          WI Rivers: <input type="checkbox" id="WIbox" onclick="boxclick(this,'WI')" />&nbsp;&nbsp;
-          MI Rivers: <input type="checkbox" id="MIbox" onclick="boxclick(this,'MI')" />&nbsp;&nbsp;
-          PA Rivers: <input type="checkbox" id="PAbox" onclick="boxclick(this,'PA')" />&nbsp;&nbsp;
-          NY Rivers: <input type="checkbox" id="NYbox" onclick="boxclick(this,'NY')" /><br />
-          NJ Rivers: <input type="checkbox" id="NJbox" onclick="boxclick(this,'NJ')" />&nbsp;&nbsp;
-          MN Rivers: <input type="checkbox" id="MNbox" onclick="boxclick(this,'MN')" />&nbsp;&nbsp;
-          MO Rivers: <input type="checkbox" id="MObox" onclick="boxclick(this,'MO')" />&nbsp;&nbsp;
-          IL Rivers: <input type="checkbox" id="ILbox" onclick="boxclick(this,'IL')" /><br />
-          IA Rivers: <input type="checkbox" id="IAbox" onclick="boxclick(this,'IA')" />&nbsp;&nbsp;
-          ND Rivers: <input type="checkbox" id="NDbox" onclick="boxclick(this,'ND')" />&nbsp;&nbsp;
-          OH Rivers: <input type="checkbox" id="OHbox" onclick="boxclick(this,'OH')" />&nbsp;&nbsp;
-          IN Rivers: <input type="checkbox" id="INbox" onclick="boxclick(this,'IN')" /><br />
-        </form>
 
         <noscript><b>JavaScript must be enabled in order for you to use Google Maps.</b>
           However, it seems JavaScript is either disabled or not supported by your browser.
@@ -160,23 +128,23 @@ if (GBrowserIsCompatible()) {
     var LastWeekStr = '<%=LastWeek%>';
 
 function parseXML(xml){
-    $(xml).find("[nodeName=wfs:FeatureCollection],FeatureCollection").each(function()
+    $(xml).find('[nodeName="wfs:FeatureCollection"],FeatureCollection').each(function()
     {
-        $(xml).find("[nodeName=wfs:member],member").each(function()
+        $(xml).find('[nodeName="wfs:member"],member').each(function()
         {
-            var siteName = $("[nodeName=gml:name]", this).text();
-            var pos = $("[nodeName=gml:pos]", this).text();
+            var siteName = $('[nodeName="gml:name"],name', this).text();
+            var pos = $('[nodeName="gml:pos"],pos', this).text();
             var pos_array = pos.split(" ");
             var latitude = pos_array[0];
             var longitude = pos_array[1];
-            var pos_name = $("[nodeName=gml:pos]", this).attr("srsName");
-            var siteCode_long = $("[nodeName=wml2:WaterMonitoringPoint]", this).attr("gml:id");
+            var pos_name = $('[nodeName="gml:pos"],pos', this).attr("srsName");
+            var siteCode_long = $('[nodeName="wml2:WaterMonitoringPoint"],WaterMonitoringPoint', this).attr("gml:id");
             var siteCode_array = siteCode_long.split(".");
             var siteCode = siteCode_array[2];
-            var USGS_URL = $("[nodeName=sf:sampledFeature]", this).attr("xlink:ref");
+            var USGS_URL = $('[nodeName="sf:sampledFeature"],sampledFeature', this).attr("xlink:ref");
             var URL_array = USGS_URL.split("/");
             var stateNM = URL_array[3];
-            var watershed = $("[nodeName=om:value]", this).text();
+            var watershed = $('[nodeName="om:value"],value', this).text();
             var point = new GLatLng(latitude, longitude);
             var marker = createMarker(point, siteName,  stateNM, siteCode, USGS_URL, base_url, watershed);
             map.addOverlay(marker);
@@ -185,37 +153,6 @@ function parseXML(xml){
     });
 }
 
-    // ===================================== Shows markers =================================
-    function show(category) {
-        for (var i=0; i<gmarkers.length; i++) {
-            if (gmarkers[i].mycategory == category) {
-                gmarkers[i].show();
-            }
-        }
-        document.getElementById(category+"box").checked = true;
-    }
-
-    // ===================================== Hides markers ===================================
-    function hide(category) {
-        for (var i=0; i<gmarkers.length; i++) {
-            if (gmarkers[i].mycategory == category) {
-                gmarkers[i].hide();
-            }
-        }
-        document.getElementById(category+"box").checked = false;
-        map.closeInfoWindow();
-    }
-
-    // =================================== Checkbox has been clicked =======================
-    function boxclick(box,category) {
-        if (box.checked) {
-            show(category);
-        } else {
-            hide(category);
-        }
-        // == rebuild the side bar
-        //makeSidebar();
-    }
 
     // =======================================Click identifier ==============================
     function myclick(i) {
@@ -259,51 +196,51 @@ function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watersh
 
         var sos_url = base_url + "/sos/uv?request=GetObservation&featureId=" + site + "&observedProperty=Discharge&latest";
         $.get(sos_url, function(xml) {
-            $(xml).find("[nodeName=wml2:TimeseriesObservation],TimeseriesObservation").each(function(){
-                var units = $(this).find("[nodeName=wml2:unitOfMeasure]").attr("uom");
-                var time_long = $(this).find("[nodeName=wml2:time]:first").text();
+            $(xml).find('[nodeName="wml2:TimeseriesObservation"],TimeseriesObservation').each(function(){
+                var units = $(this).find('[nodeName="wml2:unitOfMeasure"]').attr("uom");
+                var time_long = $(this).find('[nodeName="wml2:time"]:first').text();
                 var time = time_long.substr(0,16);
                 time = time.replace("T"," ");
-                var value = $(this).find("[nodeName=wml2:value]").first().text();
-                var comment = $(this).find("[nodeName=wml2:comment]:first").text();
-                var table_1 = "Latest reading:<br /><center><table border='1'><tr><td>Discharge</td><td>" + time + '</td><td>' + value + ' ' + units + ' <b><br />' + comment +'</b></td></tr></table></center>';
+                var value = $(this).find('[nodeName="wml2:value"]').first().text();
+                var comment = $(this).find('[nodeName="wml2:comment"]:first').text();
+                var table_1 = "Latest reading:<br /><center><table border='1'><tr><td>Discharge</td><td>" + time + '</td><td>' + value + ' ' + units + ' <b>' + comment +'</b></td></tr></table></center>';
 
                 var html = table_1 + '<br />Available data:';
                 var gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity&featureID=" + Site_no + "&offering=00003";
-                var gdaUV_url = base_url + "/sos/uv?request=GetDataAvailablity&featureID=" + Site_no + "&offering=00003";
+                var gdaUV_url = base_url + "/sos/uv?request=GetDataAvailablity&featureID=" + Site_no + "&offering=UNIT";
 
                 var Plot_table_UV = "<center><table border='1'><tr><td><center><b>Recent Data</b></center></td><td>Begin Time</td><td>End Time</td></tr>";
                 var Plot_table_DV = "<center><table border='1'><tr><td><b><center>Daily Mean</b></center></td><td>Begin Time</td><td>End Time</td></tr>";
                 var xml_UV = LoadXML(gdaUV_url);
 
-                $(xml_UV).find("[nodeName=gda:FeaturePropertyTemporalRelationship],FeaturePropertyTemporalRelationship").each(function(){
-                    var Property = $(this).find("[nodeName=gda:targetProperty]");
+                $(xml_UV).find('[nodeName="gda:FeaturePropertyTemporalRelationship"],FeaturePropertyTemporalRelationship').each(function(){
+                    var Property = $(this).find('[nodeName="gda:targetProperty"],targetProperty');
                     var Prop = Property.attr("xlink:title");
                     var Parameter_cd_long = Property.attr("xlink:href");
                     var Parameter_cd_array = Parameter_cd_long.split("_");
                     var Parameter_cd = Parameter_cd_array[1];
-                    var beginTime_long = $(this).find("[nodeName=gml:beginPosition]").text();
+                    var beginTime_long = $(this).find('[nodeName="gml:beginPosition"],beginPosition').text();
                     var beginTime = beginTime_long.substr(0,16);
                     var beginDate = beginTime.split(" ")[0];
-                    var endTime_long = $(this).find("[nodeName=gml:endPosition]").text();
+                    var endTime_long = $(this).find('[nodeName="gml:endPosition"],endPosition').text();
                     var endTime = endTime_long.substr(0,16);
                     var endDate = endTime.split(" ")[0];
-                    var Plot_links_UV = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?&featureID=' + site + '&observedProperty=' + Parameter_cd + ',UV&beginPosition=' + LastWeekStr + '&endPosition=' + endDate + '>' + Prop + '</a>';
+                    var Plot_links_UV = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?&featureID=' + site + '&observedProperty=' + Parameter_cd + ',UVUNIT&beginPosition=' + LastWeekStr + '&endPosition=' + endDate + '>' + Prop + '</a>';
                     Plot_table_UV = Plot_table_UV + '<tr><td>' + Plot_links_UV + '</td><td>' + beginDate + '</td><td>' + endDate + '</td></tr>';
                 });
 
                 var xml_DV = LoadXML(gdaDV_url);
-                $(xml_DV).find("[nodeName=gda:FeaturePropertyTemporalRelationship],FeaturePropertyTemporalRelationship").each(function(){
-                    var Property_DV = $(this).find("[nodeName=gda:targetProperty]");
+                $(xml_DV).find('[nodeName="gda:FeaturePropertyTemporalRelationship"],FeaturePropertyTemporalRelationship').each(function(){
+                    var Property_DV = $(this).find('[nodeName="gda:targetProperty"],targetProperty');
                     var Prop_test = Property_DV.attr("xlink:title");
                     var Prop_DV = Prop_test.substring(0,Prop_test.lastIndexOf(' ('));
                     var Parameter_cd_long_DV = Property_DV.attr("xlink:href");
                     var Parameter_cd_array_DV = Parameter_cd_long_DV.split("_");
                     var Parameter_cd_DV = Parameter_cd_array_DV[1];
-                    var beginTime_long_DV = $(this).find("[nodeName=gml:beginPosition]").text();
+                    var beginTime_long_DV = $(this).find('[nodeName="gml:beginPosition"],beginPosition').text();
                     var beginTime_DV = beginTime_long_DV.substr(0,16);
                     var beginDate_DV = beginTime_DV.split(" ")[0];
-                    var endTime_long_DV = $(this).find("[nodeName=gml:endPosition]").text();
+                    var endTime_long_DV = $(this).find('[nodeName="gml:endPosition"],endPosition').text();
                     var endTime_DV = endTime_long_DV.substr(0,16);
                     var endDate_DV = endTime_DV.split(" ")[0];
                     var endDateYear = parseInt(endTime_DV.split("-")[0]) - 1;
@@ -338,26 +275,10 @@ function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watersh
     map.setCenter(new GLatLng(40.55972222, -95.613888889), 4, G_PHYSICAL_MAP);
     map.enableScrollWheelZoom();
 
-    parseInactiveSites();
+//    parseInactiveSites();
     var wfs_url = base_url + "/wfs?request=GetFeature";
     xml = LoadXML(wfs_url);
     parseXML(xml);
-    xml_coastal = LoadXML("wfs_coastal.xml");
-    parseXml_Coastal(xml_coastal);
-
-    show("WI");
-    show("MI");
-    show("NJ");
-    show("PA");
-    show("MN");
-    show("MO");
-    show("IL");
-    show("IA");
-    show("ND");
-    show("IN");
-    show("OH");
-    show("NY");
-    show("Coastal");
 
 }
 else {
