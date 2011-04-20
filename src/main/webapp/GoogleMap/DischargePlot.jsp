@@ -2,62 +2,82 @@
 <%@ page  language="java" import="java.util.*,java.text.*"%>
 
 <%
-    String featureID = request.getParameter("featureID");
-    String Property = request.getParameter("observedProperty");
-    String beginPosition = request.getParameter("beginPosition");
-    String endPosition = request.getParameter("endPosition");
-
-    String observedProperty = Property.split(",")[0];
-    String offering = Property.split(",")[1];
-    String service = offering.substring(0,2);
-    String stat_cd = offering.substring(2);
-
-    String compare = request.getParameter("compare");
-
     String baseURL = request.getRequestURL().toString().replaceAll("/[^/]*$", "");
     int test = baseURL.length() - 10;    // Gets rid of /GoogleMap/ from baseURL
     String base_url = baseURL.substring(0,test);
     String sos_url;
+    String service;
+    String observedProperty;
+    String offering;
+    String stat_cd;
+    sos_url = "";
+    service = "";
+    stat_cd = "";
+    observedProperty = "";
 
+    String featureID = request.getParameter("featureID");
+    String[] Property = request.getParameterValues("observedProperty");
+    String beginPosition = request.getParameter("beginPosition");
+    String endPosition = request.getParameter("endPosition");
 
-    if (service.equalsIgnoreCase("DV")) {
+    String[] obsProp;
 
-        sos_url = base_url + "/sos/dv?request=GetObservation&featureId=" + featureID + "&offering=" + stat_cd;
+    String[] stat_cdArray;
+    String[] serviceArray;
+    String[] sos_urlArray;
+    String[] offeringArray;
 
-    } else if (service.equalsIgnoreCase("UV")) {
-        sos_url = base_url + "/sos/uv?request=GetObservation&featureId=" + featureID;
-    } else {
-        sos_url = base_url + "/sos/uv?request=GetObservation&featureId=" + featureID;
-    }
+    String Data_link = "";
 
-    if (beginPosition != null) {
-        if (beginPosition.equalsIgnoreCase("null") || beginPosition.equalsIgnoreCase("")) {
-            sos_url = sos_url;
+    obsProp = new String[Property.length];
+
+    stat_cdArray = new String[Property.length];
+    serviceArray = new String[Property.length];
+    sos_urlArray = new String[Property.length];
+    offeringArray = new String[Property.length];
+
+    for (int i = 0; i < Property.length; i++){
+
+        obsProp[i] = Property[i].split(",")[0];
+        offeringArray[i] = Property[i].split(",")[1];
+        serviceArray[i] = offeringArray[i].substring(0, 2);
+        stat_cdArray[i] = offeringArray[i].substring(2);
+
+        if (serviceArray[i].equalsIgnoreCase("DV")) {
+            sos_urlArray[i] = base_url + "/sos/dv?request=GetObservation&featureId=" + featureID + "&offering=" + stat_cdArray[i] + "&observedProperty=" + obsProp[i];
+
+        } else if (serviceArray[i].equalsIgnoreCase("UV")) {
+            sos_urlArray[i] = base_url + "/sos/uv?request=GetObservation&featureId=" + featureID + "&offering=UNIT&observedProperty=" + obsProp[i];
         } else {
-            sos_url = sos_url + "&beginPosition=" + beginPosition;
+            sos_urlArray[i] = base_url + "/sos/uv?request=GetObservation&featureId=" + featureID + "&offering=UNIT&observedProperty=" + obsProp[i];
         }
-    }
 
-
-    if (endPosition != null) {
-        if (endPosition.equalsIgnoreCase("null") || endPosition.equalsIgnoreCase("")) {
-            sos_url = sos_url;
-        } else {
-            sos_url = sos_url + "&endPosition=" + endPosition;
+        if (beginPosition != null) {
+            if (beginPosition.equalsIgnoreCase("null") || beginPosition.equalsIgnoreCase("")) {
+                sos_urlArray[i] = sos_urlArray[i];
+            } else {
+                sos_urlArray[i] = sos_urlArray[i] + "&beginPosition=" + beginPosition;
+            }
         }
-    }
-
-    if (compare == null){
-        if (observedProperty == null) {
-            sos_url = sos_url + "&observedProperty=Discharge";
-        } else {
-            sos_url = sos_url + "&observedProperty=" + observedProperty;
+        if (endPosition != null) {
+            if (endPosition.equalsIgnoreCase("null") || endPosition.equalsIgnoreCase("")) {
+                sos_urlArray[i] = sos_urlArray[i];
+            } else {
+                sos_urlArray[i] = sos_urlArray[i] + "&endPosition=" + endPosition;
+            }
         }
-    } else {
-        sos_url = sos_url + "&observedProperty=" + observedProperty;
-    }
 
-    String Data_link = "<a href =" + sos_url + ">Link to plot data</a>";
+         Data_link = Data_link + "<a href =" + sos_urlArray[i] + ">Link to plot data: offering=" + stat_cdArray[i] + "&observedProperty=" + obsProp[i] + "</a><br />";
+         sos_url = sos_url + sos_urlArray[i] + ",";
+         service = service + serviceArray[i] + ",";
+         stat_cd = stat_cd + stat_cdArray[i] + ",";
+         observedProperty = observedProperty + obsProp[i] + ",";
+
+    }
+    sos_url = sos_url.substring(0, (sos_url.length() - 1));
+    service = service.substring(0, (service.length() - 1));
+    stat_cd = stat_cd.substring(0, (stat_cd.length() - 1));
+    observedProperty = observedProperty.substring(0, (observedProperty.length() - 1));
     String mapLink = "<a href =" + base_url + ">Return home</a>";
     String gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity&featureID=" + featureID;
     String gdaUV_url = base_url + "/sos/uv?request=GetDataAvailablity&featureID=" + featureID;
@@ -100,17 +120,30 @@
 
         <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 
-        <script type="text/javascript"  src="jquery-1.4.4.js"></script>
-        <script type="text/javascript"  src="jsapi.js"></script>
-        <script src="LoadXML.js" type="text/javascript"></script>
-        <script src="createPlot.js" type="text/javascript" ></script>
-
         <title>OGC Services SWIE</title>
-        
+        <script type='text/javascript' src='https://www.google.com/jsapi'></script>
+        <script type="text/javascript" src="jquery-1.5.1.js"></script>
+        <script src="LoadXML.js" type="text/javascript"></script>
+        <script type="text/javascript" src="createMultiPlot.js"></script>
+        <script type='text/javascript'>
+            var gdaDV_url = '<%=gdaDV_url%>';
+            var gdaUV_url = '<%=gdaUV_url%>';
+
+            var sos_url = '<%=sos_url%>';
+            var service = '<%=service%>';
+            var stat_cd = '<%=stat_cd%>';
+            var observedProperty = '<%=observedProperty%>';
+            var featureID = '<%=featureID%>';
+            var base_url = '<%=base_url%>';
+
+            google.load('visualization', '1', {'packages':['annotatedtimeline']});
+            google.setOnLoadCallback(createMultiPlot (sos_url, gdaDV_url, gdaUV_url, service, stat_cd, observedProperty));
+
+        </script>
 
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>JSP Page</title>
+
     </head>
     <body>
 
@@ -140,17 +173,25 @@
                 </td>
             </tr>
         </table>
-        <h1>Surface Water IE 1.5.2</h1>
-<table>
-    <tr><td>
+        <h1>Surface Water IE Plotting Example</h1>
 
-            <div id="tabPlot" class="tab_content">
-                <table border=1" cellpadding="5">
+                <table border="1" cellpadding="5">
                     <tr>
                         <td>
                             <div id='Station_name' ></div><br />
-                            <div id='chart_div' style='width: 700px; height: 500px;'>Loading...<img src = "ajax-loader.gif" /></div><br />
-                            Provisional data subject to revision<br /><%=Data_link%><br /><%=mapLink%>
+                            <div id='chart_div' style='width: 700px; height: 500px;'>Loading...<img alt="Spinner"  src = "ajax-loader.gif" /></div><br />
+                            <table style='width: 700px'>
+                                <tr>
+                                    <td>
+                                         Provisional data subject to revision<br /><%=Data_link%><%=mapLink%>
+                                    </td>
+                                    <td>
+                                        Zoomed Range:
+                                        <div id='Zoom' ></div>
+                                    </td>
+                                </tr>
+                            </table>
+
                         </td>
                         <td style="overflow:scroll; height:500px; width:500px">
                             <div id='side_bar_header'>Loading...</div>
@@ -162,42 +203,18 @@
                                     <tr><td>End Date: </td><td><input type="text" name="endPosition" value="<%=endPosition%>"/></td></tr>
                                     <tr><td></td></tr>
                                 </table>
-
-                                <div id='side_bar' style="overflow:scroll; height:400px">Loading...<img src = "ajax-loader.gif" /></div>
+                                    <b>Warning!</b> Multi-line plots are supported, but choosing too much data will cause the long loading time.
+                                    Firefox works best for large data sets. Three y-axis scales are supported. <br /><br />
+                                    <div id='side_bar' style="overflow:scroll; height: 300px">Loading...<img alt="Spinner"  src = "ajax-loader.gif" /></div><br />
                                 <input type="submit" value="Submit" />
                             </form>
                         </td>
                     </tr>
                 </table>
 
-                <span> <font size="0.5"><br />* References to non-U.S. Department of the Interior (DOI) products do not constitute an endorsement by the DOI. By viewing the Google Visualization API on this web site the user agrees to these
-                        <a href="http://code.google.com/apis/visualization/terms.html" target="_blank" title="Opens a new browser window.">Terms of Service set forth by Google</a>.<br /></font></span>
-                <br />
-            </div>
-
-        </td></tr>
-</table>
-    <ul>
-        <li> <strong>Warning </strong>
-            <dt> The services provided on this page are primarily intended for surface water interoperability experiments for implementing WaterML2
-            and other trial OGC standards such as SOS 2.0.  Since these standards are in flux, the output formatting on this page may change at any time.
-            There is no guarantee that the output will validate with the latest standards. Check the version and log at the bottom of the page for changes and news.
-            </dt>
-        </li>
-        <p />
-    </ul>
-        <script type='text/javascript'>
-            var sos_url = '<%=sos_url%>';
-            var gdaDV_url = '<%=gdaDV_url%>';
-            var gdaUV_url = '<%=gdaUV_url%>';
-            var service = '<%=service%>';
-            var stat_cd = '<%=stat_cd%>';
-            var observedProperty = '<%=observedProperty%>';
-
-            google.load('visualization', '1', {'packages':['annotatedtimeline']});
-            google.setOnLoadCallback(createPlot (sos_url, gdaDV_url, gdaUV_url, service, stat_cd, observedProperty));
-
-        </script>
+        <span> <font size="0.5"><br />* References to non-U.S. Department of the Interior (DOI) products do not constitute an endorsement by the DOI. By viewing the Google Visualization API on this web site the user agrees to these
+        <a href="http://code.google.com/apis/visualization/terms.html" target="_blank" title="Opens a new browser window.">Terms of Service set forth by Google</a>.<br /></font></span>
+        <br />
 
         <!-- BEGIN USGS Footer Template -->
 
@@ -232,6 +249,5 @@
 
               </p>
         </div>
-
     </body>
 </html>

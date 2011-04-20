@@ -297,10 +297,10 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 CONCAT(CONVERT(DATE_FORMAT(s.endTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS endPosition,
             <choose>
                 <when test="latest != null">
-                    CONCAT(CONVERT(DATE_FORMAT(MAX(g.result_dt),'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) as currentPosition,
+                    CONCAT(CONVERT(DATE_FORMAT(MAX(g.result_dt),'%Y-%m-%dT'),CHAR),'12:00',f.tz_cd) as currentPosition,
                 </when>
                 <otherwise>
-                    CONCAT(CONVERT(DATE_FORMAT(g.result_dt,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) as currentPosition,
+                    CONCAT(CONVERT(DATE_FORMAT(g.result_dt,'%Y-%m-%dT'),CHAR),'12:00',f.tz_cd) as currentPosition,
                 </otherwise>
             </choose>
 		g.result_va as value,

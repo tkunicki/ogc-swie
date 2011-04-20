@@ -134,7 +134,7 @@
     <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>    
     
     <script type="text/javascript"src="http://www.google.com/jsapi?key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q"></script>
-    <script src="GoogleMap/jquery-1.4.4.js"></script>
+    <script src="GoogleMap/jquery-1.5.1.js"></script>
 
     <script src="GoogleMap/mapiconmaker.js" type="text/javascript"></script>
     <script src="GoogleMap/LoadXML.js" type="text/javascript"></script>
@@ -576,27 +576,26 @@ if (GBrowserIsCompatible()) {
 
 
 function parseXML(xml){
-    $(xml).find("[nodeName=wfs:FeatureCollection],FeatureCollection").each(function()
+    $(xml).find('[nodeName="wfs:FeatureCollection"],FeatureCollection').each(function()
     {
-        $(xml).find("[nodeName=wfs:member],member").each(function()
+        $(xml).find('[nodeName="wfs:member"],member').each(function()
         {
-            var siteName = $("[nodeName=gml:name]", this).text();
-            var pos = $("[nodeName=gml:pos]", this).text();
+            var siteName = $('[nodeName="gml:name"],name', this).text();
+            var pos = $('[nodeName="gml:pos"],pos', this).text();
             var pos_array = pos.split(" ");
             var latitude = pos_array[0];
             var longitude = pos_array[1];
-            var pos_name = $("[nodeName=gml:pos]", this).attr("srsName");
-            var siteCode_long = $("[nodeName=wml2:WaterMonitoringPoint]", this).attr("gml:id");
+            var pos_name = $('[nodeName="gml:pos"],pos', this).attr("srsName");
+            var siteCode_long = $('[nodeName="wml2:WaterMonitoringPoint"],WaterMonitoringPoint', this).attr("gml:id");
             var siteCode_array = siteCode_long.split(".");
             var siteCode = siteCode_array[2];
-            var USGS_URL = $("[nodeName=sf:sampledFeature]", this).attr("xlink:ref");
+            var USGS_URL = $('[nodeName="sf:sampledFeature"],sampledFeature', this).attr("xlink:ref");
             var URL_array = USGS_URL.split("/");
             var stateNM = URL_array[3];
-            var watershed = $("[nodeName=om:value]", this).text();
+            var watershed = $('[nodeName="om:value"],value', this).text();
             var point = new GLatLng(latitude, longitude);
             var marker = createMarker(point, siteName,  stateNM, siteCode, USGS_URL, base_url, watershed);
             map.addOverlay(marker);
-            //makeSidebar();
         });
     });
 }
@@ -632,49 +631,49 @@ function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watersh
         var table_latest = "<center><table border='1'><tr><td><center><b>Property</b></td></center><td><center><b>Value</b></center></td><td><center><b>Comments</b></center></td></tr>";
 
         var xml_UV = LoadXML(gdaUV_url);
-        $(xml_UV).find("[nodeName=gda:FeaturePropertyTemporalRelationship],FeaturePropertyTemporalRelationship").each(function(){
-            var Property = $(this).find("[nodeName=gda:targetProperty]");
+        $(xml_UV).find('[nodeName="gda:FeaturePropertyTemporalRelationship"],FeaturePropertyTemporalRelationship').each(function(){
+            var Property = $(this).find('[nodeName="gda:targetProperty"],targetProperty');
             var Prop = Property.attr("xlink:title");
             var Parameter_cd_long = Property.attr("xlink:href");
             var Parameter_cd_array = Parameter_cd_long.split("_");
             var Parameter_cd = Parameter_cd_array[1];
-            var beginTime_long = $(this).find("[nodeName=gml:beginPosition]").text();
+            var beginTime_long = $(this).find('[nodeName="gml:beginPosition"],beginPosition').text();
             var beginTime = beginTime_long.substr(0,16);
             var beginDate = beginTime.split(" ")[0];
-            var endTime_long = $(this).find("[nodeName=gml:endPosition]").text();
+            var endTime_long = $(this).find('[nodeName="gml:endPosition"],endPosition').text();
             var endTime = endTime_long.substr(0,16);
             var endDate = endTime.split(" ")[0];
             if (Parameter_cd == '00060' || Parameter_cd == '00065') {
-                var sos_url = sos_url_base + Parameter_cd;
+                var sos_url = sos_url_base + Parameter_cd + '&latest';
                 var xml_SOS = LoadXML(sos_url);
-                $(xml_SOS).find("[nodeName=wml2:TimeseriesObservation],TimeseriesObservation").each(function(){
-                        var units = $(this).find("[nodeName=wml2:unitOfMeasure]").attr("uom");
-                        var time_long = $(this).find("[nodeName=wml2:time]:first").text();
-                        var Prop = $(this).find("[nodeName=om:observedProperty]").attr("xlink:title");
+                $(xml_SOS).find('[nodeName="wml2:TimeseriesObservation"],TimeseriesObservation').each(function(){
+                        var units = $(this).find('[nodeName="wml2:unitOfMeasure"],unitOfMeasure').attr("uom");
+                        var time_long = $(this).find('[nodeName="wml2:time"],time').first().text();
+                        var Prop = $(this).find('[nodeName="om:observedProperty"],observedProperty').attr("xlink:title");
                         time = time_long.substr(0,16);
                         time = time.replace("T"," ");
-                        var value = $(this).find("[nodeName=wml2:value]").first().text();
-                        var comments = $(this).find("[nodeName=wml2:comment]:first").text();
+                        var value = $(this).find('[nodeName="wml2:value"],value').first().text();
+                        var comments = $(this).find('[nodeName="wml2:comment"],comment').first().text();
                         table_latest = table_latest + '<tr><td>' + Prop + '</td><td>' + value + ' ' + units + '</td><td>' + comments + '</td></tr>';
                  });
             }
-            var Plot_links_UV = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?&featureID=' + Site_no + '&observedProperty=' + Parameter_cd + ',UV&beginPosition=' + LastWeekStr + '&endPosition=' + endDate + '>' + Prop + '</a>';
+            var Plot_links_UV = '<a href =' + base_url + '/GoogleMap/DischargePlot_test.jsp?&featureID=' + Site_no + '&observedProperty=' + Parameter_cd + ',UV&beginPosition=' + LastWeekStr + '&endPosition=' + endDate + '>' + Prop + '</a>';
             Plot_table_DV = Plot_table_DV + '<tr><td>' + Plot_links_UV + '</td><td>UNIT</td><td>' + beginDate + '</td><td>' + endDate + '</td></tr>';
         });
 
         var xml_DV = LoadXML(gdaDV_url);
-        $(xml_DV).find("[nodeName=gda:FeaturePropertyTemporalRelationship],FeaturePropertyTemporalRelationship").each(function(){
-            var Property_DV = $(this).find("[nodeName=gda:targetProperty]");
+        $(xml_DV).find('[nodeName="gda:FeaturePropertyTemporalRelationship"],FeaturePropertyTemporalRelationship').each(function(){
+            var Property_DV = $(this).find('[nodeName="gda:targetProperty"],targetProperty');
             var Prop_DV = Property_DV.attr("xlink:title");
             var Offering = Property_DV.attr("x-offering");
             var Offering_cd = Property_DV.attr("xlink:href").split("_")[2];
             var Parameter_cd_long_DV = Property_DV.attr("xlink:href");
             var Parameter_cd_array_DV = Parameter_cd_long_DV.split("_");
             var Parameter_cd_DV = Parameter_cd_array_DV[1];
-            var beginTime_long_DV = $(this).find("[nodeName=gml:beginPosition]").text();
+            var beginTime_long_DV = $(this).find('[nodeName="gml:beginPosition"],beginPosition').text();
             var beginTime_DV = beginTime_long_DV.substr(0,16);
             var beginDate_DV = beginTime_DV.split(" ")[0];
-            var endTime_long_DV = $(this).find("[nodeName=gml:endPosition]").text();
+            var endTime_long_DV = $(this).find('[nodeName="gml:endPosition"],endPosition').text();
             var endTime_DV = endTime_long_DV.substr(0,16);
             var endDate_DV = endTime_DV.split(" ")[0];
             var endDateYear = parseInt(endTime_DV.split("-")[0]) - 1;
