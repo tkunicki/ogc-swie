@@ -36,9 +36,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
 	<resultMap id="UVdataResultMap_1" type="XMLMap" extends="UVdataBaseMap">
-                <association property="UNUSED" column="{featureId=featureId,observedProperty=observedProperty,beginPosition=beginPosition, endPosition = endPosition}" select="UVdataSelect" javaType="list" />
-                <association property="UNUSED" column="{featureId=featureId,observedProperty=observedProperty,beginPosition=beginPosition, endPosition = endPosition}" select="UVdataPropertySelect" javaType="list" />
-                <association property="UNUSED" column="{featureId=featureId,observedProperty=observedProperty,beginPosition=beginPosition, endPosition = endPosition}" select="UVdataFeatureSelect" javaType="list" />
+                <association property="UNUSED" column="{featureId=featureId,observedProperty=observedProperty,beginPosition=beginPosition, endPosition = endPosition,bBox0=bBox0,bBox1=bBox1,bBox2=bBox2,bBox3=bBox3}" select="UVdataSelect" javaType="list" />
+                <association property="UNUSED" column="{featureId=featureId,observedProperty=observedProperty,beginPosition=beginPosition, endPosition = endPosition,bBox0=bBox0,bBox1=bBox1,bBox2=bBox2,bBox3=bBox3}" select="UVdataPropertySelect" javaType="list" />
+                <association property="UNUSED" column="{featureId=featureId,observedProperty=observedProperty,beginPosition=beginPosition, endPosition = endPosition,bBox0=bBox0,bBox1=bBox1,bBox2=bBox2,bBox3=bBox3}" select="UVdataFeatureSelect" javaType="list" />
 
 	</resultMap>
 	
@@ -168,10 +168,24 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             </choose>
             <choose>
                  <when test="endPosition != null">
-                    #{endPosition[0]} as endPosition
+                    #{endPosition[0]} as endPosition,
                 </when>
                 <otherwise>
-                    null as endPosition
+                    null as endPosition,
+                </otherwise>
+            </choose>
+            <choose>
+                 <when test="bBox != null">
+                    #{bBox[0]} as bBox0,
+                    #{bBox[1]} as bBox1,
+                    #{bBox[2]} as bBox2,
+                    #{bBox[3]} as bBox3
+                </when>
+                <otherwise>
+                    null as bBox0,
+                    null as bBox1,
+                    null as bBox2,
+                    null as bBox3
                 </otherwise>
             </choose>
 <!--            <choose>
@@ -188,32 +202,32 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         </select>
 
 	<select id="UVdataSelect" parameterType="map" resultMap="UVdataResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
-            SELECT c.site_no,
-            c.station_nm,
-            e.parameter_nm,
-            e.parameter_cd,
-            MIN(b.result_dt) AS BeginPosition,
-            MAX(b.result_dt) AS EndPosition,
-            CONCAT(e.parameter_cd,'_',c.site_no) AS parameterSite
-
-            FROM
-            nwisweb.UV_DD_CONF a,
-            nwisweb.UV b,
-            nwisweb.SITEFILE c,
-            nwisweb.PARAM_REF e
-
+        SELECT
+        a.site_no,
+        a.station_nm,
+        d.parameter_nm,
+        d.parameter_cd,
+        MIN(b.result_dt) AS BeginPosition,
+        MAX(b.result_dt) AS EndPosition,
+        CONCAT(d.parameter_cd,'_',a.site_no) AS parameterSite
+        FROM (
+            SELECT DISTINCT
+            site_id,
+            site_no,
+            station_nm,
+            dec_long_va,
+            dec_lat_va
+            FROM nwisweb.SITEFILE
             <choose>
                   <when test="featureId != null">
-                            WHERE c.site_no IN (#{featureId})
+                            WHERE site_no IN (#{featureId})
                   </when>
-
-                  <when test="bBox != null">
-                            WHERE c.dec_long_va BETWEEN #{bBox[0]} AND #{bBox[2]} AND c.dec_lat_va BETWEEN #{bBox[1]} AND #{bBox[3]}
+                  <when test="bBox0 != null">
+                            WHERE dec_long_va BETWEEN #{bBox0} AND #{bBox2} AND dec_lat_va BETWEEN #{bBox1} AND #{bBox3}
                   </when>
-
                   <otherwise>
-                            WHERE c.site_no IN (
-                                        '01427207','01427510','01434000','01438500','01457500','01463500'
+                            WHERE site_no IN (
+                                    '01427207','01427510','01434000','01438500','01457500','01463500',
                                     '04073365','04073500','04082400','04084445','040851385','05344500',
                                     '05378500','05389500','05391000','05395000','05404000','05407000',
                                     '05420500','05543500','05543830','05545750','05551540','05552500',
@@ -223,134 +237,161 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                                     '04059500','04067500','04069500','04071765','04085427','04086000','04087000','04092750','04095090',
                                     '04102500','04121970','04122200','04122500','04137500','04142000','04157000','04159492','04165500',
                                     '04174500','04176500','04193500','04195820','04198000','04199000','04199500','04200500','04201500',
-                                    '04208000','04212100','04213500','04218000','04231600','04249000','04260500','04263000','04265432'
+                                    '04208000','04212100','04213500','04218000','04231600','04249000','04260500','04263000','04265432',
+
+                                <!-- NASQAN Coastal Subnetwork -->
+
+                                    '01578310','01646580','02226160','02470500','04264331','07374525',
+                                    '07381495','08475000','09522000','11303500','11447650','14246900','15565447'
                                         )
                     </otherwise>
              </choose>
+            ) a,
 
-            <if test="observedProperty != null">
-                AND a.parameter_cd = (#{observedProperty})
-            </if>
+            nwisweb.UV b,
+            nwisweb.UV_DD_CONF c,
+            nwisweb.PARAM_REF d
 
-            <if test="beginPosition != null">
-                AND b.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{beginPosition}, '%Y-%m-%d')
-            </if>
+        WHERE a.site_id = b.site_id
+        AND b.site_id = c.site_id
+        AND b.dd_nu = c.dd_nu
+        <if test="observedProperty != null">
+            AND c.parameter_cd = (#{observedProperty})
+        </if>
 
-            <if test="endPosition != null">
-                AND b.result_dt <![CDATA[ <= ]]> CONCAT(STR_TO_DATE(#{endPosition}, '%Y-%m-%d'), ' 23:45')
-            </if>
-
-            AND a.site_id = b.site_id
-            AND a.dd_nu = b.dd_nu
-            AND c.site_id = a.site_id
-            AND a.parameter_cd = e.parameter_cd
-            AND a.access_cd = '0'
-
-            GROUP BY c.site_no, a.parameter_cd
-            ORDER BY a.parameter_cd
+        AND c.access_cd = '0'
+        AND c.parameter_cd = d.parameter_cd
+        GROUP BY a.site_no, c.parameter_cd
+        ORDER BY c.parameter_cd
 
 	</select>
 
 	<select id="UVdataPropertySelect" parameterType="map" resultMap="UVdataPropertyMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
-            SELECT c.site_no,
-            e.parameter_nm,
-            e.parameter_cd,
-            CONCAT(e.parameter_cd,'_',c.site_no) AS parameterSite,
-            c.station_nm
+           SELECT
+            a.site_no,
+            a.station_nm,
+            d.parameter_nm,
+            d.parameter_cd,
+            CONCAT(d.parameter_cd,'_',a.site_no) AS parameterSite
 
-            FROM
-            nwisweb.UV_DD_CONF a,
-            nwisweb.SITEFILE c,
-            nwisweb.PARAM_REF e
+            FROM (
+                SELECT DISTINCT
+                site_id,
+                site_no,
+                station_nm,
+                dec_long_va,
+                dec_lat_va
+                FROM nwisweb.SITEFILE
+                <choose>
+                      <when test="featureId != null">
+                                WHERE site_no IN (#{featureId})
+                      </when>
+                      <when test="bBox0 != null">
+                                WHERE dec_long_va BETWEEN #{bBox0} AND #{bBox2} AND dec_lat_va BETWEEN #{bBox1} AND #{bBox3}
+                      </when>
+                      <otherwise>
+                                WHERE site_no IN (
+                                        '01427207','01427510','01434000','01438500','01457500','01463500',
+                                        '04073365','04073500','04082400','04084445','040851385','05344500',
+                                        '05378500','05389500','05391000','05395000','05404000','05407000',
+                                        '05420500','05543500','05543830','05545750','05551540','05552500',
+                                        '05558300','05568500','05586100','07010000','07020500',
+                                        '07022000','05051500','05054000','05082500','04269000','040851385',
+                                        '04010500','04024000','04024430','04027000','04027500','04040000','04045500','04059000',
+                                        '04059500','04067500','04069500','04071765','04085427','04086000','04087000','04092750','04095090',
+                                        '04102500','04121970','04122200','04122500','04137500','04142000','04157000','04159492','04165500',
+                                        '04174500','04176500','04193500','04195820','04198000','04199000','04199500','04200500','04201500',
+                                        '04208000','04212100','04213500','04218000','04231600','04249000','04260500','04263000','04265432',
 
-            <choose>
-                  <when test="featureId != null">
-                            WHERE c.site_no IN (#{featureId})
-                  </when>
+                                    <!-- NASQAN Coastal Subnetwork -->
 
-                  <when test="bBox != null">
-                            WHERE c.dec_long_va BETWEEN #{bBox[0]} AND #{bBox[2]} AND c.dec_lat_va BETWEEN #{bBox[1]} AND #{bBox[3]}
-                  </when>
+                                        '01578310','01646580','02226160','02470500','04264331','07374525',
+                                        '07381495','08475000','09522000','11303500','11447650','14246900','15565447'
+                                            )
+                        </otherwise>
+                 </choose>
+                ) a,
 
-                  <otherwise>
-                            WHERE c.site_no IN (
-                                        '01427207','01427510','01434000','01438500','01457500','01463500'
-                                    '04073365','04073500','04082400','04084445','040851385','05344500',
-                                    '05378500','05389500','05391000','05395000','05404000','05407000',
-                                    '05420500','05543500','05543830','05545750','05551540','05552500',
-                                    '05558300','05568500','05586100','07010000','07020500',
-                                    '07022000','05051500','05054000','05082500','04269000','040851385',
-                                    '04010500','04024000','04024430','04027000','04027500','04040000','04045500','04059000',
-                                    '04059500','04067500','04069500','04071765','04085427','04086000','04087000','04092750','04095090',
-                                    '04102500','04121970','04122200','04122500','04137500','04142000','04157000','04159492','04165500',
-                                    '04174500','04176500','04193500','04195820','04198000','04199000','04199500','04200500','04201500',
-                                    '04208000','04212100','04213500','04218000','04231600','04249000','04260500','04263000','04265432'
-                                        )
-                    </otherwise>
-             </choose>
+                nwisweb.UV b,
+                nwisweb.UV_DD_CONF c,
+                nwisweb.PARAM_REF d
 
-            AND c.site_id = a.site_id
-            AND a.parameter_cd = e.parameter_cd
-            AND a.access_cd = '0'
-
+            WHERE a.site_id = b.site_id
+            AND b.site_id = c.site_id
+            AND b.dd_nu = c.dd_nu
             <if test="observedProperty != null">
-                AND a.parameter_cd = (#{observedProperty})
+                AND c.parameter_cd = (#{observedProperty})
             </if>
 
-            GROUP BY c.site_no, a.parameter_cd
-            ORDER BY a.parameter_cd
-
+            AND c.access_cd = '0'
+            AND c.parameter_cd = d.parameter_cd
+            GROUP BY a.site_no, c.parameter_cd
+            ORDER BY c.parameter_cd
 	</select>
 
 	<select id="UVdataFeatureSelect" parameterType="map" resultMap="UVdataFeatureMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
-            SELECT c.site_no,
-            c.agency_cd,
-            c.station_nm,
-            e.parameter_nm,
-            CONCAT(e.parameter_cd,'_',c.site_no) AS parameterSite,
-            CONCAT(e.parameter_nm,': ',c.station_nm) AS parameterSiteTitle
+               SELECT
+                a.site_no,
+                a.agency_cd,
+                a.station_nm,
+                d.parameter_nm,
+                CONCAT(d.parameter_cd,'_',a.site_no) AS parameterSite,
+                CONCAT(d.parameter_nm,': ',a.station_nm) AS parameterSiteTitle
 
-            FROM
-            nwisweb.UV_DD_CONF a,
-            nwisweb.SITEFILE c,
-            nwisweb.PARAM_REF e
+                FROM (
+                    SELECT DISTINCT
+                    site_id,
+                    site_no,
+                    station_nm,
+                    dec_long_va,
+                    dec_lat_va,
+                    agency_cd
+                    FROM nwisweb.SITEFILE
+                    <choose>
+                          <when test="featureId != null">
+                                    WHERE site_no IN (#{featureId})
+                          </when>
+                          <when test="bBox0 != null">
+                                    WHERE dec_long_va BETWEEN #{bBox0} AND #{bBox2} AND dec_lat_va BETWEEN #{bBox1} AND #{bBox3}
+                          </when>
+                          <otherwise>
+                                    WHERE site_no IN (
+                                            '01427207','01427510','01434000','01438500','01457500','01463500',
+                                            '04073365','04073500','04082400','04084445','040851385','05344500',
+                                            '05378500','05389500','05391000','05395000','05404000','05407000',
+                                            '05420500','05543500','05543830','05545750','05551540','05552500',
+                                            '05558300','05568500','05586100','07010000','07020500',
+                                            '07022000','05051500','05054000','05082500','04269000','040851385',
+                                            '04010500','04024000','04024430','04027000','04027500','04040000','04045500','04059000',
+                                            '04059500','04067500','04069500','04071765','04085427','04086000','04087000','04092750','04095090',
+                                            '04102500','04121970','04122200','04122500','04137500','04142000','04157000','04159492','04165500',
+                                            '04174500','04176500','04193500','04195820','04198000','04199000','04199500','04200500','04201500',
+                                            '04208000','04212100','04213500','04218000','04231600','04249000','04260500','04263000','04265432',
 
-            <choose>
-                  <when test="featureId != null">
-                            WHERE c.site_no IN (#{featureId})
-                  </when>
+                                        <!-- NASQAN Coastal Subnetwork -->
 
-                  <when test="bBox != null">
-                            WHERE c.dec_long_va BETWEEN #{bBox[0]} AND #{bBox[2]} AND c.dec_lat_va BETWEEN #{bBox[1]} AND #{bBox[3]}
-                  </when>
+                                            '01578310','01646580','02226160','02470500','04264331','07374525',
+                                            '07381495','08475000','09522000','11303500','11447650','14246900','15565447'
+                                                )
+                            </otherwise>
+                     </choose>
+                    ) a,
 
-                  <otherwise>
-                            WHERE c.site_no IN (
-                                        '01427207','01427510','01434000','01438500','01457500','01463500'
-                                    '04073365','04073500','04082400','04084445','040851385','05344500',
-                                    '05378500','05389500','05391000','05395000','05404000','05407000',
-                                    '05420500','05543500','05543830','05545750','05551540','05552500',
-                                    '05558300','05568500','05586100','07010000','07020500',
-                                    '07022000','05051500','05054000','05082500','04269000','040851385',
-                                    '04010500','04024000','04024430','04027000','04027500','04040000','04045500','04059000',
-                                    '04059500','04067500','04069500','04071765','04085427','04086000','04087000','04092750','04095090',
-                                    '04102500','04121970','04122200','04122500','04137500','04142000','04157000','04159492','04165500',
-                                    '04174500','04176500','04193500','04195820','04198000','04199000','04199500','04200500','04201500',
-                                    '04208000','04212100','04213500','04218000','04231600','04249000','04260500','04263000','04265432'
-                                        )
-                    </otherwise>
-             </choose>
+                    nwisweb.UV b,
+                    nwisweb.UV_DD_CONF c,
+                    nwisweb.PARAM_REF d
 
-            AND c.site_id = a.site_id
-            AND a.parameter_cd = e.parameter_cd
-            AND a.access_cd = '0'
+                WHERE a.site_id = b.site_id
+                AND b.site_id = c.site_id
+                AND b.dd_nu = c.dd_nu
+                <if test="observedProperty != null">
+                    AND c.parameter_cd = (#{observedProperty})
+                </if>
 
-            <if test="observedProperty != null">
-                AND a.parameter_cd = (#{observedProperty})
-            </if>
-
-            GROUP BY c.site_no, a.parameter_cd
-            ORDER BY c.site_no
+                AND c.access_cd = '0'
+                AND c.parameter_cd = d.parameter_cd
+                GROUP BY a.site_no, c.parameter_cd
+                ORDER BY a.site_no
 
 	</select>
 

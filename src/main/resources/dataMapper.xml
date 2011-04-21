@@ -36,9 +36,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
 	<resultMap id="dataResultMap_1" type="XMLMap" extends="dataBaseMap">
-                <association property="UNUSED" column="{featureId=featureId,observedProperty=observedProperty,beginPosition=beginPosition, endPosition = endPosition,offering = offering}" select="dataSelect" javaType="list" />
-                <association property="UNUSED" column="{featureId=featureId,observedProperty=observedProperty,beginPosition=beginPosition, endPosition = endPosition,offering = offering}" select="dataPropertySelect" javaType="list" />
-                <association property="UNUSED" column="{featureId=featureId,observedProperty=observedProperty,beginPosition=beginPosition, endPosition = endPosition,offering = offering}" select="dataFeatureSelect" javaType="list" />
+                <association property="UNUSED" column="{featureId=featureId,observedProperty=observedProperty,beginPosition=beginPosition, endPosition = endPosition,offering = offering,bBox0=bBox0,bBox1=bBox1,bBox2=bBox2,bBox3=bBox3}" select="dataSelect" javaType="list" />
+                <association property="UNUSED" column="{featureId=featureId,observedProperty=observedProperty,beginPosition=beginPosition, endPosition = endPosition,offering = offering,bBox0=bBox0,bBox1=bBox1,bBox2=bBox2,bBox3=bBox3}" select="dataPropertySelect" javaType="list" />
+                <association property="UNUSED" column="{featureId=featureId,observedProperty=observedProperty,beginPosition=beginPosition, endPosition = endPosition,offering = offering,bBox0=bBox0,bBox1=bBox1,bBox2=bBox2,bBox3=bBox3}" select="dataFeatureSelect" javaType="list" />
 
 	</resultMap>
 	
@@ -224,10 +224,24 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             </choose>
             <choose>
                  <when test="offering != null">
-                    #{offering[0]} as offering
+                    #{offering[0]} as offering,
                 </when>
                 <otherwise>
-                    null as offering
+                    null as offering,
+                </otherwise>
+            </choose>
+            <choose>
+                 <when test="bBox != null">
+                    #{bBox[0]} as bBox0,
+                    #{bBox[1]} as bBox1,
+                    #{bBox[2]} as bBox2,
+                    #{bBox[3]} as bBox3
+                </when>
+                <otherwise>
+                    null as bBox0,
+                    null as bBox1,
+                    null as bBox2,
+                    null as bBox3
                 </otherwise>
             </choose>
             FROM dual
@@ -257,13 +271,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                             WHERE c.site_no IN (#{featureId})
                   </when>
 
-                  <when test="bBox != null">
-                            WHERE c.dec_long_va BETWEEN #{bBox[0]} AND #{bBox[2]} AND c.dec_lat_va BETWEEN #{bBox[1]} AND #{bBox[3]}
+                  <when test="bBox0 != null">
+                            WHERE c.dec_long_va BETWEEN #{bBox0} AND #{bBox2} AND c.dec_lat_va BETWEEN #{bBox1} AND #{bBox3}
                   </when>
 
                   <otherwise>
                             WHERE c.site_no IN (
-                                        '01427207','01427510','01434000','01438500','01457500','01463500'
+                                    '01427207','01427510','01434000','01438500','01457500','01463500',
                                     '04073365','04073500','04082400','04084445','040851385','05344500',
                                     '05378500','05389500','05391000','05395000','05404000','05407000',
                                     '05420500','05543500','05543830','05545750','05551540','05552500',
@@ -273,7 +287,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                                     '04059500','04067500','04069500','04071765','04085427','04086000','04087000','04092750','04095090',
                                     '04102500','04121970','04122200','04122500','04137500','04142000','04157000','04159492','04165500',
                                     '04174500','04176500','04193500','04195820','04198000','04199000','04199500','04200500','04201500',
-                                    '04208000','04212100','04213500','04218000','04231600','04249000','04260500','04263000','04265432'
+                                    '04208000','04212100','04213500','04218000','04231600','04249000','04260500','04263000','04265432',
+
+                                <!-- NASQAN Coastal Subnetwork -->
+
+                                    '01578310','01646580','02226160','02470500','04264331','07374525',
+                                    '07381495','08475000','09522000','11303500','11447650','14246900','15565447'
                                         )
                     </otherwise>
              </choose>
@@ -327,13 +346,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                             WHERE c.site_no IN (#{featureId})
                   </when>
 
-                  <when test="bBox != null">
-                            WHERE c.dec_long_va BETWEEN #{bBox[0]} AND #{bBox[2]} AND c.dec_lat_va BETWEEN #{bBox[1]} AND #{bBox[3]}
+                  <when test="bBox0 != null">
+                            WHERE c.dec_long_va BETWEEN #{bBox0} AND #{bBox2} AND c.dec_lat_va BETWEEN #{bBox1} AND #{bBox3}
                   </when>
 
                   <otherwise>
                             WHERE c.site_no IN (
-                                        '01427207','01427510','01434000','01438500','01457500','01463500'
+                                    '01427207','01427510','01434000','01438500','01457500','01463500',
                                     '04073365','04073500','04082400','04084445','040851385','05344500',
                                     '05378500','05389500','05391000','05395000','05404000','05407000',
                                     '05420500','05543500','05543830','05545750','05551540','05552500',
@@ -343,7 +362,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                                     '04059500','04067500','04069500','04071765','04085427','04086000','04087000','04092750','04095090',
                                     '04102500','04121970','04122200','04122500','04137500','04142000','04157000','04159492','04165500',
                                     '04174500','04176500','04193500','04195820','04198000','04199000','04199500','04200500','04201500',
-                                    '04208000','04212100','04213500','04218000','04231600','04249000','04260500','04263000','04265432'
+                                    '04208000','04212100','04213500','04218000','04231600','04249000','04260500','04263000','04265432',
+
+                                <!-- NASQAN Coastal Subnetwork -->
+
+                                    '01578310','01646580','02226160','02470500','04264331','07374525',
+                                    '07381495','08475000','09522000','11303500','11447650','14246900','15565447'
                                         )
                     </otherwise>
              </choose>
@@ -386,13 +410,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                             WHERE c.site_no IN (#{featureId})
                   </when>
 
-                  <when test="bBox != null">
-                            WHERE c.dec_long_va BETWEEN #{bBox[0]} AND #{bBox[2]} AND c.dec_lat_va BETWEEN #{bBox[1]} AND #{bBox[3]}
+                  <when test="bBox0 != null">
+                            WHERE c.dec_long_va BETWEEN #{bBox0} AND #{bBox2} AND c.dec_lat_va BETWEEN #{bBox1} AND #{bBox3}
                   </when>
 
                   <otherwise>
                             WHERE c.site_no IN (
-                                        '01427207','01427510','01434000','01438500','01457500','01463500'
+                                    '01427207','01427510','01434000','01438500','01457500','01463500',
                                     '04073365','04073500','04082400','04084445','040851385','05344500',
                                     '05378500','05389500','05391000','05395000','05404000','05407000',
                                     '05420500','05543500','05543830','05545750','05551540','05552500',
@@ -402,7 +426,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                                     '04059500','04067500','04069500','04071765','04085427','04086000','04087000','04092750','04095090',
                                     '04102500','04121970','04122200','04122500','04137500','04142000','04157000','04159492','04165500',
                                     '04174500','04176500','04193500','04195820','04198000','04199000','04199500','04200500','04201500',
-                                    '04208000','04212100','04213500','04218000','04231600','04249000','04260500','04263000','04265432'
+                                    '04208000','04212100','04213500','04218000','04231600','04249000','04260500','04263000','04265432',
+
+                                <!-- NASQAN Coastal Subnetwork -->
+
+                                    '01578310','01646580','02226160','02470500','04264331','07374525',
+                                    '07381495','08475000','09522000','11303500','11447650','14246900','15565447'
                                         )
                     </otherwise>
              </choose>
@@ -447,16 +476,16 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
             <choose>
                   <when test="featureId != null">
-                            WHERE b.site_no IN (#{featureId[0]})
+                            WHERE b.site_no IN (#{featureId})
                   </when>
 
-                  <when test="bBox != null">
-                            WHERE b.dec_long_va BETWEEN #{bBox[0]} AND #{bBox[2]} AND b.dec_lat_va BETWEEN #{bBox[1]} AND #{bBox[3]}
+                  <when test="bBox0 != null">
+                            WHERE b.dec_long_va BETWEEN #{bBox0} AND #{bBox2} AND b.dec_lat_va BETWEEN #{bBox1} AND #{bBox3}
                   </when>
 
                   <otherwise>
                             WHERE b.site_no IN (
-                                        '01427207','01427510','01434000','01438500','01457500','01463500'
+                                    '01427207','01427510','01434000','01438500','01457500','01463500',
                                     '04073365','04073500','04082400','04084445','040851385','05344500',
                                     '05378500','05389500','05391000','05395000','05404000','05407000',
                                     '05420500','05543500','05543830','05545750','05551540','05552500',
@@ -466,23 +495,28 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                                     '04059500','04067500','04069500','04071765','04085427','04086000','04087000','04092750','04095090',
                                     '04102500','04121970','04122200','04122500','04137500','04142000','04157000','04159492','04165500',
                                     '04174500','04176500','04193500','04195820','04198000','04199000','04199500','04200500','04201500',
-                                    '04208000','04212100','04213500','04218000','04231600','04249000','04260500','04263000','04265432'
+                                    '04208000','04212100','04213500','04218000','04231600','04249000','04260500','04263000','04265432',
+
+                                <!-- NASQAN Coastal Subnetwork -->
+
+                                    '01578310','01646580','02226160','02470500','04264331','07374525',
+                                    '07381495','08475000','09522000','11303500','11447650','14246900','15565447'
                                         )
                     </otherwise>
              </choose>
 
             <if test="beginPosition != null">
-                AND a.month_nu <![CDATA[ >= ]]> DATE_FORMAT(#{beginPosition[0]},'%m')
-                AND a.day_nu <![CDATA[ >= ]]> DATE_FORMAT(#{beginPosition[0]},'%d')
+                AND a.month_nu <![CDATA[ >= ]]> DATE_FORMAT(#{beginPosition},'%m')
+                AND a.day_nu <![CDATA[ >= ]]> DATE_FORMAT(#{beginPosition},'%d')
             </if>
 
             <if test="endPosition != null">
-                AND a.month_nu <![CDATA[ <= ]]> DATE_FORMAT(#{beginPosition[0]},'%m')
-                AND a.day_nu <![CDATA[ <= ]]> DATE_FORMAT(#{beginPosition[0]},'%d')               
+                AND a.month_nu <![CDATA[ <= ]]> DATE_FORMAT(#{beginPosition},'%m')
+                AND a.day_nu <![CDATA[ <= ]]> DATE_FORMAT(#{beginPosition},'%d')               
             </if>
 
             <if test="observedProperty != null">
-                AND c.parameter_cd = (#{observedProperty[0]})
+                AND c.parameter_cd = (#{observedProperty})
             </if>
             
             AND d.parameter_cd = c.parameter_cd

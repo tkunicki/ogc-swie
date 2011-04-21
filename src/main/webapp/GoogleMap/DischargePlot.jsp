@@ -2,6 +2,23 @@
 <%@ page  language="java" import="java.util.*,java.text.*"%>
 
 <%
+    Calendar lastWeek = new GregorianCalendar();
+    Calendar lastYear = new GregorianCalendar();
+    lastWeek.add(Calendar.DAY_OF_YEAR, -7);
+    lastYear.add(Calendar.YEAR, -1);
+
+    Date now = new Date();
+
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+    String todayFormated = formatter.format(now);
+    String lastWeekFormated = formatter.format(lastWeek.getTime());
+    String lastYearFormated = formatter.format(lastYear.getTime());
+
+    String Today = todayFormated;
+    String LastWeek = lastWeekFormated;
+    String LastYear = lastYearFormated;
+
     String baseURL = request.getRequestURL().toString().replaceAll("/[^/]*$", "");
     int test = baseURL.length() - 10;    // Gets rid of /GoogleMap/ from baseURL
     String base_url = baseURL.substring(0,test);
@@ -10,6 +27,8 @@
     String observedProperty;
     String offering;
     String stat_cd;
+    String gdaUV_url = base_url + "/sos/uv?request=GetDataAvailablity&featureID=";
+    String gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity&featureID=";
     sos_url = "";
     service = "";
     stat_cd = "";
@@ -28,75 +47,84 @@
     String[] offeringArray;
 
     String Data_link = "";
-
-    obsProp = new String[Property.length];
-
-    stat_cdArray = new String[Property.length];
-    serviceArray = new String[Property.length];
-    sos_urlArray = new String[Property.length];
-    offeringArray = new String[Property.length];
-
-    for (int i = 0; i < Property.length; i++){
-
-        obsProp[i] = Property[i].split(",")[0];
-        offeringArray[i] = Property[i].split(",")[1];
-        serviceArray[i] = offeringArray[i].substring(0, 2);
-        stat_cdArray[i] = offeringArray[i].substring(2);
-
-        if (serviceArray[i].equalsIgnoreCase("DV")) {
-            sos_urlArray[i] = base_url + "/sos/dv?request=GetObservation&featureId=" + featureID + "&offering=" + stat_cdArray[i] + "&observedProperty=" + obsProp[i];
-
-        } else if (serviceArray[i].equalsIgnoreCase("UV")) {
-            sos_urlArray[i] = base_url + "/sos/uv?request=GetObservation&featureId=" + featureID + "&offering=UNIT&observedProperty=" + obsProp[i];
-        } else {
-            sos_urlArray[i] = base_url + "/sos/uv?request=GetObservation&featureId=" + featureID + "&offering=UNIT&observedProperty=" + obsProp[i];
-        }
-
-        if (beginPosition != null) {
-            if (beginPosition.equalsIgnoreCase("null") || beginPosition.equalsIgnoreCase("")) {
-                sos_urlArray[i] = sos_urlArray[i];
-            } else {
-                sos_urlArray[i] = sos_urlArray[i] + "&beginPosition=" + beginPosition;
-            }
-        }
-        if (endPosition != null) {
-            if (endPosition.equalsIgnoreCase("null") || endPosition.equalsIgnoreCase("")) {
-                sos_urlArray[i] = sos_urlArray[i];
-            } else {
-                sos_urlArray[i] = sos_urlArray[i] + "&endPosition=" + endPosition;
-            }
-        }
-
-         Data_link = Data_link + "<a href =" + sos_urlArray[i] + ">Link to plot data: offering=" + stat_cdArray[i] + "&observedProperty=" + obsProp[i] + "</a><br />";
-         sos_url = sos_url + sos_urlArray[i] + ",";
-         service = service + serviceArray[i] + ",";
-         stat_cd = stat_cd + stat_cdArray[i] + ",";
-         observedProperty = observedProperty + obsProp[i] + ",";
-
-    }
-    sos_url = sos_url.substring(0, (sos_url.length() - 1));
-    service = service.substring(0, (service.length() - 1));
-    stat_cd = stat_cd.substring(0, (stat_cd.length() - 1));
-    observedProperty = observedProperty.substring(0, (observedProperty.length() - 1));
     String mapLink = "<a href =" + base_url + ">Return home</a>";
-    String gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity&featureID=" + featureID;
-    String gdaUV_url = base_url + "/sos/uv?request=GetDataAvailablity&featureID=" + featureID;
 
+    if (Property != null) {
+
+        obsProp = new String[Property.length];
+        stat_cdArray = new String[Property.length];
+        serviceArray = new String[Property.length];
+        sos_urlArray = new String[Property.length];
+        offeringArray = new String[Property.length];
+
+        for (int i = 0; i < Property.length; i++){
+
+            obsProp[i] = Property[i].split(",")[0];
+            offeringArray[i] = Property[i].split(",")[1];
+            serviceArray[i] = offeringArray[i].substring(0, 2);
+            stat_cdArray[i] = offeringArray[i].substring(2);
+
+            if (serviceArray[i].equalsIgnoreCase("DV")) {
+                sos_urlArray[i] = base_url + "/sos/dv?request=GetObservation&featureId=" + featureID + "&offering=" + stat_cdArray[i] + "&observedProperty=" + obsProp[i];
+
+            } else if (serviceArray[i].equalsIgnoreCase("UV")) {
+                sos_urlArray[i] = base_url + "/sos/uv?request=GetObservation&featureId=" + featureID + "&offering=UNIT&observedProperty=" + obsProp[i];
+            } else {
+                sos_urlArray[i] = base_url + "/sos/uv?request=GetObservation&featureId=" + featureID + "&offering=UNIT&observedProperty=" + obsProp[i];
+            }
+
+            if (beginPosition != null) {
+                if (beginPosition.equalsIgnoreCase("null") || beginPosition.equalsIgnoreCase("")) {
+                    sos_urlArray[i] = sos_urlArray[i];
+                } else {
+                    sos_urlArray[i] = sos_urlArray[i] + "&beginPosition=" + beginPosition;
+                }
+            }
+            if (endPosition != null) {
+                if (endPosition.equalsIgnoreCase("null") || endPosition.equalsIgnoreCase("")) {
+                    sos_urlArray[i] = sos_urlArray[i];
+                } else {
+                    sos_urlArray[i] = sos_urlArray[i] + "&endPosition=" + endPosition;
+                }
+            }
+
+             Data_link = Data_link + "<a href =" + sos_urlArray[i] + ">Link to plot data: offering=" + stat_cdArray[i] + "&observedProperty=" + obsProp[i] + "</a><br />";
+             sos_url = sos_url + sos_urlArray[i] + ",";
+             service = service + serviceArray[i] + ",";
+             stat_cd = stat_cd + stat_cdArray[i] + ",";
+             observedProperty = observedProperty + obsProp[i] + ",";
+
+        }
+        sos_url = sos_url.substring(0, (sos_url.length() - 1));
+        service = service.substring(0, (service.length() - 1));
+        stat_cd = stat_cd.substring(0, (stat_cd.length() - 1));
+        observedProperty = observedProperty.substring(0, (observedProperty.length() - 1));
+        gdaDV_url = gdaDV_url + featureID;
+        gdaUV_url = gdaUV_url + featureID;
+    } else {
+        if (featureID != null) {
+            sos_url = base_url + "/sos/dv?request=GetObservation&offering=00003&observedProperty=00060&Interval=ThisYear&featureID=" + featureID;
+            service = "DV";
+            stat_cd = "00003";
+            observedProperty = "00060";
+            gdaDV_url = gdaDV_url + featureID;
+            gdaUV_url = gdaUV_url + featureID;
+            beginPosition = LastYear;
+            endPosition = Today;
+                   } else {
+            sos_url = base_url + "/sos/dv?request=GetObservation&featureId=05082500&offering=00003&observedProperty=00060&Interval=ThisYear";
+            featureID = "05082500";
+            service = "DV";
+            stat_cd = "00003";
+            observedProperty = "00060";
+            gdaDV_url = gdaDV_url + "05082500";
+            gdaUV_url = gdaUV_url + "05082500";
+            beginPosition = LastYear;
+            endPosition = Today;
+        }
+   }
 %>
 
-
-<%
-    Calendar lastWeek = new GregorianCalendar();
-    lastWeek.add(Calendar.DAY_OF_YEAR, -7);
-
-    Date now = new Date();
-    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-    String todayFormated = formatter.format(now);
-    String lastWeekFormated = formatter.format(lastWeek.getTime());
-
-    String Today = todayFormated;
-    String LastWeek = lastWeekFormated;
- %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
@@ -195,18 +223,23 @@
                         </td>
                         <td style="overflow:scroll; height:500px; width:500px">
                             <div id='side_bar_header'>Loading...</div>
-
+                            Click on the requested properties and hit the Submit button at the bottom. Alternatively, choose a new station ID, and click the 'Get New Station'
+                            to re-populate available data chart.<br /><br />
+                            <b>Warning!</b> Multi-line plots are supported, but choosing too much data will cause the load time to be slow.  Firefox seems to work best for large data sets.<br /><br />
                             <form action="DischargePlot.jsp" >
                                 <table>
-                                    <tr><td>Station ID: </td><td><input type="text" name="featureID" value="<%=featureID%>"/></td></tr>
-                                    <tr><td>Begin Date: </td><td><input type="text" name="beginPosition" value="<%=beginPosition%>"/></td></tr>
-                                    <tr><td>End Date: </td><td><input type="text" name="endPosition" value="<%=endPosition%>"/></td></tr>
+                                    <tr><td><input type="submit" value="Get New Station:" tabindex="1"/></td><td><input type="text" name="featureID" value="<%=featureID%>" tabindex="1"/></td></tr>
+                                </table>
+                            </form>
+                            <form action="DischargePlot.jsp" >
+                                <table>
+                                    <tr><td><input type="hidden" name="featureID" value="<%=featureID%>"/></td></tr>
+                                    <tr><td>Begin Date: </td><td><input type="text" name="beginPosition" value="<%=beginPosition%>" tabindex="2"/></td></tr>
+                                    <tr><td>End Date: </td><td><input type="text" name="endPosition" value="<%=endPosition%>" tabindex="3"/></td></tr>
                                     <tr><td></td></tr>
                                 </table>
-                                    <b>Warning!</b> Multi-line plots are supported, but choosing too much data will cause the long loading time.
-                                    Firefox works best for large data sets. Three y-axis scales are supported. <br /><br />
-                                    <div id='side_bar' style="overflow:scroll; height: 300px">Loading...<img alt="Spinner"  src = "ajax-loader.gif" /></div><br />
-                                <input type="submit" value="Submit" />
+                                    <div id='side_bar' style="overflow:scroll; height: 250px; width:475px">Loading...<img alt="Spinner"  src = "ajax-loader.gif" /></div><br />
+                                    <input type="submit" value="Submit" tabindex="4"/>
                             </form>
                         </td>
                     </tr>

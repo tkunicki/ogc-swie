@@ -68,6 +68,10 @@ public class UVServlet extends HttpServlet {
         public static final String XPATH_observedProperty = "//sos:observedProperty/text()";
         public static final String XPATH_beginPosition = "//gml:TimeInstant[@gml:id='beginPosition']/gml:timePosition/text()";
         public static final String XPATH_endPosition = "//gml:TimeInstant[@gml:id='endPosition']/gml:timePosition/text()";
+        private final static String XPATH_Envelope = "//ogc:Filter/ogc:BBOX/gml:Envelope";
+	private final static String XPATH_cornerLower = "gml:lowerCorner/text()";
+	private final static String XPATH_upperCorner = "gml:upperCorner/text()";
+        private final static Pattern PATTERN_cornerSplit = Pattern.compile("\\s+");
 
 	static {
 		xmlOutputFactory = new WstxOutputFactory();
@@ -365,6 +369,32 @@ public class UVServlet extends HttpServlet {
                                 parameterMap.put("endPosition", new String[] {endPosition});
 			}
 		}
+
+                {
+                        // Handle bounding box
+                        XPathExpression envelopeExpression =  xpath.compile(XPATH_Envelope);
+                        Object envelopeResult = envelopeExpression.evaluate(document, XPathConstants.NODE);
+                        if (envelopeResult != null && envelopeResult instanceof Node) {
+                            Node envelopeNode = (Node)envelopeResult;
+
+                            XPathExpression lowerCornerExpression =  xpath.compile(XPATH_cornerLower);
+                            XPathExpression upperCornerExpression =  xpath.compile(XPATH_upperCorner);
+
+                            String lowerCornerString = lowerCornerExpression.evaluate(envelopeNode);
+                            String upperCornerString = upperCornerExpression.evaluate(envelopeNode);
+
+                            // Parse the coordinates of the bounding box corner parameters
+                            if (lowerCornerString != null && upperCornerString != null) {
+                                    String[] lowerSplit = PATTERN_cornerSplit.split(lowerCornerString.trim());
+                                    String[] upperSplit = PATTERN_cornerSplit.split(upperCornerString.trim());
+
+                                    // Format to match the bBox passed in as kvp
+                                    String bBox = lowerSplit[0] + "," + lowerSplit[1] + "," + upperSplit[0] + "," + upperSplit[1];
+
+                                    parameterMap.put("bBox", new String[] {lowerSplit[0],lowerSplit[1],upperSplit[0],upperSplit[1]});
+                            }
+                    }
+                }
 
 		return parameterMap;
 	}

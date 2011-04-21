@@ -138,11 +138,6 @@
 
     <script src="GoogleMap/mapiconmaker.js" type="text/javascript"></script>
     <script src="GoogleMap/LoadXML.js" type="text/javascript"></script>
-<!--    <script src="GoogleMap/CreateMarker.js" type="text/javascript"></script>
-    <script src="GoogleMap/createInactiveMarker.js" type="text/javascript"></script>
-    <script src="GoogleMap/parseXML.js" type="text/javascript"></script>
-    <script src="GoogleMap/parseInactiveSites.js" type="text/javascript"></script>
-    <script src="GoogleMap/parseXML_Coastal.js" type="text/javascript"></script>-->
 
     <script type="text/javascript">
 
@@ -282,7 +277,7 @@
                                                 <dd><a href="<%=baseURL%>/sos/uv?request=DescribeSensor"><%=baseURL%>/sos/uv?request=DescribeSensor</a></dd>
                                     </dl>
                                     <dl>
-                                                <dt><b>GetDataAvailablity</b> - featureID, observedProperty, offering, beginPosition and endPostion are all optional. If not used, all the features/properties in the SWIE will be displayed</dt>
+                                                <dt><b>GetDataAvailablity</b> - featureID, observedProperty, and offering are all optional. If not used, all the features/properties in the SWIE will be displayed. Additionally, a bounding box is supported in the XML post</dt>
                                                 <br /><i>GetDataAvailablity by feature ID and offering:</i>
                                                 <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity&offering=UNIT&featureID=05568500"><%=baseURL%>/sos/uv?request=GetDataAvailablity&offering=UNIT&featureID=05568500</a></dd>
                                                 <br /><i>GetDataAvailablity by observed property and feature ID:</i>
@@ -290,7 +285,7 @@
                                                 <br /><i>General (very large file / long load time):</i>
                                                 <dd><a href="<%=baseURL%>/sos/uv?request=GetDataAvailablity"><%=baseURL%>/sos/uv?request=GetDataAvailablity</a></dd>
                                     </dl>
-                                                <br /><i>GetDataAvailablity via XML HTTP body POST:</i><br />
+                                                <br /><i>GetDataAvailablity via XML HTTP body POST by featureID:</i><br />
                                       <dd>  <form name="input" action="<%=baseURL%>/sos/uv?request=GetDataAvailability" method="post">
                                                 <textarea name="xml" rows="10" cols="90">
 <?xml version="1.0" ?>
@@ -305,8 +300,40 @@
     xmlns:fes="http://www.opengis.net/fes/2.0"
     xmlns:xlink="http://www.w3.org/1999/xlink"
     xsi:schemaLocation="http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0.0/sos.xsd">
-<sos:featureOfInterest>05082500</sos:featureOfInterest>
-<sos:observedProperty>Discharge</sos:observedProperty>
+     <sos:featureOfInterest>05082500</sos:featureOfInterest>
+     <sos:observedProperty>Discharge</sos:observedProperty>
+     <sos:offering>UNIT</sos:offering>
+</sos:GetDataAvailablity>
+
+                                                            </textarea><br />
+                                                            <input type="submit" value="Submit" />
+                                                        </form>
+                                    </dd>
+                                                <br /><i>GetDataAvailablity via XML HTTP body POST with bounding box:</i><br />
+                                      <dd>  <form name="input" action="<%=baseURL%>/sos/uv?request=GetDataAvailability" method="post">
+                                                <textarea name="xml" rows="10" cols="90">
+<?xml version="1.0" ?>
+<sos:GetDataAvailablity version="2.0.0" service="SOS"
+    maxFeatures="3"
+    xmlns:sos="http://schemas.opengis.net/sos/2.0.0/"
+    xmlns:wfs="http://www.opengis.net/wfs"
+    xmlns:ogc="http://www.opengis.net/ogc"
+    xmlns:gml="http://www.opengis.net/gml/3.2"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:om="http://www.opengis.net/om/2.0"
+    xmlns:fes="http://www.opengis.net/fes/2.0"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xsi:schemaLocation="http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0.0/sos.xsd">
+     <sos:observedProperty>Discharge</sos:observedProperty>
+     <sos:offering>UNIT</sos:offering>
+     <ogc:Filter>
+        <ogc:BBOX>
+          <gml:Envelope>
+            <gml:lowerCorner>-90 43</gml:lowerCorner>
+            <gml:upperCorner>-89.2 43.7</gml:upperCorner>
+          </gml:Envelope>
+        </ogc:BBOX>
+     </ogc:Filter>
 </sos:GetDataAvailablity>
 
                                                             </textarea><br />
@@ -387,14 +414,14 @@
                                                 <dd><a href="<%=baseURL%>/sos/dv?request=DescribeSensor"><%=baseURL%>/sos/dv?request=DescribeSensor</a></dd>
                                     </dl>
                                     <dl>
-                                                <dt><b>GetDataAvailablity</b> - featureID, offering, observedProperty, beginPosition and endPostion are all optional. If not used, all the features/properties in the SWIE will be displayed</dt>
+                                                <dt><b>GetDataAvailablity</b> - featureID, offering, and observedProperty are all optional. If not used, all the features/properties in the SWIE will be displayed.  Additionally, a bounding box is supported in the XML post.</dt>
                                                 <br /><i>GetDataAvailablity by feature ID and offering:</i>
                                                 <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity&featureID=05082500&offering=mean"><%=baseURL%>/sos/dv?request=GetDataAvailablity&featureID=05082500&offering=mean</a></dd>
                                                 <br /><i>GetDataAvailablity by observed property and feature ID:</i>
                                                 <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500"><%=baseURL%>/sos/dv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500</a></dd>
                                                 <br /><i>General (very large file / long load time):</i>
                                                 <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity"><%=baseURL%>/sos/dv?request=GetDataAvailablity</a></dd>
-                                                <br /><i>GetDataAvailablity via XML HTTP body POST:</i><br />
+                                                <br /><i>GetDataAvailablity via XML HTTP body POST by feature ID:</i><br />
                                       <dd>  <form name="input" action="<%=baseURL%>/sos/dv?request=GetDataAvailability" method="post">
                                                 <textarea name="xml" rows="10" cols="90">
 <?xml version="1.0" ?>
@@ -409,9 +436,40 @@
     xmlns:fes="http://www.opengis.net/fes/2.0"
     xmlns:xlink="http://www.w3.org/1999/xlink"
     xsi:schemaLocation="http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0.0/sos.xsd">
-<sos:featureOfInterest>05082500</sos:featureOfInterest>
-<sos:observedProperty>Discharge</sos:observedProperty>
-<sos:offering>00003</sos:offering>
+       <sos:featureOfInterest>05082500</sos:featureOfInterest>
+       <sos:observedProperty>Discharge</sos:observedProperty>
+       <sos:offering>MEAN</sos:offering>
+</sos:GetDataAvailablity>
+
+                                                            </textarea><br />
+                                                            <input type="submit" value="Submit" />
+                                                        </form>
+                                    </dd>
+                                      <br /><i>GetDataAvailablity via XML HTTP body POST by bounding box:</i><br />
+                                      <dd>  <form name="input" action="<%=baseURL%>/sos/dv?request=GetDataAvailability" method="post">
+                                                <textarea name="xml" rows="10" cols="90">
+<?xml version="1.0" ?>
+<sos:GetDataAvailablity version="2.0.0" service="SOS"
+    maxFeatures="3"
+    xmlns:sos="http://schemas.opengis.net/sos/2.0.0/"
+    xmlns:wfs="http://www.opengis.net/wfs"
+    xmlns:ogc="http://www.opengis.net/ogc"
+    xmlns:gml="http://www.opengis.net/gml/3.2"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:om="http://www.opengis.net/om/2.0"
+    xmlns:fes="http://www.opengis.net/fes/2.0"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xsi:schemaLocation="http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0.0/sos.xsd">
+       <sos:observedProperty>Discharge</sos:observedProperty>
+       <sos:offering>MEAN</sos:offering>
+       <ogc:Filter>
+          <ogc:BBOX>
+            <gml:Envelope>
+              <gml:lowerCorner>-90 43</gml:lowerCorner>
+              <gml:upperCorner>-89.2 43.7</gml:upperCorner>
+            </gml:Envelope>
+          </ogc:BBOX>
+       </ogc:Filter>
 </sos:GetDataAvailablity>
 
                                                             </textarea><br />
@@ -518,6 +576,10 @@
              <dl>
                         <dt>Example output with comments about content:</dt>
                         <dd><a href="<%=baseURL%>/sos?request=wml2_Example"><%=baseURL%>/sos?request=wml2_Example</a></dd>
+            </dl>
+             <dl>
+                        <dt>Plot Examples:</dt>
+                        <dd><a href="<%=baseURL%>/GoogleMap/DischargePlot.jsp"><%=baseURL%>/GoogleMap/DischargePlot.jsp</a></dd>
             </dl>
             <dl>Required External Schemas<br />
                 <dd>

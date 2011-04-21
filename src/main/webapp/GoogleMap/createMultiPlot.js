@@ -7,18 +7,7 @@ function createMultiPlot(sos_url, gdaDV_url, gdaUV_url, service, stat_cd, observ
 
         var data = new google.visualization.DataTable();
 
-        var sos_splitINI = sos_urlArray[0].split("&");
-        var sosINI = sos_splitINI[0] + "&" + sos_splitINI[1] + "&" + sos_splitINI[3] + "&latest";
-        var xml = LoadXML(sosINI);
-        var name = $(xml).find('[nodeName="gml:name"],name',this).text();
-        var Watershed = $(xml).find('[nodeName="om:value"],value', this).text();
-        var Location = $(xml).find('[nodeName="gml:pos"],pos', this).text();
-        var Org = $(xml).find('[nodeName="gmd:CharacterString"],CharacterString', this).text();
-
-        var html_2 = '<b>' + name + '<br />';
-        var html = html_2 + Watershed + ' Watershed </b><br /><b>Location: </b>' + Location + '<br /><b>Managed by: </b>' + Org + '<br /><br />';
         var Plot_table = "<table border='1' cellpadding='2'><tr><td></td><td><center><b>Property</b></center></td><td><center><b>Offering</b></center></td><td><center><b>Begin date</b></center></td><td><center><b>End date</b></center></td></tr>";
-
         var xml_UV = LoadXML(gdaUV_url);
         $(xml_UV).find('[nodeName="gda:FeaturePropertyTemporalRelationship"],FeaturePropertyTemporalRelationship').each(function(){
             var Property = $(this).find('[nodeName="gda:targetProperty"],targetProperty');
@@ -75,9 +64,8 @@ function createMultiPlot(sos_url, gdaDV_url, gdaUV_url, service, stat_cd, observ
         });
 
         var table_1 = '<b>Available data:</b><br />' + Plot_table + '</table>';
-        document.getElementById("side_bar_header").innerHTML = (html);
+
         document.getElementById("side_bar").innerHTML = (table_1 );
-        document.getElementById("Station_name").innerHTML = (html_2);
 
         data.addColumn('datetime', 'Date');
         var colorINI = ['Red', 'Green', 'Orange', 'Purple', 'Maroon', 'Navy', 'Black', 'Blue', '#0066DD'];
@@ -86,8 +74,17 @@ function createMultiPlot(sos_url, gdaDV_url, gdaUV_url, service, stat_cd, observ
             var ser = serviceArray[i];
             var stat = stat_cdArray[i];
             var sos_split = sos_urlArray[i].split("&");
-            var sos = sos_split[0] + "&" + sos_split[1] + "&" + sos_split[3] + "&latest";
+
+            //var sos = sos_split[0] + "&" + sos_split[1] + "&" + sos_split[3] + "&latest";
+            var sos = sos_urlArray[i] + "&latest";
             var ColumnData = LoadXML(sos);
+            var name = $(ColumnData).find('[nodeName="gml:name"],name',this).text();
+            var Watershed = $(ColumnData).find('[nodeName="om:value"],value', this).text();
+            var Location = $(ColumnData).find('[nodeName="gml:pos"],pos', this).text();
+            var Org = $(ColumnData).find('[nodeName="gmd:CharacterString"],CharacterString', this).text();
+            var html_2 = '<b>' + name + '<br />';
+            var html = html_2 + Watershed + ' Watershed </b><br /><b>Location: </b>' + Location + '<br /><b>Managed by: </b>' + Org + '<br /><br />';
+
             var units = $(ColumnData).find('[nodeName="wml2:unitOfMeasure"],unitOfMeasure', this).attr("uom");
             var PropertyName = $(ColumnData).find('[nodeName="om:observedProperty"],observedProperty', this).attr("xlink:title");
             var Title = PropertyName + ' (' + units + ')';
@@ -99,7 +96,8 @@ function createMultiPlot(sos_url, gdaDV_url, gdaUV_url, service, stat_cd, observ
                 color[i] = colorINI[i];
             }
         }
-
+        document.getElementById("side_bar_header").innerHTML = (html);
+        document.getElementById("Station_name").innerHTML = (html_2);
         var k = 0;
         for (j = 0; j < sos_urlArray.length; j++){
             var PlotData = LoadXML(sos_urlArray[j]);
