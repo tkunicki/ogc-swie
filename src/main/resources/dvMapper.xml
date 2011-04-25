@@ -425,7 +425,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                     AND a.site_id = b.site_id
                     AND j.site_id = b.site_id
                     AND j.dd_nu = a.dd_nu
-                    AND j.access_cd = '0'
+<!--                    AND j.access_cd = '0'-->
                     GROUP BY a.site_id) s,
 
 		nwisweb.PARAM_REF d,
@@ -450,7 +450,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 AND e.site_id = s.site_id
 		AND d.parameter_cd = e.parameter_cd
                 AND e.dd_nu = g.dd_nu
-                AND e.access_cd = '0'
+<!--                AND e.access_cd = '0'-->
                 AND h.huc_cd = f.huc_cd
                 AND h.state_cd = f.state_cd
 

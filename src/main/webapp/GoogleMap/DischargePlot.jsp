@@ -25,9 +25,7 @@
     String sos_url;
     String service;
     String observedProperty;
-    String offering;
     String stat_cd;
-    String gdaUV_url = base_url + "/sos/uv?request=GetDataAvailablity&featureID=";
     String gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity&featureID=";
     sos_url = "";
     service = "";
@@ -40,9 +38,7 @@
     String endPosition = request.getParameter("endPosition");
 
     String[] obsProp;
-
     String[] stat_cdArray;
-    String[] serviceArray;
     String[] sos_urlArray;
     String[] offeringArray;
 
@@ -50,27 +46,21 @@
     String mapLink = "<a href =" + base_url + ">Return home</a>";
 
     if (Property != null) {
-
         obsProp = new String[Property.length];
         stat_cdArray = new String[Property.length];
-        serviceArray = new String[Property.length];
         sos_urlArray = new String[Property.length];
         offeringArray = new String[Property.length];
 
         for (int i = 0; i < Property.length; i++){
+            obsProp[i] = Property[i].split("_")[0];
+            offeringArray[i] = Property[i].split("_")[1];
+            stat_cdArray[i] = offeringArray[i];
 
-            obsProp[i] = Property[i].split(",")[0];
-            offeringArray[i] = Property[i].split(",")[1];
-            serviceArray[i] = offeringArray[i].substring(0, 2);
-            stat_cdArray[i] = offeringArray[i].substring(2);
-
-            if (serviceArray[i].equalsIgnoreCase("DV")) {
-                sos_urlArray[i] = base_url + "/sos/dv?request=GetObservation&featureId=" + featureID + "&offering=" + stat_cdArray[i] + "&observedProperty=" + obsProp[i];
-
-            } else if (serviceArray[i].equalsIgnoreCase("UV")) {
+            if (offeringArray[i].equalsIgnoreCase("00000")) {
                 sos_urlArray[i] = base_url + "/sos/uv?request=GetObservation&featureId=" + featureID + "&offering=UNIT&observedProperty=" + obsProp[i];
+
             } else {
-                sos_urlArray[i] = base_url + "/sos/uv?request=GetObservation&featureId=" + featureID + "&offering=UNIT&observedProperty=" + obsProp[i];
+                sos_urlArray[i] = base_url + "/sos/dv?request=GetObservation&featureId=" + featureID + "&offering=" + stat_cdArray[i] + "&observedProperty=" + obsProp[i];
             }
 
             if (beginPosition != null) {
@@ -90,39 +80,34 @@
 
              Data_link = Data_link + "<a href =" + sos_urlArray[i] + ">Link to plot data: offering=" + stat_cdArray[i] + "&observedProperty=" + obsProp[i] + "</a><br />";
              sos_url = sos_url + sos_urlArray[i] + ",";
-             service = service + serviceArray[i] + ",";
              stat_cd = stat_cd + stat_cdArray[i] + ",";
              observedProperty = observedProperty + obsProp[i] + ",";
 
         }
         sos_url = sos_url.substring(0, (sos_url.length() - 1));
-        service = service.substring(0, (service.length() - 1));
         stat_cd = stat_cd.substring(0, (stat_cd.length() - 1));
         observedProperty = observedProperty.substring(0, (observedProperty.length() - 1));
         gdaDV_url = gdaDV_url + featureID;
-        gdaUV_url = gdaUV_url + featureID;
+
     } else {
         if (featureID != null) {
             sos_url = base_url + "/sos/dv?request=GetObservation&offering=00003&observedProperty=00060&Interval=ThisYear&featureID=" + featureID;
-            service = "DV";
             stat_cd = "00003";
             observedProperty = "00060";
             gdaDV_url = gdaDV_url + featureID;
-            gdaUV_url = gdaUV_url + featureID;
             beginPosition = LastYear;
             endPosition = Today;
-                   } else {
+        } else {
             sos_url = base_url + "/sos/dv?request=GetObservation&featureId=05082500&offering=00003&observedProperty=00060&Interval=ThisYear";
             featureID = "05082500";
-            service = "DV";
             stat_cd = "00003";
             observedProperty = "00060";
             gdaDV_url = gdaDV_url + "05082500";
-            gdaUV_url = gdaUV_url + "05082500";
             beginPosition = LastYear;
             endPosition = Today;
         }
    }
+
 %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -151,24 +136,21 @@
         <title>OGC Services SWIE</title>
         <script type='text/javascript' src='https://www.google.com/jsapi'></script>
         <script type="text/javascript" src="jquery-1.5.1.js"></script>
+
         <script src="LoadXML.js" type="text/javascript"></script>
         <script type="text/javascript" src="createMultiPlot.js"></script>
         <script type='text/javascript'>
             var gdaDV_url = '<%=gdaDV_url%>';
-            var gdaUV_url = '<%=gdaUV_url%>';
-
             var sos_url = '<%=sos_url%>';
-            var service = '<%=service%>';
             var stat_cd = '<%=stat_cd%>';
             var observedProperty = '<%=observedProperty%>';
             var featureID = '<%=featureID%>';
             var base_url = '<%=base_url%>';
 
             google.load('visualization', '1', {'packages':['annotatedtimeline']});
-            google.setOnLoadCallback(createMultiPlot (sos_url, gdaDV_url, gdaUV_url, service, stat_cd, observedProperty));
+            google.setOnLoadCallback(createMultiPlot (sos_url, gdaDV_url, stat_cd, observedProperty));
 
         </script>
-
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
@@ -201,12 +183,16 @@
                 </td>
             </tr>
         </table>
-        <h1>Surface Water IE Plotting Example</h1>
-
-                <table border="1" cellpadding="5">
+        <br />
+<!--        <h1>Surface Water IE Plotting Example</h1>-->
+                <table cellpadding="5">
+                    <tr>
+                        <th COLSPAN=2>
+                            <center><div id='Station_name' ></div></center>
+                        </th>
+                    </tr>
                     <tr>
                         <td>
-                            <div id='Station_name' ></div><br />
                             <div id='chart_div' style='width: 700px; height: 500px;'>Loading...<img alt="Spinner"  src = "ajax-loader.gif" /></div><br />
                             <table style='width: 700px'>
                                 <tr>
@@ -222,10 +208,6 @@
 
                         </td>
                         <td style="overflow:scroll; height:500px; width:500px">
-                            <div id='side_bar_header'>Loading...</div>
-                            Click on the requested properties and hit the Submit button at the bottom. Alternatively, choose a new station ID, and click the 'Get New Station'
-                            to re-populate available data chart.<br /><br />
-                            <b>Warning!</b> Multi-line plots are supported, but choosing too much data will cause the load time to be slow.  Firefox seems to work best for large data sets.<br /><br />
                             <form action="DischargePlot.jsp" >
                                 <table>
                                     <tr><td><input type="submit" value="Get New Station:" tabindex="1"/></td><td><input type="text" name="featureID" value="<%=featureID%>" tabindex="1"/></td></tr>
@@ -234,20 +216,28 @@
                             <form action="DischargePlot.jsp" >
                                 <table>
                                     <tr><td><input type="hidden" name="featureID" value="<%=featureID%>"/></td></tr>
-                                    <tr><td>Begin Date: </td><td><input type="text" name="beginPosition" value="<%=beginPosition%>" tabindex="2"/></td></tr>
+                                    <tr><td width=119>Begin Date: </td><td><input type="text" name="beginPosition" value="<%=beginPosition%>" tabindex="2"/></td></tr>
                                     <tr><td>End Date: </td><td><input type="text" name="endPosition" value="<%=endPosition%>" tabindex="3"/></td></tr>
                                     <tr><td></td></tr>
                                 </table>
-                                    <div id='side_bar' style="overflow:scroll; height: 250px; width:475px">Loading...<img alt="Spinner"  src = "ajax-loader.gif" /></div><br />
-                                    <input type="submit" value="Submit" tabindex="4"/>
+                                    <div id='side_bar' style="overflow:scroll; height: 400px; width:475px">Loading...<img alt="Spinner"  src = "ajax-loader.gif" /></div><br />
+                                    <input type="submit" value="Submit" tabindex="5"/>
                             </form>
                         </td>
+                    </tr>
+                    <tr>
+                        <td COLSPAN=2>
+                            <b>Warning! </b><span style="font-weight: normal;">Multi-line plots are supported, but choosing too much data will cause the load time to be slow. Click on the requested properties and hit the Submit button at the bottom of the available data table. Alternatively, choose a new station ID, and click the 'New Station'
+                    button to re-populate data chart.</span>
+                        </td>
+
                     </tr>
                 </table>
 
         <span> <font size="0.5"><br />* References to non-U.S. Department of the Interior (DOI) products do not constitute an endorsement by the DOI. By viewing the Google Visualization API on this web site the user agrees to these
         <a href="http://code.google.com/apis/visualization/terms.html" target="_blank" title="Opens a new browser window.">Terms of Service set forth by Google</a>.<br /></font></span>
         <br />
+
 
         <!-- BEGIN USGS Footer Template -->
 

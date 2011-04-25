@@ -195,76 +195,46 @@ function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watersh
 
         var Properties = [];
         var time = "";
-        document.getElementById("AvailableData").innerHTML = 'Loading...<img src = "ajax-loader.gif" />'; 
+        document.getElementById("AvailableData").innerHTML = 'Loading...<img src = "GoogleMap/ajax-loader.gif" />';
+
 
         var sos_url_base = base_url + "/sos/uv?request=GetObservation&featureId=" + Site_no + "&latest&observedProperty=";
         var gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity&featureID=" + Site_no;
-        var gdaUV_url = base_url + "/sos/uv?request=GetDataAvailablity&featureID=" + Site_no;
-        var html = '<br />';
-        var Plot_table_DV = "Available Data:<br /><center><table border='1'><tr><td><b><center>Property</center></b></td><td><b><center>Offering</center></b></td><td><center><b>Begin Time</center></b></td><td><b><center>End Time</center></b></td></tr>";
-        var table_latest = "<center><table border='1'><tr><td><center><b>Property</b></td></center><td><center><b>Value</b></center></td><td><center><b>Comments</b></center></td></tr>";
 
-        var xml_UV = LoadXML(gdaUV_url);
-        $(xml_UV).find('[nodeName="gda:FeaturePropertyTemporalRelationship"],FeaturePropertyTemporalRelationship').each(function(){
+        var html = '<br />';
+        var time = '';
+        var Data_table = "Available Data:<br /><center><table border='1'><tr><td><b><center>Property</center></b></td><td><b><center>Offering</center></b></td><td><center><b>Begin Time</center></b></td><td><b><center>End Time</center></b></td></tr>";
+
+        var xml_Data = LoadXML(gdaDV_url);
+        $(xml_Data).find('[nodeName="gda:FeaturePropertyTemporalRelationship"],FeaturePropertyTemporalRelationship').each(function(){
             var Property = $(this).find('[nodeName="gda:targetProperty"],targetProperty');
             var Prop = Property.attr("xlink:title");
             var Parameter_cd_long = Property.attr("xlink:href");
             var Parameter_cd_array = Parameter_cd_long.split("_");
             var Parameter_cd = Parameter_cd_array[1];
+            var Offering = Property.attr("x-offering");
+            var Offering_cd = Property.attr("xlink:href").split("_")[2];
             var beginTime_long = $(this).find('[nodeName="gml:beginPosition"],beginPosition').text();
             var beginTime = beginTime_long.substr(0,16);
             var beginDate = beginTime.split(" ")[0];
             var endTime_long = $(this).find('[nodeName="gml:endPosition"],endPosition').text();
             var endTime = endTime_long.substr(0,16);
             var endDate = endTime.split(" ")[0];
-            if (Parameter_cd == '00060' || Parameter_cd == '00065') {
-                var sos_url = sos_url_base + Parameter_cd + '&latest';
-                var xml_SOS = LoadXML(sos_url);
-                $(xml_SOS).find('[nodeName="wml2:TimeseriesObservation"],TimeseriesObservation').each(function(){
-                        var units = $(this).find('[nodeName="wml2:unitOfMeasure"],unitOfMeasure').attr("uom");
-                        var time_long = $(this).find('[nodeName="wml2:time"],time').first().text();
-                        var Prop = $(this).find('[nodeName="om:observedProperty"],observedProperty').attr("xlink:title");
-                        time = time_long.substr(0,16);
-                        time = time.replace("T"," ");
-                        var value = $(this).find('[nodeName="wml2:value"],value').first().text();
-                        var comments = $(this).find('[nodeName="wml2:comment"],comment').first().text();
-                        table_latest = table_latest + '<tr><td>' + Prop + '</td><td>' + value + ' ' + units + '</td><td>' + comments + '</td></tr>';
-                 });
-            }
-            var Plot_links_UV = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?&featureID=' + Site_no + '&observedProperty=' + Parameter_cd + ',UV&beginPosition=' + LastWeekStr + '&endPosition=' + endDate + '>' + Prop + '</a>';
-            Plot_table_DV = Plot_table_DV + '<tr><td>' + Plot_links_UV + '</td><td>UNIT</td><td>' + beginDate + '</td><td>' + endDate + '</td></tr>';
+
+            var Plot_links = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?&featureID=' + Site_no + '&observedProperty=' + Parameter_cd + '_' + Offering_cd;
+            Plot_links = Plot_links + '&beginPosition=' + LastWeekStr + '&endPosition=' + endDate + '>' + Prop + '</a>';
+            Data_table = Data_table + '<tr><td>' + Plot_links + '</td><td>' + Offering + '</td><td>' + beginDate + '</td><td>' + endDate + '</td></tr>';
         });
 
-        var xml_DV = LoadXML(gdaDV_url);
-        $(xml_DV).find('[nodeName="gda:FeaturePropertyTemporalRelationship"],FeaturePropertyTemporalRelationship').each(function(){
-            var Property_DV = $(this).find('[nodeName="gda:targetProperty"],targetProperty');
-            var Prop_DV = Property_DV.attr("xlink:title");
-            var Offering = Property_DV.attr("x-offering");
-            var Offering_cd = Property_DV.attr("xlink:href").split("_")[2];
-            var Parameter_cd_long_DV = Property_DV.attr("xlink:href");
-            var Parameter_cd_array_DV = Parameter_cd_long_DV.split("_");
-            var Parameter_cd_DV = Parameter_cd_array_DV[1];
-            var beginTime_long_DV = $(this).find('[nodeName="gml:beginPosition"],beginPosition').text();
-            var beginTime_DV = beginTime_long_DV.substr(0,16);
-            var beginDate_DV = beginTime_DV.split(" ")[0];
-            var endTime_long_DV = $(this).find('[nodeName="gml:endPosition"],endPosition').text();
-            var endTime_DV = endTime_long_DV.substr(0,16);
-            var endDate_DV = endTime_DV.split(" ")[0];
-            var endDateYear = parseInt(endTime_DV.split("-")[0]) - 1;
-            var beginDateLink = endDateYear.toString() + '-' + endTime_DV.split("-")[1] + '-' + endTime_DV.split("-")[2];
+        var AvailableTable = html + Data_table + '</table></center><br />';
 
-            Plot_links_DV = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?featureID=' + Site_no + '&observedProperty=' + Parameter_cd_DV + ',DV' + Offering_cd + '&beginPosition=' + beginDateLink + '&endPosition=' + endDate_DV + '>' + Prop_DV + '</a>';
-            Plot_table_DV = Plot_table_DV + '<tr><td>' + Plot_links_DV + '</td><td>' + Offering + '</td><td>' + beginDate_DV + '</td><td>' + endDate_DV + '</td></tr>';
-        });
-        var AvailableTable = html + Plot_table_DV + '</table></center><br />';
-
-        var LatestTable = html_header + '<br /><br />Latest Data: ' + time + table_latest + '</table></center>';
-        document.getElementById("AvailableData").innerHTML = LatestTable + AvailableTable;
+        document.getElementById("AvailableData").innerHTML = html_header + '<br />' + AvailableTable;
 
         ActiveMarker.hide();
         ActiveMarker = new GMarker(point, clickedIcon);
         map.addOverlay(ActiveMarker);
-        });
+
+    });
 
     return marker;
 }

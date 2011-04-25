@@ -322,7 +322,75 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             AND b.stat_cd = d.stat_cd
 
             GROUP BY c.site_no, a.parameter_cd, d.stat_nm
-            ORDER BY a.parameter_cd
+
+            UNION
+
+            SELECT
+            a.site_no,
+            a.station_nm,
+            d.parameter_nm,
+            CONCAT (d.parameter_nm,' (UNIT)') AS parameter_nm_stat,
+            CONCAT (d.parameter_cd,'_00000') AS parameter_cd,
+            MIN(b.result_dt) AS BeginPosition,
+            MAX(b.result_dt) AS EndPosition,
+            CONCAT(d.parameter_cd,'_',a.site_no,'_00000') AS parameterSite,
+            'UNIT' as stat_nm
+
+            FROM (
+                SELECT DISTINCT
+                site_id,
+                site_no,
+                station_nm,
+                dec_long_va,
+                dec_lat_va
+                FROM nwisweb.SITEFILE
+                <choose>
+                      <when test="featureId != null">
+                                WHERE site_no IN (#{featureId})
+                      </when>
+                      <when test="bBox0 != null">
+                                WHERE dec_long_va BETWEEN #{bBox0} AND #{bBox2} AND dec_lat_va BETWEEN #{bBox1} AND #{bBox3}
+                      </when>
+                      <otherwise>
+                                WHERE site_no IN (
+                                        '01427207','01427510','01434000','01438500','01457500','01463500',
+                                        '04073365','04073500','04082400','04084445','040851385','05344500',
+                                        '05378500','05389500','05391000','05395000','05404000','05407000',
+                                        '05420500','05543500','05543830','05545750','05551540','05552500',
+                                        '05558300','05568500','05586100','07010000','07020500',
+                                        '07022000','05051500','05054000','05082500','04269000','040851385',
+                                        '04010500','04024000','04024430','04027000','04027500','04040000','04045500','04059000',
+                                        '04059500','04067500','04069500','04071765','04085427','04086000','04087000','04092750','04095090',
+                                        '04102500','04121970','04122200','04122500','04137500','04142000','04157000','04159492','04165500',
+                                        '04174500','04176500','04193500','04195820','04198000','04199000','04199500','04200500','04201500',
+                                        '04208000','04212100','04213500','04218000','04231600','04249000','04260500','04263000','04265432',
+
+                                    <!-- NASQAN Coastal Subnetwork -->
+
+                                        '01578310','01646580','02226160','02470500','04264331','07374525',
+                                        '07381495','08475000','09522000','11303500','11447650','14246900','15565447'
+                                            )
+                        </otherwise>
+                 </choose>
+                ) a,
+
+                nwisweb.UV b,
+                nwisweb.UV_DD_CONF c,
+                nwisweb.PARAM_REF d
+
+            WHERE a.site_id = b.site_id
+            AND b.site_id = c.site_id
+            AND b.dd_nu = c.dd_nu
+            <if test="observedProperty != null">
+                AND c.parameter_cd = (#{observedProperty})
+            </if>
+
+            AND c.access_cd = '0'
+            AND c.parameter_cd = d.parameter_cd
+
+            GROUP BY a.site_no, c.parameter_cd
+
+            ORDER BY parameter_cd
 
 	</select>
 
@@ -386,18 +454,86 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             </if>
 
             GROUP BY c.site_no, a.parameter_cd, d.stat_nm
-            ORDER BY c.site_no
+
+            UNION
+
+               SELECT
+                a.site_no,
+                a.agency_cd,
+                a.station_nm,
+                d.parameter_nm,
+                CONCAT(d.parameter_nm,' (UNIT)') AS parameter_nm_stat,
+                CONCAT(d.parameter_cd,'_',a.site_no,'_00000') AS parameterSite,
+                'UNIT' AS stat_nm
+
+                FROM (
+                    SELECT DISTINCT
+                    site_id,
+                    site_no,
+                    station_nm,
+                    dec_long_va,
+                    dec_lat_va,
+                    agency_cd
+                    FROM nwisweb.SITEFILE
+                    <choose>
+                          <when test="featureId != null">
+                                    WHERE site_no IN (#{featureId})
+                          </when>
+                          <when test="bBox0 != null">
+                                    WHERE dec_long_va BETWEEN #{bBox0} AND #{bBox2} AND dec_lat_va BETWEEN #{bBox1} AND #{bBox3}
+                          </when>
+                          <otherwise>
+                                    WHERE site_no IN (
+                                            '01427207','01427510','01434000','01438500','01457500','01463500',
+                                            '04073365','04073500','04082400','04084445','040851385','05344500',
+                                            '05378500','05389500','05391000','05395000','05404000','05407000',
+                                            '05420500','05543500','05543830','05545750','05551540','05552500',
+                                            '05558300','05568500','05586100','07010000','07020500',
+                                            '07022000','05051500','05054000','05082500','04269000','040851385',
+                                            '04010500','04024000','04024430','04027000','04027500','04040000','04045500','04059000',
+                                            '04059500','04067500','04069500','04071765','04085427','04086000','04087000','04092750','04095090',
+                                            '04102500','04121970','04122200','04122500','04137500','04142000','04157000','04159492','04165500',
+                                            '04174500','04176500','04193500','04195820','04198000','04199000','04199500','04200500','04201500',
+                                            '04208000','04212100','04213500','04218000','04231600','04249000','04260500','04263000','04265432',
+
+                                        <!-- NASQAN Coastal Subnetwork -->
+
+                                            '01578310','01646580','02226160','02470500','04264331','07374525',
+                                            '07381495','08475000','09522000','11303500','11447650','14246900','15565447'
+                                                )
+                            </otherwise>
+                     </choose>
+                    ) a,
+
+                    nwisweb.UV b,
+                    nwisweb.UV_DD_CONF c,
+                    nwisweb.PARAM_REF d
+
+                WHERE a.site_id = b.site_id
+                AND b.site_id = c.site_id
+                AND b.dd_nu = c.dd_nu
+                <if test="observedProperty != null">
+                    AND c.parameter_cd = (#{observedProperty})
+                </if>
+
+                AND c.access_cd = '0'
+                AND c.parameter_cd = d.parameter_cd
+                GROUP BY a.site_no, c.parameter_cd
+
+                ORDER BY site_no
+
+
 
 	</select>
 
 	<select id="dataPropertySelect" parameterType="map" resultMap="dataPropertyMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
             SELECT c.site_no,
+            c.station_nm,
             e.parameter_nm,
-            CONCAT (e.parameter_nm,' (',d.stat_nm,')') AS parameter_nm_stat,
-            d.stat_nm,
             e.parameter_cd,
+            CONCAT (e.parameter_nm,' (',d.stat_nm,')') AS parameter_nm_stat,
             CONCAT(e.parameter_cd,'_',c.site_no,'_',d.stat_cd) AS parameterSite,
-            c.station_nm
+            d.stat_nm
 
             FROM
             nwisweb.DV_DD_CONF a,
@@ -450,7 +586,71 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             </if>
 
             GROUP BY c.site_no, a.parameter_cd, d.stat_nm
-            ORDER BY a.parameter_cd
+
+            UNION
+
+           SELECT
+            a.site_no,
+            a.station_nm,
+            d.parameter_nm,
+            d.parameter_cd,
+            CONCAT(d.parameter_nm,' (UNIT)') AS parameter_nm_stat,
+            CONCAT(d.parameter_cd,'_',a.site_no,'_00000') AS parameterSite,
+            'UNIT' as stat_nm
+
+            FROM (
+                SELECT DISTINCT
+                site_id,
+                site_no,
+                station_nm,
+                dec_long_va,
+                dec_lat_va
+                FROM nwisweb.SITEFILE
+                <choose>
+                      <when test="featureId != null">
+                                WHERE site_no IN (#{featureId})
+                      </when>
+                      <when test="bBox0 != null">
+                                WHERE dec_long_va BETWEEN #{bBox0} AND #{bBox2} AND dec_lat_va BETWEEN #{bBox1} AND #{bBox3}
+                      </when>
+                      <otherwise>
+                                WHERE site_no IN (
+                                        '01427207','01427510','01434000','01438500','01457500','01463500',
+                                        '04073365','04073500','04082400','04084445','040851385','05344500',
+                                        '05378500','05389500','05391000','05395000','05404000','05407000',
+                                        '05420500','05543500','05543830','05545750','05551540','05552500',
+                                        '05558300','05568500','05586100','07010000','07020500',
+                                        '07022000','05051500','05054000','05082500','04269000','040851385',
+                                        '04010500','04024000','04024430','04027000','04027500','04040000','04045500','04059000',
+                                        '04059500','04067500','04069500','04071765','04085427','04086000','04087000','04092750','04095090',
+                                        '04102500','04121970','04122200','04122500','04137500','04142000','04157000','04159492','04165500',
+                                        '04174500','04176500','04193500','04195820','04198000','04199000','04199500','04200500','04201500',
+                                        '04208000','04212100','04213500','04218000','04231600','04249000','04260500','04263000','04265432',
+
+                                    <!-- NASQAN Coastal Subnetwork -->
+
+                                        '01578310','01646580','02226160','02470500','04264331','07374525',
+                                        '07381495','08475000','09522000','11303500','11447650','14246900','15565447'
+                                            )
+                        </otherwise>
+                 </choose>
+                ) a,
+
+                nwisweb.UV b,
+                nwisweb.UV_DD_CONF c,
+                nwisweb.PARAM_REF d
+
+            WHERE a.site_id = b.site_id
+            AND b.site_id = c.site_id
+            AND b.dd_nu = c.dd_nu
+            <if test="observedProperty != null">
+                AND c.parameter_cd = (#{observedProperty})
+            </if>
+
+            AND c.access_cd = '0'
+            AND c.parameter_cd = d.parameter_cd
+            GROUP BY a.site_no, c.parameter_cd
+            ORDER BY parameter_cd
 
 	</select>
 
