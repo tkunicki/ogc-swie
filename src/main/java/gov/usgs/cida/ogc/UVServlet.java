@@ -40,6 +40,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Servlet implementation class to handle WML requests
@@ -49,22 +51,11 @@ public class UVServlet extends HttpServlet {
 	private static final String OBSERVATION_ID = "observationId";
 	private static final String DEFAULT_ENCODING = "UTF-8";
 	private static final long serialVersionUID = 1L;
-
-	//private final static String XPATH_Envelope = "//sos:GetObservation/sos:featureOfInterest/ogc:BBOX[ogc:PropertyName='gml:location']/gml:Envelope";
-//	private final static String XPATH_Envelope = "//sos:GetObservation/wml:featureOfInterest/ogc:BBOX/gml:Envelope";
-//	private final static String XPATH_cornerLower = "gml:lowerCorner/text()";
-//	private final static String XPATH_upperCorner = "gml:upperCorner/text()";
-//	//private final static String XPATH_filter = "//ogc:Filter";
-//	private final static String XPATH_eventTime = "//wml:eventTime";
-//	private final static String XPATH_featureId = "//ogc:FeatureId/@fid";
-//        private final static String XPATH_observedProperty = "//om:observedProperty/@fid";
-//	private static final String XPATH_observationId = "//wml:ObservationId";
-//	private final static Pattern PATTERN_cornerSplit = Pattern.compile("\\s+");
-
-        private final static XMLOutputFactory2 xmlOutputFactory;
+        private final static String XPATH_request = "local-name(/*)";
+	private final static XMLOutputFactory2 xmlOutputFactory;
 
         public static final String XPATH_FEATURE_ID = "//sos:featureOfInterest/text()";
-        public static final String XPATH_INTERVAL = "//sos:interval/text()";
+        public static final String XPATH_OFFERING = "//sos:offering/text()";
         public static final String XPATH_observedProperty = "//sos:observedProperty/text()";
         public static final String XPATH_beginPosition = "//gml:TimeInstant[@gml:id='beginPosition']/gml:timePosition/text()";
         public static final String XPATH_endPosition = "//gml:TimeInstant[@gml:id='endPosition']/gml:timePosition/text()";
@@ -126,31 +117,56 @@ public class UVServlet extends HttpServlet {
                 parameters.put("request", new String[] {SOS_1_0_Operation.GetObservation.name()});
             }
 
+            String[] featureIDArray = parameters.get(OGCBusinessRules.FEATURE_ID);
+            if (featureIDArray != null && featureIDArray.length > 0){
+                String featureID = featureIDArray[0];
+                String[] featureIDSplit = featureID.split(",");
+
+                parameters.put(OGCBusinessRules.FEATURE_ID, featureIDSplit);
+            } // Can't put a default here because it breaks GDA
+
             String[] observedProperties = parameters.get(OGCBusinessRules.observedProperty);
             if (observedProperties != null && observedProperties.length > 0){
                 String observedProperty = observedProperties[0];
-
-                try {
-                    observedProperty = ObservedProperties.valueOf(observedProperty.toUpperCase()).code;
-                } catch (IllegalArgumentException e) {
-                    // property not found in list...
+                String[] observedPropertySplit = observedProperty.split(",");
+                for (int i=0; i<observedPropertySplit.length; i++){
+                    try {
+                            observedPropertySplit[i] = ObservedProperties.valueOf(observedPropertySplit[i].toUpperCase()).code;
+                    } catch (IllegalArgumentException e) {
+                        // property not found in list...
+                    }
                 }
-
-                parameters.put(OGCBusinessRules.observedProperty, new String[] {observedProperty});
-            }
+                  parameters.put(OGCBusinessRules.observedProperty, observedPropertySplit);
+            } // Can't put a default here because it breaks GDA
 
             String[] offerings = parameters.get(OGCBusinessRules.offering);
             if (offerings != null && offerings.length > 0){
                 String offering = offerings[0];
-
-                try {
-                    offering = Offerings.valueOf(offering.toUpperCase()).code;
-                } catch (IllegalArgumentException e) {
-                    // property not found in list...
+                String[] offeringStringSplit = offering.split(",");
+                String IsUnitValue = "True";
+//                List<String> offeringStringList = new ArrayList<String>(offeringStringSplit.length);
+//                    for (String offeringString : offeringStringSplit) {
+                for (int i=0; i<offeringStringSplit.length; i++){
+                    try {
+                            offeringStringSplit[i] = Offerings.valueOf(offeringStringSplit[i].toUpperCase()).code;
+                            if (offeringStringSplit[i].equals("00000")){
+                                parameters.put(OGCBusinessRules.IsUnitValue, new String[] {IsUnitValue});
+                            } else {
+                                parameters.put(OGCBusinessRules.IsUnitValue, new String[] {"False"});
+                            }
+                    } catch (IllegalArgumentException e) {
+                                parameters.put(OGCBusinessRules.IsUnitValue, new String[] {"False"});
+                            // property not found in list...
+                    }
                 }
 
-                parameters.put(OGCBusinessRules.offering, new String[] {offering});
+//                parameters.put(OGCBusinessRules.offering, offeringStringList.toArray(new String[offeringStringList.size()]));
+                parameters.put(OGCBusinessRules.offering, offeringStringSplit);
+            } else {
+                String IsUnitValue = "True";
+                parameters.put(OGCBusinessRules.IsUnitValue, new String[] {IsUnitValue});
             }
+
 
             String[] interval = parameters.get(OGCBusinessRules.interval);
             String INTERVAL = "";
@@ -166,6 +182,11 @@ public class UVServlet extends HttpServlet {
                     lastWeek.add(Calendar.DAY_OF_YEAR, -7);
                     String lastWeekFormated = formatter.format(lastWeek.getTime());
                     INTERVAL = lastWeekFormated;
+                } else if (interval[0].equalsIgnoreCase("ThisYear")) {
+                    Calendar lastYear = new GregorianCalendar();
+                    lastYear.add(Calendar.YEAR, -1);
+                    String lastYearFormated = formatter.format(lastYear.getTime());
+                    INTERVAL = lastYearFormated;
                 } else {
 //                    INTERVAL = null;
                 }
@@ -209,8 +230,9 @@ public class UVServlet extends HttpServlet {
 			case GetObservation:
 				parameterMap = USGS_OGC_BusinessRules.cleanFeatureId(parameterMap);
 
+
 				try {
-					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("uvMapper.uvSelect", parameterMap);
+					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("dvMapper.observationsSelect", parameterMap);
 					XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
 					XMLStreamUtils.copy(streamReader, streamWriter);
 				} catch (Exception e) {
@@ -223,7 +245,20 @@ public class UVServlet extends HttpServlet {
 				parameterMap = USGS_OGC_BusinessRules.cleanFeatureId(parameterMap);
 
 				try {
-					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("UVdataMapper.UVdataSelect_1", parameterMap);
+					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("dataMapper.dataSelect_1", parameterMap);
+					XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
+					XMLStreamUtils.copy(streamReader, streamWriter);
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					outputStream.flush();
+				}
+                                break;
+			case GetHistoricalData:
+				parameterMap = USGS_OGC_BusinessRules.cleanFeatureId(parameterMap);
+
+				try {
+					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("HistoricalMapper.dataHistorySelect", parameterMap);
 					XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
 					XMLStreamUtils.copy(streamReader, streamWriter);
 				} catch (Exception e) {
@@ -246,7 +281,7 @@ public class UVServlet extends HttpServlet {
                         break;
 			case GetProfile:
 			case DescribeSensor:
-                        {
+			{
 				Map<String, String> replacementMap = new HashMap<String, String>();
 				replacementMap.put("base.url", ServletHandlingUtils.parseBaseURL(request));
 
@@ -256,6 +291,7 @@ public class UVServlet extends HttpServlet {
 				FileResponseUtil.writeToStreamWithReplacements(resource, outputStream, replacementMap,
 						errorMessage);
 			}
+                        break;
                         default:
 				BufferedWriter writer = FileResponseUtil.wrapAsBufferedWriter(outputStream);
 				try {
@@ -284,7 +320,7 @@ public class UVServlet extends HttpServlet {
 	}
 
 	private Map<String, String[]> createParameterMapFromDocument(Document document) throws Exception {
-		if (document == null) {
+            if (document == null) {
 			return null;
 		}
 
@@ -305,8 +341,9 @@ public class UVServlet extends HttpServlet {
 			if (featureIDResult != null && featureIDResult instanceof Node) {
 				Node featureIdNode = (Node)featureIDResult;
 				String featureId = featureIdNode.getTextContent();
-
+//                                String[] featureIDSplit = featureId.split(",");
 				parameterMap.put(OGCBusinessRules.FEATURE_ID, new String[] {featureId});
+//                                parameterMap.put(OGCBusinessRules.FEATURE_ID, featureIDSplit);
 			}
 		}
 
@@ -317,31 +354,20 @@ public class UVServlet extends HttpServlet {
 			if (observedPropertyResult != null && observedPropertyResult instanceof Node) {
 				Node observedPropertyNode = (Node)observedPropertyResult;
 				String observedProperty = observedPropertyNode.getTextContent();
-
+//                                String[] observedPropertySplit = observedProperty.split(",");
                                 parameterMap.put(OGCBusinessRules.observedProperty, new String[] {observedProperty});
+//                                parameterMap.put(OGCBusinessRules.observedProperty, observedPropertySplit);
 			}
 		}
 
-//                {
-//			// Handle offering
-//			XPathExpression offeringExpression = xpath.compile(XPATH_OFFERING);
-//			Object offeringResult = offeringExpression.evaluate(document, XPathConstants.NODE);
-//			if (offeringResult != null && offeringResult instanceof Node) {
-//				Node offeringNode = (Node)offeringResult;
-//				String offering = offeringNode.getTextContent();
-//
-//                                parameterMap.put(OGCBusinessRules.offering, new String[] {offering});
-//			}
-//		}
                 {
-			// Handle interval
-			XPathExpression intervalExpression = xpath.compile(XPATH_INTERVAL);
-			Object intervalResult = intervalExpression.evaluate(document, XPathConstants.NODE);
-			if (intervalResult != null && intervalResult instanceof Node) {
-				Node intervalNode = (Node)intervalResult;
-				String interval = intervalNode.getTextContent();
-
-                                parameterMap.put(OGCBusinessRules.interval, new String[] {interval});
+			// Handle offering
+			XPathExpression offeringExpression = xpath.compile(XPATH_OFFERING);
+			Object offeringResult = offeringExpression.evaluate(document, XPathConstants.NODE);
+			if (offeringResult != null && offeringResult instanceof Node) {
+				Node offeringNode = (Node)offeringResult;
+				String offering = offeringNode.getTextContent();
+                                parameterMap.put(OGCBusinessRules.offering, new String[] {offering});
 			}
 		}
 
@@ -356,7 +382,6 @@ public class UVServlet extends HttpServlet {
                                 parameterMap.put("beginPosition", new String[] {beginPosition});
 			}
 		}
-
 
                 {
 			// Handle endPosition
@@ -413,17 +438,6 @@ public class UVServlet extends HttpServlet {
 		return null;
 	}
 
-	/**
-	 * Parsing the temporal elements of OGC:Filter. Note that this is far from a
-	 * complete implementation of parsing for Filter Encoding specification.
-	 * Currently, it only parses three of the four temporal filters, ignoring
-	 * properties and other aspects.
-	 * 
-	 * @param xpath
-	 * @param filterResult
-	 * @return
-	 * @throws XPathExpressionException
-	 */
 	private Map<String, String[]> parseOGCTemporalFilter(XPath xpath, Object filterResult) throws XPathExpressionException {
 		Map<String, String[]> filters = new LinkedHashMap<String, String[]>();
 		// TODO: Indicate/record the property that the filter is working on.

@@ -74,8 +74,8 @@ http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
 		<ows:Operation name="GetObservation">
 			<ows:DCP>
 				<ows:HTTP>
-					<ows:Get xlink:href="${base.url}/sos/uv?"/>
-					<ows:Post xlink:href="${base.url}/sos/uv"/>
+					<ows:Get xlink:href="${base.url}/uv/sos?"/>
+					<ows:Post xlink:href="${base.url}/uv/sos"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="version">
@@ -130,8 +130,8 @@ http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
 		<ows:Operation name="GetDataAvailablity">
 			<ows:DCP>
 				<ows:HTTP>
-					<ows:Get xlink:href="${base.url}/sos/uv?"/>
-					<ows:Post xlink:href="${base.url}/sos/uv"/>
+					<ows:Get xlink:href="${base.url}/dv/sos?"/>
+					<ows:Post xlink:href="${base.url}/dv/sos"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="version">
@@ -186,8 +186,8 @@ http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
 		<ows:Operation name="GetObservationById">
 			<ows:DCP>
 				<ows:HTTP>
-					<ows:Get xlink:href="${base.url}/sos/uv?"/>
-					<ows:Post xlink:href="${base.url}/sos/uv"/>
+					<ows:Get xlink:href="${base.url}/uv/sos?"/>
+					<ows:Post xlink:href="${base.url}/uv/sos"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="version">
@@ -243,8 +243,8 @@ http://schemas.opengis.net/sos/2.0.0/sosGetCapabilities.xsd" version="2.0.0">
 		<ows:Operation name="DescribeSensor">
 			<ows:DCP>
 				<ows:HTTP>
-					<ows:Get xlink:href="${base.url}/sos/uv?"/>
-					<ows:Post xlink:href="${base.url}/sos/uv"/>
+					<ows:Get xlink:href="${base.url}/uv/sos?"/>
+					<ows:Post xlink:href="${base.url}/uv/sos"/>
 				</ows:HTTP>
 			</ows:DCP>
 			<ows:Parameter name="version">

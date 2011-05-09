@@ -1,26 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-<!--    <display-name>OGC SWIE {Owner: NB, Coder: TK}</display-name>-->
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+    <!--    <display-name>OGC SWIE {Owner: NB, Coder: TK}</display-name>-->
     <description>OGC SWIE</description>
-
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>/WEB-INF/**/*Context.xml</param-value>
     </context-param>
-
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
     <listener>
         <listener-class>gov.usgs.webservices.util.PermGenCleanupListener</listener-class>
     </listener>
-
-
-    <servlet>
+<!--    <servlet>
         <servlet-name>SOSServlet</servlet-name>
         <servlet-class>gov.usgs.cida.ogc.SOSServlet</servlet-class>
-    </servlet>
+    </servlet>-->
     <servlet>
         <servlet-name>WFSServlet</servlet-name>
         <servlet-class>gov.usgs.cida.ogc.WFSServlet</servlet-class>
@@ -33,38 +28,25 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j
         <servlet-name>DVServlet</servlet-name>
         <servlet-class>gov.usgs.cida.ogc.DVServlet</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>DataServlet</servlet-name>
-        <servlet-class>gov.usgs.cida.ogc.DataServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
+<!--    <servlet-mapping>
         <servlet-name>SOSServlet</servlet-name>
         <url-pattern>/sos</url-pattern>
-    </servlet-mapping>
-
+    </servlet-mapping>-->
     <servlet-mapping>
         <servlet-name>WFSServlet</servlet-name>
         <url-pattern>/wfs</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UVServlet</servlet-name>
-        <url-pattern>/sos/uv</url-pattern>
+        <url-pattern>/uv/sos</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DVServlet</servlet-name>
-        <url-pattern>/sos/dv</url-pattern>
+        <url-pattern>/dv/sos</url-pattern>
     </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>DataServlet</servlet-name>
-        <url-pattern>/sos/data</url-pattern>
-    </servlet-mapping>
-
     <resource-ref>
         <res-ref-name>jdbc/wsdb01</res-ref-name>
         <res-type>javax.sql.DataSource</res-type>
         <res-auth>Container</res-auth>
     </resource-ref>
-	
 </web-app>

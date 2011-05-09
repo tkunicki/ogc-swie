@@ -202,28 +202,12 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                             FROM nwisweb.SITEFILE b
                             <choose>
                                 <when test="featureId != null">
-                                    WHERE b.site_no IN (#{featureId})
+                                    WHERE b.site_no IN <foreach item="i" collection="featureId" open="(" separator="," close=")">#{i}</foreach>
                                 </when>
 
                                 <when test="bBox != null">
                                     WHERE b.dec_long_va BETWEEN #{bBox[0]} AND #{bBox[2]} AND b.dec_lat_va BETWEEN #{bBox[1]} AND #{bBox[3]}
                                 </when>
-
-                                <when test="boatersInfo != null">
-                                    WHERE b.site_no IN (
-                                        '04031000','04043275','04065106','04067958','04074950',
-                                        '03497300','03498500','03538830','03539600',
-                                        '03566000','03528000','03409500','03527220','03566525',
-                                        '03455000','03461500','03467609','03415000',
-                                        '03535000','03535400','03410210','03465500',
-                                        '03518500','03539778','03539800','03540500','02398000','03544970',
-                                        '03479000','03453500','03460000','03459500','03450000','03451500',
-                                        '03456991','03456100','03513000','03505550','03503000','03504000',
-                                        '02399200','02399200','02176930','02177000','02178400','02181580',
-                                        '04043126','04043150','04043238','04040000','04033000','04027000'
-                                        )
-                                </when>
-
 
                                 <otherwise>
                                     WHERE b.site_no IN (
@@ -258,27 +242,11 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 
               <choose>
                     <when test="featureId != null">
-                        WHERE a.site_no IN (#{featureId})
+                        WHERE a.site_no IN <foreach item="i" collection="featureId" open="(" separator="," close=")">#{i}</foreach>
                     </when>
-                    
                     <when test="bBox != null">
                         WHERE a.dec_long_va BETWEEN #{bBox[0]} AND #{bBox[2]} AND a.dec_lat_va BETWEEN #{bBox[1]} AND #{bBox[3]} 
                     </when>
-
-                    <when test="boatersInfo != null">
-                                    WHERE a.site_no IN (
-                                        '04031000','04043275','04065106','04067958','04074950',
-                                        '03497300','03498500','03538830','03539600',
-                                        '03566000','03528000','03409500','03527220','03566525',
-                                        '03455000','03461500','03467609','03415000',
-                                        '03535000','03535400','03410210','03465500',
-                                        '03518500','03539778','03539800','03540500','02398000','03544970',
-                                        '03479000','03453500','03460000','03459500','03450000','03451500',
-                                        '03456991','03456100','03513000','03505550','03503000','03504000',
-                                        '02399200','02399200','02176930','02177000','02178400','02181580',
-                                        '04043126','04043150','04043238','04040000','04033000','04027000'
-                                        )
-                     </when>
 
                     <otherwise>
                         WHERE a.site_no IN (

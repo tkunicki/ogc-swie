@@ -244,11 +244,12 @@ public class WFSServlet extends HttpServlet {
 		String maxFeatures = (String) params.get("maxFeatures");
 
 		// handle featureId
-                result.put("featureId", USGS_OGC_BusinessRules.cleanFeatureId(featureId));
+                if(featureId != null) {
+                    String[] featureIDSplit = featureId.split(",");
+                    result.put("featureId", featureIDSplit);
+                //                result.put("featureId", USGS_OGC_BusinessRules.cleanFeatureId(featureId));
+                }
 
-/*		if(!SWML_DISCHARGE.equals(typeName) && featureId == null) {
-			throw new IllegalArgumentException("TYPENAME missing or invalid");
-		}*/
 		if(bBox != null) {
 			String[] bBoxSplit = bBox.split(",");
 			if (bBoxSplit != null && bBoxSplit.length == 4) {

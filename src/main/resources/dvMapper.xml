@@ -6,7 +6,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 	<resultMap id="dvResultMap" type="XMLMap">
             <result
-	    	property="wml2:TimeseriesObservation"
+	    	property="om:ObservationCollection"
 	    	column="%ROOT_ELEMENT"
 			javaType="string" />
 	    <result
@@ -38,6 +38,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
             <result
+    		property="xmlns:x-wml2=http://www.opengis.net/waterml/2.0"
+    		column="%ROOT_ELEMENT_ATTRIBUTE"
+			javaType="string" />
+            <result
     		property="xmlns:gmd=http://www.isotc211.org/2005/gmd"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
@@ -53,11 +57,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     		property="xmlns:sams=http://www.opengis.net/samplingSpatial/2.0"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
-            <result
-    		property="gml:id=USGS"
-    		column="%ROOT_ELEMENT_ATTRIBUTE"
-			javaType="string" />
-
 
  <!-- Since om 2.0, sampling 2.0, samplingSpatial 2.0 are not approved, these locations go to my local computer.  Before going public, this should be changed...
  "xsi:schemaLocation=http://www.opengis.net/waterml/2.0 ../schemas/waterml_2/waterml2.xsd" is simply what the Austrialia guys use
@@ -81,200 +80,203 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 
 	<resultMap id="observationsResultMap" type="XMLMap" extends="dvResultMap">
 		<result
-			property="^!{gml:identifier"
-			column="station_nm"
+			property="^!{wml2:TimeseriesObservation"
+			column="site_no"
+			javaType="string" />
+		<result
+			property="wml2:TimeseriesObservation#gml:id=USGS.%s"
+			column="site_no"
 			javaType="string" />
                 <result
-			property="gml:identifier#codeSpace=http://nwis.waterdata.usgs.gov/%s/nwis"
+			property="wml2:TimeseriesObservation/gml:identifier#codeSpace=http://nwis.waterdata.usgs.gov/%s/nwis"
 			column="state_cd"
 			typeHandler="StateCodeTypeHandler" />
                 <result
-			property="gml:identifier"
+			property="wml2:TimeseriesObservation/gml:identifier"
 			column="FeatureID"
 			javaType="string" />
 		<result
-			property="gml:name#codeSpace=http://nwis.waterdata.usgs.gov/%s/nwis"
+			property="wml2:TimeseriesObservation/gml:name#codeSpace=http://nwis.waterdata.usgs.gov/%s/nwis"
 			column="state_cd"
 			typeHandler="StateCodeTypeHandler" />
 		<result
-			property="gml:name"
+			property="wml2:TimeseriesObservation/gml:name"
 			column="station_nm"
 			javaType="string" />
 		<result
-			property="^!{om:metadata/wml2:ObservationMetadata/gmd:contact"
+			property="wml2:TimeseriesObservation/om:metadata/wml2:ObservationMetadata/gmd:contact#xlink:href=http://cida.usgs.gov"
 			column="station_nm"
 			javaType="string" />
 		<result
-			property="om:metadata/wml2:ObservationMetadata/gmd:contact#xlink:href=http://cida.usgs.gov"
-			column="station_nm"
-			javaType="string" />
-		<result
-			property="om:metadata/wml2:ObservationMetadata/gmd:dateStamp/gco:Date"
+			property="wml2:TimeseriesObservation/om:metadata/wml2:ObservationMetadata/gmd:dateStamp/gco:Date"
 			column="dateStamp"
 			javaType="string" />
 		<result
-			property="om:metadata/wml2:ObservationMetadata/gmd:identificationInfo#xlink:href=urn:OGC:unknown"
+			property="wml2:TimeseriesObservation/om:metadata/wml2:ObservationMetadata/gmd:identificationInfo#xlink:href=urn:OGC:unknown"
 			column="dateStamp"
 			javaType="string" />
                 <result
-			property="om:metadata/wml2:ObservationMetadata/wml2:status#xlink:href=http://waterdata.usgs.gov/%s/nwis/help/?provisional"
+			property="wml2:TimeseriesObservation/om:metadata/wml2:ObservationMetadata/wml2:status#xlink:href=http://waterdata.usgs.gov/%s/nwis/help/?provisional"
 			column="state_cd"
 			typeHandler="StateCodeTypeHandler" />
 		<result
-			property="om:metadata/wml2:ObservationMetadata/wml2:status#xlink:title=%s"
+			property="wml2:TimeseriesObservation/om:metadata/wml2:ObservationMetadata/wml2:status#xlink:title=%s"
 			column="data_aging_cd"
 			javaType="string" />
 		<result
-			property="om:phenomenonTime/gml:TimePeriod#gml:id=ts_period"
+			property="wml2:TimeseriesObservation/om:phenomenonTime/gml:TimePeriod#gml:id=ts_period"
 			column="station_nm"
 			javaType="string" />
 		<result
-			property="om:phenomenonTime/gml:TimePeriod/gml:beginPosition"
+			property="wml2:TimeseriesObservation/om:phenomenonTime/gml:TimePeriod/gml:beginPosition"
 			column="beginPosition"
 			typeHandler="ISODateTypeHandler" />
 		<result
-			property="om:phenomenonTime/gml:TimePeriod/gml:endPosition"
+			property="wml2:TimeseriesObservation/om:phenomenonTime/gml:TimePeriod/gml:endPosition"
 			column="endPosition"
 			typeHandler="ISODateTypeHandler" />
 		<result
-			property="om:resultTime/gml:TimeInstant#gml:id=result_time"
+			property="wml2:TimeseriesObservation/om:resultTime/gml:TimeInstant#gml:id=result_time"
 			column="station_nm"
 			javaType="string" />
                 <result
-			property="om:resultTime/gml:TimeInstant/gml:timePosition"
+			property="wml2:TimeseriesObservation/om:resultTime/gml:TimeInstant/gml:timePosition"
 			column="TimestampNow"
 			javaType="string" />
-                <result
-			property="om:procedure#xlink:href=http://www.nemi.gov"
-			column="station_nm"
-			javaType="string" />
-		<result
-			property="om:procedure#xlink:title=%s"
-			column="parameter_nm"
-			javaType="string" />
-                <result
-			property="om:observedProperty#xlink:href=urn:ogc:def:phenomenon:OGC:%s"
-			column="parameter_nm"
-			javaType="string" />
-		<result
-			property="om:observedProperty#xlink:title=%s"
-			column="parameter_nm"
-			javaType="string" />
-		<result
-			property="om:featureOfInterest/wml2:MonitoringPoint#gml:id=USGS.WMP.%s"
-			column="site_no"
-			javaType="string" />
-                <result
-                        property="om:featureOfInterest/wml2:MonitoringPoint/sf:sampledFeature#xlink:href=%s"
- 			column="state_site"
-			typeHandler="USGS_URL_TypeHandler" />
-		<result
-			property="om:featureOfInterest/wml2:MonitoringPoint/sf:parameter/om:NamedValue/om:name#xlink:title=Watershed"
-			column="huc_nm"
-			javaType="string" />
-		<result
-			property="om:featureOfInterest/wml2:MonitoringPoint/sf:parameter/om:NamedValue/om:value"
-			column="huc_nm"
-			javaType="string" />
-                <result
-                        property="om:featureOfInterest/wml2:MonitoringPoint/sams:shape/gml:Point#gml:id=USGS.P.%s"
- 			column="site_no"
-			javaType="string" />
-               <result
-                        property="om:featureOfInterest/wml2:MonitoringPoint/sams:shape/gml:Point/gml:pos#srsName=%s"
- 			column="coord_datum"
-			javaType="string" />
-                <result
-                        property="om:featureOfInterest/wml2:MonitoringPoint/sams:shape/gml:Point/gml:pos"
- 			column="pos"
-			javaType="string" />
-                <result
-                        property="om:featureOfInterest/wml2:MonitoringPoint/wml2:descriptionReference#xlink:href=http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/SurfacewaterInteroperabilityExperiment#Use_Case_2"
- 			column="station_nm"
-			javaType="string" />
-                <result
-                        property="om:featureOfInterest/wml2:MonitoringPoint/wml2:descriptionReference#xlink:title=This wiki page describes the IE"
- 			column="station_nm"
-			javaType="string" />
-		<result
-			property="om:featureOfInterest/wml2:MonitoringPoint/wml2:timeZone/wml2:TimeZone/wml2:zoneOffset"
-			column="beginPosition"
-			typeHandler="TimeZoneTypeHandler" />
-                <result
-			property="om:featureOfInterest/wml2:MonitoringPoint/wml2:timeZone/wml2:TimeZone/wml2:zoneAbbreviation"
-			column="zoneAbbreviation"
-			javaType="string" />
-                <result
-			property="^!{om:result/wml2:owner/gmd:organisationName/gmd:CharacterString"
-			column="district_cd"
-			typeHandler="StateFullNameTypeHandler" />
-                <result
-			property="om:result/wml2:owner/gmd:organisationName/gmd:CharacterString=%s Water Science Center"
-			column="district_cd"
-			typeHandler="StateFullNameTypeHandler" />
-                <result
-			property="om:result/wml2:Timeseries#gml:id=time_series_loc_%s"
-			column="loc_nu"
-			javaType="string" />
-               <result
-			property="om:result/wml2:Timeseries/wml2:domainExtent#xlink:href=ts_period"
-			column="loc_nu"
-			javaType="string" />
-               <result
-			property="om:result/wml2:Timeseries/wml2:domainExtent/gml:TimePeriod#gml:id=USGS.TP.%s"
-			column="site_no"
-			javaType="string" />
-		<result
-			property="om:result/wml2:Timeseries/wml2:domainExtent/gml:TimePeriod/gml:beginPosition"
-			column="beginPosition"
-			typeHandler="ISODateTypeHandler" />
-		<result
-			property="om:result/wml2:Timeseries/wml2:domainExtent/gml:TimePeriod/gml:endPosition"
-			column="endPosition"
-			typeHandler="ISODateTypeHandler" />
-
-		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:unitOfMeasure#uom=%s"
-			column="units"
-			javaType="string" />
-		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:dataType#xlink:href=http://www.opengis.net/def/timeseriesType/WaterML/2.0/%s"
-			column="dataTypeLink"
-			javaType="string" />
-		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:dataType#xlink:title"
+<!--                <result
+			property="wml2:TimeseriesObservation/om:procedure#xlink:href=http://www.nemi.gov"
 			column="dataTypeTitle"
 			javaType="string" />
 		<result
-			property="om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:qualifier#xlink:href=http://waterdata.usgs.gov/%s/nwis/help"
+			property="wml2:TimeseriesObservation/om:procedure#xlink:title=%s"
+			column="dataTypeTitle"
+			javaType="string" />
+                <result
+			property="wml2:TimeseriesObservation/om:observedProperty#xlink:href=urn:ogc:def:phenomenon:OGC:%s"
+			column="parameter_nm"
+			javaType="string" />
+		<result
+			property="wml2:TimeseriesObservation/om:observedProperty#xlink:title=%s"
+			column="parameter_nm"
+			javaType="string" />-->
+		<result
+			property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint#gml:id=USGS.MP.%s"
+			column="site_no"
+			javaType="string" />
+                <result
+                        property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint/sf:sampledFeature#xlink:href=%s"
+ 			column="state_site"
+			typeHandler="USGS_URL_TypeHandler" />
+		<result
+			property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint/sf:parameter/om:NamedValue/om:name#xlink:title=Watershed"
+			column="huc_nm"
+			javaType="string" />
+		<result
+			property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint/sf:parameter/om:NamedValue/om:value"
+			column="huc_nm"
+			javaType="string" />
+                <result
+                        property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint/sams:shape/gml:Point#gml:id=USGS.P.%s"
+ 			column="site_no"
+			javaType="string" />
+               <result
+                        property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint/sams:shape/gml:Point/gml:pos#srsName=%s"
+ 			column="coord_datum"
+			javaType="string" />
+                <result
+                        property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint/sams:shape/gml:Point/gml:pos"
+ 			column="pos"
+			javaType="string" />
+                <result
+                        property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint/wml2:descriptionReference#xlink:href=http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/SurfacewaterInteroperabilityExperiment#Use_Case_2"
+ 			column="station_nm"
+			javaType="string" />
+                <result
+                        property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint/wml2:descriptionReference#xlink:title=This wiki page describes the IE"
+ 			column="station_nm"
+			javaType="string" />
+		<result
+			property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint/wml2:timeZone/wml2:TimeZone/wml2:zoneOffset"
+			column="beginPosition"
+			typeHandler="TimeZoneTypeHandler" />
+                <result
+			property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint/wml2:timeZone/wml2:TimeZone/wml2:zoneAbbreviation"
+			column="zoneAbbreviation"
+			javaType="string" />
+                <result
+			property="wml2:TimeseriesObservation/om:result/wml2:owner/gmd:organisationName/gmd:CharacterString=%s Water Science Center"
+			column="district_cd"
+			typeHandler="StateFullNameTypeHandler" />
+                <result
+			property="{wml2:TimeseriesObservation/om:result/^wml2:Timeseries#gml:id=ts_%s"
+			column="station_parameter_stat"
+			javaType="string" />
+               <result
+			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:domainExtent#xlink:href=ts_period_%s"
+			column="parameter_stat"
+			javaType="string" />
+               <result
+			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:domainExtent/gml:TimePeriod#gml:id=USGS.TP.%s"
+			column="parameter_stat"
+			javaType="string" />
+		<result
+			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:domainExtent/gml:TimePeriod/gml:beginPosition"
+			column="beginPosition"
+			typeHandler="ISODateTypeHandler" />
+		<result
+			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:domainExtent/gml:TimePeriod/gml:endPosition"
+			column="endPosition"
+			typeHandler="ISODateTypeHandler" />
+		<result
+			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:unitOfMeasure#uom=%s"
+			column="units"
+			javaType="string" />
+		<result
+			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:InterpolationType#xlink:href=http://www.opengis.net/def/timeseriesType/WaterML/2.0/%s"
+			column="dataTypeLink"
+			javaType="string" />
+		<result
+			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:InterpolationType#xlink:title"
+			column="dataTypeTitle"
+			javaType="string" />
+ 		<result
+			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/x-wml2:observedProperty#xlink:href=urn:ogc:def:phenomenon:OGC:%s"
+			column="parameter_nm"
+			javaType="string" />
+		<result
+			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/x-wml2:observedProperty#xlink:title=%s"
+			column="parameter_nm"
+			javaType="string" />
+		<result
+			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:qualifier#xlink:href=http://waterdata.usgs.gov/%s/nwis/help"
 			column="state_cd"
 			typeHandler="StateCodeTypeHandler" />
 		<result
-			property="}om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:qualifier#xlink:title=Approved for publication. Processing and review completed"
-			column="state_cd"
+			property="}wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:qualifier#xlink:title=%s"
+			column="defaultQualifier"
 			javaType="string" />
 		<result
-			property="om:result/wml2:Timeseries/^wml2:point/wml2:TimeValuePair/^wml2:time"
+			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/^wml2:point/wml2:TimeValuePair/^wml2:time"
 			column="currentPosition"
 			typeHandler="ISODateTimeTypeHandler" />
 		<result
-			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:value"
+			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:value"
 			column="value"
 			javaType="string" />
                 <result
-			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:comment"
+			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:comment"
 			column="table_cd"
 			javaType="string" />
                 <result
-			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:comment"
+			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:comment"
 			column="result_cd"
 			javaType="string" />
                 <result
-			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:qualifier#xlink:href=http://waterdata.usgs.gov/nwis/help"
+			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:qualifier#xlink:href=http://waterdata.usgs.gov/nwis/help"
 			column="qualifier_message"
 			javaType="string" />
                 <result
-			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/wml2:qualifier#xlink:title=%s"
+			property="}wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/wml2:qualifier#xlink:title=%s"
 			column="qualifier_message"
 			javaType="string" />
 
@@ -295,12 +297,231 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		CONCAT(CONVERT(f.DEC_LAT_VA,CHAR),' ',CONVERT(f.DEC_LONG_VA,CHAR)) AS pos,
                 CONCAT(CONVERT(DATE_FORMAT(s.startTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS beginPosition,
                 CONCAT(CONVERT(DATE_FORMAT(s.endTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS endPosition,
+		g.result_va as value,
+		d.parameter_units as units,
+		d.parameter_nm,
+                (CASE
+                    WHEN c.table_cd = '***' THEN CONCAT('Temporarily unavailable ',e.loc_nm)
+                    WHEN c.table_cd = '--' THEN CONCAT('Parameter not determined ',e.loc_nm)
+                    WHEN c.table_cd = 'Dis' THEN CONCAT('Data-collection discontinued ',e.loc_nm)
+                    WHEN c.table_cd = 'Dry' THEN CONCAT('Dry ',e.loc_nm)
+                    WHEN c.table_cd = 'Eqp' THEN CONCAT('Equipment malfunction ',e.loc_nm)
+                    WHEN c.table_cd = 'Fld' THEN CONCAT('Flood damage ',e.loc_nm)
+                    WHEN c.table_cd = 'Ice' THEN CONCAT('Ice affected ',e.loc_nm)
+                    WHEN c.table_cd = 'Mnt' THEN CONCAT('Maintenance in progress ',e.loc_nm)
+                    WHEN c.table_cd = 'Pr' THEN CONCAT('Partial-record site ',e.loc_nm)
+                    WHEN c.table_cd = 'Rat' THEN CONCAT('Rating being developed or revised ',e.loc_nm)
+                    WHEN c.table_cd = 'Ssn' THEN CONCAT('Parameter monitored seasonally ',e.loc_nm)
+                    WHEN c.table_cd = 'ZFl' THEN CONCAT('Zero flow ',e.loc_nm)
+                    ELSE CONCAT(c.table_cd,' ',e.loc_nm)
+                END) table_cd,
+                (CASE
+                    WHEN g.result_cd = <![CDATA[ '<' ]]> THEN 'The value is known to be less than reported value and is write protected.'
+                    WHEN g.result_cd = <![CDATA[ '>' ]]> THEN 'The value is known to be greater than reported value and is write protected.'
+                    WHEN g.result_cd = 'e' THEN 'Value has been edited or estimated by USGS personnel and is write protected'
+                    WHEN g.result_cd = 'E' THEN 'Value was computed from estimated unit values.'
+                END) result_cd,
+                (CASE
+                    WHEN f.dec_coord_datum_cd = 'NAD83' THEN 'urn:ogc:def:crs:EPSG:4269'
+                    ELSE f.dec_coord_datum_cd
+                END) coord_datum,
             <choose>
-                <when test="latest != null">
-                    CONCAT(CONVERT(DATE_FORMAT(MAX(g.result_dt),'%Y-%m-%dT'),CHAR),'12:00',f.tz_cd) as currentPosition,
+                <when test="IsUnitValue[0] == 'True'">
+                    <choose>
+                        <when test="latest != null">
+                            CONCAT(CONVERT(DATE_FORMAT(MAX(g.result_dt),'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) as currentPosition,
+                        </when>
+                        <otherwise>
+                            CONCAT(CONVERT(DATE_FORMAT(g.result_dt,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) as currentPosition,
+                        </otherwise>
+                    </choose>
+                    (CASE
+                        WHEN g.data_aging_cd = 'A' THEN 'Approved for publication. Processing and review completed.'
+                    END) qualifier_message,
+                    'Provisional data subject to revision.' AS defaultQualifier,
+                    'Continuous/Instantaneous' as dataTypeTitle,
+                    'Continuous' as dataTypeLink,
+                    CONCAT(e.parameter_cd,'_00000') AS parameter_stat,
+                    CONCAT(f.site_no,'_',e.parameter_cd,'_00000') AS station_parameter_stat,
                 </when>
                 <otherwise>
-                    CONCAT(CONVERT(DATE_FORMAT(g.result_dt,'%Y-%m-%dT'),CHAR),'12:00',f.tz_cd) as currentPosition,
+                    <choose>
+                        <when test="latest != null">
+                            CONCAT(CONVERT(DATE_FORMAT(MAX(g.result_dt),'%Y-%m-%dT'),CHAR),'12:00',f.tz_cd) as currentPosition,
+                        </when>
+                        <otherwise>
+                            CONCAT(CONVERT(DATE_FORMAT(g.result_dt,'%Y-%m-%dT'),CHAR),'12:00',f.tz_cd) as currentPosition,
+                        </otherwise>
+                    </choose>
+                (CASE
+                    WHEN g.data_aging_cd = 'P' THEN 'Provisional data subject to revision.'
+                    WHEN g.data_aging_cd = 'W' THEN 'Provisional data subject to revision.'
+                    WHEN g.data_aging_cd = 'R' THEN 'Provisional data subject to revision.'
+                END) qualifier_message,
+                'Approved for publication. Processing and review completed.' AS defaultQualifier,
+                (CASE
+                    WHEN g.stat_cd = '00003' THEN 'Average in preceding interval'
+                    WHEN g.stat_cd = '00001' THEN 'Maximum in preceding interval'
+                    WHEN g.stat_cd = '00002' THEN 'Minimum in preceding interval'
+                    WHEN g.stat_cd = '00006' THEN 'Preceding total'
+                    WHEN g.stat_cd = '00007' THEN 'Mode in preceding interval'
+                    WHEN g.stat_cd = '00008' THEN 'Median in preceding interval'
+                    WHEN g.stat_cd = '00009' THEN 'Standard deviation in preceding interval'
+                    WHEN g.stat_cd = '00010' THEN 'Variance in preceding interval'
+                    ELSE 'Unknown'
+                END) dataTypeTitle,
+                (CASE
+                    WHEN g.stat_cd = '00003' THEN 'AveragePrec'
+                    WHEN g.stat_cd = '00001' THEN 'MaxPrec'
+                    WHEN g.stat_cd = '00002' THEN 'MinPrec'
+                    WHEN g.stat_cd = '00006' THEN 'TotalPrec'
+                    WHEN g.stat_cd = '00007' THEN 'Mode'
+                    WHEN g.stat_cd = '00008' THEN 'Median'
+                    WHEN g.stat_cd = '00009' THEN 'STD'
+                    WHEN g.stat_cd = '00010' THEN 'Variance'
+                    ELSE 'Continuous'
+                END) dataTypeLink,
+                CONCAT(e.parameter_cd,'_',g.stat_cd) AS parameter_stat,
+                CONCAT(f.site_no,'_',e.parameter_cd,'_',g.stat_cd) AS station_parameter_stat,
+                </otherwise>
+             </choose>
+                e.loc_nm,
+                e.loc_nu,
+                h.huc_nm
+
+		FROM
+		    (select b.site_id,
+            <choose>
+                <when test="latest != null">
+                    MAX(a.result_dt) as startTime,
+                </when>
+                <otherwise>
+                    MIN(a.result_dt) as startTime,
+                </otherwise>
+            </choose>
+                    MAX(a.result_dt) as endTime,
+                    (CASE
+                        WHEN a.data_aging_cd != 'A' THEN a.data_aging_cd
+                    END) qualifier_cd
+		    FROM
+                    nwisweb.SITEFILE b,
+            <choose>
+                <when test="IsUnitValue[0] == 'True'">
+                    nwisweb.UV a,
+                    nwisweb.UV_DD_CONF j
+                </when>
+                <otherwise>
+                    nwisweb.DV a,
+                    nwisweb.DV_DD_CONF j
+                </otherwise>
+            </choose>
+
+                    WHERE b.site_no IN <foreach item="i" collection="featureId" open="(" separator="," close=")">#{i}</foreach>
+                    AND j.parameter_cd IN <foreach item="i" collection="observedProperty" open="(" separator="," close=")">#{i}</foreach>
+
+            <if test="IsUnitValue[0] == 'False'">
+                    AND a.stat_cd IN <foreach item="i" collection="offering" open="(" separator="," close=")">#{i}</foreach>
+            </if>
+
+            <if test="beginPosition != null">
+                    AND a.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{beginPosition[0]}, '%Y-%m-%d')
+            </if>
+
+            <if test="endPosition != null">
+                    AND a.result_dt <![CDATA[ <= ]]> CONCAT(STR_TO_DATE(#{endPosition[0]}, '%Y-%m-%d'),':23:45')
+            </if>
+
+            <if test="interval != null">
+                    AND a.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{interval[0]}, '%Y-%m-%d')
+            </if>
+                    AND a.site_id = b.site_id
+                    AND j.site_id = b.site_id
+                    AND j.dd_nu = a.dd_nu
+                    AND j.access_cd = '0'
+                    GROUP BY a.site_id) s,
+
+		nwisweb.PARAM_REF d,
+		nwisweb.SITEFILE f,
+                nwisweb.HUCS h,
+            <choose>
+                <when test="IsUnitValue[0] == 'True'">
+                nwisweb.UV_DD_CONF e,
+                nwisweb.UV g
+                </when>
+                <otherwise>
+                nwisweb.DV_DD_CONF e,
+                nwisweb.DV g
+                </otherwise>
+            </choose>
+                LEFT JOIN nwisweb.DD_STATUS c ON (c.site_id = g.site_id
+                    AND c.dd_nu = g.dd_nu
+                    AND c.parameter_cd IN <foreach item="i" collection="observedProperty" open="(" separator="," close=")">#{i}</foreach>
+                    AND g.result_dt <![CDATA[ >= ]]> c.begin_dt
+                    AND (g.result_dt <![CDATA[ <= ]]> c.end_dt OR c.end_dt = '0000-00-00 00:00:00')
+                    <if test="IsUnitValue[0] == 'False'">
+                    AND g.stat_cd IN <foreach item="i" collection="offering" open="(" separator="," close=")">#{i}</foreach>
+                    </if>
+                    )
+
+		WHERE s.site_id = g.site_id
+                AND f.site_id = s.site_id
+                AND e.site_id = s.site_id
+		AND d.parameter_cd = e.parameter_cd
+                AND e.dd_nu = g.dd_nu
+                AND e.access_cd = '0'
+                AND h.huc_cd = f.huc_cd
+                AND h.state_cd = f.state_cd
+                AND e.parameter_cd IN <foreach item="i" collection="observedProperty" open="(" separator="," close=")">#{i}</foreach>
+
+       <if test="IsUnitValue[0] == 'False'">
+                AND g.stat_cd IN <foreach item="i" collection="offering" open="(" separator="," close=")">#{i}</foreach>
+       </if>
+
+       <if test="beginPosition != null">
+                AND g.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{beginPosition[0]}, '%Y-%m-%d')
+       </if>
+
+       <if test="endPosition != null">
+                AND g.result_dt <![CDATA[ <= ]]> CONCAT(STR_TO_DATE(#{endPosition[0]}, '%Y-%m-%d'),':23:45')
+       </if>
+
+       <if test="interval != null">
+                AND g.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{interval[0]}, '%Y-%m-%d')
+       </if>
+
+       <choose>
+        <when test="latest != null">
+           GROUP BY station_nm, parameter_stat
+        </when>
+        <otherwise>
+            ORDER BY station_nm, parameter_stat, currentPosition DESC
+        </otherwise>
+       </choose>
+
+
+    </select>
+
+    <select id="DVONLYobservationsSelect" parameterType="map" resultMap="observationsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
+		SELECT DISTINCT
+                f.station_nm,
+                CONCAT('USGS.',CONVERT(f.site_no,CHAR)) as FeatureID,
+                f.site_no,
+                f.tz_cd as zoneAbbreviation,
+                CONCAT(f.state_cd,'.',f.site_no) as state_site,
+                f.state_cd,
+                f.district_cd,
+		STR_TO_DATE(SYSDATE(),'%Y-%m-%d') as dateStamp,
+                CONCAT(DATE_FORMAT(SYSDATE(),'%Y-%m-%dT%H:%i'),f.tz_cd) as currentTimeStamp,
+                DATE_FORMAT(SYSDATE(),'%Y-%m-%dT%H:%i:%s') as TimestampNow,
+		CONCAT(CONVERT(f.DEC_LAT_VA,CHAR),' ',CONVERT(f.DEC_LONG_VA,CHAR)) AS pos,
+                CONCAT(CONVERT(DATE_FORMAT(s.startTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS beginPosition,
+                CONCAT(CONVERT(DATE_FORMAT(s.endTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS endPosition,
+            <choose>
+                <when test="latest != null">
+                CONCAT(CONVERT(DATE_FORMAT(MAX(g.result_dt),'%Y-%m-%dT'),CHAR),'12:00',f.tz_cd) as currentPosition,
+                </when>
+                <otherwise>
+                CONCAT(CONVERT(DATE_FORMAT(g.result_dt,'%Y-%m-%dT'),CHAR),'12:00',f.tz_cd) as currentPosition,
                 </otherwise>
             </choose>
 		g.result_va as value,
@@ -358,6 +579,8 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                     WHEN g.stat_cd = '00010' THEN 'Variance'
                     ELSE 'Unknown'
                 END) dataTypeLink,
+                CONCAT(e.parameter_cd,'_',g.stat_cd) AS parameter_stat,
+                CONCAT(f.site_no,'_',e.parameter_cd,'_',g.stat_cd) AS station_parameter_stat,
                 e.loc_nm,
                 e.loc_nu,
                 h.huc_nm
@@ -376,39 +599,14 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                     (CASE
                         WHEN a.data_aging_cd != 'A' THEN a.data_aging_cd
                     END) qualifier_cd
-
-		    FROM nwisweb.DV a,
-		    nwisweb.SITEFILE b,
+		    FROM
+                    nwisweb.SITEFILE b,
+                    nwisweb.DV a,
                     nwisweb.DV_DD_CONF j
 
-           <choose>
-                <when test="featureId != null">
-                    WHERE b.site_no IN (#{featureId[0]})
-                </when>
-
-                <otherwise>
-                    WHERE b.site_no IN ('01427207')
-                </otherwise>
-
-            </choose>
-
-            <choose>
-                <when test="observedProperty != null">
-                    AND j.parameter_cd = (#{observedProperty[0]})
-                </when>
-                <otherwise>
-                    AND j.parameter_cd = '00060'
-                </otherwise>
-            </choose>
-
-            <choose>
-                <when test="offering != null">
-                    AND a.stat_cd = (#{offering[0]})
-                </when>
-                <otherwise>
-                    AND a.stat_cd = '00003'
-                </otherwise>
-            </choose>
+                    WHERE b.site_no IN <foreach item="i" collection="featureId" open="(" separator="," close=")">#{i}</foreach>
+                    AND j.parameter_cd IN <foreach item="i" collection="observedProperty" open="(" separator="," close=")">#{i}</foreach>
+                    AND a.stat_cd IN <foreach item="i" collection="offering" open="(" separator="," close=")">#{i}</foreach>
 
             <if test="beginPosition != null">
                     AND a.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{beginPosition[0]}, '%Y-%m-%d')
@@ -421,72 +619,51 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
             <if test="interval != null">
                     AND a.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{interval[0]}, '%Y-%m-%d')
             </if>
-
                     AND a.site_id = b.site_id
                     AND j.site_id = b.site_id
                     AND j.dd_nu = a.dd_nu
-<!--                    AND j.access_cd = '0'-->
+                    AND j.access_cd = '0'
                     GROUP BY a.site_id) s,
 
 		nwisweb.PARAM_REF d,
-		nwisweb.DV_DD_CONF e,
 		nwisweb.SITEFILE f,
                 nwisweb.HUCS h,
-                nwisweb.DV g LEFT JOIN nwisweb.DD_STATUS c ON (c.site_id = g.site_id
+
+                nwisweb.DV_DD_CONF e,
+                nwisweb.DV g
+
+                LEFT JOIN nwisweb.DD_STATUS c ON (c.site_id = g.site_id
                     AND c.dd_nu = g.dd_nu
-            <choose>
-                <when test="observedProperty != null">
-                    AND c.parameter_cd = (#{observedProperty[0]})
-                </when>
-                <otherwise>
-                    AND c.parameter_cd = '00060'
-                </otherwise>
-            </choose>
+                    AND c.parameter_cd IN <foreach item="i" collection="observedProperty" open="(" separator="," close=")">#{i}</foreach>
                     AND g.result_dt <![CDATA[ >= ]]> c.begin_dt
-                    AND (g.result_dt <![CDATA[ <= ]]> c.end_dt OR c.end_dt = '0000-00-00 00:00:00'))
+                    AND (g.result_dt <![CDATA[ <= ]]> c.end_dt OR c.end_dt = '0000-00-00 00:00:00')
+                    AND g.stat_cd IN <foreach item="i" collection="offering" open="(" separator="," close=")">#{i}</foreach>
+                    )
 
 		WHERE s.site_id = g.site_id
                 AND f.site_id = s.site_id
                 AND e.site_id = s.site_id
 		AND d.parameter_cd = e.parameter_cd
                 AND e.dd_nu = g.dd_nu
-<!--                AND e.access_cd = '0'-->
+                AND e.access_cd = '0'
                 AND h.huc_cd = f.huc_cd
                 AND h.state_cd = f.state_cd
+                AND e.parameter_cd IN <foreach item="i" collection="observedProperty" open="(" separator="," close=")">#{i}</foreach>
+                AND g.stat_cd IN <foreach item="i" collection="offering" open="(" separator="," close=")">#{i}</foreach>
 
-        <choose>
-            <when test="offering != null">
-                AND g.stat_cd = (#{offering[0]})
-            </when>
-            <otherwise>
-                AND g.stat_cd = '00003'
-            </otherwise>
-        </choose>
 
-        <choose>
-            <when test="observedProperty != null">
-                AND e.parameter_cd = (#{observedProperty[0]})
-            </when>
-            <otherwise>
-                AND e.parameter_cd = '00060'
-            </otherwise>
-        </choose>
-
-        <if test="beginPosition != null">
+       <if test="beginPosition != null">
                 AND g.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{beginPosition[0]}, '%Y-%m-%d')
-        </if>
+       </if>
 
-        <if test="endPosition != null">
+       <if test="endPosition != null">
                 AND g.result_dt <![CDATA[ <= ]]> CONCAT(STR_TO_DATE(#{endPosition[0]}, '%Y-%m-%d'),':23:45')
-        </if>
+       </if>
 
-        <if test="interval != null">
+       <if test="interval != null">
                 AND g.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{interval[0]}, '%Y-%m-%d')
-        </if>
-
-		ORDER BY f.station_nm, e.loc_nu, currentPosition DESC
-
-	</select>
-
+       </if>
+		ORDER BY station_nm, parameter_stat, currentPosition DESC
+    </select>
 </mapper>
 

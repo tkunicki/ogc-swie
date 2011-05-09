@@ -1,5 +1,8 @@
-function createMultiPlot(sos_url, gdaDV_url, stat_cd, observedProperty) {
+var cida = {};
+
+cida.createMultiPlot = function(sos_url, gdaDV_url, stat_cd, observedProperty, N) {
     $(function() {
+
         var sos_urlArray = sos_url.split(",");
         var stat_cdArray = stat_cd.split(",");
         var observedPropertyArray = observedProperty.split(",");
@@ -54,12 +57,13 @@ function createMultiPlot(sos_url, gdaDV_url, stat_cd, observedProperty) {
         document.getElementById("Station_name").innerHTML = (html);
 
         var k = 0;
+//        $( "#progressbar" ).progressbar({value: 0});
         for (j = 0; j < sos_urlArray.length; j++){
             var PlotData = LoadXML(sos_urlArray[j]);
 
             data.addRows($(PlotData).find('[nodeName="wml2:point"],point').length);
-            $(PlotData).find('[nodeName="wml2:point"],point').each(function()
-            {
+            $(PlotData).find('[nodeName="wml2:point"],point').each(function(){
+
                 var temp = $('[nodeName="wml2:time"],time', this).text();
                 var value = parseFloat($('[nodeName="wml2:value"],value', this).text());
                 var timestamp = temp.substr(0, 18);
@@ -73,12 +77,11 @@ function createMultiPlot(sos_url, gdaDV_url, stat_cd, observedProperty) {
                 var hours = time[0];
                 var minutes = time[1];
                 var seconds = time[2];
-//                date.setFullYear(year,month,day);
-//                date.setHours(hours, minutes, seconds, 0);
                 var date = new Date(year,month,day,hours, minutes, seconds, 0);
                 data.setValue(k, 0, date);
                 data.setValue(k, (j+1), value);
-
+                var percent = (k * 100)/N;
+//                $("#progressbar").progressbar({value: percent});
                 k = k + 1;
             });
         }
@@ -93,7 +96,7 @@ function createMultiPlot(sos_url, gdaDV_url, stat_cd, observedProperty) {
             'legendPosition':'newRow',
             'colors':color
         });
-
+//       $("#progressbar").hide('slow');
        google.visualization.events.addListener(chart,'rangechange',function(){
            r1 = chart.getVisibleChartRange();
            var startZoom = new Date(r1.start);

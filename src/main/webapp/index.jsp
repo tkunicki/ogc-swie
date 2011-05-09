@@ -38,7 +38,7 @@
 
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 
-    <title>OGC Services SWIE</title>
+    <title>OGC Services</title>
 
     <style type="text/css">
         body {
@@ -52,7 +52,7 @@
             margin: 1px 0;
             font: 18px Helvetica;
         }
-        .container {width: 1150px; margin: 10px auto;}
+        .container {width: 950px; margin: 10px auto;}
         ul.tabs {
                 margin: 0;
                 padding: 0;
@@ -134,10 +134,11 @@
     <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>    
     
     <script type="text/javascript"src="http://www.google.com/jsapi?key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q"></script>
-    <script src="GoogleMap/jquery-1.5.1.js"></script>
-
-    <script src="GoogleMap/mapiconmaker.js" type="text/javascript"></script>
-    <script src="GoogleMap/LoadXML.js" type="text/javascript"></script>
+    <script src="js/jquery-1.5.1.js"></script>
+    <script src="js/LoadXML.js" type="text/javascript"></script>
+    <script src="js/parseXML.js" type="text/javascript"></script>
+    <script src="js/mapiconmaker.js" type="text/javascript"></script>
+    <script src="js/CreateMarker.js" type="text/javascript"></script>
 
     <script type="text/javascript">
 
@@ -187,20 +188,21 @@
 
 <!===============================Create Table=========================================>
 
-    <h1>Surface Water IE 1.5.1</h1>
+    <h1>Surface Water Interoperability Experiment 1.7</h1>
+
     <table>
         <tr>
             <td>
                 <div class="container">
 
                     <ul class="tabs">
+<!--                        <li><a href="#tabUnitValues">SOS Unit Values</a></li>-->
                         <li><a href="#tabUnitValues">SOS Unit Values</a></li>
-                        <li><a href="#tabDaily">SOS Daily</a></li>
+                        <li><a href="#tabDaily">SOS Daily Values</a></li>
                         <li><a href="#tabGDA">GDA</a></li>
                         <li><a href="#tabWFS">WFS</a></li>
                         <li><a href="#tabMap">Map</a></li>
                         <li><a href="#tabMisc">Miscellaneous</a></li>
-<!--                        <li><a href="#tabPlot">Plot</a></li>-->
                     </ul>
 
 
@@ -210,7 +212,7 @@
                                 <p />
                                     <dl>
                                         <dt><b>GetObservation</b> - featureID(required), observedProperty(required), offering (required), beginPosition(optional), endPosition(optional), Interval(optional), Latest(optional)</dt><br />
-                                        <dd>observedProperty: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH <i>(defaults to Discharge)</i></dd>
+                                        <dd>observedProperty: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH </dd>
                                         <dd>beginPostion: YYYY-MM-DD, YYYY-MM, YYYY <i>(defaults to earliest record)</i></dd>
                                         <dd>endPostion: YYYY-MM-DD, YYYY-MM, YYYY <i>(defaults to most recent record)</i></dd>
                                         <dd>Interval: Today, ThisWeek <i>Future plan to implement ISO-8601 Duration option</i></dd>
@@ -218,25 +220,29 @@
                                         <dd>offering: UNIT <i>(defaults to UNIT)</i></dd>
                                         <br /><i>Gage height observation by feature ID and begin time:</i>
                                         <dd>
-                                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=01446500&observedProperty=GageHeight&offering=UNIT&beginPosition=<%=LastWeek%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=01446500&offering=UNIT&observedProperty=GageHeight&beginPosition=<%=LastWeek%></a>
+                                            <a href="<%=baseURL%>/uv/sos?request=GetObservation&featureID=01446500&observedProperty=GageHeight&offering=UNIT&beginPosition=<%=LastWeek%>"><%=baseURL%>/uv/sos?request=GetObservation&featureId=01446500&offering=UNIT&observedProperty=GageHeight&beginPosition=<%=LastWeek%></a>
                                         </dd>
                                         <br /><i>Discharge observation by feature ID and begin time:</i><br />
                                         <dd>
-                                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=01446500&offering=UNIT&observedProperty=Discharge&beginPosition=<%=LastWeek%>"><%=baseURL%>/sos/uv?request=GetObservation&featureId=01446500&offering=UNIT&observedProperty=Discharge&beginPosition=<%=LastWeek%></a>
+                                            <a href="<%=baseURL%>/uv/sos?request=GetObservation&featureID=01446500&offering=UNIT&observedProperty=Discharge&beginPosition=<%=LastWeek%>"><%=baseURL%>/uv/sos?request=GetObservation&featureId=01446500&offering=UNIT&observedProperty=Discharge&beginPosition=<%=LastWeek%></a>
                                         </dd>
                                         <br /><i>Latest discharge observation by feature ID:</i><br />
                                         <dd>
-                                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=05407000&offering=UNIT&observedProperty=Discharge&Latest"><%=baseURL%>/sos/uv?request=GetObservation&featureId=05407000&offering=UNIT&observedProperty=Discharge&Latest</a>
+                                            <a href="<%=baseURL%>/uv/sos?request=GetObservation&featureID=05407000&offering=UNIT&observedProperty=Discharge&Latest"><%=baseURL%>/uv/sos?request=GetObservation&featureId=05407000&offering=UNIT&observedProperty=Discharge&Latest</a>
                                         </dd>
                                         <br /><i>Temperature observation by feature ID for this week:</i><br />
                                         <dd>
-                                            <a href="<%=baseURL%>/sos/uv?request=GetObservation&featureID=05407000&offering=UNIT&observedProperty=Temperature&Interval=ThisWeek"><%=baseURL%>/sos/uv?request=GetObservation&featureId=05407000&offering=UNIT&observedProperty=Temperature&Interval=ThisWeek</a>
+                                            <a href="<%=baseURL%>/uv/sos?request=GetObservation&featureID=05407000&offering=UNIT&observedProperty=Temperature&Interval=ThisWeek"><%=baseURL%>/uv/sos?request=GetObservation&featureId=05407000&offering=UNIT&observedProperty=Temperature&Interval=ThisWeek</a>
+                                        </dd>
+                                        <br /><i>Collection Example:</i>
+                                        <dd>
+                                            <a href="<%=baseURL%>/uv/sos?request=GetObservation&featureID=01446500,05082500&observedProperty=Discharge,DO&offering=UNIT&beginPosition=<%=Today%>"><%=baseURL%>/uv/sos?request=GetObservation&featureId=01446500,05082500&offering=UNIT&observedProperty=Discharge,DO&beginPosition=<%=Today%></a>
                                         </dd>
 
                                     </dl>
                                    <p />
                                    <dt><i>GetObservation via XML HTTP body POST:</i><br /></dt>
-                                      <dd>  <form name="input" action="<%=baseURL%>/sos/uv?request=GetObservation" method="post">
+                                      <dd>  <form name="input" action="<%=baseURL%>/uv/sos?request=GetObservation" method="post">
                                                 <textarea name="xml" rows="10" cols="90">
 <?xml version="1.0" ?>
 <sos:GetObservation version="2.0.0" service="SOS"
@@ -271,45 +277,49 @@
 
                                     <dl>
                                                 <dt><b>GetCapabilities</b></dt>
-                                                <dd><a href="<%=baseURL%>/sos/uv?request=GetCapabilities"><%=baseURL%>/sos/uv?request=GetCapabilities</a></dd>
+                                                <dd><a href="<%=baseURL%>/uv/sos?request=GetCapabilities"><%=baseURL%>/uv/sos?request=GetCapabilities</a></dd>
                                     </dl>
                                     <dl>
                                                 <dt><b>DescribeSensor</b></dt>
-                                                <dd><a href="<%=baseURL%>/sos/uv?request=DescribeSensor"><%=baseURL%>/sos/uv?request=DescribeSensor</a></dd>
+                                                <dd><a href="<%=baseURL%>/uv/sos?request=DescribeSensor"><%=baseURL%>/uv/sos?request=DescribeSensor</a></dd>
                                     </dl>
 
                         </div>
                         <div id="tabDaily" class="tab_content">
-                            <font size="4" ><li><strong>Sensor Observation Service - Daily Values</strong></li></font>
+                            <font size="4" ><li><strong>Sensor Observation Service - WaterML2</strong></li></font>
 
                             <dl>
                                 <dt><b>GetObservation</b> - featureID(required), offering(required), observedProperty(required), beginPosition(optional), endPosition(optional), Interval(optional), Latest(optional)</dt><br />
-                                <dd>observedProperty: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH <i>(defaults to Discharge)</i></dd>
-                                <dd>offering: Mean, Maximum, Minimum, Variance, Mode, STD, SUM <i>(defaults to Mean)</i></dd>
+                                <dd>observedProperty: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH </dd>
+                                <dd>offering: Unit, Mean, Maximum, Minimum, Variance, Mode, STD, SUM</dd>
                                 <dd>beginPostion: YYYY-MM-DD, YYYY-MM, YYYY <i>(defaults to earliest record)</i></dd>
                                 <dd>endPostion: YYYY-MM-DD, YYYY-MM, YYYY <i>(defaults to most recent record)</i></dd>
                                 <dd>Interval: Today, ThisWeek, ThisYear <i>Future plan to implement ISO-8601 Duration option</i></dd>
                                 <dd>Latest: only the most recent data point is reported</dd>
                                 <br /><i>Daily mean discharge observation by feature ID with begin and end time:</i><br />
                                 <dd>
-                                    <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=01446500&observedProperty=Discharge&beginPosition=1970-01-01&endPosition=1980-01-01&offering=Mean"><%=baseURL%>/sos/dv?request=GetObservation&featureId=01446500&observedProperty=Discharge&beginPosition=1970-01-01&endPosition=1980-01-01&offering=Mean</a>
+                                    <a href="<%=baseURL%>/dv/sos?request=GetObservation&featureID=01446500&observedProperty=Discharge&beginPosition=1970-01-01&endPosition=1971-01-01&offering=Mean"><%=baseURL%>/dv/sos?request=GetObservation&featureId=01446500&observedProperty=Discharge&beginPosition=1970-01-01&endPosition=1971-01-01&offering=Mean</a>
                                 </dd>
                                 <br /><i>Daily maximum temperature observations by feature ID and begin time:</i><br />
                                 <dd>
-                                    <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=05082500&observedProperty=Temperature&beginPosition=2010-01-01&offering=Maximum"><%=baseURL%>/sos/dv?request=GetObservation&featureId=05407000&observedProperty=Precipitation&beginPosition=2010-01-01&offering=Maximum</a>
+                                    <a href="<%=baseURL%>/dv/sos?request=GetObservation&featureID=05082500&observedProperty=Temperature&beginPosition=2010-01-01&offering=Maximum"><%=baseURL%>/dv/sos?request=GetObservation&featureId=05407000&observedProperty=Precipitation&beginPosition=2010-01-01&offering=Maximum</a>
                                 </dd>
                                 <br /><i>Daily mean discharge observations by feature ID this year:</i><br />
                                 <dd>
-                                    <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=05082500&observedProperty=Discharge&Interval=ThisYear&offering=Mean"><%=baseURL%>/sos/dv?request=GetObservation&featureId=05407000&observedProperty=Discharge&Interval=ThisYear&offering=Mean</a>
+                                    <a href="<%=baseURL%>/dv/sos?request=GetObservation&featureID=05082500&observedProperty=Discharge&Interval=ThisYear&offering=Mean"><%=baseURL%>/dv/sos?request=GetObservation&featureId=05407000&observedProperty=Discharge&Interval=ThisYear&offering=Mean</a>
                                 </dd>
                                 <br /><i>Latest daily mean discharge observations by feature ID:</i><br />
                                 <dd>
-                                    <a href="<%=baseURL%>/sos/dv?request=GetObservation&featureID=05082500&observedProperty=Discharge&offering=Mean&Latest"><%=baseURL%>/sos/dv?request=GetObservation&featureId=05407000&observedProperty=Discharge&offering=Mean&Latest</a>
+                                    <a href="<%=baseURL%>/dv/sos?request=GetObservation&featureID=05082500&observedProperty=Discharge&offering=Mean&Latest"><%=baseURL%>/dv/sos?request=GetObservation&featureId=05407000&observedProperty=Discharge&offering=Mean&Latest</a>
+                                </dd>
+                                <br /><i>Collection Example:</i>
+                                <dd>
+                                    <a href="<%=baseURL%>/dv/sos?request=GetObservation&featureID=01446500,05082500&observedProperty=Discharge,DO&offering=Mean,Maximum&beginPosition=<%=LastWeek%>"><%=baseURL%>/dv/sos?request=GetObservation&featureId=01446500,05082500&offering=Mean,Maximum&observedProperty=Discharge,DO&beginPosition=<%=LastWeek%></a>
                                 </dd>
                             </dl>
                             <p />
                             <dt><i>GetObservation via XML HTTP body POST:</i><br /></dt>
-                            <dd>  <form name="input" action="<%=baseURL%>/sos/dv?request=GetObservation" method="post">
+                            <dd>  <form name="input" action="<%=baseURL%>/dv/sos?request=GetObservation" method="post">
                                                 <textarea name="xml" rows="10" cols="90">
 <?xml version="1.0" ?>
 <sos:GetObservation version="2.0.0" service="SOS"
@@ -343,11 +353,11 @@
                                     <p />
                                     <dl>
                                                 <dt><b>GetCapabilities</b></dt>
-                                                <dd><a href="<%=baseURL%>/sos/dv?request=GetCapabilities"><%=baseURL%>/sos/dv?request=GetCapabilities</a></dd>
+                                                <dd><a href="<%=baseURL%>/dv/sos?request=GetCapabilities"><%=baseURL%>/dv/sos?request=GetCapabilities</a></dd>
                                     </dl>
                                     <dl>
                                                 <dt><b>DescribeSensor</b></dt>
-                                                <dd><a href="<%=baseURL%>/sos/dv?request=DescribeSensor"><%=baseURL%>/sos/dv?request=DescribeSensor</a></dd>
+                                                <dd><a href="<%=baseURL%>/dv/sos?request=DescribeSensor"><%=baseURL%>/dv/sos?request=DescribeSensor</a></dd>
                                     </dl>
 
                         </div>
@@ -356,13 +366,13 @@
                                     <dl>
                                                 <dt><b>GetDataAvailablity</b> - featureID, offering, and observedProperty are all optional. If not used, all the features/properties in the SWIE will be displayed.  Additionally, a bounding box is supported in the XML post.</dt>
                                                 <br /><i>GetDataAvailablity by feature ID and offering:</i>
-                                                <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity&featureID=05082500&offering=mean"><%=baseURL%>/sos/dv?request=GetDataAvailablity&featureID=05082500&offering=mean</a></dd>
+                                                <dd><a href="<%=baseURL%>/dv/sos?request=GetDataAvailablity&featureID=05082500&offering=mean"><%=baseURL%>/dv/sos?request=GetDataAvailablity&featureID=05082500&offering=mean</a></dd>
                                                 <br /><i>GetDataAvailablity by observed property and feature ID:</i>
-                                                <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500"><%=baseURL%>/sos/dv?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500</a></dd>
+                                                <dd><a href="<%=baseURL%>/dv/sos?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500"><%=baseURL%>/dv/sos?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500</a></dd>
                                                 <br /><i>General (very large file / long load time):</i>
-                                                <dd><a href="<%=baseURL%>/sos/dv?request=GetDataAvailablity"><%=baseURL%>/sos/dv?request=GetDataAvailablity</a></dd>
+                                                <dd><a href="<%=baseURL%>/dv/sos?request=GetDataAvailablity"><%=baseURL%>/dv/sos?request=GetDataAvailablity</a></dd>
                                                 <br /><i>GetDataAvailablity via XML HTTP body POST by feature ID:</i><br />
-                                      <dd>  <form name="input" action="<%=baseURL%>/sos/dv?request=GetDataAvailability" method="post">
+                                      <dd>  <form name="input" action="<%=baseURL%>/dv/sos?request=GetDataAvailability" method="post">
                                                 <textarea name="xml" rows="10" cols="90">
 <?xml version="1.0" ?>
 <sos:GetDataAvailablity version="2.0.0" service="SOS"
@@ -386,7 +396,7 @@
                                                         </form>
                                     </dd>
                                       <br /><i>GetDataAvailablity via XML HTTP body POST by bounding box:</i><br />
-                                      <dd>  <form name="input" action="<%=baseURL%>/sos/dv?request=GetDataAvailability" method="post">
+                                      <dd>  <form name="input" action="<%=baseURL%>/dv/sos?request=GetDataAvailability" method="post">
                                                 <textarea name="xml" rows="10" cols="90">
 <?xml version="1.0" ?>
 <sos:GetDataAvailablity version="2.0.0" service="SOS"
@@ -434,19 +444,19 @@
 
                                     <dt>GetFeature</dt>
                                     <dl>
-                                        <dd>All features related to SWIE:<br />
-                                        <a href="<%=baseURL%>/wfs?request=GetFeature"><%=baseURL%>/wfs?request=GetFeature</a>
-                                        </dd>
-                                        <p></p>
-                                    </dl>
-                                    <dl>
                                         <dd>GetFeature by feature ID:<br />
                                         <a href="<%=baseURL%>/wfs?request=GetFeature&featureId=01446500"><%=baseURL%>/wfs?request=GetFeature&featureId=01446500</a>
                                         </dd>
                                         <p></p>
                                     </dl>
                                     <dl>
-                                        <dd>GetFeature via XML HTTP body POST:<br />
+                                        <dd>GetFeature by multiple feature ID's:<br />
+                                        <a href="<%=baseURL%>/wfs?request=GetFeature&featureId=01446500,05082500"><%=baseURL%>/wfs?request=GetFeature&featureId=01446500,05082500</a>
+                                        </dd>
+                                        <p></p>
+                                    </dl>
+                                        <dl>
+                                        <dd>GetFeature by bounding box via XML HTTP body POST:<br />
 
                                         <form name="input" action="<%=baseURL%>/wfs?request=GetFeature" method="post">
                                                 <textarea name="xml" rows="10" cols="90">
@@ -473,27 +483,50 @@
                                                         </form>
                                                         </dd>
                                                     </dl>
+                                        <dl>
+                                        <dd>GetFeature by featureID via XML HTTP body POST:<br />
+
+                                        <form name="input" action="<%=baseURL%>/wfs?request=GetFeature" method="post">
+                                                <textarea name="xml" rows="10" cols="90">
+<?xml version="1.0" ?>
+<wfs:GetFeature version="1.1.0" service="WFS"
+        maxFeatures="3"
+    xmlns:wfs="http://www.opengis.net/wfs"
+    xmlns:ogc="http://www.opengis.net/ogc"
+    xmlns:gml="http://www.opengis.net/gml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <wfs:Query>
+    <ogc:Filter>
+        <ogc:GmlObjectId gml:id="01446500,04010500" />
+    </ogc:Filter>
+  </wfs:Query>
+</wfs:GetFeature>
+                                                                </textarea><br></br>
+                                                            <input type="submit" value="Submit" />
+                                                        </form>
+                                                        </dd>
+                                                    </dl>
                         </div>
                         <div id="tabMap" class="tab_content">
                             <center>
-                                <table border ="1" cellpadding="5">
+                                <table cellpadding="5">
                                     <tr>
                                         <th rowspan="2">
-                                            <div id="map" style="width: 660px; height: 500px"></div>
+                                            <div id="map" style="width: 560px; height: 400px"></div>
                                         </th>
                                         <td valign="top">
-                                            <table style="width:400px">
+                                            <table style="width:300px">
                                                 <tr>
-                                                    <td>
+                                                    <td style="vertical-align:bottom"">
                                                         <i><b>Current Marker:</b></i>
                                                     </td>
                                                     <td align="right">
-                                                        <img src = "USGS.gif" width="84" height="31" alighn="right"/><br />
+                                                        <img src = "img/USGS.gif" width="84" height="31" alighn="right"/><br />
                                                     </td>
                                                 </tr>
                                             </table>
                                             <center>
-                                                <div id="StationInfo" style="height:40px; width:400px">Click on a marker for GetDataAvailability demonstration</div>
+                                                <div id="StationInfo" style="height:40px; width:300px">Click on a marker for GetDataAvailability demonstration</div>
                                             </center>
                                             
                                         </td>
@@ -501,7 +534,8 @@
                                     <tr>
                                         <td>
                                             <i><b>Clicked Marker:</b></i><br />
-                                            <div id="AvailableData" style="overflow:scroll; height: 420px; width:400px">Click on a marker for GetDataAvailability demonstration</div>
+                                            <div id="AvailableDataHeader"></div>
+                                            <div id="AvailableData" style="overflow:auto; height: 275px;">Click on a marker for GetDataAvailability demonstration</div>
                                         </td>
                                     </tr>
                                 </table>
@@ -519,7 +553,7 @@
             </dl>
              <dl>
                         <dt>Plot Examples:</dt>
-                        <dd><a href="<%=baseURL%>/GoogleMap/DischargePlot.jsp"><%=baseURL%>/GoogleMap/DischargePlot.jsp</a></dd>
+                        <dd><a href="<%=baseURL%>/DischargePlot.jsp"><%=baseURL%>/DischargePlot.jsp</a></dd>
             </dl>
             <dl>Required External Schemas<br />
                 <dd>
@@ -534,13 +568,19 @@
             <p />
         </li>
         <li><strong>Log</strong>
-            <dl>Version 1.5.1 March 22th, 2011 <br />
-                <dd> * Added offering to daily data service (getObservation and getDataAvailability  </dd>
-                <dd> * Continued to try to improve the efficiency of plot displays </dd>
+            <dl>Version 1.7 May 6th, 2011 <br />
+                <dd> * Added Collections wrapper to getObservations, this allows multiple features to be requested </dd>
+                <dd> * Added ability for multiple properties to be requested </dd>
+            </dl>
+            <dl>Version 1.6 April 26th, 2011 <br />
+                <dd> * Merged unit and daily getDataAvailability into one service  </dd>
+                <dd> * Added bounding box to getDataAvailability </dd>
+                <dd> * Added ability to call multiple features in WFS </dd>
+                <dd> * Added ability to call multiple plot lines </dd>
             </dl>
             <dl>Version 1.5 March 22th, 2011 <br />
-                <dd> * Included a minimal implementation of GetObservation via XML HTTP body POST </dd>
-                <dd> * Included plot links </dd>
+                <dd> * Added offering to daily data service (getObservation and getDataAvailability  </dd>
+                <dd> * Continued to try to improve the efficiency of plot displays </dd>
             </dl>
         </li>
             </div>
@@ -560,7 +600,7 @@
     </noscript>
 
 
-<!--==============================With compatable browsers, do the following===============-->
+<!--==============================With compatible browsers, do the following===============-->
         <script type="text/javascript">
 //<![CDATA[
 if (GBrowserIsCompatible()) {
@@ -570,100 +610,9 @@ if (GBrowserIsCompatible()) {
     var point_ini = new GLatLng(0, 0);
     var ActiveMarker = new GMarker(point_ini, clickedIcon);
     
-    var base = '<%=baseURL%>';
+    var base_url = '<%=baseURL%>';
     var today = '<%=Today%>';
-    var test = base.length;    // Gets rid of /GoogleMap/ from baseURL
-    var base_url = base.substring(0,test);
     var LastWeekStr = '<%=LastWeek%>';
-
-
-function parseXML(xml){
-    $(xml).find('[nodeName="wfs:FeatureCollection"],FeatureCollection').each(function()
-    {
-        $(xml).find('[nodeName="wfs:member"],member').each(function()
-        {
-            var siteName = $('[nodeName="gml:name"],name', this).text();
-            var pos = $('[nodeName="gml:pos"],pos', this).text();
-            var pos_array = pos.split(" ");
-            var latitude = pos_array[0];
-            var longitude = pos_array[1];
-            var pos_name = $('[nodeName="gml:pos"],pos', this).attr("srsName");
-            var siteCode_long = $('[nodeName="wml2:WaterMonitoringPoint"],WaterMonitoringPoint', this).attr("gml:id");
-            var siteCode_array = siteCode_long.split(".");
-            var siteCode = siteCode_array[2];
-            var USGS_URL = $('[nodeName="sf:sampledFeature"],sampledFeature', this).attr("xlink:ref");
-            var URL_array = USGS_URL.split("/");
-            var stateNM = URL_array[3];
-            var watershed = $('[nodeName="om:value"],value', this).text();
-            var point = new GLatLng(latitude, longitude);
-            var marker = createMarker(point, siteName,  stateNM, siteCode, USGS_URL, base_url, watershed);
-            map.addOverlay(marker);
-        });
-    });
-}
-
-function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watershed)
-{
-    var marker = new GMarker(point, newIcon);
-    var USGS_link = 'Station number: <a href = "' + USGS_URL + '" >' + Site_no + '</a>';
-    var Name_html = '<b>' + name + '</b><br />';
-    var Watershed_html = '<b>' + watershed + ' Watershed</b><br />';
-    var html_header = Name_html + Watershed_html + USGS_link;
-
-    GEvent.addListener(marker,"mouseover", function() {
-        document.getElementById("StationInfo").innerHTML = Name_html;
-    });
-
-    GEvent.addListener(marker,"mouseout", function() {document.getElementById("StationInfo").innerHTML = ""});
-
-    GEvent.addListener(marker, "click", function() {
-
-        var Properties = [];
-        var time = "";
-        document.getElementById("AvailableData").innerHTML = 'Loading...<img src = "GoogleMap/ajax-loader.gif" />';
-
-
-        var sos_url_base = base_url + "/sos/uv?request=GetObservation&featureId=" + Site_no + "&latest&observedProperty=";
-        var gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity&featureID=" + Site_no;
-
-        var html = '<br />';
-        var time = '';
-        var Data_table = "Available Data:<br /><center><table border='1'><tr><td><b><center>Property</center></b></td><td><b><center>Offering</center></b></td><td><center><b>Begin Time</center></b></td><td><b><center>End Time</center></b></td></tr>";
-
-        var xml_Data = LoadXML(gdaDV_url);
-        $(xml_Data).find('[nodeName="gda:FeaturePropertyTemporalRelationship"],FeaturePropertyTemporalRelationship').each(function(){
-            var Property = $(this).find('[nodeName="gda:targetProperty"],targetProperty');
-            var Prop = Property.attr("xlink:title");
-            var Parameter_cd_long = Property.attr("xlink:href");
-            var Parameter_cd_array = Parameter_cd_long.split("_");
-            var Parameter_cd = Parameter_cd_array[1];
-            var Offering = Property.attr("x-offering");
-            var Offering_cd = Property.attr("xlink:href").split("_")[2];
-            var beginTime_long = $(this).find('[nodeName="gml:beginPosition"],beginPosition').text();
-            var beginTime = beginTime_long.substr(0,16);
-            var beginDate = beginTime.split(" ")[0];
-            var endTime_long = $(this).find('[nodeName="gml:endPosition"],endPosition').text();
-            var endTime = endTime_long.substr(0,16);
-            var endDate = endTime.split(" ")[0];
-
-            var Plot_links = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?&featureID=' + Site_no + '&observedProperty=' + Parameter_cd + '_' + Offering_cd;
-            Plot_links = Plot_links + '&beginPosition=' + LastWeekStr + '&endPosition=' + endDate + '>' + Prop + '</a>';
-            Data_table = Data_table + '<tr><td>' + Plot_links + '</td><td>' + Offering + '</td><td>' + beginDate + '</td><td>' + endDate + '</td></tr>';
-        });
-
-        var AvailableTable = html + Data_table + '</table></center><br />';
-
-        document.getElementById("AvailableData").innerHTML = html_header + '<br />' + AvailableTable;
-
-        ActiveMarker.hide();
-        ActiveMarker = new GMarker(point, clickedIcon);
-        map.addOverlay(ActiveMarker);
-        
-    });
-
-    return marker;
-}
-
 
     //==========================================Create the map================================
     var map = new GMap2(document.getElementById("map"));

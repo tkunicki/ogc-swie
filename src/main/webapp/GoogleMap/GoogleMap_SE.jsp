@@ -37,13 +37,14 @@
 
     <title>OGC Services SWIE</title>
 
-        <script type="text/javascript" src="jquery-1.5.1.js"></script>
-        <script src="LoadXML.js" type="text/javascript"></script>
-
+        <script type="text/javascript" src="../js/jquery-1.5.1.js"></script>
+        <script src="../js/LoadXML.js" type="text/javascript"></script>
+        <script src="../js/parseXML.js" type="text/javascript"></script>
+        <script src="../js/CreateMarker.js" type="text/javascript"></script>
         <link rel="stylesheet" type="text/css" media="screen" href="tooltipv2.css" />
 
         <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>
-        <script src="mapiconmaker.js" type="text/javascript"></script>
+        <script src="../js/mapiconmaker.js" type="text/javascript"></script>
 
     </head>
 
@@ -75,14 +76,14 @@
         </tr>
     </table>
 
-        <h1>Surface Water Interoperability Experiment USGS Gage Sites</h1>
+        <h1>Surface Water Inter-Operability Experiment USGS Gage Sites</h1>
 
 <!--===============================Create Table=========================================-->
 <center>
     <table border ="1" cellpadding="5">
         <tr>
             <th rowspan="2">
-                <div id="map" style="width: 700px; height: 500px"></div>
+                <div id="map" style="width: 560px; height: 400px"></div>
 <!--                <form action="#">
                     TN Rivers: <input type="checkbox" id="TNbox" onclick="boxclick(this,'TN')" />&nbsp;&nbsp;
                     NC Rivers: <input type="checkbox" id="NCbox" onclick="boxclick(this,'NC')" />&nbsp;&nbsp;
@@ -100,7 +101,7 @@
                             <i><b>Current Marker:</b></i>
                         </td>
                         <td align="right">
-                            <img src = "USGS.gif" width="84" height="31" alighn="right"/><br />
+                            <img src = "../img/USGS.gif" width="84" height="31" alighn="right"/><br />
                         </td>
                     </tr>
                 </table>
@@ -113,7 +114,8 @@
         <tr>
             <td>
                 <i><b>Clicked Marker:</b></i><br />
-                <div id="AvailableData" style="overflow:scroll; height: 470px; width:400px">Click on a marker for GetDataAvailability demonstration</div>
+                <div id="AvailableDataHeader"></div>
+                <div id="AvailableData" style="overflow:scroll; height: 275px; width:400px">Click on a marker for GetDataAvailability demonstration</div>
             </td>
         </tr>
     </table>
@@ -151,133 +153,7 @@
 //            gicons["GA"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
 //            gicons["SC"] = MapIconMaker.createMarkerIcon({primaryColor: "#660000"});
 
-function parseXML(xml){
-    $(xml).find('[nodeName="wfs:FeatureCollection"],FeatureCollection').each(function()
-    {
-        $(xml).find('[nodeName="wfs:member"],member').each(function()
-        {
-            var siteName = $('[nodeName="gml:name"],name', this).text();
-            var pos = $('[nodeName="gml:pos"],pos', this).text();
-            var pos_array = pos.split(" ");
-            var latitude = pos_array[0];
-            var longitude = pos_array[1];
-            var pos_name = $('[nodeName="gml:pos"],pos', this).attr("srsName");
-            var siteCode_long = $('[nodeName="wml2:WaterMonitoringPoint"],WaterMonitoringPoint', this).attr("gml:id");
-            var siteCode_array = siteCode_long.split(".");
-            var siteCode = siteCode_array[2];
-            var USGS_URL = $('[nodeName="sf:sampledFeature"],sampledFeature', this).attr("xlink:ref");
-            var URL_array = USGS_URL.split("/");
-            var stateNM = URL_array[3];
-            var watershed = $('[nodeName="om:value"],value', this).text();
-            var point = new GLatLng(latitude, longitude);
-            var marker = createMarker(point, siteName,  stateNM, siteCode, USGS_URL, base_url, watershed);
-            map.addOverlay(marker);
-            makeSidebar();
-        });
-    });
-}
 
-function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watershed)
-{
-    var marker = new GMarker(point, newIcon);
-    var USGS_link = 'Station number: <a href = "' + USGS_URL + '" >' + Site_no + '</a>';
-    var Name_html = '<b>' + name + '</b><br />';
-    var Watershed_html = '<b>' + watershed + ' Watershed</b><br />';
-    var html_header = Name_html + Watershed_html + USGS_link;
-
-    GEvent.addListener(marker,"mouseover", function() {
-        document.getElementById("StationInfo").innerHTML = Name_html;
-    });
-
-    GEvent.addListener(marker,"mouseout", function() {document.getElementById("StationInfo").innerHTML = ""});
-
-    GEvent.addListener(marker, "click", function() {
-
-        var Properties = [];
-        var time = "";
-        document.getElementById("AvailableData").innerHTML = 'Loading...<img src = "GoogleMap/ajax-loader.gif" />';
-
-
-        var sos_url_base = base_url + "/sos/uv?request=GetObservation&featureId=" + Site_no + "&latest&observedProperty=";
-        var gdaDV_url = base_url + "/sos/dv?request=GetDataAvailablity&featureID=" + Site_no;
-
-        var html = '<br />';
-        var time = '';
-        var Data_table = "Available Data:<br /><center><table border='1'><tr><td><b><center>Property</center></b></td><td><b><center>Offering</center></b></td><td><center><b>Begin Time</center></b></td><td><b><center>End Time</center></b></td></tr>";
-
-        var xml_Data = LoadXML(gdaDV_url);
-        $(xml_Data).find('[nodeName="gda:FeaturePropertyTemporalRelationship"],FeaturePropertyTemporalRelationship').each(function(){
-            var Property = $(this).find('[nodeName="gda:targetProperty"],targetProperty');
-            var Prop = Property.attr("xlink:title");
-            var Parameter_cd_long = Property.attr("xlink:href");
-            var Parameter_cd_array = Parameter_cd_long.split("_");
-            var Parameter_cd = Parameter_cd_array[1];
-            var Offering = Property.attr("x-offering");
-            var Offering_cd = Property.attr("xlink:href").split("_")[2];
-            var beginTime_long = $(this).find('[nodeName="gml:beginPosition"],beginPosition').text();
-            var beginTime = beginTime_long.substr(0,16);
-            var beginDate = beginTime.split(" ")[0];
-            var endTime_long = $(this).find('[nodeName="gml:endPosition"],endPosition').text();
-            var endTime = endTime_long.substr(0,16);
-            var endDate = endTime.split(" ")[0];
-
-            var Plot_links = '<a href =' + base_url + '/GoogleMap/DischargePlot.jsp?&featureID=' + Site_no + '&observedProperty=' + Parameter_cd + '_' + Offering_cd;
-            Plot_links = Plot_links + '&beginPosition=' + LastWeekStr + '&endPosition=' + endDate + '>' + Prop + '</a>';
-            Data_table = Data_table + '<tr><td>' + Plot_links + '</td><td>' + Offering + '</td><td>' + beginDate + '</td><td>' + endDate + '</td></tr>';
-        });
-
-        var AvailableTable = html + Data_table + '</table></center><br />';
-
-        document.getElementById("AvailableData").innerHTML = html_header + '<br />' + AvailableTable;
-
-        ActiveMarker.hide();
-        ActiveMarker = new GMarker(point, clickedIcon);
-        map.addOverlay(ActiveMarker);
-
-    });
-
-    return marker;
-}
-
-// ===================================== Shows markers =================================
-//      function show(category) {
-//        for (var i=0; i<gmarkers.length; i++) {
-//          if (gmarkers[i].mycategory == category) {
-//            gmarkers[i].show();
-//          }
-//        }
-//        document.getElementById(category+"box").checked = true;
-//      }
-
-// ===================================== Hides markers ===================================
-//          function hide(category) {
-//            for (var i=0; i<gmarkers.length; i++) {
-//              if (gmarkers[i].mycategory == category) {
-//                gmarkers[i].hide();
-//              }
-//            }
-//            document.getElementById(category+"box").checked = false;
-//            map.closeInfoWindow();
-//          }
-// =================================== Checkbox has been clicked =======================
-//      function include(box,category) {
-//        if (box.checked) {
-//          show(category);
-//        } else {
-//          hide(category);
-//        }
-//        // == rebuild the side bar
-//      }
-// =================================== Checkbox has been clicked =======================
-//      function boxclick(box,category) {
-//        if (box.checked) {
-//          show(category);
-//        } else {
-//          hide(category);
-//        }
-//        // == rebuild the side bar
-//        makeSidebar();
-//      }
 
 // =======================================Click identifier ==============================
       function myclick(i) {
@@ -300,11 +176,18 @@ function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watersh
       	map.addControl(new GLargeMapControl());
       	map.addControl(new GMapTypeControl());
       	map.addMapType(G_PHYSICAL_MAP);
-        map.setCenter(new GLatLng(40.18997026, -88.73343980), 5, G_PHYSICAL_MAP);
+        map.setCenter(new GLatLng(41.18997026, -88.73343980), 5, G_PHYSICAL_MAP);
         //map.setCenter(new GLatLng(35.96501528, -84.17866200), 7, G_PHYSICAL_MAP);
       	map.enableScrollWheelZoom();
 
-        var wfs_url = base_url + "/wfs?request=GetFeature&boatersInfo";
+        var boatersSites = '04031000,04043275,04065106,04067958,04074950,03497300,03498500,03538830,03539600,05362000,';
+        boatersSites = boatersSites + '03566000,03528000,03409500,03527220,03566525,03455000,03461500,03467609,';
+        boatersSites = boatersSites + '03415000,03535000,03535400,03410210,03465500,03518500,03539778,03539800,';
+        boatersSites = boatersSites + '03540500,02398000,03544970,03479000,03453500,03460000,03459500,03450000,';
+        boatersSites = boatersSites + '3451500,03456991,03456100,03513000,03505550,03503000,03504000,02399200,';
+        boatersSites = boatersSites + '02399200,02176930,02177000,02178400,02181580,04043126,04043150,04043238,04040000,04033000,04027000';
+
+        var wfs_url = base_url + "/wfs?request=GetFeature&featureId=" + boatersSites;
         xml_SE = LoadXML(wfs_url);
         parseXML(xml_SE);
 

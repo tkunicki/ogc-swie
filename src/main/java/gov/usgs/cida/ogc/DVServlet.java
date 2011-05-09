@@ -40,6 +40,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Servlet implementation class to handle WML requests
@@ -115,30 +117,45 @@ public class DVServlet extends HttpServlet {
                 parameters.put("request", new String[] {SOS_1_0_Operation.GetObservation.name()});
             }
 
+            String[] featureIDArray = parameters.get(OGCBusinessRules.FEATURE_ID);
+            if (featureIDArray != null && featureIDArray.length > 0){
+                String featureID = featureIDArray[0];
+                String[] featureIDSplit = featureID.split(",");
+         
+                parameters.put(OGCBusinessRules.FEATURE_ID, featureIDSplit);
+            } // Can't put a default here because it breaks GDA
+
             String[] observedProperties = parameters.get(OGCBusinessRules.observedProperty);
             if (observedProperties != null && observedProperties.length > 0){
                 String observedProperty = observedProperties[0];
-            
-                try {
-                    observedProperty = ObservedProperties.valueOf(observedProperty.toUpperCase()).code;
-                } catch (IllegalArgumentException e) {
-                    // property not found in list...
+                String[] observedPropertySplit = observedProperty.split(",");
+                for (int i=0; i<observedPropertySplit.length; i++){
+                    try {
+                            observedPropertySplit[i] = ObservedProperties.valueOf(observedPropertySplit[i].toUpperCase()).code;
+                    } catch (IllegalArgumentException e) {
+                        // property not found in list...
+                    }
                 }
-
-                parameters.put(OGCBusinessRules.observedProperty, new String[] {observedProperty});
-            }
+                  parameters.put(OGCBusinessRules.observedProperty, observedPropertySplit);
+            } // Can't put a default here because it breaks GDA
 
             String[] offerings = parameters.get(OGCBusinessRules.offering);
             if (offerings != null && offerings.length > 0){
                 String offering = offerings[0];
-
-                try {
-                    offering = Offerings.valueOf(offering.toUpperCase()).code;
-                } catch (IllegalArgumentException e) {
-                    // property not found in list...
+                String[] offeringStringSplit = offering.split(",");
+                String IsUnitValue = "False";
+//                List<String> offeringStringList = new ArrayList<String>(offeringStringSplit.length);
+//                    for (String offeringString : offeringStringSplit) {
+                for (int i=0; i<offeringStringSplit.length; i++){
+                    try {
+                            offeringStringSplit[i] = Offerings.valueOf(offeringStringSplit[i].toUpperCase()).code;                        
+                    } catch (IllegalArgumentException e) {
+                            // property not found in list...
+                    }
                 }
-
-                parameters.put(OGCBusinessRules.offering, new String[] {offering});
+                parameters.put(OGCBusinessRules.IsUnitValue, new String[] {IsUnitValue});
+//                parameters.put(OGCBusinessRules.offering, offeringStringList.toArray(new String[offeringStringList.size()]));
+                parameters.put(OGCBusinessRules.offering, offeringStringSplit);
             }
 
             String[] interval = parameters.get(OGCBusinessRules.interval);
@@ -178,9 +195,6 @@ public class DVServlet extends HttpServlet {
                 }
                 parameters.put(OGCBusinessRules.latest, new String[] {LATEST});
             }
-
-
-
 
             return parameters;
 
@@ -234,7 +248,7 @@ public class DVServlet extends HttpServlet {
 				parameterMap = USGS_OGC_BusinessRules.cleanFeatureId(parameterMap);
 
 				try {
-					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("dataMapper.dataHistorySelect", parameterMap);
+					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("HistoricalMapper.dataHistorySelect", parameterMap);
 					XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
 					XMLStreamUtils.copy(streamReader, streamWriter);
 				} catch (Exception e) {
@@ -317,8 +331,9 @@ public class DVServlet extends HttpServlet {
 			if (featureIDResult != null && featureIDResult instanceof Node) {
 				Node featureIdNode = (Node)featureIDResult;
 				String featureId = featureIdNode.getTextContent();
-
+//                                String[] featureIDSplit = featureId.split(",");
 				parameterMap.put(OGCBusinessRules.FEATURE_ID, new String[] {featureId});
+//                                parameterMap.put(OGCBusinessRules.FEATURE_ID, featureIDSplit);
 			}
 		}
 
@@ -329,8 +344,9 @@ public class DVServlet extends HttpServlet {
 			if (observedPropertyResult != null && observedPropertyResult instanceof Node) {
 				Node observedPropertyNode = (Node)observedPropertyResult;
 				String observedProperty = observedPropertyNode.getTextContent();    
-
-                                parameterMap.put(OGCBusinessRules.observedProperty, new String[] {observedProperty});				
+//                                String[] observedPropertySplit = observedProperty.split(",");
+                                parameterMap.put(OGCBusinessRules.observedProperty, new String[] {observedProperty});
+//                                parameterMap.put(OGCBusinessRules.observedProperty, observedPropertySplit);
 			}
 		}
 
@@ -341,7 +357,6 @@ public class DVServlet extends HttpServlet {
 			if (offeringResult != null && offeringResult instanceof Node) {
 				Node offeringNode = (Node)offeringResult;
 				String offering = offeringNode.getTextContent();
-
                                 parameterMap.put(OGCBusinessRules.offering, new String[] {offering});
 			}
 		}

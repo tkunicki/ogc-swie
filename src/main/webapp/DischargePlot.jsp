@@ -26,7 +26,7 @@
     String service;
     String observedProperty;
     String stat_cd;
-    String gdaDV_url = base_url + "/sos?request=GetDataAvailablity&featureID=";
+    String gdaDV_url = base_url + "/dv/sos?request=GetDataAvailablity&featureID=";
     sos_url = "";
     service = "";
     stat_cd = "";
@@ -41,6 +41,26 @@
     String[] stat_cdArray;
     String[] sos_urlArray;
     String[] offeringArray;
+    int UVNum = 0;
+    int DVNum = 0;
+    int N = 0;
+    Date beginDate;
+    Date endDate;
+    
+    if (beginPosition != null){
+         beginDate = (Date)formatter.parse(beginPosition);
+    } else {
+         beginDate = (Date)formatter.parse(lastWeekFormated);
+    }
+    
+    if (endPosition != null){
+         endDate = (Date)formatter.parse(endPosition);
+    } else {
+         endDate = (Date)formatter.parse(todayFormated);
+    }
+              
+    int MillisecsPerDay = 24*60*60*1000;
+    long deltaDays = (endDate.getTime() - beginDate.getTime() )/MillisecsPerDay;
 
     String Data_link = "";
     String mapLink = "<a href =" + base_url + ">Return home</a>";
@@ -55,21 +75,36 @@
             obsProp[i] = Property[i].split("_")[0];
             offeringArray[i] = Property[i].split("_")[1];
             stat_cdArray[i] = offeringArray[i];
-            sos_urlArray[i] = base_url + "/sos?request=GetObservation&featureId=" + featureID + "&offering=" + stat_cdArray[i] + "&observedProperty=" + obsProp[i];
+
+            if (stat_cdArray[i].equals("00000")){
+                sos_urlArray[i] = base_url + "/uv/sos?request=GetObservation&featureId=";
+                sos_urlArray[i] = sos_urlArray[i] + featureID + "&offering=Unit&observedProperty=" + obsProp[i];
+                N = N + (int)deltaDays * 96;
+            } else {
+                sos_urlArray[i] = base_url + "/dv/sos?request=GetObservation&featureId=";
+                sos_urlArray[i] = sos_urlArray[i] + featureID + "&offering=" + stat_cdArray[i] + "&observedProperty=" + obsProp[i];
+                N = N + (int)deltaDays;
+            }
 
             if (beginPosition != null) {
                 if (beginPosition.equalsIgnoreCase("null") || beginPosition.equalsIgnoreCase("")) {
-                    sos_urlArray[i] = sos_urlArray[i];
+                    sos_urlArray[i] = sos_urlArray[i]+ "&beginPosition=" + lastWeekFormated;
                 } else {
                     sos_urlArray[i] = sos_urlArray[i] + "&beginPosition=" + beginPosition;
                 }
+            } else {
+                    sos_urlArray[i] = sos_urlArray[i]+ "&beginPosition=" + lastWeekFormated;               
             }
+
+
             if (endPosition != null) {
                 if (endPosition.equalsIgnoreCase("null") || endPosition.equalsIgnoreCase("")) {
-                    sos_urlArray[i] = sos_urlArray[i];
+                    sos_urlArray[i] = sos_urlArray[i]+ "&endPosition=" + todayFormated;
                 } else {
                     sos_urlArray[i] = sos_urlArray[i] + "&endPosition=" + endPosition;
                 }
+            } else {
+                    sos_urlArray[i] = sos_urlArray[i]+ "&endPosition=" + todayFormated;
             }
 
              Data_link = Data_link + "<a href =" + sos_urlArray[i] + ">Link to plot data: offering=" + stat_cdArray[i] + "&observedProperty=" + obsProp[i] + "</a><br />";
@@ -78,27 +113,32 @@
              observedProperty = observedProperty + obsProp[i] + ",";
 
         }
+
         sos_url = sos_url.substring(0, (sos_url.length() - 1));
         stat_cd = stat_cd.substring(0, (stat_cd.length() - 1));
         observedProperty = observedProperty.substring(0, (observedProperty.length() - 1));
         gdaDV_url = gdaDV_url + featureID;
 
+
+
     } else {
         if (featureID != null) {
-            sos_url = base_url + "/sos?request=GetObservation&offering=00003&observedProperty=00060&Interval=ThisYear&featureID=" + featureID;
+            sos_url = base_url + "/dv/sos?request=GetObservation&offering=00003&observedProperty=00060&Interval=ThisYear&featureID=" + featureID;
             stat_cd = "00003";
             observedProperty = "00060";
             gdaDV_url = gdaDV_url + featureID;
             beginPosition = LastYear;
             endPosition = Today;
+            N = 365;
         } else {
-            sos_url = base_url + "/sos?request=GetObservation&featureId=05082500&offering=00003&observedProperty=00060&Interval=ThisYear";
+            sos_url = base_url + "/dv/sos?request=GetObservation&featureId=05082500&offering=00003&observedProperty=00060&Interval=ThisYear";
             featureID = "05082500";
             stat_cd = "00003";
             observedProperty = "00060";
             gdaDV_url = gdaDV_url + "05082500";
             beginPosition = LastYear;
             endPosition = Today;
+            N = 365;
         }
    }
 
@@ -120,24 +160,25 @@
     <!--this adds or changes styles for CIDA applications -->
         <link href="../styles/mdc.css" rel="stylesheet" type="text/css" media="screen"/>
         <link href="../styles/mdc-print.css" rel="stylesheet" type="text/css" media="print"/>
-        <link href="styles/ui-lightness/jquery.ui.all.css" rel="stylesheet"/>
-        
+<!--        <link href="styles/ui-lightness/jquery.ui.all.css" rel="stylesheet"/>-->
+        <link href="styles/cupertino/jquery.ui.all.css" rel="stylesheet"/>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-<!--        <meta http-equiv="X-UA-Compatible" content="IE=7" />-->
+
         <title>OGC Services</title>
-        <script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" ></script>
-        <script src="js/jquery-1.5.1.js" type="text/javascript" ></script>
+<!--        <script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" ></script>-->
+<script type="text/javascript" src="https://www.google.com/jsapi?autoload=%7B%22modules%22%3A%5B%7B%22name%22%3A%22visualization%22%2C%22version%22%3A%221%22%2C%22packages%22%3A%5B%22annotatedtimeline%22%5D%7D%5D%7D&key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q"></script>
+        <script src="js/jquery-1.6.js" type="text/javascript" ></script>
         <script src="js/LoadXML.js" type="text/javascript"></script>
         <script src="js/createMultiPlot.js" type="text/javascript" ></script>
         <script src="js/jquery.ui.core.min.js" type="text/javascript" ></script>
         <script src="js/jquery.ui.widget.min.js" type="text/javascript" ></script>
-        <script src="js/jquery.ui.datepicker.min.js" type="text/javascript" ></script>
-        
-        <link rel="stylesheet" href="/styles/demos.css"/>
+<!--        <script src="js/jquery.ui.datepicker.min.js" type="text/javascript" ></script>-->
+        <script src="js/jquery-ui-1.8.12.custom.min.js" type="text/javascript" ></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<script type='text/javascript'>
 	$(function() {
 		var dates = $( "#from, #to" ).datepicker({
+                        maxDate: "0",
 			changeMonth: true,
 			changeYear: true,
                         dateFormat:'yy-mm-dd',
@@ -146,18 +187,28 @@
                         buttonImage: "img/calendar.gif",
                         buttonImageOnly: true,
                         onSelect: function( selectedDate ) {
-				var option = this.id == "from" ? "minDate" : "maxDate",
-					instance = $( this ).data( "datepicker" ),
-					date = $.datepicker.parseDate(
-						instance.settings.dateFormat ||
-						$.datepicker._defaults.dateFormat,
-						selectedDate, instance.settings );
+				var option = this.id == "from" ? "minDate" : "maxDate";
+				var instance = $( this ).data( "datepicker" );
+				var date = $.datepicker.parseDate(
+						instance.settings.dateFormat ||	$.datepicker._defaults.dateFormat,
+						selectedDate,
+                                                instance.settings );
 				dates.not( this ).datepicker( "option", option, date );
                         }
 		});
 
 	});
 	</script>
+
+        <script type="text/javascript">
+            var gdaDV_url = '<%=gdaDV_url%>';
+            var sos_url = '<%=sos_url%>';
+            var stat_cd = '<%=stat_cd%>';
+            var N = '<%=N%>';
+            var observedProperty = '<%=observedProperty%>';
+            google.load('visualization', '1', {'packages':['annotatedtimeline']});
+            google.setOnLoadCallback(function(){cida.createMultiPlot (sos_url, gdaDV_url, stat_cd, observedProperty, N)});
+        </script>
     </head>
     <body>
 
@@ -194,13 +245,15 @@
                         <th COLSPAN=2>
                             <span style="font-weight: normal;">
                             <center><div id='Station_name' ></div></center>
-                            <b>Warning! </b>Multi-line plots are supported, but choosing too much data will cause the load time to be slow. Click on the requested properties and hit the Submit button at the bottom of the available data table. Alternatively, choose a new station ID, and click the 'New Station'
-                    button to re-populate available data chart.</span>
+                            <b>Note: </b>Data loading performs best in <b>Firefox, Chrome, Safari, or IE9</b>.
+                            Click on the requested properties and hit the Submit button at the bottom of the available data table.
+                            Alternatively, choose a new station ID, and click the 'New Station' button to re-populate available data chart.</span>
                         </th>
                     </tr>
                     <tr>
                         <td>
                             <center>
+<!--                                <div class="demo"><div id="progressbar"></div></div>-->
                                 <div id='chart_div' style='width: 600px; height: 400px;'>Loading...<img alt="Spinner"  src = "img/ajax-loader.gif" /></div><br />
                             </center>
                             <table style='width: 600px'>
@@ -239,18 +292,6 @@
         <span> <font size="0.5"><br />* References to non-U.S. Department of the Interior (DOI) products do not constitute an endorsement by the DOI. By viewing the Google Visualization API on this web site the user agrees to these
         <a href="http://code.google.com/apis/visualization/terms.html" target="_blank" title="Opens a new browser window.">Terms of Service set forth by Google</a>.<br /></font></span>
         <br />
-        <script type="text/javascript">
-            var gdaDV_url = '<%=gdaDV_url%>';
-            var sos_url = '<%=sos_url%>';
-            var stat_cd = '<%=stat_cd%>';
-            var observedProperty = '<%=observedProperty%>';
-//            var featureID = '<%=featureID%>';
-//            var base_url = '<%=base_url%>';
-
-            google.load('visualization', '1', {'packages':['annotatedtimeline']});
-            google.setOnLoadCallback(createMultiPlot (sos_url, gdaDV_url, stat_cd, observedProperty));
-
-        </script>
 
 
         <!-- BEGIN USGS Footer Template -->
@@ -286,5 +327,6 @@
 
               </p>
         </div>
+
     </body>
 </html>
