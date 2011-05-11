@@ -1,8 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
-<% String baseURL = request.getRequestURL().toString().replaceAll("/[^/]*$", "");%>
+
 <%@ page  language="java" import="java.util.*,java.text.*"%>
 <%
+    String baseURL = request.getRequestURL().toString().replaceAll("/[^/]*$", "");
     Calendar lastWeek = new GregorianCalendar();
     lastWeek.add(Calendar.DAY_OF_YEAR, -7);
 
@@ -15,7 +16,133 @@
 
     String Today = todayFormated;
     String LastWeek = lastWeekFormated;
+    String dataSetString = request.getParameter("dataSet");
+    String[] CommaList = request.getParameterValues("CommaList");
 
+    int dataSet;
+    if (dataSetString != null) {
+            if (dataSetString.equalsIgnoreCase("SWIE")) {
+                dataSet = 1;
+            } else if (dataSetString.equalsIgnoreCase("WDM")) {
+                dataSet = 2;
+            } else if (dataSetString.equalsIgnoreCase("WI")) {
+                dataSet = 3;
+            } else if (dataSetString.equalsIgnoreCase("SE")) {
+                dataSet = 4;
+            } else if (dataSetString.equalsIgnoreCase("User")) {
+                dataSet = 5;
+            } else {
+                dataSet = 6;
+            }
+    } else if (CommaList != null){
+        dataSet = 5;
+    } else {
+        dataSet = 6;
+    }
+
+    String Sites = baseURL + "/wfs?request=GetFeature&featureId=";
+    String Lat;
+    String Long;
+    Integer Scale;
+    String[] Selected = new String[5];
+    switch (dataSet) {
+        case 1:     // SWIE
+            Sites = Sites + "01427207,01427510,01434000,01438500,01457500,01463500,04073365,04073500,04082400,04084445,";
+            Sites = Sites + "040851385,05344500,05378500,05389500,05391000,05395000,05404000,05407000,05420500,";
+            Sites = Sites + "05543500,05543830,05545750,05551540,05552500,05558300,05568500,05586100,07010000,07020500,";
+            Sites = Sites + "07022000,05051500,05054000,05082500,04269000,040851385,04010500,04024000,04024430,04027000,";
+            Sites = Sites + "04027500,04040000,04045500,04059000,04059500,04067500,04069500,04071765,04085427,04086000,";
+            Sites = Sites + "04087000,04092750,04095090,04102500,04121970,04122200,04122500,04137500,04142000,04157000,";
+            Sites = Sites + "04159492,04165500,04174500,04176500,04193500,04195820,04198000,04199000,04199500,04200500,";
+            Sites = Sites + "04201500,04208000,04212100,04213500,04218000,04231600,04249000,04260500,04263000,04265432,";
+            Sites = Sites + "01578310,01646580,02226160,02470500,04264331,07374525,07381495,08475000,09522000,11303500,";
+            Sites = Sites + "11447650,14246900,15565447";
+            Lat = "41.18997026";
+            Long = "-96.73343980";
+            Scale = 4;
+            Selected[0] = "selected";
+            Selected[1] = null;
+            Selected[2] = null;
+            Selected[3] = null;
+            Selected[4] = null;
+            break;
+        case 2:     // Kalamazoo
+            Sites = Sites + "04102850,04103010,04103500,04104000,04104500,04104945,04105000,04105500,04105700,04105800,";
+            Sites = Sites + "04106000,04106180,04106190,04106300,04106320,04106400,04106500,04106906,04107850,04108000,";
+            Sites = Sites + "04108500,04108600,04108660";
+            Lat = "43.18997026";
+            Long = "-84.73343980";
+            Scale = 6;
+            Selected[0] = null;
+            Selected[1] = "selected";
+            Selected[2] = null;
+            Selected[4] = null;
+
+            break;
+        case 3: //WI UP
+            Sites = Sites + "04031000,04043275,04065106,04067958,04074950,05362000,";
+            Sites = Sites + "04043126,04043150,04043238,04040000,04033000,04027000";
+            Lat = "45.18997026";
+            Long = "-89.73343980";
+            Scale = 6;
+            Selected[0] = null;
+            Selected[1] = null;
+            Selected[2] = "selected";
+            Selected[3] = null;
+            Selected[4] = null;
+            break;
+        case 4: //TN NC AL
+            Sites = Sites + "03497300,03498500,03538830,03539600,";
+            Sites = Sites + "03566000,03528000,03409500,03527220,03566525,03455000,03461500,03467609,";
+            Sites = Sites + "03415000,03535000,03535400,03410210,03465500,03518500,03539778,03539800,";
+            Sites = Sites + "03540500,02398000,03544970,03479000,03453500,03460000,03459500,03450000,";
+            Sites = Sites + "03451500,03456991,03456100,03513000,03505550,03503000,03504000,02399200,";
+            Sites = Sites + "02399200,02176930,02177000,02178400,02181580";
+            Lat = "36.18997026";
+            Long = "-84.73343980";
+            Scale = 6;
+            Selected[0] = null;
+            Selected[1] = null;
+            Selected[2] = null;
+            Selected[3] = "selected";
+            Selected[4] = null;
+            break;
+        case 5: //User Input
+            String site_no = "";
+            for (int i = 0; i<CommaList.length; i++) {
+                site_no = site_no + CommaList[i] + ",";
+            }
+            Sites = Sites + site_no.substring(0, site_no.length() - 1);
+
+            Lat = "41.18997026";
+            Long = "-96.73343980";
+            Scale = 4;
+            Selected[0] = null;
+            Selected[1] = null;
+            Selected[2] = null;
+            Selected[3] = null;
+            Selected[4] = "selected";
+            break;
+        default:
+            Sites = Sites + "01427207,01427510,01434000,01438500,01457500,01463500,04073365,04073500,04082400,04084445,";
+            Sites = Sites + "040851385,05344500,05378500,05389500,05391000,05395000,05404000,05407000,05420500,";
+            Sites = Sites + "05543500,05543830,05545750,05551540,05552500,05558300,05568500,05586100,07010000,07020500,";
+            Sites = Sites + "07022000,05051500,05054000,05082500,04269000,040851385,04010500,04024000,04024430,04027000,";
+            Sites = Sites + "04027500,04040000,04045500,04059000,04059500,04067500,04069500,04071765,04085427,04086000,";
+            Sites = Sites + "04087000,04092750,04095090,04102500,04121970,04122200,04122500,04137500,04142000,04157000,";
+            Sites = Sites + "04159492,04165500,04174500,04176500,04193500,04195820,04198000,04199000,04199500,04200500,";
+            Sites = Sites + "04201500,04208000,04212100,04213500,04218000,04231600,04249000,04260500,04263000,04265432,";
+            Sites = Sites + "01578310,01646580,02226160,02470500,04264331,07374525,07381495,08475000,09522000,11303500,";
+            Sites = Sites + "11447650,14246900,15565447";
+            Lat = "41.18997026";
+            Long = "-96.73343980";
+            Scale = 4;
+            Selected[0] = "selected";
+            Selected[1] = null;
+            Selected[2] = null;
+            Selected[3] = null;
+            break;
+    };
  %>
 
 <html>
@@ -52,7 +179,7 @@
             margin: 1px 0;
             font: 18px Helvetica;
         }
-        .container {width: 950px; margin: 10px auto;}
+        .container {width: 900px; margin: 10px auto;}
         ul.tabs {
                 margin: 0;
                 padding: 0;
@@ -134,11 +261,12 @@
     <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>    
     
     <script type="text/javascript"src="http://www.google.com/jsapi?key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q"></script>
-    <script src="js/jquery-1.5.1.js"></script>
+    <script src="js/jquery-1.6.js"></script>
     <script src="js/LoadXML.js" type="text/javascript"></script>
     <script src="js/parseXML.js" type="text/javascript"></script>
     <script src="js/mapiconmaker.js" type="text/javascript"></script>
     <script src="js/CreateMarker.js" type="text/javascript"></script>
+    <script src="js/LoadXMLGDA.js" type="text/javascript"></script>
 
     <script type="text/javascript">
 
@@ -160,6 +288,8 @@
                 });
 
         });
+
+
     </script>
 
   </head>
@@ -192,6 +322,32 @@
 
     <table>
         <tr>
+                   <td rowspan="2">
+                   <table  style="width:135px">
+                       <tr height="50">
+                       </tr>
+                       <tr>
+                        <td rowspan="2" style="width:300px">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <center><b>Navigation</b></center>
+                                    </td>
+                                </tr>
+                                <tr height="10"></tr>
+                                <tr>
+                                    <td>
+                                        <li><a href="<%=baseURL%>"> OGC Services</a></li>
+                                        <li><a href="<%=baseURL%>/MapFiles/Map.jsp"> Interactive Map</a></li>
+                                        <li><a href="<%=baseURL%>/DischargePlot.jsp"> Timeseries Plot</a></li>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </td>
+                       </tr>
+                   </table>
+                   </td>
             <td>
                 <div class="container">
 
@@ -456,7 +612,7 @@
                                         <p></p>
                                     </dl>
                                         <dl>
-                                        <dd>GetFeature by bounding box via XML HTTP body POST:<br />
+                                        <dd>GetFeature by bounding box via XML HTTP body POST (maximum of 150 features):<br />
 
                                         <form name="input" action="<%=baseURL%>/wfs?request=GetFeature" method="post">
                                                 <textarea name="xml" rows="10" cols="90">
@@ -513,6 +669,34 @@
                                     <tr>
                                         <th rowspan="2">
                                             <div id="map" style="width: 560px; height: 400px"></div>
+<!--                <table>
+                    <tr>
+                        <td>
+                Choose Pre-Defined<br />Data Set:
+                        </td>
+                        <td>
+                            <form>
+                                <select name="dataSet" onChange="form.submit()" value="Load">
+                                    <option value="SWIE" <%=Selected[0]%>>Surface Water IE</option>
+                                    <option value="WDM" <%=Selected[1]%>>Kalamazoo</option>
+                                    <option value="WI" <%=Selected[2]%>>North Central</option>
+                                    <option value="SE" <%=Selected[3]%>>Southeast</option>
+                                    <option value="User" <%=Selected[4]%>>List from comma delimited station number list</option>
+                                </select>
+                                <input type="submit" value="Load"/>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> OR load station ID list<br />(comma delimited):</td>
+                        <td>
+                            <form>
+                                <textarea name="CommaList" rows="1" cols="35">01446500,05082500</textarea>
+                                <input type="submit" value="Load"/>
+                            </form>
+                        </td>
+                    </tr>
+                </table>-->
                                         </th>
                                         <td valign="top">
                                             <table style="width:300px">
@@ -526,14 +710,13 @@
                                                 </tr>
                                             </table>
                                             <center>
-                                                <div id="StationInfo" style="height:40px; width:300px">Click on a marker for GetDataAvailability demonstration</div>
+                                                <div id="StationInfo" style="height:15px; width:300px">Click on a marker for GetDataAvailability demonstration</div>
                                             </center>
                                             
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <i><b>Clicked Marker:</b></i><br />
                                             <div id="AvailableDataHeader"></div>
                                             <div id="AvailableData" style="overflow:auto; height: 275px;">Click on a marker for GetDataAvailability demonstration</div>
                                         </td>
@@ -554,6 +737,10 @@
              <dl>
                         <dt>Plot Examples:</dt>
                         <dd><a href="<%=baseURL%>/DischargePlot.jsp"><%=baseURL%>/DischargePlot.jsp</a></dd>
+            </dl>
+             <dl>
+                        <dt>Interactive Map:</dt>
+                        <dd><a href="<%=baseURL%>/MapFiles/Map.jsp"><%=baseURL%>/MapFiles/Map.jsp</a></dd>
             </dl>
             <dl>Required External Schemas<br />
                 <dd>
@@ -609,7 +796,10 @@ if (GBrowserIsCompatible()) {
     var newIcon = MapIconMaker.createMarkerIcon({primaryColor: "#3366FF"});
     var point_ini = new GLatLng(0, 0);
     var ActiveMarker = new GMarker(point_ini, clickedIcon);
-    
+//    var Sites = '<%=Sites%>';
+//    var Lat = '<%=Lat%>';
+//    var Long = '<%=Long%>';
+//    var Scale = <%=Scale%>;
     var base_url = '<%=baseURL%>';
     var today = '<%=Today%>';
     var LastWeekStr = '<%=LastWeek%>';
@@ -620,12 +810,13 @@ if (GBrowserIsCompatible()) {
     map.addControl(new GMapTypeControl());
     map.addMapType(G_PHYSICAL_MAP);
     map.setCenter(new GLatLng(40.55972222, -95.613888889), 4, G_PHYSICAL_MAP);
+//    map.setCenter(new GLatLng(Lat, Long), Scale, G_PHYSICAL_MAP);
     map.enableScrollWheelZoom();
     map.addOverlay(ActiveMarker);
 
     var wfs_url = base_url + "/wfs?request=GetFeature";
     xml = LoadXML(wfs_url);
-    parseXML(xml);
+//    parseXML(xml);
 
 }
 else {

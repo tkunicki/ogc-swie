@@ -287,6 +287,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             AND a.access_cd = '0'
             AND b.dv_por_cd = 'T'
             AND b.stat_cd = d.stat_cd
+            AND c.site_web_cd = 'Y'
 
             GROUP BY c.site_no, a.parameter_cd, d.stat_nm
        <if test="offering == null or (offering != null and (offering == 'UNIT' or offering == '00000'))">
@@ -320,6 +321,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                 </when>-->
                       <when test="bBox0 != null">
                                 WHERE dec_long_va BETWEEN #{bBox0} AND #{bBox2} AND dec_lat_va BETWEEN #{bBox1} AND #{bBox3}
+                                AND site_web_cd = 'Y'
                       </when>
                       <otherwise>
                                 WHERE site_no IN (
@@ -340,6 +342,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                                         '01578310','01646580','02226160','02470500','04264331','07374525',
                                         '07381495','08475000','09522000','11303500','11447650','14246900','15565447'
                                             )
+                                 AND site_web_cd = 'Y'
                         </otherwise>
                  </choose>
                 ) a,
@@ -357,6 +360,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
             AND c.access_cd = '0'
             AND c.parameter_cd = d.parameter_cd
+
 
             GROUP BY a.site_no, c.parameter_cd
        </if>
@@ -412,7 +416,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                                         )
                     </otherwise>
              </choose>
-
+            AND c.site_web_cd = 'Y'
             AND c.site_id = a.site_id
             AND a.parameter_cd = e.parameter_cd
             AND a.access_cd = '0'
@@ -458,6 +462,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                 </when>-->
                           <when test="bBox0 != null">
                                     WHERE dec_long_va BETWEEN #{bBox0} AND #{bBox2} AND dec_lat_va BETWEEN #{bBox1} AND #{bBox3}
+                                    AND site_web_cd = 'Y'
                           </when>
                           <otherwise>
                                     WHERE site_no IN (
@@ -478,6 +483,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                                             '01578310','01646580','02226160','02470500','04264331','07374525',
                                             '07381495','08475000','09522000','11303500','11447650','14246900','15565447'
                                                 )
+                                      AND site_web_cd = 'Y'
                             </otherwise>
                      </choose>
                     ) a,
@@ -551,7 +557,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                                         )
                     </otherwise>
              </choose>
-
+            AND c.site_web_cd = 'Y'
             AND c.site_id = a.site_id
             AND a.parameter_cd = e.parameter_cd
             AND a.access_cd = '0'
@@ -598,6 +604,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                 </when>-->
                       <when test="bBox0 != null">
                                 WHERE dec_long_va BETWEEN #{bBox0} AND #{bBox2} AND dec_lat_va BETWEEN #{bBox1} AND #{bBox3}
+                                AND site_web_cd = 'Y'
                       </when>
                       <otherwise>
                                 WHERE site_no IN (
@@ -618,6 +625,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                                         '01578310','01646580','02226160','02470500','04264331','07374525',
                                         '07381495','08475000','09522000','11303500','11447650','14246900','15565447'
                                             )
+                                 AND site_web_cd = 'Y'
                         </otherwise>
                  </choose>
                 ) a,

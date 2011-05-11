@@ -161,18 +161,24 @@
         <link href="../styles/mdc.css" rel="stylesheet" type="text/css" media="screen"/>
         <link href="../styles/mdc-print.css" rel="stylesheet" type="text/css" media="print"/>
 <!--        <link href="styles/ui-lightness/jquery.ui.all.css" rel="stylesheet"/>-->
-        <link href="styles/cupertino/jquery.ui.all.css" rel="stylesheet"/>
+        <link href="styles/custom-theme/jquery.ui.all.css" rel="stylesheet"/>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 
         <title>OGC Services</title>
+        <style type="text/css">
+                h1 {font-size: 3em;
+                margin: 1px 0;
+                font: 18px Helvetica;
+            }
+         </style>
 <!--        <script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" ></script>-->
 <script type="text/javascript" src="https://www.google.com/jsapi?autoload=%7B%22modules%22%3A%5B%7B%22name%22%3A%22visualization%22%2C%22version%22%3A%221%22%2C%22packages%22%3A%5B%22annotatedtimeline%22%5D%7D%5D%7D&key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q"></script>
         <script src="js/jquery-1.6.js" type="text/javascript" ></script>
         <script src="js/LoadXML.js" type="text/javascript"></script>
+        <script src="js/LoadXMLGDA.js" type="text/javascript"></script>
         <script src="js/createMultiPlot.js" type="text/javascript" ></script>
         <script src="js/jquery.ui.core.min.js" type="text/javascript" ></script>
         <script src="js/jquery.ui.widget.min.js" type="text/javascript" ></script>
-<!--        <script src="js/jquery.ui.datepicker.min.js" type="text/javascript" ></script>-->
         <script src="js/jquery-ui-1.8.12.custom.min.js" type="text/javascript" ></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<script type='text/javascript'>
@@ -238,56 +244,84 @@
                 </td>
             </tr>
         </table>
+        
+        <h1>Surface Water Interoperability Experiment USGS Timeseries Observations</h1>
         <br />
-<!--        <h1>Surface Water IE Plotting Example</h1>-->
-                <table cellpadding="2" width="1100">
-                    <tr>
-                        <th COLSPAN=2>
-                            <span style="font-weight: normal;">
-                            <center><div id='Station_name' ></div></center>
-                            <b>Note: </b>Data loading performs best in <b>Firefox, Chrome, Safari, or IE9</b>.
-                            Click on the requested properties and hit the Submit button at the bottom of the available data table.
-                            Alternatively, choose a new station ID, and click the 'New Station' button to re-populate available data chart.</span>
-                        </th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <center>
-<!--                                <div class="demo"><div id="progressbar"></div></div>-->
-                                <div id='chart_div' style='width: 600px; height: 400px;'>Loading...<img alt="Spinner"  src = "img/ajax-loader.gif" /></div><br />
-                            </center>
-                            <table style='width: 600px'>
+<table>
+    <tr>
+                   <td rowspan="2">
+                   <table  style="width:135px">
+                       <tr height="50">
+                       </tr>
+                       <tr>
+                        <td rowspan="2" style="width:300px">
+                            <table>
                                 <tr>
                                     <td>
-                                         Provisional data subject to revision<br /><%=Data_link%><%=mapLink%>
+                                        <center><b>Navigation</b></center>
+                                    </td>
+                                </tr>
+                                <tr height="10"></tr>
+                                <tr>
+                                    <td>
+                                        <li><a href="<%=base_url%>"> OGC Services</a></li>
+                                        <li><a href="<%=base_url%>/MapFiles/Map.jsp"> Interactive Map</a></li>
+                                        <li><a href="<%=base_url%>/DischargePlot.jsp"> Timeseries Plot</a></li>
                                     </td>
                                 </tr>
                             </table>
 
                         </td>
-                        <td>
-                            <form action="DischargePlot.jsp" >
-                                <table>
-                                    <tr>
-                                        <td><input type="submit" value="Get New Station:" tabindex="1"/></td><td><input type="text" name="featureID" size="10" value="<%=featureID%>" tabindex="1"/></td>
-                                    </tr>
-                                </table>
-                            </form>
-                            <form action="DischargePlot.jsp" >
-                                
-                                <table>
-                                    <tr><td><input type="hidden" name="featureID" value="<%=featureID%>"/></td></tr>
-                                    <tr><td width=119 align="right"><b>Begin Date: </b></td><td><div class="demo"><input type="text" id="from" name="beginPosition" size="10" value="<%=beginPosition%>" tabindex="2"/></div></td><td align="right"><b>Plot Begins:</b></td><td table border="1"><div id='ZoomBegin' ><%=beginPosition%></div></td></tr>
-                                    <tr><td align="right"><b>End Date: </b></td><td><div class="demo"><input type="text" id="to" name="endPosition" value="<%=endPosition%>" tabindex="3" size="10"/></div></td><td align="right"><b>Plot Ends:</b></td><td><div id='ZoomEnd' ><%=endPosition%></div></td></tr>
-                                    <tr><td><b>Available Data:</b></td></tr>
-                                </table>
-                                <div id='side_bar' style="height: 300px; width: 400px; overflow: auto">Loading...<img alt="Spinner"  src = "img/ajax-loader.gif" /></div><br />
-                                <input type="submit" value="Submit" tabindex="5"/>
+                       </tr>
+                   </table>
+                   </td>
 
-                            </form>
-                        </td>
-                    </tr>
-                </table>
+
+
+
+<td COLSPAN=2>
+    <span style="font-weight: normal;">
+        <center><div id='Station_name' ></div></center>
+        <b>Note: </b>Data loading performs best in <b>Firefox, Chrome, Safari, or IE9</b>.
+        Click on the requested properties and hit the Submit button at the bottom of the available data table.
+        Alternatively, choose a new station ID, and click the 'New Station' button to re-populate available data chart.</span>
+</td>
+</tr>
+<tr>
+
+    <td>
+        <!--                            <div class="demo"><div id="progressbar"></div></div>-->
+        <div id='chart_div' style='width: 560px; height: 400px;'>Loading...<img alt="Spinner"  src = "img/ajax-loader.gif" /></div><br />
+        Provisional data subject to revision<br /><%=Data_link%><%=mapLink%>
+
+
+    </td>
+    <td>
+        <form action="DischargePlot.jsp" >
+            <table style="width:400px">
+                <tr>
+                    <td><input type="submit" value="Get New Station:" tabindex="1"/><input type="text" name="featureID" size="10" value="<%=featureID%>" tabindex="1"/></td>
+                    <td align="right">
+                        <img src = "img/USGS.gif" width="84" height="31" alighn="right"/><br />
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <form action="DischargePlot.jsp" >
+
+            <table style="width:300px">
+                <tr><td><input type="hidden" name="featureID" value="<%=featureID%>"/></td></tr>
+                <tr><td width=119 align="right"><b>Begin Date: </b><div class="demo"><input type="text" id="from" name="beginPosition" size="10" value="<%=beginPosition%>" tabindex="2"/></div></td><td align="right"></td><td align="right"><b>Plot Begins:</b><div id='ZoomBegin'><%=beginPosition%></div></td></tr>
+                <tr><td align="right"><b>End Date: </b><div class="demo"><input type="text" id="to" name="endPosition" value="<%=endPosition%>" tabindex="3" size="10"/></div></td><td align="right"></td><td align="right"><b>Plot Ends:</b><div id='ZoomEnd' ><%=endPosition%></div></td></tr>
+                <tr><td><b>Available Data:</b></td></tr>
+            </table>
+            <div id='side_bar' style="height: 300px; width: 400px; overflow: auto">Loading...<img alt="Spinner"  src = "img/ajax-loader.gif" /></div><br />
+            <input type="submit" value="Submit" tabindex="5"/>
+
+        </form>
+    </td>
+</tr>
+</table>
 
         <span> <font size="0.5"><br />* References to non-U.S. Department of the Interior (DOI) products do not constitute an endorsement by the DOI. By viewing the Google Visualization API on this web site the user agrees to these
         <a href="http://code.google.com/apis/visualization/terms.html" target="_blank" title="Opens a new browser window.">Terms of Service set forth by Google</a>.<br /></font></span>

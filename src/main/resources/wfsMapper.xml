@@ -205,9 +205,9 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                                     WHERE b.site_no IN <foreach item="i" collection="featureId" open="(" separator="," close=")">#{i}</foreach>
                                 </when>
 
-                                <when test="bBox != null">
+<!--                                <when test="bBox != null">
                                     WHERE b.dec_long_va BETWEEN #{bBox[0]} AND #{bBox[2]} AND b.dec_lat_va BETWEEN #{bBox[1]} AND #{bBox[3]}
-                                </when>
+                                </when>-->
 
                                 <otherwise>
                                     WHERE b.site_no IN (
@@ -274,6 +274,9 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 AND a.tz_cd = b.tz_cd
                 AND c.huc_cd = a.huc_cd
                 AND c.state_cd = a.state_cd
+                AND a.instruments_cd != 'NNNNNNNNNNNNNNNNNNNNNNNNNNNNNN'
+                AND a.site_web_cd = 'Y'
+                LIMIT 300
 <!---		<trim prefix="OR (" suffix=")" prefixOverrides="AND">
 			<if test="bBox != null">
                             AND a.DEC_LONG_VA BETWEEN #{bBox[0]} AND #{bBox[2]} AND a.DEC_LAT_VA BETWEEN #{bBox[1]} AND #{bBox[3]}

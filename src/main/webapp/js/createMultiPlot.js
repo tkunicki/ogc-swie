@@ -10,7 +10,7 @@ cida.createMultiPlot = function(sos_url, gdaDV_url, stat_cd, observedProperty, N
         var data = new google.visualization.DataTable();
         data.addColumn('datetime', 'Date');
         var Plot_table = "<table border='1' cellpadding='2'><tr><td></td><td><center><b>Property</b></center></td><td><center><b>Begin date</b></center></td><td><center><b>End date</b></center></td></tr>";
-        var xml_Data = LoadXML(gdaDV_url);
+        var xml_Data = LoadXMLGDA(gdaDV_url);
         var name = $(xml_Data).find('[nodeName="gda:targetFeature"],targetFeature',this).attr("xlink:title");
         var station = $(xml_Data).find('[nodeName="gda:targetFeature"],targetFeature',this).attr("xlink:href").split("_")[1];
         var html = '<b>' + name + '</b> : ' + station;
@@ -59,7 +59,7 @@ cida.createMultiPlot = function(sos_url, gdaDV_url, stat_cd, observedProperty, N
         var k = 0;
 //        $( "#progressbar" ).progressbar({value: 0});
         for (j = 0; j < sos_urlArray.length; j++){
-            var PlotData = LoadXML(sos_urlArray[j]);
+            var PlotData = LoadXMLGDA(sos_urlArray[j]);
 
             data.addRows($(PlotData).find('[nodeName="wml2:point"],point').length);
             $(PlotData).find('[nodeName="wml2:point"],point').each(function(){

@@ -1,4 +1,5 @@
 function parseXML(xml){
+    
     $(xml).find('[nodeName="wfs:FeatureCollection"],FeatureCollection').each(function()
     {
         $(xml).find('[nodeName="wfs:member"],member').each(function()
@@ -21,4 +22,5 @@ function parseXML(xml){
             map.addOverlay(marker);
         }); 
     });
+    document.getElementById("AvailableData").innerHTML = "";
 }

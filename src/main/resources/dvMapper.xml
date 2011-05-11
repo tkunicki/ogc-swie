@@ -469,6 +469,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		AND d.parameter_cd = e.parameter_cd
                 AND e.dd_nu = g.dd_nu
                 AND e.access_cd = '0'
+                AND f.site_web_cd = 'Y'
                 AND h.huc_cd = f.huc_cd
                 AND h.state_cd = f.state_cd
                 AND e.parameter_cd IN <foreach item="i" collection="observedProperty" open="(" separator="," close=")">#{i}</foreach>
