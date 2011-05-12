@@ -1,9 +1,10 @@
 function parseXML(xml){
-    
+    var i = 0;
     $(xml).find('[nodeName="wfs:FeatureCollection"],FeatureCollection').each(function()
     {
         $(xml).find('[nodeName="wfs:member"],member').each(function()
         {
+            i = i + 1;
             var siteName = $('[nodeName="gml:name"],name', this).text();
             var pos = $('[nodeName="gml:pos"],pos', this).text();
             var pos_array = pos.split(" ");
@@ -23,4 +24,5 @@ function parseXML(xml){
         }); 
     });
     document.getElementById("AvailableData").innerHTML = "";
+    document.getElementById("FeatureNumber").innerHTML = i;
 }

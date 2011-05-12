@@ -318,7 +318,7 @@
 
 <!===============================Create Table=========================================>
 
-    <h1>Surface Water Interoperability Experiment 1.7</h1>
+    <h1>Surface Water Interoperability Experiment 1.8</h1>
 
     <table>
         <tr>
@@ -337,7 +337,7 @@
                                 <tr height="10"></tr>
                                 <tr>
                                     <td>
-                                        <li><a href="<%=baseURL%>"> OGC Services</a></li>
+                                        <li><a href="<%=baseURL%>"> <b>OGC Services</b></a></li>
                                         <li><a href="<%=baseURL%>/MapFiles/Map.jsp"> Interactive Map</a></li>
                                         <li><a href="<%=baseURL%>/DischargePlot.jsp"> Timeseries Plot</a></li>
                                     </td>
@@ -520,18 +520,18 @@
                         <div id="tabGDA" class="tab_content">
                                 <font size="4" ><li><strong> Get Data Availability</strong></li> </font>
                                     <dl>
-                                                <dt><b>GetDataAvailablity</b> - featureID, offering, and observedProperty are all optional. If not used, all the features/properties in the SWIE will be displayed.  Additionally, a bounding box is supported in the XML post.</dt>
-                                                <br /><i>GetDataAvailablity by feature ID and offering:</i>
-                                                <dd><a href="<%=baseURL%>/dv/sos?request=GetDataAvailablity&featureID=05082500&offering=mean"><%=baseURL%>/dv/sos?request=GetDataAvailablity&featureID=05082500&offering=mean</a></dd>
-                                                <br /><i>GetDataAvailablity by observed property and feature ID:</i>
-                                                <dd><a href="<%=baseURL%>/dv/sos?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500"><%=baseURL%>/dv/sos?request=GetDataAvailablity&observedProperty=Discharge&featureID=05568500</a></dd>
+                                                <dt><b>GetDataAvailability</b> - featureID, offering, and observedProperty are all optional. If not used, all the features/properties in the SWIE will be displayed.  Additionally, a bounding box is supported in the XML post.</dt>
+                                                <br /><i>GetDataAvailability by feature ID and offering:</i>
+                                                <dd><a href="<%=baseURL%>/dv/sos?request=GetDataAvailability&featureID=05082500&offering=mean"><%=baseURL%>/dv/sos?request=GetDataAvailability&featureID=05082500&offering=mean</a></dd>
+                                                <br /><i>GetDataAvailability by observed property and feature ID:</i>
+                                                <dd><a href="<%=baseURL%>/dv/sos?request=GetDataAvailability&observedProperty=Discharge&featureID=05568500"><%=baseURL%>/dv/sos?request=GetDataAvailability&observedProperty=Discharge&featureID=05568500</a></dd>
                                                 <br /><i>General (very large file / long load time):</i>
-                                                <dd><a href="<%=baseURL%>/dv/sos?request=GetDataAvailablity"><%=baseURL%>/dv/sos?request=GetDataAvailablity</a></dd>
-                                                <br /><i>GetDataAvailablity via XML HTTP body POST by feature ID:</i><br />
+                                                <dd><a href="<%=baseURL%>/dv/sos?request=GetDataAvailability"><%=baseURL%>/dv/sos?request=GetDataAvailability</a></dd>
+                                                <br /><i>GetDataAvailability via XML HTTP body POST by feature ID:</i><br />
                                       <dd>  <form name="input" action="<%=baseURL%>/dv/sos?request=GetDataAvailability" method="post">
                                                 <textarea name="xml" rows="10" cols="90">
 <?xml version="1.0" ?>
-<sos:GetDataAvailablity version="2.0.0" service="SOS"
+<sos:GetDataAvailability version="2.0.0" service="SOS"
     maxFeatures="3"
     xmlns:sos="http://schemas.opengis.net/sos/2.0.0/"
     xmlns:wfs="http://www.opengis.net/wfs"
@@ -545,17 +545,17 @@
        <sos:featureOfInterest>05082500</sos:featureOfInterest>
        <sos:observedProperty>Discharge</sos:observedProperty>
        <sos:offering>MEAN</sos:offering>
-</sos:GetDataAvailablity>
+</sos:GetDataAvailability>
 
                                                             </textarea><br />
                                                             <input type="submit" value="Submit" />
                                                         </form>
                                     </dd>
-                                      <br /><i>GetDataAvailablity via XML HTTP body POST by bounding box:</i><br />
+                                      <br /><i>GetDataAvailability via XML HTTP body POST by bounding box:</i><br />
                                       <dd>  <form name="input" action="<%=baseURL%>/dv/sos?request=GetDataAvailability" method="post">
                                                 <textarea name="xml" rows="10" cols="90">
 <?xml version="1.0" ?>
-<sos:GetDataAvailablity version="2.0.0" service="SOS"
+<sos:GetDataAvailability version="2.0.0" service="SOS"
     maxFeatures="3"
     xmlns:sos="http://schemas.opengis.net/sos/2.0.0/"
     xmlns:wfs="http://www.opengis.net/wfs"
@@ -576,7 +576,7 @@
             </gml:Envelope>
           </ogc:BBOX>
        </ogc:Filter>
-</sos:GetDataAvailablity>
+</sos:GetDataAvailability>
 
                                                             </textarea><br />
                                                             <input type="submit" value="Submit" />
@@ -669,34 +669,6 @@
                                     <tr>
                                         <th rowspan="2">
                                             <div id="map" style="width: 560px; height: 400px"></div>
-<!--                <table>
-                    <tr>
-                        <td>
-                Choose Pre-Defined<br />Data Set:
-                        </td>
-                        <td>
-                            <form>
-                                <select name="dataSet" onChange="form.submit()" value="Load">
-                                    <option value="SWIE" <%=Selected[0]%>>Surface Water IE</option>
-                                    <option value="WDM" <%=Selected[1]%>>Kalamazoo</option>
-                                    <option value="WI" <%=Selected[2]%>>North Central</option>
-                                    <option value="SE" <%=Selected[3]%>>Southeast</option>
-                                    <option value="User" <%=Selected[4]%>>List from comma delimited station number list</option>
-                                </select>
-                                <input type="submit" value="Load"/>
-                            </form>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td> OR load station ID list<br />(comma delimited):</td>
-                        <td>
-                            <form>
-                                <textarea name="CommaList" rows="1" cols="35">01446500,05082500</textarea>
-                                <input type="submit" value="Load"/>
-                            </form>
-                        </td>
-                    </tr>
-                </table>-->
                                         </th>
                                         <td valign="top">
                                             <table style="width:300px">
@@ -705,7 +677,8 @@
                                                         <i><b>Current Marker:</b></i>
                                                     </td>
                                                     <td align="right">
-                                                        <img src = "img/USGS.gif" width="84" height="31" alighn="right"/><br />
+                                                        Number of Markers:<br />
+                                                        <b><div id="FeatureNumber"></div></b>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -755,6 +728,10 @@
             <p />
         </li>
         <li><strong>Log</strong>
+            <dl>Version 1.8 May 11th, 2011 <br />
+                <dd> * Fixed spelling mistake (Availablity to Availability) </dd>
+                <dd> * Included interactive map </dd>
+            </dl>
             <dl>Version 1.7 May 6th, 2011 <br />
                 <dd> * Added Collections wrapper to getObservations, this allows multiple features to be requested </dd>
                 <dd> * Added ability for multiple properties to be requested </dd>
@@ -765,10 +742,10 @@
                 <dd> * Added ability to call multiple features in WFS </dd>
                 <dd> * Added ability to call multiple plot lines </dd>
             </dl>
-            <dl>Version 1.5 March 22th, 2011 <br />
+<!--            <dl>Version 1.5 March 22th, 2011 <br />
                 <dd> * Added offering to daily data service (getObservation and getDataAvailability  </dd>
                 <dd> * Continued to try to improve the efficiency of plot displays </dd>
-            </dl>
+            </dl>-->
         </li>
             </div>
         </div>

@@ -19,7 +19,7 @@ function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watersh
     var time = "";
     document.getElementById("AvailableData").innerHTML = 'Loading...<img src = "img/ajax-loader.gif" />';
 
-    var gdaDV_url = base_url + "/dv/sos?request=GetDataAvailablity&featureID=" + Site_no;
+    var gdaDV_url = base_url + "/dv/sos?request=GetDataAvailability&featureID=" + Site_no;
 
     var Data_table = "<center><table border='1'><tr><td><b><center>Property</center></b></td><td><center><b>Begin Time</center></b></td><td><b><center>End Time</center></b></td></tr>";
 

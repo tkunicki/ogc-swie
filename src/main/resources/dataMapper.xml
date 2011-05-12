@@ -6,7 +6,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 	<resultMap id="dataBaseMap" type="XMLMap">
             <result
-	    	property="gda:GetDataAvailablity"
+	    	property="gda:GetDataAvailability"
 	    	column="%ROOT_ELEMENT"
 			javaType="string" />
              <result
@@ -287,6 +287,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             AND a.access_cd = '0'
             AND b.dv_por_cd = 'T'
             AND b.stat_cd = d.stat_cd
+            AND c.instruments_cd != 'NNNNNNNNNNNNNNNNNNNNNNNNNNNNNN'
             AND c.site_web_cd = 'Y'
 
             GROUP BY c.site_no, a.parameter_cd, d.stat_nm
@@ -361,9 +362,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             AND c.access_cd = '0'
             AND c.parameter_cd = d.parameter_cd
 
-
             GROUP BY a.site_no, c.parameter_cd
        </if>
+
             ORDER BY parameter_cd
 
 	</select>
@@ -417,6 +418,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                     </otherwise>
              </choose>
             AND c.site_web_cd = 'Y'
+            AND c.instruments_cd != 'NNNNNNNNNNNNNNNNNNNNNNNNNNNNNN'
             AND c.site_id = a.site_id
             AND a.parameter_cd = e.parameter_cd
             AND a.access_cd = '0'
@@ -429,9 +431,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             <if test="offering != null">
                 AND d.stat_cd = (#{offering})
             </if>
-
             GROUP BY c.site_no, a.parameter_cd, d.stat_nm
-       <if test="offering == null or (offering != null and offering == 'UNIT')">
+       <if test="offering == null or (offering != null and (offering == 'UNIT' or offering == '00000'))">
             UNION
 
                SELECT
@@ -442,7 +443,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                 CONCAT(d.parameter_nm,' (Unit)') AS parameter_nm_stat,
                 CONCAT(d.parameter_cd,'_',a.site_no,'_00000') AS parameterSite,
                 'Unit' AS stat_nm,
-                CONCAT(<![CDATA['http://nwis.waterdata.usgs.gov/nwis/inventory/?agency_cd=USGS&amp&site_no=']]>,c.site_no) AS station_URI
+                CONCAT(<![CDATA['http://nwis.waterdata.usgs.gov/nwis/inventory/?agency_cd=USGS&amp&site_no=']]>,a.site_no) AS station_URI
 
                 FROM (
                     SELECT DISTINCT
@@ -502,10 +503,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                 AND c.access_cd = '0'
                 AND c.parameter_cd = d.parameter_cd
                 GROUP BY a.site_no, c.parameter_cd
+                
         </if>
                 ORDER BY site_no
-
-
 
 	</select>
 
@@ -557,6 +557,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                                         )
                     </otherwise>
              </choose>
+            AND c.instruments_cd != 'NNNNNNNNNNNNNNNNNNNNNNNNNNNNNN'
             AND c.site_web_cd = 'Y'
             AND c.site_id = a.site_id
             AND a.parameter_cd = e.parameter_cd
@@ -570,11 +571,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             <if test="offering != null">
                 AND d.stat_cd = (#{offering})
             </if>
-
             GROUP BY c.site_no, a.parameter_cd, d.stat_nm
 
 
-       <if test="offering == null or (offering != null and offering == 'UNIT')">
+       <if test="offering == null or (offering != null and (offering == 'UNIT' or offering == '00000'))">
             UNION
 
             SELECT
@@ -585,7 +585,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             CONCAT(d.parameter_nm,' (Unit)') AS parameter_nm_stat,
             CONCAT(d.parameter_cd,'_',a.site_no,'_00000') AS parameterSite,
             'Unit' as stat_nm,
-            CONCAT(<![CDATA['http://nwis.waterdata.usgs.gov/usa/nwis/pmcode/pmcodes?radio_pm_search=pm_search&casrn_search=&srsname_search=&format=html_table&show=parameter_group_nm&show=parameter_nm&show=casrn&show=srsname&show=parameter_units&pm_search=']]>,e.parameter_cd) AS parameter_URI
+            CONCAT(<![CDATA['http://nwis.waterdata.usgs.gov/usa/nwis/pmcode/pmcodes?radio_pm_search=pm_search&casrn_search=&srsname_search=&format=html_table&show=parameter_group_nm&show=parameter_nm&show=casrn&show=srsname&show=parameter_units&pm_search=']]>,d.parameter_cd) AS parameter_URI
 
             FROM (
                 SELECT DISTINCT
@@ -643,10 +643,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
             AND c.access_cd = '0'
             AND c.parameter_cd = d.parameter_cd
+            
             GROUP BY a.site_no, c.parameter_cd
        </if>
+
             ORDER BY parameter_cd
-        
+
 	</select>
 
 </mapper> 

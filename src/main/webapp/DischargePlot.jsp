@@ -26,7 +26,7 @@
     String service;
     String observedProperty;
     String stat_cd;
-    String gdaDV_url = base_url + "/dv/sos?request=GetDataAvailablity&featureID=";
+    String gdaDV_url = base_url + "/dv/sos?request=GetDataAvailability&featureID=";
     sos_url = "";
     service = "";
     stat_cd = "";
@@ -248,13 +248,16 @@
         <h1>Surface Water Interoperability Experiment USGS Timeseries Observations</h1>
         <br />
 <table>
-    <tr>
-                   <td rowspan="2">
+     <tr>
+         <td>
+    <table>
+        <tr>
+            <td>
                    <table  style="width:135px">
-                       <tr height="50">
-                       </tr>
-                       <tr>
-                        <td rowspan="2" style="width:300px">
+                      <tr height="50">
+                      </tr>
+                      <tr>
+                        <td style="width:300px">
                             <table>
                                 <tr>
                                     <td>
@@ -266,29 +269,26 @@
                                     <td>
                                         <li><a href="<%=base_url%>"> OGC Services</a></li>
                                         <li><a href="<%=base_url%>/MapFiles/Map.jsp"> Interactive Map</a></li>
-                                        <li><a href="<%=base_url%>/DischargePlot.jsp"> Timeseries Plot</a></li>
+                                        <li><a href="<%=base_url%>/DischargePlot.jsp"><b> Timeseries Plot</b></a></li>
                                     </td>
                                 </tr>
                             </table>
-
-                        </td>
+                          </td>
                        </tr>
                    </table>
-                   </td>
+          </td>
 
-
-
-
-<td COLSPAN=2>
-    <span style="font-weight: normal;">
-        <center><div id='Station_name' ></div></center>
-        <b>Note: </b>Data loading performs best in <b>Firefox, Chrome, Safari, or IE9</b>.
-        Click on the requested properties and hit the Submit button at the bottom of the available data table.
-        Alternatively, choose a new station ID, and click the 'New Station' button to re-populate available data chart.</span>
-</td>
 </tr>
-<tr>
-
+    </table>
+         <td>
+             <table>
+                 <tr>
+                     <td
+                            <center><div id='Station_name' ></div></center>
+                            <b>Note: </b>Data loading performs best in <b>Firefox, Chrome, Safari, or IE9</b>.
+                    </td>
+                 </tr>
+                 <tr>
     <td>
         <!--                            <div class="demo"><div id="progressbar"></div></div>-->
         <div id='chart_div' style='width: 560px; height: 400px;'>Loading...<img alt="Spinner"  src = "img/ajax-loader.gif" /></div><br />
@@ -302,7 +302,7 @@
                 <tr>
                     <td><input type="submit" value="Get New Station:" tabindex="1"/><input type="text" name="featureID" size="10" value="<%=featureID%>" tabindex="1"/></td>
                     <td align="right">
-                        <img src = "img/USGS.gif" width="84" height="31" alighn="right"/><br />
+<!--                        <img src = "img/USGS.gif" width="84" height="31" alighn="right"/><br />-->
                     </td>
                 </tr>
             </table>
@@ -321,6 +321,9 @@
         </form>
     </td>
 </tr>
+</table>
+         </td>
+     </tr>
 </table>
 
         <span> <font size="0.5"><br />* References to non-U.S. Department of the Interior (DOI) products do not constitute an endorsement by the DOI. By viewing the Google Visualization API on this web site the user agrees to these

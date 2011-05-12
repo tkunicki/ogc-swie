@@ -241,7 +241,7 @@ public class UVServlet extends HttpServlet {
 					outputStream.flush();
 				}
 				break;
-			case GetDataAvailablity:
+			case GetDataAvailability:
 				parameterMap = USGS_OGC_BusinessRules.cleanFeatureId(parameterMap);
 
 				try {

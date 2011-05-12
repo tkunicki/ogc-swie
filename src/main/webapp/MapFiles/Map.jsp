@@ -22,7 +22,7 @@
 
     String dataSetString = request.getParameter("dataSet");
     String GetFeatureXML = request.getParameter("xml");
-    String GetDataAvailablityXML = request.getParameter("GDAxml");
+    String GetDataAvailabilityXML = request.getParameter("GDAxml");
     String observedProperty = request.getParameter("observedProperty");
     String offering = request.getParameter("offering");
     String UpLat = request.getParameter("UpperLat");
@@ -32,14 +32,14 @@
     String Tab = "0";
     String[] Properties = new String[7];
     Properties[0] = "selected";
-    String[] Offerings = new String[8];
+    String[] Offerings = new String[9];
     Offerings[0] = "selected";
 
     if (GetFeatureXML != null){
         GetFeatureXML = GetFeatureXML.replaceAll("\\s+", " ");
         }
-    if ( GetDataAvailablityXML != null){
-         GetDataAvailablityXML =  GetDataAvailablityXML.replaceAll("\\s+", " ");
+    if ( GetDataAvailabilityXML != null){
+         GetDataAvailabilityXML =  GetDataAvailabilityXML.replaceAll("\\s+", " ");
         }
 
     String[] CommaList = request.getParameterValues("CommaList");
@@ -63,21 +63,23 @@
                 dataSet = 6;
             } else if (dataSetString.equalsIgnoreCase("GDA")) {
                 dataSet = 7;
-            } else {
+            } else if (dataSetString.equalsIgnoreCase("GL")) {
                 dataSet = 8;
+            } else {
+                dataSet = 9;
             }
     } else if (CommaList != null){
         dataSet = 5;
     } else if (GetFeatureXML != null){
         dataSet = 6;
-    } else if (GetDataAvailablityXML != null){
+    } else if (GetDataAvailabilityXML != null){
         dataSet = 7;
     } else if (observedProperty != null){
-        GetDataAvailablityXML = "<?xml version=\"1.0\" ?> <sos:GetDataAvailablity version=\"2.0.0\" service=\"SOS\" maxFeatures=\"3\" xmlns:sos=\"http://schemas.opengis.net/sos/2.0.0/\" xmlns:wfs=\"http://www.opengis.net/wfs\" xmlns:ogc=\"http://www.opengis.net/ogc\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:om=\"http://www.opengis.net/om/2.0\" xmlns:fes=\"http://www.opengis.net/fes/2.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xsi:schemaLocation=\"http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0.0/sos.xsd\"> <sos:observedProperty>";
-        GetDataAvailablityXML = GetDataAvailablityXML + observedProperty + "</sos:observedProperty> <sos:offering>";
-        GetDataAvailablityXML = GetDataAvailablityXML + offering + "</sos:offering> <ogc:Filter> <ogc:BBOX> <gml:Envelope> <gml:lowerCorner>";
-        GetDataAvailablityXML = GetDataAvailablityXML + LowLong + " " + LowLat + "</gml:lowerCorner> <gml:upperCorner>";
-        GetDataAvailablityXML = GetDataAvailablityXML + UpLong + " " + UpLat + "</gml:upperCorner> </gml:Envelope> </ogc:BBOX> </ogc:Filter> </sos:GetDataAvailablity>";
+        GetDataAvailabilityXML = "<?xml version=\"1.0\" ?> <sos:GetDataAvailability version=\"2.0.0\" service=\"SOS\" maxFeatures=\"3\" xmlns:sos=\"http://schemas.opengis.net/sos/2.0.0/\" xmlns:wfs=\"http://www.opengis.net/wfs\" xmlns:ogc=\"http://www.opengis.net/ogc\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:om=\"http://www.opengis.net/om/2.0\" xmlns:fes=\"http://www.opengis.net/fes/2.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xsi:schemaLocation=\"http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0.0/sos.xsd\"> <sos:observedProperty>";
+        GetDataAvailabilityXML = GetDataAvailabilityXML + observedProperty + "</sos:observedProperty> <sos:offering>";
+        GetDataAvailabilityXML = GetDataAvailabilityXML + offering + "</sos:offering> <ogc:Filter> <ogc:BBOX> <gml:Envelope> <gml:lowerCorner>";
+        GetDataAvailabilityXML = GetDataAvailabilityXML + LowLong + " " + LowLat + "</gml:lowerCorner> <gml:upperCorner>";
+        GetDataAvailabilityXML = GetDataAvailabilityXML + UpLong + " " + UpLat + "</gml:upperCorner> </gml:Envelope> </ogc:BBOX> </ogc:Filter> </sos:GetDataAvailability>";
         dataSet = 7;
         // Got to figure out enums....
         if (observedProperty.equalsIgnoreCase("Discharge")) {
@@ -111,9 +113,11 @@
             Offerings[6] = "selected";
         } else if (offering.equalsIgnoreCase("VARIANCE")) {
             Offerings[7] = "selected";
+        } else if (offering.equalsIgnoreCase("UNIT")) {
+            Offerings[8] = "selected";
         }
     } else {
-        dataSet = 8;
+        dataSet = 9;
     }
 
     String textbox = "01446500,05082500";
@@ -128,10 +132,10 @@
     String Lat;
     String Long;
     Integer Scale;
-    String[] Selected = new String[7];
-    Selected[4] = "style='visibility:hidden;'";
+    String[] Selected = new String[8];
     Selected[5] = "style='visibility:hidden;'";
     Selected[6] = "style='visibility:hidden;'";
+    Selected[7] = "style='visibility:hidden;'";
     switch (dataSet) {
         case 1:     // SWIE
             Sites = Sites + "01427207,01427510,01434000,01438500,01457500,01463500,04073365,04073500,04082400,04084445,05344500,05378500,05389500,05391000,05395000,05404000,05407000,05420500,05543500,05543830,05545750,05551540,05552500,05558300,05568500,05586100,07010000,07020500,";
@@ -188,7 +192,7 @@
             Lat = "41.18997026";
             Long = "-96.73343980";
             Scale = 4;
-            Selected[4] = "selected";
+            Selected[5] = "selected";
             textbox = site_no;
             break;
         case 6: //XML Input
@@ -196,18 +200,22 @@
             Lat = "41.18997026";
             Long = "-96.73343980";
             Scale = 4;
-            Selected[5] = "selected";
+            Selected[6] = "selected";
             xmlbox = GetFeatureXML;
             get = "False";
             Tab = "2";
             break;
         case 7: //GDA Input
             Sites = XML_Call  + "dv/sos";
-            Lat = "41.18997026";
-            Long = "-96.73343980";
-            Scale = 4;
-            Selected[6] = "selected";
-            xmlbox = GetDataAvailablityXML;
+            Float Lat_float = (Float.valueOf(UpLat) + Float.valueOf(LowLat))/2;
+            Float Long_float = (Float.valueOf(UpLong) + Float.valueOf(LowLong))/2;
+            Lat = Float.toString(Lat_float);
+            Long = Float.toString(Long_float);
+            //Lat = "41.18997026";
+            //Long = "-96.73343980";
+            Scale = 5;
+            Selected[7] = "selected";
+            xmlbox = GetDataAvailabilityXML;
             get = "False";
             GDA = "True";
             if (observedProperty != null){
@@ -220,7 +228,16 @@
                 Tab = "3";
             }
             break;
-        default:
+        case 8:
+            Sites = Sites + "04010500,04024430,04027000,04027500,04040000,04045500,04059000,04059500,04067500,04069500,";
+            Sites = Sites + "04071765,040851385,04085427,04086000,04087000,04092750,04095090,04102500,04122200,04122500,04137500,04142000,04157000,04159492,04176500,04195820,04198000,04199000,04199500,04200500,";
+            Sites = Sites + "04201500,04208000,04212100,04213500,04218000,04231600,04249000,04260500,04263000,04264331,04269000";
+            Lat = "45.18997026";
+            Long = "-85.73343980";
+            Scale = 5;
+            Selected[4] = "selected";
+            break;
+       default:
             Sites = Sites + "01427207,01427510,01434000,01438500,01457500,01463500,04073365,04073500,04082400,04084445,";
             Sites = Sites + "05344500,05378500,05389500,05391000,05395000,05404000,05407000,05420500,";
             Sites = Sites + "05543500,05543830,05545750,05551540,05552500,05558300,05568500,05586100,07010000,07020500,";
@@ -344,7 +361,7 @@
                         <tr>
                             <td>
                                 <li><a href="<%=base_url%>"> OGC Services</a></li>
-                                <li><a href="<%=base_url%>MapFiles/Map.jsp"> Interactive Map</a></li>
+                                <li><a href="<%=base_url%>MapFiles/Map.jsp"> <b>Interactive Map</b></a></li>
                                 <li><a href="<%=base_url%>DischargePlot.jsp"> Timeseries Plot</a></li>
                             </td>
                         </tr>
@@ -367,7 +384,7 @@
                         <li><a href="#tabList">Pre-Defined Lists</a></li>
                         <li><a href="#tabComma">User-Defined List</a></li>
                         <li><a href="#tabWFS">GetFeature</a></li>
-                        <li><a href="#tabGDA">GetDataAvailablity</a></li>
+                        <li><a href="#tabGDA">GetDataAvailability</a></li>
                         <li><a href="#tabUI">User Interface</a></li>
                     </ul>
 
@@ -384,15 +401,16 @@
                                     <option value="WDM" <%=Selected[1]%>>Kalamazoo</option>
                                     <option value="WI" <%=Selected[2]%>>North Central</option>
                                     <option value="SE" <%=Selected[3]%>>Southeast</option>
-                                    <option value="UserList" <%=Selected[4]%>>List from comma delimited station number list</option>
-                                    <option value="WFS" <%=Selected[5]%>>List from WFS XML</option>
-                                    <option value="GDA" <%=Selected[6]%>>List from GDA XML</option>
+                                    <option value="GL" <%=Selected[4]%>>Great Lakes</option>
+                                    <option value="UserList" <%=Selected[5]%>>List from comma delimited station number list</option>
+                                    <option value="WFS" <%=Selected[6]%>>List from WFS XML</option>
+                                    <option value="GDA" <%=Selected[7]%>>List from GDA XML</option>
                                 </select>
                             </form>
                                     </td>
                                 </tr>
                             </table>
-
+Pre-defined lists of USGS gaging stations are used to populate the map above with markers using a GetFeature query. Clicking on a map marker will send a GetDataAvailability request, populating a table on the right.
 
                    </div>
                    <div id="tabComma" class="tab_content">
@@ -401,9 +419,10 @@
                                 <textarea name="CommaList" rows="4" cols="75"><%=textbox%></textarea><br />
                                 <input type="submit" value="Load"/>
                             </form>
+Create a comma delimited list of USGS stations to populate the map using a GetFeature query. Clicking on a map marker will send a GetDataAvailability request, populating a table on the right.
                    </div>
                    <div id="tabWFS" class="tab_content">
-                        GetFeature via XML HTTP body: <br /><b>Warning!</b> Use caution with bounding box - may take long to load (limits to 300 features)
+                        GetFeature via XML HTTP body: <br /><b>Warning!</b> Use caution with bounding box - may take long to load with large bounding box
                             <form>
                                 <textarea name="xml" rows="4" cols="75">
 <?xml version="1.0" ?>
@@ -427,13 +446,14 @@
                                 </textarea><br />
                                 <input type="submit" value="Load"/>
                             </form>
+This example uses a GetFeature query post to find all stations within the requested bounding box.
                    </div>
                    <div id="tabGDA" class="tab_content">
-                        GetDataAvailablity via XML HTTP body: <br /><b>Warning!</b> Use caution with bounding box - may take long to load (limits to 300 features)
+                        GetDataAvailability via XML HTTP body: <br /><b>Warning!</b> Use caution with bounding box - may take long to load with large bounding box
                             <form>
                                 <textarea name="GDAxml" rows="4" cols="75">
 <?xml version="1.0" ?>
-<sos:GetDataAvailablity version="2.0.0" service="SOS"
+<sos:GetDataAvailability version="2.0.0" service="SOS"
     maxFeatures="3"
     xmlns:sos="http://schemas.opengis.net/sos/2.0.0/"
     xmlns:wfs="http://www.opengis.net/wfs"
@@ -454,21 +474,23 @@
             </gml:Envelope>
           </ogc:BBOX>
        </ogc:Filter>
-</sos:GetDataAvailablity>
+</sos:GetDataAvailability>
                                 </textarea><br />
                                 <input type="submit" value="Load"/>
                             </form>
+This example uses a GetDataAvailability query post to find stations that measure the requested Property/Offering combination.
                    </div>
                     <div id="tabUI" class="tab_content">
 
                             <form>
+                                <center>
                                 Observed Property:
                                 <select name="observedProperty">
                                     <option value="Discharge" <%=Properties[0]%>>Discharge</option>
                                     <option value="GageHeight" <%=Properties[1]%>>Gage Height</option>
                                     <option value="Temperature" <%=Properties[2]%>>Temperature</option>
                                     <option value="Precipitation" <%=Properties[3]%>>Precipitation</option>
-                                    <option value="DO" <%=Properties[4]%>>DO</option>
+                                    <option value="DO" <%=Properties[4]%>>Dissolved Oxygen</option>
                                     <option value="Turbidity" <%=Properties[5]%>>Turbidity</option>
                                     <option value="pH" <%=Properties[6]%>>pH</option>
                                 </select>
@@ -482,14 +504,15 @@
                                     <option value="MEDIAN" <%=Offerings[5]%>>Daily Median</option>
                                     <option value="STD" <%=Offerings[6]%>>Daily Standard Deviation</option>
                                     <option value="VARIANCE" <%=Offerings[7]%>>Daily Variance</option>
-                                </select><br /><br />
+                                    <option value="UNIT" <%=Offerings[8]%>>Real Time</option>
+                                </select></center><br /><br />
                                 Bounding Box:<br />
-                                <b>Upper Corner:</b> Latitude <input name="UpperLat" rows="1" cols="15" value="<%=UpperLat%>"></input>
-                                Longitude <input name="UpperLong" type="text" value="<%=UpperLong%>"></input><br />
-                                <b>Lower Corner:</b> Latitude <input name="LowerLat" rows="1" cols="15" value="<%=LowerLat%>"></input>
-                                Longitude <input type="text" name="LowerLong" rows="1" cols="15" value="<%=LowerLong%>"></input><br />
+                                <center><b>Upper Latitude </b><input name="UpperLat" rows="1" cols="15" value="<%=UpperLat%>"></input></center><br />
+                                <center><b>Western Longitude</b> <input type="text" name="LowerLong" rows="1" cols="15" value="<%=LowerLong%>"></input><b>Eastern Longitude </b><input name="UpperLong" type="text" value="<%=UpperLong%>"></input></center><br /><br />
+                                <center><b>Lower Latitude</b> <input name="LowerLat" rows="1" cols="15" value="<%=LowerLat%>"></input></center><br />
                                 <input type="submit" value="Load"/>
                             </form>
+This example populates a GetDataAvailability query to find stations that measure the requested Property/Offering combination.  
                     </div>
                 </div>
 
@@ -508,7 +531,9 @@
                             <i><b>Current Marker:</b></i>
                         </td>
                         <td align="right">
-                            <img src = "../img/USGS.gif" width="84" height="31" alighn="right"/><br />
+                            Number of Markers:<br />
+                            <b><div id="FeatureNumber"></div></b>
+<!--                            <img src = "../img/USGS.gif" width="84" height="31" alighn="right"/><br />-->
                         </td>
                     </tr>
                 </table>
@@ -559,7 +584,7 @@
             var LastWeekStr = '<%=LastWeek%>';
 
             var dataXML = '<%=GetFeatureXML%>';
-            var GDAdataXML = '<%=GetDataAvailablityXML%>';
+            var GDAdataXML = '<%=GetDataAvailabilityXML%>';
 
 //================================= Rebuilds sidebar =======================================
       function makeSidebar() {
