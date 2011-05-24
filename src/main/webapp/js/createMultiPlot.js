@@ -35,17 +35,10 @@ cida.createMultiPlot = function(sos_url, gdaDV_url, stat_cd, observedProperty, N
 
             for (n=0; n < observedPropertyArray.length; n++){
                 if (Parameter_cd == observedPropertyArray[n] && stat_cdArray[n] == stat_cd) {
-                    checkbox = '<input type="checkbox" name="observedProperty" value="' + Parameter_cd + '_' + stat_cd + '" checked/>';
-                    data.addColumn('number', Prop);
-                    if (n == (sos_urlArray.length-1)){
-                        color[n] = colorINI[8];
-                    }
-                    else {
-                        color[n] = colorINI[n];
-                    }
+                    checkbox = '<input type="checkbox" name="observedProperty" onclick="chkcontrol(' + n + ')" value="' + Parameter_cd + '_' + stat_cd + '" checked/>';
                     break;
                 } else {
-                    checkbox = '<input type="checkbox" name="observedProperty" value="' + Parameter_cd + '_' + stat_cd + '"/>';
+                    checkbox = '<input type="checkbox" name="observedProperty" onclick="chkcontrol(' + n + ') "value="' + Parameter_cd + '_' + stat_cd + '"/>';
                 }
             }
             Plot_table = Plot_table + '<tr><td>' + checkbox + '</td><td>' + Prop + '</td><td>' + beginDate + '</td><td>' + endDate + '</tr>';
@@ -58,34 +51,51 @@ cida.createMultiPlot = function(sos_url, gdaDV_url, stat_cd, observedProperty, N
 
         var k = 0;
 //        $( "#progressbar" ).progressbar({value: 0});
+        n = 0;
         for (j = 0; j < sos_urlArray.length; j++){
             var PlotData = LoadXMLGDA(sos_urlArray[j]);
+            $(PlotData).find('[nodeName="wml2:TimeseriesObservation"],TimeseriesObservation').each(function(){
+                var loc_nu = $(this).attr("gml:id").split("_")[3];
+                var Property = $(this).find('[nodeName="om:observedProperty"],observedProperty');
+                var Prop = Property.attr("xlink:title");
+                var Offering = $(this).find('[nodeName="wml2:InterpolationType"],InterpolationType').attr("xlink:href").split("/")[7];
+                var Units = $(this).find('[nodeName="wml2:unitOfMeasure"],unitOfMeasure').attr("uom");
+                var ColumnName;
+                if (loc_nu > 0){
+                    ColumnName = Offering + " " + Prop + " " + loc_nu + " (" + Units + ")";
+                } else {
+                    ColumnName = Offering + " " + Prop + " (" + Units + ")";
+                }
 
-            data.addRows($(PlotData).find('[nodeName="wml2:point"],point').length);
-            $(PlotData).find('[nodeName="wml2:point"],point').each(function(){
+                data.addColumn('number', ColumnName);
+                data.addRows($(this).find('[nodeName="wml2:point"],point').length);
+                $(this).find('[nodeName="wml2:point"],point').each(function(){
 
-                var temp = $('[nodeName="wml2:time"],time', this).text();
-                var value = parseFloat($('[nodeName="wml2:value"],value', this).text());
-                var timestamp = temp.substr(0, 18);
+                    var temp = $('[nodeName="wml2:time"],time', this).text();
+                    var value = parseFloat($('[nodeName="wml2:value"],value', this).text());
+                    var timestamp = temp.substr(0, 18);
 
-                var temp2 = timestamp.split("T");
-                var time = temp2[1].split(":");
-                var fullDate = temp2[0].split("-");
-                var month = parseFloat(fullDate[1]) - 1;
-                var year = fullDate[0];
-                var day = fullDate[2];
-                var hours = time[0];
-                var minutes = time[1];
-                var seconds = time[2];
-                var date = new Date(year,month,day,hours, minutes, seconds, 0);
-                data.setValue(k, 0, date);
-                data.setValue(k, (j+1), value);
-                var percent = (k * 100)/N;
-//                $("#progressbar").progressbar({value: percent});
-                k = k + 1;
+                    var temp2 = timestamp.split("T");
+                    var time = temp2[1].split(":");
+                    var fullDate = temp2[0].split("-");
+                    var month = parseFloat(fullDate[1]) - 1;
+                    var year = fullDate[0];
+                    var day = fullDate[2];
+                    var hours = time[0];
+                    var minutes = time[1];
+                    var seconds = time[2];
+                    var date = new Date(year,month,day,hours, minutes, seconds, 0);
+                    data.setValue(k, 0, date);
+                    data.setValue(k, (n+1), value);
+                    var percent = (k * 100)/N;
+    //                $("#progressbar").progressbar({value: percent});
+                    k = k + 1;
+                });
+                color[n] = colorINI[n]
+                n += 1;
             });
         }
-
+        color[n-1] = colorINI[8];
         var chart = new google.visualization.AnnotatedTimeLine(document.getElementById("chart_div"));
         chart.draw(data,
         {

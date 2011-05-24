@@ -30,10 +30,15 @@
     String LowLat = request.getParameter("LowerLat");
     String LowLong = request.getParameter("LowerLong");
     String Tab = "0";
-    String[] Properties = new String[7];
+    String[] Properties = new String[8];
     Properties[0] = "selected";
     String[] Offerings = new String[9];
     Offerings[0] = "selected";
+    String[] Selected = new String[40];
+    String Lat;
+    String Long;
+    String XML_Call = base_url;
+    String Sites = base_url + "wfs?request=GetFeature&featureId=";
 
     if (GetFeatureXML != null){
         GetFeatureXML = GetFeatureXML.replaceAll("\\s+", " ");
@@ -65,8 +70,259 @@
                 dataSet = 7;
             } else if (dataSetString.equalsIgnoreCase("GL")) {
                 dataSet = 8;
-            } else {
+            } else if (dataSetString.equalsIgnoreCase("OH_Black")) {
+                GDA = "True";
+                Sites = XML_Call + "dv/sos";
+                UpLat = "41.479086";
+                LowLat = "40.991118";
+                UpLong = "-81.939142";
+                LowLong = "-82.367606";
+                Selected[5] = "selected";
                 dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("NY_Buffalo")) {
+                Sites = XML_Call + "wfs";
+                UpLat = "42.881562";
+                LowLat = "42.850633";
+                LowLong = "-78.890824";
+                UpLong = "-78.809176";
+                Selected[6] = "selected";
+                dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("MI_Clinton")) {
+                GDA = "True";
+                Sites = XML_Call + "dv/sos";
+                UpLat = "42.946255";
+                LowLat = "42.369895";
+                LowLong = "-83.521823";
+                UpLong = "-82.769277";
+                Selected[7] = "selected";
+                dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("OH_Cuyahoga")) {
+                GDA = "True";
+                Sites = XML_Call + "dv/sos";
+                UpLat = "41.588189";
+                LowLat = "40.992589";
+                LowLong = "-81.835897";
+                UpLong = "-81.292815";
+                Selected[8] = "selected";
+                dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("MI_Deer")) {
+                GDA = "False";
+                Sites = XML_Call + "wfs";
+                UpLat = "46.556820";
+                LowLat = "46.447536";
+                LowLong = "-87.804871";
+                UpLong = "-87.380144";
+                Selected[9] = "selected";
+                dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("MI_Detroit")) {
+                GDA = "True";
+                Sites = XML_Call + "dv/sos";
+                UpLat = "42.704404";
+                LowLat = "42.040509";
+                LowLong = "-83.652877";
+                UpLong = "-82.777644";
+                Selected[10] = "selected";
+                dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("NY_Eighteen")) {
+                GDA = "False";
+                Sites = XML_Call + "wfs";
+                UpLat = "43.340909";
+                LowLat = "43.137289";
+                LowLong = "-78.797217";
+                UpLong = "-78.513546";
+                Selected[11] = "selected";
+                dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("IN_Grandcalumet")) {
+                GDA = "False";
+                Sites = XML_Call + "wfs";
+                UpLat = "41.760071";
+                LowLat = "41.606395";
+                LowLong = "-87.524709";
+                UpLong = "-87.259419";
+                Selected[12] = "selected";
+                dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("MI_Kalamazoo")) {
+                GDA = "True";
+                Sites = XML_Call + "dv/sos";
+                UpLat = "42.831620";
+                LowLat = "41.975650";
+                LowLong = "-86.219588";
+                UpLong = "-84.451412";
+                Selected[13] = "selected";
+                dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("OH_Maumee")) {
+                GDA = "True";
+                Sites = XML_Call + "dv/sos";
+                UpLat = "41.732851";
+                LowLat = "41.357315";
+                LowLong = "-83.884821";
+                UpLong = "-83.061323";
+                Selected[14] = "selected";
+                dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("MI_Menominee")) {
+                GDA = "True";
+                Sites = XML_Call + "dv/sos";
+                UpLat = "46.733787";
+                LowLat = "45.064101";
+                LowLong = "-89.077873";
+                UpLong = "-87.501951";
+                Selected[15] = "selected";
+                dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("WI_Milwaukee")) {
+                GDA = "True";
+                Sites = XML_Call + "dv/sos";
+                UpLat = "43.074142";
+                LowLat = "42.962225";
+                LowLong = "-87.957491";
+                UpLong = "-87.845138";
+                Selected[16] = "selected";
+                dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("MI_Muskegonlake")) {
+                GDA = "True";
+                Sites = XML_Call + "dv/sos";
+                UpLat = "43.384612";
+                LowLat = "43.189551";
+                LowLong = "-86.352132";
+                UpLong = "-85.903600";
+                Selected[17] = "selected";
+                dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("NY_Niagara")) {
+                GDA = "False";
+                Sites = XML_Call + "wfs";
+                UpLat = "43.263355";
+                LowLat = "42.811803";
+                LowLong = "-79.076271";
+                UpLong = "-78.858363";
+                Selected[18] = "selected";
+                dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("NY_Oswego")) {
+                GDA = "False";
+                Sites = XML_Call + "wfs";
+                UpLat = "43.473991";
+                LowLat = "43.446402";
+                LowLong = "-76.531727";
+                UpLong = "-76.500779";
+                Selected[19] = "selected";
+                dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("PA_PresqueIsle")) {
+                GDA = "False";
+                Sites = XML_Call + "wfs";
+                UpLat = "42.162684";
+                LowLat = "42.113121";
+                LowLong = "-80.151499";
+                UpLong = "-80.077424";
+                Selected[20] = "selected";
+                dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("MI_Raisin")) {
+                GDA = "True";
+                Sites = XML_Call + "dv/sos";
+                UpLat = "42.257750";
+                LowLat = "41.652318";
+                LowLong = "-84.459701";
+                UpLong = "-83.324048";
+                Selected[21] = "selected";
+                dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("NY_Rochester")) {
+                GDA = "False";
+                Sites = XML_Call + "wfs";
+                UpLat = "43.339662";
+                LowLat = "43.175139";
+                LowLong = "-77.756398";
+                UpLong = "-77.432446";
+                Selected[22] = "selected";
+                dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("MI_Rouge")) {
+                GDA = "True";
+                Sites = XML_Call + "dv/sos";
+                UpLat = "42.646446";
+                LowLat = "42.226238";
+                LowLong = "-83.654179";
+                UpLong = "-83.076605";
+                Selected[23] = "selected";
+                dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("MI_Saginaw")) {
+                GDA = "True";
+                Sites = XML_Call + "dv/sos";
+                UpLat = "44.511562";
+                LowLat = "42.513383";
+                LowLong = "-85.3280329";
+                UpLong = "-82.812625";
+                Selected[24] = "selected";
+                dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("WI_Sheboygan")) {
+                GDA = "False";
+                Sites = XML_Call + "wfs";
+                UpLat = "43.755541";
+                LowLat = "43.720441";
+                LowLong = "-87.812581";
+                UpLong = "-87.692693";
+                Selected[25] = "selected";
+                dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("MI_StClair")) {
+                GDA = "True";
+                Sites = XML_Call + "dv/sos";
+                UpLat = "43.685902";
+                LowLat = "42.131778";
+                LowLong = "-83.189464";
+                UpLong = "-81.568797";
+                Selected[26] = "selected";
+                dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("NY_StLawrence")) {
+                GDA = "False";
+                Sites = XML_Call + "wfs";
+                UpLat = "45.015901";
+                LowLat = "44.931629";
+                LowLong = "-74.935712";
+                UpLong = "-74.637861";
+                Selected[27] = "selected";
+                dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("MN_StLouis")) {
+                GDA = "True";
+                Sites = XML_Call + "dv/sos";
+                UpLat = "47.784754";
+                LowLat = "46.316812";
+                LowLong = "-93.208055";
+                UpLong = "-91.456459";
+                Selected[28] = "selected";
+                dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("MI_StMarys")) {
+                GDA = "True";
+                Sites = XML_Call + "dv/sos";
+                UpLat = "47.371094";
+                LowLat = "45.954590";
+                LowLong = "-85.176651";
+                UpLong = "-82.421875";
+                Selected[29] = "selected";
+                dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("MI_TorchLake")) {
+                GDA = "False";
+                Sites = XML_Call + "wfs";
+                UpLat = "47.196807";
+                LowLat = "47.126543";
+                LowLong = "-88.476051";
+                UpLong = "-88.392539";
+                Selected[30] = "selected";
+                dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("IL_Waukegan")) {
+                GDA = "False";
+                Sites = XML_Call + "wfs";
+                UpLat = "42.419105";
+                LowLat = "42.319276";
+                LowLong = "-87.842729";
+                UpLong = "-87.801955";
+                Selected[31] = "selected";
+                dataSet = 9;
+            } else if (dataSetString.equalsIgnoreCase("MI_WhiteLake")) {
+                GDA = "True";
+                Sites = XML_Call + "dv/sos";
+                UpLat = "43.701845";
+                LowLat = "43.350233";
+                LowLong = "-86.439162";
+                UpLong = "-85.596305";
+                Selected[32] = "selected";
+                dataSet = 9;
+            } else {
+                dataSet = 10;
             }
     } else if (CommaList != null){
         dataSet = 5;
@@ -75,13 +331,17 @@
     } else if (GetDataAvailabilityXML != null){
         dataSet = 7;
     } else if (observedProperty != null){
-        GetDataAvailabilityXML = "<?xml version=\"1.0\" ?> <sos:GetDataAvailability version=\"2.0.0\" service=\"SOS\" maxFeatures=\"3\" xmlns:sos=\"http://schemas.opengis.net/sos/2.0.0/\" xmlns:wfs=\"http://www.opengis.net/wfs\" xmlns:ogc=\"http://www.opengis.net/ogc\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:om=\"http://www.opengis.net/om/2.0\" xmlns:fes=\"http://www.opengis.net/fes/2.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xsi:schemaLocation=\"http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0.0/sos.xsd\"> <sos:observedProperty>";
-        GetDataAvailabilityXML = GetDataAvailabilityXML + observedProperty + "</sos:observedProperty> <sos:offering>";
-        GetDataAvailabilityXML = GetDataAvailabilityXML + offering + "</sos:offering> <ogc:Filter> <ogc:BBOX> <gml:Envelope> <gml:lowerCorner>";
+        GetDataAvailabilityXML = "<?xml version=\"1.0\" ?> <sos:GetDataAvailability version=\"2.0.0\" service=\"SOS\" maxFeatures=\"3\" xmlns:sos=\"http://schemas.opengis.net/sos/2.0.0/\" xmlns:wfs=\"http://www.opengis.net/wfs\" xmlns:ogc=\"http://www.opengis.net/ogc\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:om=\"http://www.opengis.net/om/2.0\" xmlns:fes=\"http://www.opengis.net/fes/2.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xsi:schemaLocation=\"http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0.0/sos.xsd\">";
+        if (observedProperty.equals("All")) {
+        } else {
+            GetDataAvailabilityXML = GetDataAvailabilityXML + "<sos:observedProperty>" + observedProperty + "</sos:observedProperty>";
+        }
+        GetDataAvailabilityXML = GetDataAvailabilityXML + "<sos:offering>" + offering + "</sos:offering> <ogc:Filter> <ogc:BBOX> <gml:Envelope> <gml:lowerCorner>";
         GetDataAvailabilityXML = GetDataAvailabilityXML + LowLong + " " + LowLat + "</gml:lowerCorner> <gml:upperCorner>";
         GetDataAvailabilityXML = GetDataAvailabilityXML + UpLong + " " + UpLat + "</gml:upperCorner> </gml:Envelope> </ogc:BBOX> </ogc:Filter> </sos:GetDataAvailability>";
         dataSet = 7;
         // Got to figure out enums....
+        Properties[0] = "";
         if (observedProperty.equalsIgnoreCase("Discharge")) {
              Properties[0] = "selected";
         } else if (observedProperty.equalsIgnoreCase("GageHeight")) {
@@ -96,7 +356,10 @@
             Properties[5] = "selected";
         } else if (observedProperty.equalsIgnoreCase("pH")) {
             Properties[6] = "selected";
+        } else if (observedProperty.equalsIgnoreCase("All")) {
+            Properties[7] = "selected";
         }
+        Offerings[0] = "";
         if (offering.equalsIgnoreCase("MEAN")) {
              Offerings[0] = "selected";
         } else if (offering.equalsIgnoreCase("MAXIMUM")) {
@@ -117,26 +380,25 @@
             Offerings[8] = "selected";
         }
     } else {
-        dataSet = 9;
+        dataSet = 10;
     }
 
+    Integer Scale;
     String textbox = "01446500,05082500";
     String UpperLat = "44.0";
     String UpperLong = "-89.0";
     String LowerLat = "43.0";
     String LowerLong = "-90.0";
     String xmlbox = "";
-    String XML_Call = base_url;
-    String Sites = base_url + "wfs?request=GetFeature&featureId=";
 
-    String Lat;
-    String Long;
-    Integer Scale;
-    String[] Selected = new String[8];
-    Selected[5] = "style='visibility:hidden;'";
-    Selected[6] = "style='visibility:hidden;'";
-    Selected[7] = "style='visibility:hidden;'";
-    switch (dataSet) {
+    String GetFeatureXMLText = "<?xml version=\"1.0\" ?> <wfs:GetFeature version=\"1.1.0\" service=\"WFS\" maxFeatures=\"3\" xmlns:wfs=\"http://www.opengis.net/wfs\" xmlns:ogc=\"http://www.opengis.net/ogc\" xmlns:gml=\"http://www.opengis.net/gml\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><wfs:Query>";
+    GetFeatureXMLText = GetFeatureXMLText + "<ogc:Filter> <ogc:BBOX> <gml:Envelope> <gml:lowerCorner>";
+
+    String GetDataAvailabilityXMLText = "<?xml version=\"1.0\" ?> <sos:GetDataAvailability version=\"2.0.0\" service=\"SOS\" maxFeatures=\"3\" xmlns:sos=\"http://schemas.opengis.net/sos/2.0.0/\" xmlns:wfs=\"http://www.opengis.net/wfs\" xmlns:ogc=\"http://www.opengis.net/ogc\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:om=\"http://www.opengis.net/om/2.0\" xmlns:fes=\"http://www.opengis.net/fes/2.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xsi:schemaLocation=\"http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0.0/sos.xsd\">";
+    GetDataAvailabilityXMLText = GetDataAvailabilityXMLText + "<ogc:Filter> <ogc:BBOX> <gml:Envelope> <gml:lowerCorner>";
+
+
+       switch (dataSet) {
         case 1:     // SWIE
             Sites = Sites + "01427207,01427510,01434000,01438500,01457500,01463500,04073365,04073500,04082400,04084445,05344500,05378500,05389500,05391000,05395000,05404000,05407000,05420500,05543500,05543830,05545750,05551540,05552500,05558300,05568500,05586100,07010000,07020500,";
             Sites = Sites + "07022000,05051500,05054000,05082500,04269000,040851385,04010500,04024000,04024430,04027000,";
@@ -192,7 +454,7 @@
             Lat = "41.18997026";
             Long = "-96.73343980";
             Scale = 4;
-            Selected[5] = "selected";
+            Selected[6] = "selected";
             textbox = site_no;
             break;
         case 6: //XML Input
@@ -200,25 +462,25 @@
             Lat = "41.18997026";
             Long = "-96.73343980";
             Scale = 4;
-            Selected[6] = "selected";
+            Selected[7] = "selected";
             xmlbox = GetFeatureXML;
             get = "False";
             Tab = "2";
             break;
         case 7: //GDA Input
             Sites = XML_Call  + "dv/sos";
-            Float Lat_float = (Float.valueOf(UpLat) + Float.valueOf(LowLat))/2;
-            Float Long_float = (Float.valueOf(UpLong) + Float.valueOf(LowLong))/2;
-            Lat = Float.toString(Lat_float);
-            Long = Float.toString(Long_float);
-            //Lat = "41.18997026";
-            //Long = "-96.73343980";
+            Lat = "41.18997026";
+            Long = "-96.73343980";
             Scale = 5;
-            Selected[7] = "selected";
+            Selected[5] = "selected";
             xmlbox = GetDataAvailabilityXML;
             get = "False";
             GDA = "True";
             if (observedProperty != null){
+                Float Lat_float = (Float.valueOf(UpLat) + Float.valueOf(LowLat))/2;
+                Float Long_float = (Float.valueOf(UpLong) + Float.valueOf(LowLong))/2;
+                Lat = Float.toString(Lat_float);
+                Long = Float.toString(Long_float);
                 Tab = "4";
                 UpperLat = UpLat;
                 UpperLong = UpLong;
@@ -237,6 +499,26 @@
             Scale = 5;
             Selected[4] = "selected";
             break;
+        case 9:
+            get = "False";
+            GetFeatureXML = GetFeatureXMLText + LowLong + " " + LowLat + "</gml:lowerCorner> <gml:upperCorner>";
+            GetFeatureXML =  GetFeatureXML + UpLong + " " + UpLat + "</gml:upperCorner> </gml:Envelope> </ogc:BBOX> </ogc:Filter> </wfs:Query></wfs:GetFeature>";
+
+            GetDataAvailabilityXML = GetDataAvailabilityXMLText + LowLong + " " + LowLat + "</gml:lowerCorner> <gml:upperCorner>";
+            GetDataAvailabilityXML = GetDataAvailabilityXML + UpLong + " " + UpLat + "</gml:upperCorner> </gml:Envelope> </ogc:BBOX> </ogc:Filter> </sos:GetDataAvailability>";
+
+            Float Lat_float = (Float.valueOf(UpLat) + Float.valueOf(LowLat))/2;
+            Float Long_float = (Float.valueOf(UpLong) + Float.valueOf(LowLong))/2;
+            Lat = Float.toString(Lat_float);
+            Long = Float.toString(Long_float);
+            Tab = "0";
+            UpperLat = UpLat;
+            UpperLong = UpLong;
+            LowerLat = LowLat;
+            LowerLong = LowLong;
+            Scale = 6;
+            break;
+
        default:
             Sites = Sites + "01427207,01427510,01434000,01438500,01457500,01463500,04073365,04073500,04082400,04084445,";
             Sites = Sites + "05344500,05378500,05389500,05391000,05395000,05404000,05407000,05420500,";
@@ -296,13 +578,19 @@
         <script src="../js/jquery-ui-1.8.12.custom.min.js" type="text/javascript" ></script>
         <link rel="stylesheet" type="text/css" media="screen" href="tooltipv2.css" />
 
-        <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>
+        <script src="http://maps.google.com/maps?file=api&amp;v=3&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>
         <script src="../js/mapiconmaker.js" type="text/javascript"></script>
     <script type="text/javascript">
 	$(function() {
-		$( "#tabs" ).tabs({
-                    selected: <%=Tab%>
-                });
+            $( "#tabs" ).tabs({
+                selected: <%=Tab%>,
+                ajaxOptions: {
+                        error: function( xhr, status, index, anchor ) {
+                                    $( anchor.hash ).html(
+                                        "Couldn't load this tab. We'll try to fix this as soon as possible. ");
+                        }
+               }
+            });
 	});
 
     </script>
@@ -372,13 +660,12 @@
            </table>
            </td>
             <td>
-                <div id="map" style="width: 560px; height: 300px"></div><br />
+                <div id="map" style="width: 660px; height: 350px"></div><br />
             </td>
 
         </tr>
         <tr>
             <td COLSPAN="2">
-
                 <div id="tabs">
                     <ul>
                         <li><a href="#tabList">Pre-Defined Lists</a></li>
@@ -399,18 +686,44 @@
                                 <select name="dataSet" onChange="form.submit()" value="Load">
                                     <option value="SWIE" <%=Selected[0]%>>Surface Water IE</option>
                                     <option value="WDM" <%=Selected[1]%>>Kalamazoo</option>
+                                    <option value="GL" <%=Selected[4]%>>Great Lakes</option>
+                                    <option value="OH_Black" <%=Selected[5]%>>AOC - Black River, OH</option>
+<!--                                    <option value="NY_Buffalo" <%=Selected[6]%>>AOC - Buffalo River, NY</option>-->
+                                    <option value="MI_Clinton" <%=Selected[7]%>>AOC - Clinton River, MI</option>
+                                    <option value="OH_Cuyahoga" <%=Selected[8]%>>AOC - Cuyahoga River, OH</option>
+                                    <option value="MI_Deer" <%=Selected[9]%>>AOC - Deer Lake, MI</option>
+                                    <option value="MI_Detroit" <%=Selected[10]%>>AOC - Detroit River, MI</option>
+                                    <option value="NY_Eighteen" <%=Selected[11]%>>AOC - Eighteen Mile Creek, NY</option>
+                                    <option value="IN_Grandcalumet" <%=Selected[12]%>>AOC - Grand Calumet River, IN</option>
+                                    <option value="MI_Kalamazoo" <%=Selected[13]%>>AOC - Kalamazoo River, MI</option>
+                                    <option value="OH_Maumee" <%=Selected[14]%>>AOC - Maumee River, OH</option>
+                                    <option value="MI_Menominee" <%=Selected[15]%>>AOC - Menominee River, MI</option>
+                                    <option value="WI_Milwaukee" <%=Selected[16]%>>AOC - Milwaukee Estuary, WI</option>
+                                    <option value="MI_Muskegonlake" <%=Selected[17]%>>AOC - Muskegon Lake, MI</option>
+                                    <option value="NY_Niagara" <%=Selected[18]%>>AOC - Niagara River, NY</option>
+                                    <option value="NY_Oswego" <%=Selected[19]%>>AOC - Oswego River, NY</option>
+<!--                                    <option value="PA_PresqueIsle" <%=Selected[20]%>>AOC - Presque Isle Bay, PA</option>-->
+                                    <option value="MI_Raisin" <%=Selected[21]%>>AOC - Raisin River, MI</option>
+                                    <option value="NY_Rochester" <%=Selected[22]%>>AOC - Rochester Embayment, NY</option>
+                                    <option value="MI_Rouge" <%=Selected[23]%>>AOC - Rouge River, MI</option>
+                                    <option value="MI_Saginaw" <%=Selected[24]%>>AOC - Saginaw River, MI</option>
+                                    <option value="WI_Sheboygan" <%=Selected[25]%>>AOC - Sheboygan River, WI</option>
+                                    <option value="MI_StClair" <%=Selected[26]%>>AOC - St. Clair River, MI</option>
+<!--                                    <option value="NY_StLawrence" <%=Selected[27]%>>AOC - St. Lawrence River, NY</option>-->
+                                    <option value="MN_StLouis" <%=Selected[28]%>>AOC - St. Louis River, MN</option>
+                                    <option value="MI_StMary" <%=Selected[29]%>>AOC - St. Marys River, MI</option>
+<!--                                    <option value="MI_TorchLake" <%=Selected[30]%>>AOC - Torch Lake, MI</option>-->
+                                    <option value="IL_Waukegan" <%=Selected[31]%>>AOC - Waukegan Harbor River, IL</option>
+                                    <option value="MI_WhiteLake" <%=Selected[32]%>>AOC - White Lake, MI</option>
                                     <option value="WI" <%=Selected[2]%>>North Central</option>
                                     <option value="SE" <%=Selected[3]%>>Southeast</option>
-                                    <option value="GL" <%=Selected[4]%>>Great Lakes</option>
-                                    <option value="UserList" <%=Selected[5]%>>List from comma delimited station number list</option>
-                                    <option value="WFS" <%=Selected[6]%>>List from WFS XML</option>
-                                    <option value="GDA" <%=Selected[7]%>>List from GDA XML</option>
                                 </select>
                             </form>
                                     </td>
                                 </tr>
                             </table>
-Pre-defined lists of USGS gaging stations are used to populate the map above with markers using a GetFeature query. Clicking on a map marker will send a GetDataAvailability request, populating a table on the right.
+Pre-defined lists of USGS gaging stations are used to populate the map above with markers using a GetFeature or GetDataAvailability query. Clicking on a map marker will send a GetDataAvailability request, populating a table on the right.
+All AOC options (area of concern) are determined by a GetDataAvailability call with a bounding box determined by the EPA: (<a href="http://www.epa.gov/glnpo/aoc/">http://www.epa.gov/glnpo/aoc/</a>)
 
                    </div>
                    <div id="tabComma" class="tab_content">
@@ -419,7 +732,7 @@ Pre-defined lists of USGS gaging stations are used to populate the map above wit
                                 <textarea name="CommaList" rows="4" cols="75"><%=textbox%></textarea><br />
                                 <input type="submit" value="Load"/>
                             </form>
-Create a comma delimited list of USGS stations to populate the map using a GetFeature query. Clicking on a map marker will send a GetDataAvailability request, populating a table on the right.
+Create a comma delimited list of USGS stations to populate the map using a GetFeature query. Clicking on a map marker will send a GetDataAvailability request, populating a table on the right. A maximum of 750 markers can be displayed on the map.
                    </div>
                    <div id="tabWFS" class="tab_content">
                         GetFeature via XML HTTP body: <br /><b>Warning!</b> Use caution with bounding box - may take long to load with large bounding box
@@ -446,7 +759,7 @@ Create a comma delimited list of USGS stations to populate the map using a GetFe
                                 </textarea><br />
                                 <input type="submit" value="Load"/>
                             </form>
-This example uses a GetFeature query post to find all stations within the requested bounding box.
+This example uses a GetFeature query post to find all stations within the requested bounding box.  A maximum of 750 markers can be displayed on the map.
                    </div>
                    <div id="tabGDA" class="tab_content">
                         GetDataAvailability via XML HTTP body: <br /><b>Warning!</b> Use caution with bounding box - may take long to load with large bounding box
@@ -478,7 +791,7 @@ This example uses a GetFeature query post to find all stations within the reques
                                 </textarea><br />
                                 <input type="submit" value="Load"/>
                             </form>
-This example uses a GetDataAvailability query post to find stations that measure the requested Property/Offering combination.
+This example uses a GetDataAvailability query post to find stations that measure the requested Property/Offering combination. A maximum of 750 markers can be displayed on the map.
                    </div>
                     <div id="tabUI" class="tab_content">
 
@@ -493,6 +806,7 @@ This example uses a GetDataAvailability query post to find stations that measure
                                     <option value="DO" <%=Properties[4]%>>Dissolved Oxygen</option>
                                     <option value="Turbidity" <%=Properties[5]%>>Turbidity</option>
                                     <option value="pH" <%=Properties[6]%>>pH</option>
+                                    <option value="All" <%=Properties[7]%>>All</option>
                                 </select>
                                 Offering:
                                 <select name="offering">
@@ -512,8 +826,9 @@ This example uses a GetDataAvailability query post to find stations that measure
                                 <center><b>Lower Latitude</b> <input name="LowerLat" rows="1" cols="15" value="<%=LowerLat%>"></input></center><br />
                                 <input type="submit" value="Load"/>
                             </form>
-This example populates a GetDataAvailability query to find stations that measure the requested Property/Offering combination.  
+This example populates a GetDataAvailability query to find stations that measure the requested Property/Offering combination. A maximum of 750 markers can be displayed on the map.
                     </div>
+
                 </div>
 
             </td>
@@ -617,7 +932,21 @@ This example populates a GetDataAvailability query to find stations that measure
             parseGDAXML(xml,base_url);
         }
 
-        document.getElementById("AvailableData").innerHTML ="";
+
+//        google.maps.addListener(map,'rangechange',function(){
+//            document.getElementById("AvailableData").innerHTML ="";
+//            var bounds = new google.maps.LatLngBounds();
+//
+//            var UpperLat = bounds.getNorthEast().lat().toString();
+//            var LowerLat = bounds.getSouthWest().lat().toString();
+//            var EasternLong = bounds.getNorthEast().lng().toString();
+//            var WesternLong = bounds.getSouthWest().lng().toString();
+//
+//            document.getElementById("UpperLat").innerHTML = UpperLat;
+//            document.getElementById("LowerLat").innerHTML = LowerLat;
+//            document.getElementById("EasternLong").innerHTML = EasternLong;
+//            document.getElementById("WesternLong").innerHTML = WesternLong;
+//        });
 
     }
     else {

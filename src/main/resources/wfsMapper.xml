@@ -261,6 +261,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 AND c.state_cd = a.state_cd
                 AND a.instruments_cd != 'NNNNNNNNNNNNNNNNNNNNNNNNNNNNNN'
                 AND a.site_web_cd = 'Y'
+                LIMIT 750
 
 <!---		<trim prefix="OR (" suffix=")" prefixOverrides="AND">
 			<if test="bBox != null">

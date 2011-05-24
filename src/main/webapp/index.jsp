@@ -258,9 +258,8 @@
             }
 
 </style>
-    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>    
-    
-    <script type="text/javascript"src="http://www.google.com/jsapi?key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q"></script>
+    <script src="http://maps.google.com/maps?file=api&amp;v=3&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>    
+<!--    <script type="text/javascript"src="http://www.google.com/jsapi?key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q"></script>-->
     <script src="js/jquery-1.6.js"></script>
     <script src="js/LoadXML.js" type="text/javascript"></script>
     <script src="js/parseXML.js" type="text/javascript"></script>
@@ -520,7 +519,8 @@
                         <div id="tabGDA" class="tab_content">
                                 <font size="4" ><li><strong> Get Data Availability</strong></li> </font>
                                     <dl>
-                                                <dt><b>GetDataAvailability</b> - featureID, offering, and observedProperty are all optional. If not used, all the features/properties in the SWIE will be displayed.  Additionally, a bounding box is supported in the XML post.</dt>
+                                                <dt><b>GetDataAvailability</b> - featureID, offering, and observedProperty are all optional. If not used, all the features/properties in the SWIE will be displayed.  Additionally, a bounding box is supported in the XML post.
+                                                A 750 feature limit has been hard-coded.</dt>
                                                 <br /><i>GetDataAvailability by feature ID and offering:</i>
                                                 <dd><a href="<%=baseURL%>/dv/sos?request=GetDataAvailability&featureID=05082500&offering=mean"><%=baseURL%>/dv/sos?request=GetDataAvailability&featureID=05082500&offering=mean</a></dd>
                                                 <br /><i>GetDataAvailability by observed property and feature ID:</i>

@@ -8,5 +8,6 @@ public class OGCBusinessRules {
         public static final String interval = "interval";
         public static final String latest = "latest";
         public static final String IsUnitValue = "IsUnitValue";
+        public static final String Internal = "Internal";
 
 }

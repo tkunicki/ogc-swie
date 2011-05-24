@@ -205,6 +205,15 @@ public class UVServlet extends HttpServlet {
                 }
                 parameters.put(OGCBusinessRules.latest, new String[] {LATEST});
             }
+            String[] Internal = parameters.get(OGCBusinessRules.Internal);
+            String INTERNAL = null;
+            if (Internal != null){
+                if (Internal[0].equalsIgnoreCase("True"))
+                {
+                    INTERNAL = "True";
+                }
+                parameters.put(OGCBusinessRules.Internal, new String[] {INTERNAL});
+            }
 
             return parameters;
 

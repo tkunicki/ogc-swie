@@ -287,7 +287,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             AND a.access_cd = '0'
             AND b.dv_por_cd = 'T'
             AND b.stat_cd = d.stat_cd
-            AND c.instruments_cd != 'NNNNNNNNNNNNNNNNNNNNNNNNNNNNNN'
             AND c.site_web_cd = 'Y'
 
             GROUP BY c.site_no, a.parameter_cd, d.stat_nm
@@ -366,7 +365,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
        </if>
 
             ORDER BY parameter_cd
-
+            LIMIT 750
 	</select>
 
 	<select id="dataFeatureSelect" parameterType="map" resultMap="dataFeatureMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
@@ -389,9 +388,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                   <when test="featureId != null">
                             WHERE c.site_no IN (#{featureId})
                   </when>
-<!--                <when test="featureId != null">
-                    WHERE c.site_no IN <foreach item="i" collection="featureId" open="(" separator="," close=")">#{i}</foreach>
-                </when>-->
+
                   <when test="bBox0 != null">
                             WHERE c.dec_long_va BETWEEN #{bBox0} AND #{bBox2} AND c.dec_lat_va BETWEEN #{bBox1} AND #{bBox3}
                   </when>
@@ -418,7 +415,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                     </otherwise>
              </choose>
             AND c.site_web_cd = 'Y'
-            AND c.instruments_cd != 'NNNNNNNNNNNNNNNNNNNNNNNNNNNNNN'
             AND c.site_id = a.site_id
             AND a.parameter_cd = e.parameter_cd
             AND a.access_cd = '0'
@@ -458,9 +454,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                           <when test="featureId != null">
                                     WHERE site_no IN (#{featureId})
                           </when>
-<!--                <when test="featureId != null">
-                    WHERE site_no IN <foreach item="i" collection="featureId" open="(" separator="," close=")">#{i}</foreach>
-                </when>-->
+
                           <when test="bBox0 != null">
                                     WHERE dec_long_va BETWEEN #{bBox0} AND #{bBox2} AND dec_lat_va BETWEEN #{bBox1} AND #{bBox3}
                                     AND site_web_cd = 'Y'
@@ -502,11 +496,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
                 AND c.access_cd = '0'
                 AND c.parameter_cd = d.parameter_cd
-                GROUP BY a.site_no, c.parameter_cd
-                
+                GROUP BY a.site_no, c.parameter_cd               
         </if>
                 ORDER BY site_no
-
+                LIMIT 750
 	</select>
 
 	<select id="dataPropertySelect" parameterType="map" resultMap="dataPropertyMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
@@ -529,9 +522,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                   <when test="featureId != null">
                             WHERE c.site_no IN (#{featureId})
                   </when>
-<!--                <when test="featureId != null">
-                    WHERE c.site_no IN <foreach item="i" collection="featureId" open="(" separator="," close=")">#{i}</foreach>
-                </when>-->
+
                   <when test="bBox0 != null">
                             WHERE c.dec_long_va BETWEEN #{bBox0} AND #{bBox2} AND c.dec_lat_va BETWEEN #{bBox1} AND #{bBox3}
                   </when>
@@ -557,7 +548,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                                         )
                     </otherwise>
              </choose>
-            AND c.instruments_cd != 'NNNNNNNNNNNNNNNNNNNNNNNNNNNNNN'
+
             AND c.site_web_cd = 'Y'
             AND c.site_id = a.site_id
             AND a.parameter_cd = e.parameter_cd
@@ -572,7 +563,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                 AND d.stat_cd = (#{offering})
             </if>
             GROUP BY c.site_no, a.parameter_cd, d.stat_nm
-
 
        <if test="offering == null or (offering != null and (offering == 'UNIT' or offering == '00000'))">
             UNION
@@ -648,7 +638,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
        </if>
 
             ORDER BY parameter_cd
-
+            LIMIT 750
 	</select>
 
 </mapper> 

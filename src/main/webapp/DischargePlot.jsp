@@ -119,8 +119,6 @@
         observedProperty = observedProperty.substring(0, (observedProperty.length() - 1));
         gdaDV_url = gdaDV_url + featureID;
 
-
-
     } else {
         if (featureID != null) {
             sos_url = base_url + "/dv/sos?request=GetObservation&offering=00003&observedProperty=00060&Interval=ThisYear&featureID=" + featureID;
@@ -205,8 +203,23 @@
 
 	});
 	</script>
-
         <script type="text/javascript">
+            function chkcontrol(j) {
+                var total=0;
+                for(var i=0; i < document.chooseData.observedProperty.length; i++){
+                    if(document.chooseData.observedProperty[i].checked){
+                    total =total +1;
+                    }
+                    if(total > 3){
+                    alert("Please select no more than three")
+                    document.chooseData.observedProperty[i].checked = false ;
+                    return false;
+                    }
+                }
+            } 
+        </script>
+        <script type="text/javascript">
+
             var gdaDV_url = '<%=gdaDV_url%>';
             var sos_url = '<%=sos_url%>';
             var stat_cd = '<%=stat_cd%>';
@@ -214,10 +227,11 @@
             var observedProperty = '<%=observedProperty%>';
             google.load('visualization', '1', {'packages':['annotatedtimeline']});
             google.setOnLoadCallback(function(){cida.createMultiPlot (sos_url, gdaDV_url, stat_cd, observedProperty, N)});
+
         </script>
     </head>
     <body>
-
+    <img alt="Spinner"  style="display: none;" src = "img/ajax-loader.gif" id="loading_image"/>
         <table cellpadding="0" cellspacing="0" width="100%">
             <tr>
                 <td width="100%" valign="top"><!-- START header and top navigation section -->
@@ -291,10 +305,10 @@
                  <tr>
     <td>
         <!--                            <div class="demo"><div id="progressbar"></div></div>-->
-        <div id='chart_div' style='width: 560px; height: 400px;'>Loading...<img alt="Spinner"  src = "img/ajax-loader.gif" /></div><br />
+        <div id='chart_div' style='width: 560px; height: 400px;'>
+            <img alt="Spinner" src = "img/ajax-loader.gif" id="loading_image"/>
+        </div><br />
         Provisional data subject to revision<br /><%=Data_link%><%=mapLink%>
-
-
     </td>
     <td>
         <form action="DischargePlot.jsp" >
@@ -307,18 +321,19 @@
                 </tr>
             </table>
         </form>
-        <form action="DischargePlot.jsp" >
+        <form id="chooseData" name="chooseData" action="DischargePlot.jsp" >
 
             <table style="width:300px">
                 <tr><td><input type="hidden" name="featureID" value="<%=featureID%>"/></td></tr>
                 <tr><td width=119 align="right"><b>Begin Date: </b><div class="demo"><input type="text" id="from" name="beginPosition" size="10" value="<%=beginPosition%>" tabindex="2"/></div></td><td align="right"></td><td align="right"><b>Plot Begins:</b><div id='ZoomBegin'><%=beginPosition%></div></td></tr>
                 <tr><td align="right"><b>End Date: </b><div class="demo"><input type="text" id="to" name="endPosition" value="<%=endPosition%>" tabindex="3" size="10"/></div></td><td align="right"></td><td align="right"><b>Plot Ends:</b><div id='ZoomEnd' ><%=endPosition%></div></td></tr>
-                <tr><td><b>Available Data:</b></td></tr>
             </table>
+            <b>Available Data (choose up to 3 properties to plot):</b><br />
             <div id='side_bar' style="height: 300px; width: 400px; overflow: auto">Loading...<img alt="Spinner"  src = "img/ajax-loader.gif" /></div><br />
             <input type="submit" value="Submit" tabindex="5"/>
 
         </form>
+
     </td>
 </tr>
 </table>

@@ -10,6 +10,7 @@ PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN"
                 <typeAlias alias="StateFullNameTypeHandler" type="gov.usgs.webservices.ibatis.StateFullNameTypeHandler"/>
                 <typeAlias alias="TimeZoneTypeHandler" type="gov.usgs.webservices.ibatis.TimeZoneTypeHandler"/>
                 <typeAlias alias="ISODateTypeHandler" type="gov.usgs.webservices.ibatis.ISODateTypeHandler"/>
+                <typeAlias alias="RemarkCdTypeHandler" type="gov.usgs.webservices.ibatis.RemarkCDTypeHandler"/>
 	</typeAliases>
 
 	<environments default="development">

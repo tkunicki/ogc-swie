@@ -81,11 +81,11 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 	<resultMap id="observationsResultMap" type="XMLMap" extends="dvResultMap">
 		<result
 			property="^!{wml2:TimeseriesObservation"
-			column="site_no"
+			column="station_parameter_stat_loc_nu"
 			javaType="string" />
 		<result
 			property="wml2:TimeseriesObservation#gml:id=USGS.%s"
-			column="site_no"
+			column="station_parameter_stat_loc_nu"
 			javaType="string" />
                 <result
 			property="wml2:TimeseriesObservation/gml:identifier#codeSpace=http://nwis.waterdata.usgs.gov/%s/nwis"
@@ -143,7 +143,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="wml2:TimeseriesObservation/om:resultTime/gml:TimeInstant/gml:timePosition"
 			column="TimestampNow"
 			javaType="string" />
-<!--                <result
+                <result
 			property="wml2:TimeseriesObservation/om:procedure#xlink:href=http://www.nemi.gov"
 			column="dataTypeTitle"
 			javaType="string" />
@@ -158,7 +158,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		<result
 			property="wml2:TimeseriesObservation/om:observedProperty#xlink:title=%s"
 			column="parameter_nm"
-			javaType="string" />-->
+			javaType="string" />
 		<result
 			property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint#gml:id=USGS.MP.%s"
 			column="site_no"
@@ -207,8 +207,9 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="wml2:TimeseriesObservation/om:result/wml2:owner/gmd:organisationName/gmd:CharacterString=%s Water Science Center"
 			column="district_cd"
 			typeHandler="StateFullNameTypeHandler" />
+<!-- Start line with }-->
                 <result
-			property="{wml2:TimeseriesObservation/om:result/^wml2:Timeseries#gml:id=ts_%s"
+			property="wml2:TimeseriesObservation/om:result/^wml2:Timeseries#gml:id=ts_%s"
 			column="station_parameter_stat"
 			javaType="string" />
                <result
@@ -239,14 +240,14 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:InterpolationType#xlink:title"
 			column="dataTypeTitle"
 			javaType="string" />
- 		<result
+<!-- 		<result
 			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/x-wml2:observedProperty#xlink:href=urn:ogc:def:phenomenon:OGC:%s"
 			column="parameter_nm"
 			javaType="string" />
 		<result
 			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/x-wml2:observedProperty#xlink:title=%s"
 			column="parameter_nm"
-			javaType="string" />
+			javaType="string" />-->
 		<result
 			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:qualifier#xlink:href=http://waterdata.usgs.gov/%s/nwis/help"
 			column="state_cd"
@@ -270,13 +271,14 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 <result
 			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:comment"
 			column="result_cd"
-			javaType="string" />
+			typeHandler="RemarkCDTypeHandler" />
                 <result
 			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:qualifier#xlink:href=http://waterdata.usgs.gov/nwis/help"
 			column="qualifier_message"
 			javaType="string" />
+<!-- start line with } for interleaving timeseries'-->
                 <result
-			property="}wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/wml2:qualifier#xlink:title=%s"
+			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/wml2:qualifier#xlink:title=%s"
 			column="qualifier_message"
 			javaType="string" />
 
@@ -284,7 +286,10 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 
 	<select id="observationsSelect" parameterType="map" resultMap="observationsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
 		SELECT DISTINCT
-                f.station_nm,
+                (CASE
+                    WHEN (e.loc_nu > 0) THEN CONCAT(f.station_nm,', ',e.loc_nm)
+                    ELSE f.station_nm
+                END) station_nm,
                 CONCAT('USGS.',CONVERT(f.site_no,CHAR)) as FeatureID,
                 f.site_no,
                 f.tz_cd as zoneAbbreviation,
@@ -301,26 +306,27 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		d.parameter_units as units,
 		d.parameter_nm,
                 (CASE
-                    WHEN c.table_cd = '***' THEN CONCAT('Temporarily unavailable ',e.loc_nm)
-                    WHEN c.table_cd = '--' THEN CONCAT('Parameter not determined ',e.loc_nm)
-                    WHEN c.table_cd = 'Dis' THEN CONCAT('Data-collection discontinued ',e.loc_nm)
-                    WHEN c.table_cd = 'Dry' THEN CONCAT('Dry ',e.loc_nm)
-                    WHEN c.table_cd = 'Eqp' THEN CONCAT('Equipment malfunction ',e.loc_nm)
-                    WHEN c.table_cd = 'Fld' THEN CONCAT('Flood damage ',e.loc_nm)
-                    WHEN c.table_cd = 'Ice' THEN CONCAT('Ice affected ',e.loc_nm)
-                    WHEN c.table_cd = 'Mnt' THEN CONCAT('Maintenance in progress ',e.loc_nm)
-                    WHEN c.table_cd = 'Pr' THEN CONCAT('Partial-record site ',e.loc_nm)
-                    WHEN c.table_cd = 'Rat' THEN CONCAT('Rating being developed or revised ',e.loc_nm)
-                    WHEN c.table_cd = 'Ssn' THEN CONCAT('Parameter monitored seasonally ',e.loc_nm)
-                    WHEN c.table_cd = 'ZFl' THEN CONCAT('Zero flow ',e.loc_nm)
+                    WHEN INSTR(c.table_cd, '***') > 0 THEN CONCAT('Temporarily unavailable ',e.loc_nm)
+                    WHEN INSTR(c.table_cd, '--') > 0 THEN CONCAT('Parameter not determined ',e.loc_nm)
+                    WHEN INSTR(c.table_cd, 'Dis') > 0 THEN CONCAT('Data-collection discontinued ',e.loc_nm)
+                    WHEN INSTR(c.table_cd, 'Dry') > 0 THEN CONCAT('Dry ',e.loc_nm)
+                    WHEN INSTR(c.table_cd, 'Eqp') > 0 THEN CONCAT('Equipment malfunction ',e.loc_nm)
+                    WHEN INSTR(c.table_cd, 'Fld') > 0 THEN CONCAT('Flood damage ',e.loc_nm)
+                    WHEN INSTR(c.table_cd, 'Ice') > 0 THEN CONCAT('Ice affected ',e.loc_nm)
+                    WHEN INSTR(c.table_cd, 'Mnt') > 0 THEN CONCAT('Maintenance in progress ',e.loc_nm)
+                    WHEN INSTR(c.table_cd, 'Pr') > 0 THEN CONCAT('Partial-record site ',e.loc_nm)
+                    WHEN INSTR(c.table_cd, 'Rat') > 0 THEN CONCAT('Rating being developed or revised ',e.loc_nm)
+                    WHEN INSTR(c.table_cd, 'Ssn') > 0 THEN CONCAT('Parameter monitored seasonally ',e.loc_nm)
+                    WHEN INSTR(c.table_cd, 'ZFl') > 0 THEN CONCAT('Zero flow ',e.loc_nm)
                     ELSE CONCAT(c.table_cd,' ',e.loc_nm)
                 END) table_cd,
-                (CASE
-                    WHEN g.result_cd = <![CDATA[ '<' ]]> THEN 'The value is known to be less than reported value and is write protected.'
-                    WHEN g.result_cd = <![CDATA[ '>' ]]> THEN 'The value is known to be greater than reported value and is write protected.'
-                    WHEN g.result_cd = 'e' THEN 'Value has been edited or estimated by USGS personnel and is write protected'
-                    WHEN g.result_cd = 'E' THEN 'Value was computed from estimated unit values.'
-                END) result_cd,
+                result_cd,
+<!--                (CASE
+                    WHEN INSTR(g.result_cd, <![CDATA[ '<' ]]>) > 0 THEN 'The value is known to be less than reported value and is write protected.'
+                    WHEN INSTR(g.result_cd, <![CDATA[ '>' ]]>) > 0 THEN 'The value is known to be greater than reported value and is write protected.'
+                    WHEN INSTR(g.result_cd, 'e') > 0 THEN 'Value has been edited or estimated by USGS personnel and is write protected'
+                    WHEN INSTR(g.result_cd, 'E') > 0 THEN 'Value was computed from estimated unit values.'
+                END) result_cd,-->
                 (CASE
                     WHEN f.dec_coord_datum_cd = 'NAD83' THEN 'urn:ogc:def:crs:EPSG:4269'
                     ELSE f.dec_coord_datum_cd
@@ -343,6 +349,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                     'Continuous' as dataTypeLink,
                     CONCAT(e.parameter_cd,'_00000') AS parameter_stat,
                     CONCAT(f.site_no,'_',e.parameter_cd,'_00000') AS station_parameter_stat,
+                    CONCAT(f.site_no,'_',e.parameter_cd,'_00000_',e.loc_nu) AS station_parameter_stat_loc_nu,
                 </when>
                 <otherwise>
                     <choose>
@@ -383,6 +390,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 END) dataTypeLink,
                 CONCAT(e.parameter_cd,'_',g.stat_cd) AS parameter_stat,
                 CONCAT(f.site_no,'_',e.parameter_cd,'_',g.stat_cd) AS station_parameter_stat,
+                CONCAT(f.site_no,'_',e.parameter_cd,'_',g.stat_cd,'_',e.loc_nu) AS station_parameter_stat_loc_nu,
                 </otherwise>
              </choose>
                 e.loc_nm,
@@ -468,7 +476,15 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 AND e.site_id = s.site_id
 		AND d.parameter_cd = e.parameter_cd
                 AND e.dd_nu = g.dd_nu
-                AND e.access_cd = '0'
+<!-- I took this out because David Briar wanted to see how we deal with all the data (public or private).  Maybe should go back though-->
+            <choose>
+                <when test="Internal != null">
+                </when>
+                <otherwise>
+                    AND e.access_cd = '0'
+                </otherwise>
+            </choose>
+
                 AND f.site_web_cd = 'Y'
                 AND h.huc_cd = f.huc_cd
                 AND h.state_cd = f.state_cd
@@ -495,7 +511,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
            GROUP BY station_nm, parameter_stat
         </when>
         <otherwise>
-            ORDER BY station_nm, parameter_stat, currentPosition DESC
+            ORDER BY station_nm, loc_nu, parameter_stat, currentPosition DESC
         </otherwise>
        </choose>
 
@@ -548,12 +564,13 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                     WHEN g.data_aging_cd = 'W' THEN 'Provisional data subject to revision.'
                     WHEN g.data_aging_cd = 'R' THEN 'Provisional data subject to revision.'
                 END) qualifier_message,
-                (CASE
+                result_cd,
+<!--                (CASE
                     WHEN g.result_cd = <![CDATA[ '<' ]]> THEN 'The value is known to be less than reported value and is write protected.'
                     WHEN g.result_cd = <![CDATA[ '>' ]]> THEN 'The value is known to be greater than reported value and is write protected.'
                     WHEN g.result_cd = 'e' THEN 'Value has been edited or estimated by USGS personnel and is write protected'
                     WHEN g.result_cd = 'E' THEN 'Value was computed from estimated unit values.'
-                END) result_cd,
+                END) result_cd,-->
                 (CASE
                     WHEN f.dec_coord_datum_cd = 'NAD83' THEN 'urn:ogc:def:crs:EPSG:4269'
                     ELSE f.dec_coord_datum_cd
