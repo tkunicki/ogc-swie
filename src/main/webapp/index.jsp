@@ -701,7 +701,8 @@
         <li><strong>Additional Services</strong>
              <dl>
                         <dt>Example output with comments about content:</dt>
-                        <dd><a href="<%=baseURL%>/sos?request=wml2_Example"><%=baseURL%>/sos?request=wml2_Example</a></dd>
+						<dd><a href="schemas/wml2_Example.xml">WaterML2 Example</a></dd>
+<!--                        <dd><a href="<%=baseURL%>/sos?request=wml2_Example"><%=baseURL%>/sos?request=wml2_Example</a></dd>-->
             </dl>
              <dl>
                         <dt>Plot Examples:</dt>
