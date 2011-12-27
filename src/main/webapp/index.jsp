@@ -311,9 +311,7 @@
     </div>
 <!-- END USGS Header Template -->
 
-<!===============================Create Table=========================================>
-
-    <h1>Surface Water Interoperability Experiment 1.8</h1>
+    <h1>Surface Water Interoperability Experiment 1.9</h1>
 
     <table>
         <tr>
@@ -660,7 +658,9 @@
                                                     </dl>
                         </div>
                         <div id="tabMap" class="tab_content">
-                            <center>
+                            This map shows USGS sites for the Forecasting IE, although <b>all USGS sites are available</b> in these services. <br />
+							See the <a href="MapFiles/Map.jsp">Interactive Map</a> for more mapping features.
+							<center>
                                 <table cellpadding="5">
                                     <tr>
                                         <th rowspan="2">
