@@ -39,6 +39,13 @@
     String Long;
     String XML_Call = base_url;
     String Sites = base_url + "wfs?request=GetFeature&featureId=";
+    Integer Scale;
+    String textbox = "01446500,05082500";
+    String UpperLat = "44.0";
+    String UpperLong = "-89.0";
+    String LowerLat = "43.0";
+    String LowerLong = "-90.0";
+    String xmlbox = "";
 
     if (GetFeatureXML != null){
         GetFeatureXML = GetFeatureXML.replaceAll("\\s+", " ");
@@ -71,14 +78,7 @@
             } else if (dataSetString.equalsIgnoreCase("GL")) {
                 dataSet = 8;
             } else if (dataSetString.equalsIgnoreCase("OH_Black")) {
-                GDA = "True";
-                Sites = XML_Call + "dv/sos";
-                UpLat = "41.479086";
-                LowLat = "40.991118";
-                UpLong = "-81.939142";
-                LowLong = "-82.367606";
-                Selected[5] = "selected";
-                dataSet = 9;
+                dataSet = 11;
             } else if (dataSetString.equalsIgnoreCase("NY_Buffalo")) {
                 Sites = XML_Call + "wfs";
                 UpLat = "42.881562";
@@ -169,14 +169,7 @@
                 Selected[15] = "selected";
                 dataSet = 9;
             } else if (dataSetString.equalsIgnoreCase("WI_Milwaukee")) {
-                GDA = "True";
-                Sites = XML_Call + "dv/sos";
-                UpLat = "43.074142";
-                LowLat = "42.962225";
-                LowLong = "-87.957491";
-                UpLong = "-87.845138";
-                Selected[16] = "selected";
-                dataSet = 9;
+                dataSet = 10;
             } else if (dataSetString.equalsIgnoreCase("MI_Muskegonlake")) {
                 GDA = "True";
                 Sites = XML_Call + "dv/sos";
@@ -322,7 +315,7 @@
                 Selected[32] = "selected";
                 dataSet = 9;
             } else {
-                dataSet = 10;
+                dataSet = 100;
             }
     } else if (CommaList != null){
         dataSet = 5;
@@ -380,16 +373,8 @@
             Offerings[8] = "selected";
         }
     } else {
-        dataSet = 10;
+        dataSet = 100;
     }
-
-    Integer Scale;
-    String textbox = "01446500,05082500";
-    String UpperLat = "44.0";
-    String UpperLong = "-89.0";
-    String LowerLat = "43.0";
-    String LowerLong = "-90.0";
-    String xmlbox = "";
 
     String GetFeatureXMLText = "<?xml version=\"1.0\" ?> <wfs:GetFeature version=\"1.1.0\" service=\"WFS\" maxFeatures=\"3\" xmlns:wfs=\"http://www.opengis.net/wfs\" xmlns:ogc=\"http://www.opengis.net/ogc\" xmlns:gml=\"http://www.opengis.net/gml\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><wfs:Query>";
     GetFeatureXMLText = GetFeatureXMLText + "<ogc:Filter> <ogc:BBOX> <gml:Envelope> <gml:lowerCorner>";
@@ -518,6 +503,20 @@
             LowerLong = LowLong;
             Scale = 6;
             break;
+       case 10:
+            Sites = Sites + "04087142,04087170,04087159,04087160,040871602,040871488,040871472,040871482,040871478";
+            Lat = "43.0";
+            Long = "-87.93343980";
+            Scale = 10;
+            Selected[16] = "selected";
+            break;
+       case 11:
+            Sites = Sites + "04200500,04199500";
+            Lat = "41.50";
+            Long = "-82.15";
+            Scale = 9;
+            Selected[5] = "selected";
+            break;
 
        default:
             Sites = Sites + "01427207,01427510,01434000,01438500,01457500,01463500,04073365,04073500,04082400,04084445,";
@@ -540,31 +539,28 @@
  %>
 <html>
     <head>
-    <meta name="publisher" content="USGS"/>
-    <meta name="description" content="Home page for water resources information from the US Geological Survey."/>
-    <meta name="keywords" content="USGS, U.S. Geological Survey, water, earth science, hydrology, hydrologic, data, streamflow, stream, river, lake, flood, drought, quality, basin, watershed, environment, ground water, groundwater"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta name="publisher" content="USGS - U.S. Geological Survey, Water Resources"/>
-    <meta name="expires" content="never"/>
+		<meta name="publisher" content="USGS"/>
+		<meta name="description" content="Home page for water resources information from the US Geological Survey."/>
+		<meta name="keywords" content="USGS, U.S. Geological Survey, water, earth science, hydrology, hydrologic, data, streamflow, stream, river, lake, flood, drought, quality, basin, watershed, environment, ground water, groundwater"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<meta name="publisher" content="USGS - U.S. Geological Survey, Water Resources"/>
+		<meta name="expires" content="never"/>
 
-    <link href="http://www.usgs.gov/styles/common.css" rel="stylesheet" type="text/css"/>
-    <link href="http://www.usgs.gov/frameworkfiles/styles/custom.css" rel="stylesheet" type="text/css" />
-    <link href="http://www.usgs.gov/frameworkfiles/styles/framework.css" rel="stylesheet" type="text/css" />
-    <link href="../styles/framework.css" rel="stylesheet" type="text/css" />
-<!--this adds or changes styles for CIDA applications -->
-    <link href="../styles/mdc.css" rel="stylesheet" type="text/css" media="screen"/>
-    <link href="../styles/mdc-print.css" rel="stylesheet" type="text/css" media="print"/>
-    <link href="../styles/custom-theme/jquery.ui.all.css" rel="stylesheet"/>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+		<link href="http://www.usgs.gov/styles/common.css" rel="stylesheet" type="text/css"/>
+		<link href="http://www.usgs.gov/frameworkfiles/styles/custom.css" rel="stylesheet" type="text/css" />
+		<link href="http://www.usgs.gov/frameworkfiles/styles/framework.css" rel="stylesheet" type="text/css" />
 
-    <title>OGC Services SWIE</title>
+		<link href="../styles/custom-theme/jquery.ui.all.css" rel="stylesheet"/>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 
-    <style type="text/css">
-        h1 {font-size: 3em;
-            margin: 1px 0;
-            font: 18px Helvetica;
-        }
-    </style>
+		<title>OGC Services SWIE</title>
+
+		<style type="text/css">
+			h1 {font-size: 3em;
+				margin: 1px 0;
+				font: 18px Helvetica;
+			}
+		</style>
 
         <script type="text/javascript" src="../js/jquery-1.6.js"></script>
         <script src="../js/LoadXML.js" type="text/javascript"></script>
@@ -576,24 +572,25 @@
         <script src="../js/jquery.ui.core.min.js" type="text/javascript" ></script>
         <script src="../js/jquery.ui.widget.min.js" type="text/javascript" ></script>
         <script src="../js/jquery-ui-1.8.12.custom.min.js" type="text/javascript" ></script>
-        <link rel="stylesheet" type="text/css" media="screen" href="tooltipv2.css" />
+<!--        <link rel="stylesheet" type="text/css" media="screen" href="tooltipv2.css" />-->
 
         <script src="http://maps.google.com/maps?file=api&amp;v=3&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>
         <script src="../js/mapiconmaker.js" type="text/javascript"></script>
-    <script type="text/javascript">
-	$(function() {
-            $( "#tabs" ).tabs({
-                selected: <%=Tab%>,
-                ajaxOptions: {
-                        error: function( xhr, status, index, anchor ) {
-                                    $( anchor.hash ).html(
-                                        "Couldn't load this tab. We'll try to fix this as soon as possible. ");
-                        }
-               }
-            });
-	});
+		
+		<script type="text/javascript">
+			$(function() {
+				$( "#tabs" ).tabs({
+					selected: <%=Tab%>,
+					ajaxOptions: {
+						error: function( xhr, status, index, anchor ) {
+						$( anchor.hash ).html(
+							"Couldn't load this tab. We'll try to fix this as soon as possible. ");
+						}
+					}
+				});
+			});
 
-    </script>
+		</script>
     </head>
 
 <body>
@@ -919,7 +916,9 @@ This example populates a GetDataAvailability query to find stations that measure
       	map.addMapType(G_PHYSICAL_MAP);
         map.setCenter(new GLatLng(Lat, Long), Scale, G_PHYSICAL_MAP);
       	map.enableScrollWheelZoom();
-
+        pane = map.getPane(G_MAP_MARKER_SHADOW_PANE);
+        pane.style.display = "none";
+        
         var wfs_url = Sites;
         document.getElementById("AvailableData").innerHTML = 'Loading...<img src = "../img/ajax-loader.gif"/>';
         if (Get == 'True'){

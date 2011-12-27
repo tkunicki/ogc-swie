@@ -1,6 +1,11 @@
 function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watershed)
 {
-    var marker = new GMarker(point, newIcon);
+//    var marker = new GMarker(point, newIcon);
+    var customIcon = new GIcon(G_DEFAULT_ICON);
+    customIcon.image = "img/40px-Green_equilateral_triangle_point_up.svg.png";
+    customIcon.iconSize = new GSize(10, 9);
+    customIcon.iconAnchor = new GPoint(5,3);
+    var marker = new GMarker(point, customIcon);
     var USGS_link = 'Station number: <a href = "' + USGS_URL + '" >' + Site_no + '</a>';
     var Name_html = '<b>' + name + '</b><br />';
     var Watershed_html = '<b>' + watershed + ' Watershed</b><br />';

@@ -24,11 +24,7 @@ PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN"
 
 	<mappers>
 		<mapper resource="wfsMapper.xml" />
-		<mapper resource="sosMapper.xml" />
-                <mapper resource="uvMapper.xml" />
                 <mapper resource="dvMapper.xml" />
                 <mapper resource="dataMapper.xml" />
-                <mapper resource="UVdataMapper.xml" />
-                <mapper resource="HistoricalMapper.xml" />
 	</mappers>
 </configuration>

@@ -379,14 +379,12 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                     AND j.site_id = b.site_id
                     AND j.dd_nu = a.dd_nu
                     AND j.access_cd = '0'
-                    GROUP BY a.site_id) s,
-
-		nwisweb.PARAM_REF d,
-		nwisweb.SITEFILE f,
-                nwisweb.HUCS h,
-
-                nwisweb.UV_DD_CONF e,
-                nwisweb.UV g
+                GROUP BY a.site_id) s,
+					nwisweb.PARAM_REF d,
+					nwisweb.SITEFILE f,
+					nwisweb.HUCS h,
+					nwisweb.UV_DD_CONF e,
+					nwisweb.UV g
 
                 LEFT JOIN nwisweb.DD_STATUS c ON (c.site_id = g.site_id
                     AND c.dd_nu = g.dd_nu
@@ -417,7 +415,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 AND g.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{interval[0]}, '%Y-%m-%d')
        </if>
 
-		ORDER BY station_nm, parameter_stat, currentPosition DESC
+		ORDER BY station_nm, parameter_stat, currentPosition ASC
 
     </select>
 

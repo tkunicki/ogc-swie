@@ -271,7 +271,8 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 <result
 			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:comment"
 			column="result_cd"
-			typeHandler="RemarkCDTypeHandler" />
+                        javaType="string" />
+<!--			typeHandler="RemarkCDTypeHandler" />-->
                 <result
 			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:qualifier#xlink:href=http://waterdata.usgs.gov/nwis/help"
 			column="qualifier_message"
@@ -306,21 +307,23 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		d.parameter_units as units,
 		d.parameter_nm,
                 (CASE
-                    WHEN INSTR(c.table_cd, '***') > 0 THEN CONCAT('Temporarily unavailable ',e.loc_nm)
-                    WHEN INSTR(c.table_cd, '--') > 0 THEN CONCAT('Parameter not determined ',e.loc_nm)
-                    WHEN INSTR(c.table_cd, 'Dis') > 0 THEN CONCAT('Data-collection discontinued ',e.loc_nm)
-                    WHEN INSTR(c.table_cd, 'Dry') > 0 THEN CONCAT('Dry ',e.loc_nm)
-                    WHEN INSTR(c.table_cd, 'Eqp') > 0 THEN CONCAT('Equipment malfunction ',e.loc_nm)
-                    WHEN INSTR(c.table_cd, 'Fld') > 0 THEN CONCAT('Flood damage ',e.loc_nm)
-                    WHEN INSTR(c.table_cd, 'Ice') > 0 THEN CONCAT('Ice affected ',e.loc_nm)
-                    WHEN INSTR(c.table_cd, 'Mnt') > 0 THEN CONCAT('Maintenance in progress ',e.loc_nm)
-                    WHEN INSTR(c.table_cd, 'Pr') > 0 THEN CONCAT('Partial-record site ',e.loc_nm)
-                    WHEN INSTR(c.table_cd, 'Rat') > 0 THEN CONCAT('Rating being developed or revised ',e.loc_nm)
-                    WHEN INSTR(c.table_cd, 'Ssn') > 0 THEN CONCAT('Parameter monitored seasonally ',e.loc_nm)
-                    WHEN INSTR(c.table_cd, 'ZFl') > 0 THEN CONCAT('Zero flow ',e.loc_nm)
-                    ELSE CONCAT(c.table_cd,' ',e.loc_nm)
+                    WHEN INSTR(c.table_cd, '***') > 0 THEN 'Temporarily unavailable'
+                    WHEN INSTR(c.table_cd, '--') > 0 THEN 'Parameter not determined'
+                    WHEN INSTR(c.table_cd, 'Dis') > 0 THEN 'Data-collection discontinued'
+                    WHEN INSTR(c.table_cd, 'Dry') > 0 THEN 'Dry'
+                    WHEN INSTR(c.table_cd, 'Eqp') > 0 THEN 'Equipment malfunction'
+                    WHEN INSTR(c.table_cd, 'Fld') > 0 THEN 'Flood damage'
+                    WHEN INSTR(c.table_cd, 'Ice') > 0 THEN 'Ice affected'
+                    WHEN INSTR(c.table_cd, 'Mnt') > 0 THEN 'Maintenance in progress'
+                    WHEN INSTR(c.table_cd, 'Pr') > 0 THEN 'Partial-record site'
+                    WHEN INSTR(c.table_cd, 'Rat') > 0 THEN 'Rating being developed or revised'
+                    WHEN INSTR(c.table_cd, 'Ssn') > 0 THEN 'Parameter monitored seasonally'
+                    WHEN INSTR(c.table_cd, 'ZFl') > 0 THEN 'Zero flow'
+                    ELSE c.table_cd
                 END) table_cd,
-                result_cd,
+                (CASE
+                    WHEN LENGTH(result_cd) > 0 THEN result_cd
+                END) result_cd,
 <!--                (CASE
                     WHEN INSTR(g.result_cd, <![CDATA[ '<' ]]>) > 0 THEN 'The value is known to be less than reported value and is write protected.'
                     WHEN INSTR(g.result_cd, <![CDATA[ '>' ]]>) > 0 THEN 'The value is known to be greater than reported value and is write protected.'
@@ -511,177 +514,9 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
            GROUP BY station_nm, parameter_stat
         </when>
         <otherwise>
-            ORDER BY station_nm, loc_nu, parameter_stat, currentPosition DESC
+            ORDER BY station_nm, loc_nu, parameter_stat, currentPosition ASC
         </otherwise>
        </choose>
-
-
-    </select>
-
-    <select id="DVONLYobservationsSelect" parameterType="map" resultMap="observationsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
-		SELECT DISTINCT
-                f.station_nm,
-                CONCAT('USGS.',CONVERT(f.site_no,CHAR)) as FeatureID,
-                f.site_no,
-                f.tz_cd as zoneAbbreviation,
-                CONCAT(f.state_cd,'.',f.site_no) as state_site,
-                f.state_cd,
-                f.district_cd,
-		STR_TO_DATE(SYSDATE(),'%Y-%m-%d') as dateStamp,
-                CONCAT(DATE_FORMAT(SYSDATE(),'%Y-%m-%dT%H:%i'),f.tz_cd) as currentTimeStamp,
-                DATE_FORMAT(SYSDATE(),'%Y-%m-%dT%H:%i:%s') as TimestampNow,
-		CONCAT(CONVERT(f.DEC_LAT_VA,CHAR),' ',CONVERT(f.DEC_LONG_VA,CHAR)) AS pos,
-                CONCAT(CONVERT(DATE_FORMAT(s.startTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS beginPosition,
-                CONCAT(CONVERT(DATE_FORMAT(s.endTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS endPosition,
-            <choose>
-                <when test="latest != null">
-                CONCAT(CONVERT(DATE_FORMAT(MAX(g.result_dt),'%Y-%m-%dT'),CHAR),'12:00',f.tz_cd) as currentPosition,
-                </when>
-                <otherwise>
-                CONCAT(CONVERT(DATE_FORMAT(g.result_dt,'%Y-%m-%dT'),CHAR),'12:00',f.tz_cd) as currentPosition,
-                </otherwise>
-            </choose>
-		g.result_va as value,
-		d.parameter_units as units,
-		d.parameter_nm,
-                (CASE
-                    WHEN c.table_cd = '***' THEN CONCAT('Temporarily unavailable ',e.loc_nm)
-                    WHEN c.table_cd = '--' THEN CONCAT('Parameter not determined ',e.loc_nm)
-                    WHEN c.table_cd = 'Dis' THEN CONCAT('Data-collection discontinued ',e.loc_nm)
-                    WHEN c.table_cd = 'Dry' THEN CONCAT('Dry ',e.loc_nm)
-                    WHEN c.table_cd = 'Eqp' THEN CONCAT('Equipment malfunction ',e.loc_nm)
-                    WHEN c.table_cd = 'Fld' THEN CONCAT('Flood damage ',e.loc_nm)
-                    WHEN c.table_cd = 'Ice' THEN CONCAT('Ice affected ',e.loc_nm)
-                    WHEN c.table_cd = 'Mnt' THEN CONCAT('Maintenance in progress ',e.loc_nm)
-                    WHEN c.table_cd = 'Pr' THEN CONCAT('Partial-record site ',e.loc_nm)
-                    WHEN c.table_cd = 'Rat' THEN CONCAT('Rating being developed or revised ',e.loc_nm)
-                    WHEN c.table_cd = 'Ssn' THEN CONCAT('Parameter monitored seasonally ',e.loc_nm)
-                    WHEN c.table_cd = 'ZFl' THEN CONCAT('Zero flow ',e.loc_nm)
-                    ELSE CONCAT(c.table_cd,' ',e.loc_nm)
-                END) table_cd,
-                (CASE
-                    WHEN g.data_aging_cd = 'P' THEN 'Provisional data subject to revision.'
-                    WHEN g.data_aging_cd = 'W' THEN 'Provisional data subject to revision.'
-                    WHEN g.data_aging_cd = 'R' THEN 'Provisional data subject to revision.'
-                END) qualifier_message,
-                result_cd,
-<!--                (CASE
-                    WHEN g.result_cd = <![CDATA[ '<' ]]> THEN 'The value is known to be less than reported value and is write protected.'
-                    WHEN g.result_cd = <![CDATA[ '>' ]]> THEN 'The value is known to be greater than reported value and is write protected.'
-                    WHEN g.result_cd = 'e' THEN 'Value has been edited or estimated by USGS personnel and is write protected'
-                    WHEN g.result_cd = 'E' THEN 'Value was computed from estimated unit values.'
-                END) result_cd,-->
-                (CASE
-                    WHEN f.dec_coord_datum_cd = 'NAD83' THEN 'urn:ogc:def:crs:EPSG:4269'
-                    ELSE f.dec_coord_datum_cd
-                END) coord_datum,
-                (CASE
-                    WHEN g.stat_cd = '00003' THEN 'Average in preceding interval'
-                    WHEN g.stat_cd = '00001' THEN 'Maximum in preceding interval'
-                    WHEN g.stat_cd = '00002' THEN 'Minimum in preceding interval'
-                    WHEN g.stat_cd = '00006' THEN 'Preceding total'
-                    WHEN g.stat_cd = '00007' THEN 'Mode in preceding interval'
-                    WHEN g.stat_cd = '00008' THEN 'Median in preceding interval'
-                    WHEN g.stat_cd = '00009' THEN 'Standard deviation in preceding interval'
-                    WHEN g.stat_cd = '00010' THEN 'Variance in preceding interval'
-                    ELSE 'Unknown'
-                END) dataTypeTitle,
-                (CASE
-                    WHEN g.stat_cd = '00003' THEN 'AveragePrec'
-                    WHEN g.stat_cd = '00001' THEN 'MaxPrec'
-                    WHEN g.stat_cd = '00002' THEN 'MinPrec'
-                    WHEN g.stat_cd = '00006' THEN 'TotalPrec'
-                    WHEN g.stat_cd = '00007' THEN 'Mode'
-                    WHEN g.stat_cd = '00008' THEN 'Median'
-                    WHEN g.stat_cd = '00009' THEN 'STD'
-                    WHEN g.stat_cd = '00010' THEN 'Variance'
-                    ELSE 'Unknown'
-                END) dataTypeLink,
-                CONCAT(e.parameter_cd,'_',g.stat_cd) AS parameter_stat,
-                CONCAT(f.site_no,'_',e.parameter_cd,'_',g.stat_cd) AS station_parameter_stat,
-                e.loc_nm,
-                e.loc_nu,
-                h.huc_nm
-
-		FROM
-		    (select b.site_id,
-            <choose>
-                <when test="latest != null">
-                    MAX(a.result_dt) as startTime,
-                </when>
-                <otherwise>
-                    MIN(a.result_dt) as startTime,
-                </otherwise>
-            </choose>
-                    MAX(a.result_dt) as endTime,
-                    (CASE
-                        WHEN a.data_aging_cd != 'A' THEN a.data_aging_cd
-                    END) qualifier_cd
-		    FROM
-                    nwisweb.SITEFILE b,
-                    nwisweb.DV a,
-                    nwisweb.DV_DD_CONF j
-
-                    WHERE b.site_no IN <foreach item="i" collection="featureId" open="(" separator="," close=")">#{i}</foreach>
-                    AND j.parameter_cd IN <foreach item="i" collection="observedProperty" open="(" separator="," close=")">#{i}</foreach>
-                    AND a.stat_cd IN <foreach item="i" collection="offering" open="(" separator="," close=")">#{i}</foreach>
-
-            <if test="beginPosition != null">
-                    AND a.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{beginPosition[0]}, '%Y-%m-%d')
-            </if>
-
-            <if test="endPosition != null">
-                    AND a.result_dt <![CDATA[ <= ]]> CONCAT(STR_TO_DATE(#{endPosition[0]}, '%Y-%m-%d'),':23:45')
-            </if>
-
-            <if test="interval != null">
-                    AND a.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{interval[0]}, '%Y-%m-%d')
-            </if>
-                    AND a.site_id = b.site_id
-                    AND j.site_id = b.site_id
-                    AND j.dd_nu = a.dd_nu
-                    AND j.access_cd = '0'
-                    GROUP BY a.site_id) s,
-
-		nwisweb.PARAM_REF d,
-		nwisweb.SITEFILE f,
-                nwisweb.HUCS h,
-
-                nwisweb.DV_DD_CONF e,
-                nwisweb.DV g
-
-                LEFT JOIN nwisweb.DD_STATUS c ON (c.site_id = g.site_id
-                    AND c.dd_nu = g.dd_nu
-                    AND c.parameter_cd IN <foreach item="i" collection="observedProperty" open="(" separator="," close=")">#{i}</foreach>
-                    AND g.result_dt <![CDATA[ >= ]]> c.begin_dt
-                    AND (g.result_dt <![CDATA[ <= ]]> c.end_dt OR c.end_dt = '0000-00-00 00:00:00')
-                    AND g.stat_cd IN <foreach item="i" collection="offering" open="(" separator="," close=")">#{i}</foreach>
-                    )
-
-		WHERE s.site_id = g.site_id
-                AND f.site_id = s.site_id
-                AND e.site_id = s.site_id
-		AND d.parameter_cd = e.parameter_cd
-                AND e.dd_nu = g.dd_nu
-                AND e.access_cd = '0'
-                AND h.huc_cd = f.huc_cd
-                AND h.state_cd = f.state_cd
-                AND e.parameter_cd IN <foreach item="i" collection="observedProperty" open="(" separator="," close=")">#{i}</foreach>
-                AND g.stat_cd IN <foreach item="i" collection="offering" open="(" separator="," close=")">#{i}</foreach>
-
-
-       <if test="beginPosition != null">
-                AND g.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{beginPosition[0]}, '%Y-%m-%d')
-       </if>
-
-       <if test="endPosition != null">
-                AND g.result_dt <![CDATA[ <= ]]> CONCAT(STR_TO_DATE(#{endPosition[0]}, '%Y-%m-%d'),':23:45')
-       </if>
-
-       <if test="interval != null">
-                AND g.result_dt <![CDATA[ >= ]]> STR_TO_DATE(#{interval[0]}, '%Y-%m-%d')
-       </if>
-		ORDER BY station_nm, parameter_stat, currentPosition DESC
     </select>
 </mapper>
 

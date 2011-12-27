@@ -157,11 +157,7 @@
 
     <link href="http://www.usgs.gov/styles/common.css" rel="stylesheet" type="text/css"/>
     <link href="http://www.usgs.gov/frameworkfiles/styles/custom.css" rel="stylesheet" type="text/css" />
-    <link href="http://www.usgs.gov/frameworkfiles/styles/framework.css" rel="stylesheet" type="text/css" />
-    <link href="../styles/framework.css" rel="stylesheet" type="text/css" />
-<!--this adds or changes styles for CIDA applications -->
-    <link href="../styles/mdc.css" rel="stylesheet" type="text/css" media="screen"/>
-    <link href="../styles/mdc-print.css" rel="stylesheet" type="text/css" media="print"/>
+	<link href="http://www.usgs.gov/frameworkfiles/styles/framework.css" rel="stylesheet" type="text/css" />
 
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 
@@ -391,7 +387,7 @@
                                         </dd>
                                         <br /><i>Collection Example:</i>
                                         <dd>
-                                            <a href="<%=baseURL%>/uv/sos?request=GetObservation&featureID=01446500,05082500&observedProperty=Discharge,DO&offering=UNIT&beginPosition=<%=Today%>"><%=baseURL%>/uv/sos?request=GetObservation&featureId=01446500,05082500&offering=UNIT&observedProperty=Discharge,DO&beginPosition=<%=Today%></a>
+                                            <a href="<%=baseURL%>/uv/sos?request=GetObservation&featureID=01446500,05082500&observedProperty=Discharge,DO&offering=UNIT&beginPosition=<%=LastWeek%>"><%=baseURL%>/uv/sos?request=GetObservation&featureId=01446500,05082500&offering=UNIT&observedProperty=Discharge,DO&beginPosition=<%=LastWeek%></a>
                                         </dd>
 
                                     </dl>
@@ -728,6 +724,10 @@
             <p />
         </li>
         <li><strong>Log</strong>
+			<dl>Version 1.9 Dec. 27th, 2011<br />
+				<dd> * Switched output from descending to ascending order</dd>
+				<dd> * Updated output on Map tab to show Forecasting IE sites rather than Surface Water IE sites</dd>
+			</dl>
             <dl>Version 1.8 May 11th, 2011 <br />
                 <dd> * Fixed spelling mistake (Availablity to Availability) </dd>
                 <dd> * Included interactive map </dd>
@@ -786,12 +786,14 @@ if (GBrowserIsCompatible()) {
     map.addControl(new GLargeMapControl());
     map.addControl(new GMapTypeControl());
     map.addMapType(G_PHYSICAL_MAP);
-    map.setCenter(new GLatLng(40.55972222, -95.613888889), 4, G_PHYSICAL_MAP);
+//    map.setCenter(new GLatLng(40.55972222, -95.613888889), 4, G_PHYSICAL_MAP);   // good for Surface Water IE
+    map.setCenter(new GLatLng(48.55972222, -101.5), 6, G_PHYSICAL_MAP);
 //    map.setCenter(new GLatLng(Lat, Long), Scale, G_PHYSICAL_MAP);
     map.enableScrollWheelZoom();
     map.addOverlay(ActiveMarker);
-
-    var wfs_url = base_url + "/wfs?request=GetFeature";
+    pane = map.getPane(G_MAP_MARKER_SHADOW_PANE);
+    pane.style.display = "none";
+    var wfs_url = base_url + "/wfs?request=GetFeature&featureId=05114000,05113600,05116000,05116500,05117500,05119410,05120000,05120500,05122000,05123400,05123510,05124000";
     xml = LoadXML(wfs_url);
 //    parseXML(xml);
 
