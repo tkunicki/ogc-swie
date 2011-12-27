@@ -23,13 +23,31 @@
 		</script>
 	</head>
   <body>
-
       <p />
       <dt><strong>WaterML 2.0 Schemas: </strong></dt>
         <dd>
+            <a href="schemas/waterml2.xsd">waterML2.xsd</a>
+        </dd>
+	    <dd>
+            <a href="schemas/collection.xsd">collection.xsd</a>
+        </dd>
+	    <dd>
+            <a href="schemas/monitoringPoint.xsd">monitoringPoint.xsd</a>
+        </dd>
+	    <dd>
+            <a href="schemas/observationProcess.xsd">observationProcess.xsd</a>
+        </dd>
+	    <dd>
+            <a href="schemas/timeseries.xsd">timeseries.xsd</a>
+        </dd>
+	    <dd>
+            <a href="schemas/timeseriesObservationMetadata.xsd">timeseriesObservationMetadata.xsd</a>
+        </dd>
+<!--        
+        <dd>
             <a href="http://services.iwis.csiro.au/WaterML2Validation/schemas/waterml_2/waterml2.xsd">WaterML2.xsd</a>
         </dd>
-        <dd>
+		<dd>
             <a href="http://services.iwis.csiro.au/WaterML2Validation/schemas/waterml_2/waterSampling.xsd">waterSampling.xsd</a>
         </dd>
         <dd>
@@ -49,7 +67,7 @@
         </dd>
         <dd>
             <a href="http://services.iwis.csiro.au/WaterML2Validation/schemas/waterml_2/timeseriesLite.xsd">timeseriesLite.xsd</a>
-        </dd>
+        </dd>-->
     <p />
    <dt><strong>Additional externally required schemas:</strong></dt>
         
@@ -65,7 +83,9 @@
         
         <p />
         <dt><strong>Notes:</strong> <br />
-            The links take you to an external site. Last modified Jan. 28, 2011.
+            The links take you to an external site. Last modified Dec. 27, 2011.<br />
+			WaterML2 schemas from August 24, 2011
+			
 
 
   </body>
