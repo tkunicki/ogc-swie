@@ -43,14 +43,16 @@ function createMarker(point, name, StateNM, Site_no, USGS_URL, base_url, watersh
         var endTime = endTime_long.substr(0,16);
         var endDate = endTime.split(" ")[0];
         var EndYear = endDate.split("-")[0];
-        var EndMonth = endDate.split("-")[1];
+        var EndMonth = endDate.split("-")[1]-1;
         var EndDay = endDate.split("-")[2];
         var Start = new Date(EndYear, EndMonth, EndDay);
-        Start.setDate(Start.getDate()-7);
-        var NewYear = Start.getFullYear();
-        var NewMonth = Start.getMonth();
-        var NewDay = Start.getDate();
-        if (Offering_cd != '00000') {
+        var lastWeek = new Date(Start);
+		lastWeek.setDate(lastWeek.getDate()-7);
+        var NewYear = lastWeek.getFullYear();
+        var NewMonth = lastWeek.getMonth();
+        var NewDay = lastWeek.getDate();
+        NewMonth = NewMonth + 1;
+		if (Offering_cd != '00000') {
             NewYear = NewYear - 1;
         }
         if (NewMonth < 10) {

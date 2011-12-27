@@ -793,7 +793,7 @@ if (GBrowserIsCompatible()) {
     map.addOverlay(ActiveMarker);
     pane = map.getPane(G_MAP_MARKER_SHADOW_PANE);
     pane.style.display = "none";
-    var wfs_url = base_url + "/wfs?request=GetFeature&featureId=05114000,05113600,05116000,05116500,05117500,05119410,05120000,05120500,05122000,05123400,05123510,05124000";
+    var wfs_url = base_url + "/wfs?request=GetFeature&featureId=05114000,05113600,05116000,05116500,05117500,05119410,05120000,05120500,05122000,05123400,05123510,05124000";  // Forecasting IE
     xml = LoadXML(wfs_url);
 //    parseXML(xml);
 
