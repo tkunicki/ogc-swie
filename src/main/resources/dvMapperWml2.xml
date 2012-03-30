@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
 PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-<mapper namespace="dvMapper">
+<mapper namespace="dvMapperWml2">
 
 	<resultMap id="dvResultMap" type="XMLMap">
             <result
@@ -281,29 +281,29 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="defaultQualifier"
 			javaType="string" />
 		<result
-			property="om:result/wml2:Timeseries/^wml2:point/wml2:TimeValuePair/^wml2:time"
+			property="om:result/wml2:Timeseries/^wml2:point/wml2:MeasurementTVP/^wml2:time"
 			column="currentPosition"
 			typeHandler="ISODateTimeTypeHandler" />
 		<result
-			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:value"
+			property="om:result/wml2:Timeseries/wml2:point/wml2:MeasurementTVP/^wml2:value"
 			column="value"
 			javaType="string" />
                 <result
-			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:comment"
+			property="om:result/wml2:Timeseries/wml2:point/wml2:MeasurementTVP/^wml2:comment"
 			column="table_cd"
 			javaType="string" />
                 <result
-			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:comment"
+			property="om:result/wml2:Timeseries/wml2:point/wml2:MeasurementTVP/^wml2:comment"
 			column="result_cd"
                         javaType="string" />
 <!--			typeHandler="RemarkCDTypeHandler" />-->
                 <result
-			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:qualifier#xlink:href=http://waterdata.usgs.gov/nwis/help"
+			property="om:result/wml2:Timeseries/wml2:point/wml2:MeasurementTVP/^wml2:qualifier#xlink:href=http://waterdata.usgs.gov/nwis/help"
 			column="qualifier_message"
 			javaType="string" />
 <!-- start line with } for interleaving timeseries'-->
                 <result
-			property="om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/wml2:qualifier#xlink:title=%s"
+			property="om:result/wml2:Timeseries/wml2:point/wml2:MeasurementTVP/wml2:qualifier#xlink:title=%s"
 			column="qualifier_message"
 			javaType="string" />
 

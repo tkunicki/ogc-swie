@@ -12,7 +12,7 @@
     <listener>
         <listener-class>gov.usgs.webservices.util.PermGenCleanupListener</listener-class>
     </listener>
-<!--    <servlet>
+    <!--    <servlet>
         <servlet-name>SOSServlet</servlet-name>
         <servlet-class>gov.usgs.cida.ogc.SOSServlet</servlet-class>
     </servlet>-->
@@ -28,7 +28,15 @@
         <servlet-name>DVServlet</servlet-name>
         <servlet-class>gov.usgs.cida.ogc.DVServlet</servlet-class>
     </servlet>
-<!--    <servlet-mapping>
+    <servlet>
+        <servlet-name>WML2DVServlet</servlet-name>
+        <servlet-class>gov.usgs.cida.ogc.WML2DVServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>WML2UVServlet</servlet-name>
+        <servlet-class>gov.usgs.cida.ogc.WML2UVServlet</servlet-class>
+    </servlet>
+    <!--    <servlet-mapping>
         <servlet-name>SOSServlet</servlet-name>
         <url-pattern>/sos</url-pattern>
     </servlet-mapping>-->
@@ -43,6 +51,14 @@
     <servlet-mapping>
         <servlet-name>DVServlet</servlet-name>
         <url-pattern>/dv/sos</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>WML2DVServlet</servlet-name>
+        <url-pattern>/wml2/dv/sos</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>WML2UVServlet</servlet-name>
+        <url-pattern>/wml2/uv/sos</url-pattern>
     </servlet-mapping>
     <resource-ref>
         <res-ref-name>jdbc/wsdb01</res-ref-name>

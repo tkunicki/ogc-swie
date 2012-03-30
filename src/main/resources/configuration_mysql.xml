@@ -17,14 +17,16 @@ PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN"
 		<environment id="development">
 			<transactionManager type="JDBC" />
 			<dataSource type="JNDI">
-                                <property name="data_source" value="java:comp/env/jdbc/wsdb01" />
+				<property name="data_source" value="java:comp/env/jdbc/wsdb01" />
 			</dataSource>
 		</environment>
 	</environments>
 
 	<mappers>
 		<mapper resource="wfsMapper.xml" />
-                <mapper resource="dvMapper.xml" />
-                <mapper resource="dataMapper.xml" />
+		<mapper resource="dvMapper.xml" />
+		<mapper resource="dataMapper.xml" />
+		<mapper resource="dvMapperWml2.xml" />
+		<mapper resource="uvMapperWml2.xml" />
 	</mappers>
 </configuration>
