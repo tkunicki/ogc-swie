@@ -12,7 +12,8 @@
  xmlns:swe="http://www.opengis.net/swe/2.0"
  xmlns:gsr="http://www.isotc211.org/2005/gsr"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://www.opengis.net/waterml/2.0 file:/C:/Users/ilinkuo/Downloads/WaterML2.0_RFC/waterml2.xsd" gml:id="ID000">
+ xsi:schemaLocation="http://www.opengis.net/waterml/2.0 file:/C:/Users/ilinkuo/Downloads/WaterML2.0_RFC/waterml2.xsd" 
+ gml:id="ID000">
     <gml:metaDataProperty xlink:type="simple" xlink:href="http://www.oxygenxml.com/" xlink:role="http://www.oxygenxml.com/" xlink:arcrole="http://www.oxygenxml.com/"
          xlink:title="title0" xlink:show="new" xlink:actuate="onLoad" nilReason="inapplicable" gml:remoteSchema="http://www.oxygenxml.com/"
          about="http://www.oxygenxml.com/">
