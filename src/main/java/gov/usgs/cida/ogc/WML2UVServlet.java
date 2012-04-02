@@ -241,7 +241,7 @@ public class WML2UVServlet extends HttpServlet {
 
 
 				try {
-					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("uvMapperWml2.UVobservationsSelect", parameterMap);
+					XMLStreamReader streamReader = getXMLStreamReaderDAO().getStreamReader("dvMapperWml2.observationsSelect", parameterMap);
 					XMLStreamWriter streamWriter = xmlOutputFactory.createXMLStreamWriter(outputStream);
 					XMLStreamUtils.copy(streamReader, streamWriter);
 				} catch (Exception e) {
