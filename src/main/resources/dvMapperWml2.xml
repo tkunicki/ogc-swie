@@ -74,7 +74,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
  "xsi:schemaLocation=http://www.opengis.net/waterml/2.0 ../schemas/waterml_2/waterml2.xsd" is simply what the Austrialia guys use
  -->
 		<result
-			property="xsi:schemaLocation=http://www.opengis.net/waterml/2.0 ../waterml2.xsd"
+			property="xsi:schemaLocation=http://www.opengis.net/waterml/2.0 http://nwisvaws02.er.usgs.gov/ogc-swie/schemas/waterml2.xsd"
 			column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
 		<result

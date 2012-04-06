@@ -54,11 +54,11 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>WML2DVServlet</servlet-name>
-        <url-pattern>/wml2/dv</url-pattern>
+        <url-pattern>/wml2/dv/sos</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>WML2UVServlet</servlet-name>
-        <url-pattern>/wml2/uv</url-pattern>
+        <url-pattern>/wml2/uv/sos</url-pattern>
     </servlet-mapping>
     <resource-ref>
         <res-ref-name>jdbc/wsdb01</res-ref-name>

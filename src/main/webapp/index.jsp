@@ -311,7 +311,7 @@
     </div>
 <!-- END USGS Header Template -->
 
-    <h1>Forecasting Interoperability Experiment 1.0</h1>
+    <h1>Forecasting Interoperability Experiment 2.0</h1>
 
     <table>
         <tr>
@@ -369,29 +369,29 @@
                                         <dd>offering: UNIT <i>(defaults to UNIT)</i></dd>
                                         <br /><i>Gage height observation by feature ID and begin time:</i>
                                         <dd>
-                                            <a href="<%=baseURL%>/uv/sos?request=GetObservation&featureID=01446500&observedProperty=GageHeight&offering=UNIT&beginPosition=<%=LastWeek%>"><%=baseURL%>/uv/sos?request=GetObservation&featureId=01446500&offering=UNIT&observedProperty=GageHeight&beginPosition=<%=LastWeek%></a>
+                                            <a href="<%=baseURL%>/wml2/uv/sos?request=GetObservation&featureID=01446500&observedProperty=GageHeight&offering=UNIT&beginPosition=<%=LastWeek%>"><%=baseURL%>/wml2/uv/sos?request=GetObservation&featureId=01446500&offering=UNIT&observedProperty=GageHeight&beginPosition=<%=LastWeek%></a>
                                         </dd>
                                         <br /><i>Discharge observation by feature ID and begin time:</i><br />
                                         <dd>
-                                            <a href="<%=baseURL%>/uv/sos?request=GetObservation&featureID=01446500&offering=UNIT&observedProperty=Discharge&beginPosition=<%=LastWeek%>"><%=baseURL%>/uv/sos?request=GetObservation&featureId=01446500&offering=UNIT&observedProperty=Discharge&beginPosition=<%=LastWeek%></a>
+                                            <a href="<%=baseURL%>/wml2/uv/sos?request=GetObservation&featureID=01446500&offering=UNIT&observedProperty=Discharge&beginPosition=<%=LastWeek%>"><%=baseURL%>/wml2/uv/sos?request=GetObservation&featureId=01446500&offering=UNIT&observedProperty=Discharge&beginPosition=<%=LastWeek%></a>
                                         </dd>
                                         <br /><i>Latest discharge observation by feature ID:</i><br />
                                         <dd>
-                                            <a href="<%=baseURL%>/uv/sos?request=GetObservation&featureID=05407000&offering=UNIT&observedProperty=Discharge&Latest"><%=baseURL%>/uv/sos?request=GetObservation&featureId=05407000&offering=UNIT&observedProperty=Discharge&Latest</a>
+                                            <a href="<%=baseURL%>/wml2/uv/sos?request=GetObservation&featureID=05407000&offering=UNIT&observedProperty=Discharge&Latest"><%=baseURL%>/wml2/uv/sos?request=GetObservation&featureId=05407000&offering=UNIT&observedProperty=Discharge&Latest</a>
                                         </dd>
                                         <br /><i>Temperature observation by feature ID for this week:</i><br />
                                         <dd>
-                                            <a href="<%=baseURL%>/uv/sos?request=GetObservation&featureID=05407000&offering=UNIT&observedProperty=Temperature&Interval=ThisWeek"><%=baseURL%>/uv/sos?request=GetObservation&featureId=05407000&offering=UNIT&observedProperty=Temperature&Interval=ThisWeek</a>
+                                            <a href="<%=baseURL%>/wml2/uv/sos?request=GetObservation&featureID=05407000&offering=UNIT&observedProperty=Temperature&Interval=ThisWeek"><%=baseURL%>/wml2/uv/sos?request=GetObservation&featureId=05407000&offering=UNIT&observedProperty=Temperature&Interval=ThisWeek</a>
                                         </dd>
                                         <br /><i>Collection Example:</i>
                                         <dd>
-                                            <a href="<%=baseURL%>/uv/sos?request=GetObservation&featureID=01446500,05082500&observedProperty=Discharge,DO&offering=UNIT&beginPosition=<%=LastWeek%>"><%=baseURL%>/uv/sos?request=GetObservation&featureId=01446500,05082500&offering=UNIT&observedProperty=Discharge,DO&beginPosition=<%=LastWeek%></a>
+                                            <a href="<%=baseURL%>/wml2/uv/sos?request=GetObservation&featureID=01446500,05082500&observedProperty=Discharge,DO&offering=UNIT&beginPosition=<%=LastWeek%>"><%=baseURL%>/wml2/uv/sos?request=GetObservation&featureId=01446500,05082500&offering=UNIT&observedProperty=Discharge,DO&beginPosition=<%=LastWeek%></a>
                                         </dd>
 
                                     </dl>
                                    <p />
                                    <dt><i>GetObservation via XML HTTP body POST:</i><br /></dt>
-                                      <dd>  <form name="input" action="<%=baseURL%>/uv/sos?request=GetObservation" method="post">
+                                      <dd>  <form name="input" action="<%=baseURL%>/wml2/uv/sos?request=GetObservation" method="post">
                                                 <textarea name="xml" rows="10" cols="90">
 <?xml version="1.0" ?>
 <sos:GetObservation version="2.0.0" service="SOS"
@@ -447,28 +447,28 @@
                                 <dd>Latest: only the most recent data point is reported</dd>
                                 <br /><i>Daily mean discharge observation by feature ID with begin and end time:</i><br />
                                 <dd>
-                                    <a href="<%=baseURL%>/dv/sos?request=GetObservation&featureID=01446500&observedProperty=Discharge&beginPosition=1970-01-01&endPosition=1971-01-01&offering=Mean"><%=baseURL%>/dv/sos?request=GetObservation&featureId=01446500&observedProperty=Discharge&beginPosition=1970-01-01&endPosition=1971-01-01&offering=Mean</a>
+                                    <a href="<%=baseURL%>/wml2/dv/sos?request=GetObservation&featureID=01446500&observedProperty=Discharge&beginPosition=1970-01-01&endPosition=1971-01-01&offering=Mean"><%=baseURL%>/wml2/dv/sos?request=GetObservation&featureId=01446500&observedProperty=Discharge&beginPosition=1970-01-01&endPosition=1971-01-01&offering=Mean</a>
                                 </dd>
                                 <br /><i>Daily maximum temperature observations by feature ID and begin time:</i><br />
                                 <dd>
-                                    <a href="<%=baseURL%>/dv/sos?request=GetObservation&featureID=05082500&observedProperty=Temperature&beginPosition=2010-01-01&offering=Maximum"><%=baseURL%>/dv/sos?request=GetObservation&featureId=05407000&observedProperty=Precipitation&beginPosition=2010-01-01&offering=Maximum</a>
+                                    <a href="<%=baseURL%>/wml2/dv/sos?request=GetObservation&featureID=05082500&observedProperty=Temperature&beginPosition=2010-01-01&offering=Maximum"><%=baseURL%>/wml2/dv/sos?request=GetObservation&featureId=05407000&observedProperty=Precipitation&beginPosition=2010-01-01&offering=Maximum</a>
                                 </dd>
                                 <br /><i>Daily mean discharge observations by feature ID this year:</i><br />
                                 <dd>
-                                    <a href="<%=baseURL%>/dv/sos?request=GetObservation&featureID=05082500&observedProperty=Discharge&Interval=ThisYear&offering=Mean"><%=baseURL%>/dv/sos?request=GetObservation&featureId=05407000&observedProperty=Discharge&Interval=ThisYear&offering=Mean</a>
+                                    <a href="<%=baseURL%>/wml2/dv/sos?request=GetObservation&featureID=05082500&observedProperty=Discharge&Interval=ThisYear&offering=Mean"><%=baseURL%>/wml2/dv/sos?request=GetObservation&featureId=05407000&observedProperty=Discharge&Interval=ThisYear&offering=Mean</a>
                                 </dd>
                                 <br /><i>Latest daily mean discharge observations by feature ID:</i><br />
                                 <dd>
-                                    <a href="<%=baseURL%>/dv/sos?request=GetObservation&featureID=05082500&observedProperty=Discharge&offering=Mean&Latest"><%=baseURL%>/dv/sos?request=GetObservation&featureId=05407000&observedProperty=Discharge&offering=Mean&Latest</a>
+                                    <a href="<%=baseURL%>/wml2/dv/sos?request=GetObservation&featureID=05082500&observedProperty=Discharge&offering=Mean&Latest"><%=baseURL%>/wml2/dv/sos?request=GetObservation&featureId=05407000&observedProperty=Discharge&offering=Mean&Latest</a>
                                 </dd>
                                 <br /><i>Collection Example:</i>
                                 <dd>
-                                    <a href="<%=baseURL%>/dv/sos?request=GetObservation&featureID=01446500,05082500&observedProperty=Discharge,DO&offering=Mean,Maximum&beginPosition=<%=LastWeek%>"><%=baseURL%>/dv/sos?request=GetObservation&featureId=01446500,05082500&offering=Mean,Maximum&observedProperty=Discharge,DO&beginPosition=<%=LastWeek%></a>
+                                    <a href="<%=baseURL%>/wml2/dv/sos?request=GetObservation&featureID=01446500,05082500&observedProperty=Discharge,DO&offering=Mean,Maximum&beginPosition=<%=LastWeek%>"><%=baseURL%>/wml2/dv/sos?request=GetObservation&featureId=01446500,05082500&offering=Mean,Maximum&observedProperty=Discharge,DO&beginPosition=<%=LastWeek%></a>
                                 </dd>
                             </dl>
                             <p />
                             <dt><i>GetObservation via XML HTTP body POST:</i><br /></dt>
-                            <dd>  <form name="input" action="<%=baseURL%>/dv/sos?request=GetObservation" method="post">
+                            <dd>  <form name="input" action="<%=baseURL%>/wml2/dv/sos?request=GetObservation" method="post">
                                                 <textarea name="xml" rows="10" cols="90">
 <?xml version="1.0" ?>
 <sos:GetObservation version="2.0.0" service="SOS"
@@ -699,11 +699,11 @@
                     
                     <div id="tabMisc" class="tab_content">
         <li><strong>Additional Services</strong>
-             <dl>
+<!--             <dl>
                         <dt>Example output with comments about content:</dt>
 						<dd><a href="schemas/wml2_Example.xml">WaterML2 Example</a></dd>
-<!--                        <dd><a href="<%=baseURL%>/sos?request=wml2_Example"><%=baseURL%>/sos?request=wml2_Example</a></dd>-->
-            </dl>
+                        <dd><a href="<%=baseURL%>/sos?request=wml2_Example"><%=baseURL%>/sos?request=wml2_Example</a></dd>
+            </dl>-->
              <dl>
                         <dt>Plot Examples:</dt>
                         <dd><a href="<%=baseURL%>/DischargePlot.jsp"><%=baseURL%>/DischargePlot.jsp</a></dd>
@@ -725,6 +725,9 @@
             <p />
         </li>
         <li><strong>Log</strong>
+			<dl>Version 2.0 April 6, 2012<br />
+				<dd> * Updated WML2 output to comply with OGC accepted schema</dd>
+			</dl>
 			<dl>Version 1.9 Dec. 27th, 2011<br />
 				<dd> * Switched output from descending to ascending order</dd>
 				<dd> * Updated output on Map tab to show Forecasting IE sites rather than Surface Water IE sites</dd>

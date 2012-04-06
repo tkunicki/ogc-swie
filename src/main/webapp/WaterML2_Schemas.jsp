@@ -84,9 +84,27 @@
         <p />
         <dt><strong>Notes:</strong> <br />
             The links take you to an external site. Last modified Dec. 27, 2011.<br />
-			WaterML2 schemas from August 24, 2011
-			
-
+		<p />
+      <dt><strong>Older WaterML 2.0 Schemas: </strong></dt>
+	  <dt>Used in SWIE through April 6, 2012, WaterML2 schemas from August 24, 2011</dt>
+        <dd>
+            <a href="schemas/waterml2_old.xsd">waterML2.xsd</a>
+        </dd>
+	    <dd>
+            <a href="schemas/collection_old.xsd">collection.xsd</a>
+        </dd>
+	    <dd>
+            <a href="schemas/monitoringPoint_old.xsd">monitoringPoint.xsd</a>
+        </dd>
+	    <dd>
+            <a href="schemas/observationProcess_old.xsd">observationProcess.xsd</a>
+        </dd>
+	    <dd>
+            <a href="schemas/timeseries_old.xsd">timeseries.xsd</a>
+        </dd>
+	    <dd>
+            <a href="schemas/timeseriesObservationMetadata_old.xsd">timeseriesObservationMetadata.xsd</a>
+        </dd>
 
   </body>
 </html>

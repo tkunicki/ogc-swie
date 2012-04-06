@@ -40,6 +40,7 @@
 	String[] obsProp;
 	String[] stat_cdArray;
 	String[] sos_urlArray;
+	String[] display_urlArray;
 	String[] offeringArray;
 	int UVNum = 0;
 	int DVNum = 0;
@@ -69,6 +70,7 @@
 		obsProp = new String[Property.length];
 		stat_cdArray = new String[Property.length];
 		sos_urlArray = new String[Property.length];
+		display_urlArray = new String[Property.length];
 		offeringArray = new String[Property.length];
 
 		for (int i = 0; i < Property.length; i++) {
@@ -79,35 +81,45 @@
 			if (stat_cdArray[i].equals("00000")) {
 				sos_urlArray[i] = base_url + "/uv/sos?request=GetObservation&featureId=";
 				sos_urlArray[i] = sos_urlArray[i] + featureID + "&offering=Unit&observedProperty=" + obsProp[i];
+				display_urlArray[i] = base_url + "/wml2/uv/sos?request=GetObservation&featureId=";
+				display_urlArray[i] = display_urlArray[i] + featureID + "&offering=Unit&observedProperty=" + obsProp[i];
 				N = N + (int) deltaDays * 96;
 			} else {
 				sos_urlArray[i] = base_url + "/dv/sos?request=GetObservation&featureId=";
 				sos_urlArray[i] = sos_urlArray[i] + featureID + "&offering=" + stat_cdArray[i] + "&observedProperty=" + obsProp[i];
+				display_urlArray[i] = base_url + "/wml2/dv/sos?request=GetObservation&featureId=";
+				display_urlArray[i] = sos_urlArray[i] + featureID + "&offering=" + stat_cdArray[i] + "&observedProperty=" + obsProp[i];
 				N = N + (int) deltaDays;
 			}
 
 			if (beginPosition != null) {
 				if (beginPosition.equalsIgnoreCase("null") || beginPosition.equalsIgnoreCase("")) {
 					sos_urlArray[i] = sos_urlArray[i] + "&beginPosition=" + lastWeekFormated;
+					display_urlArray[i] = display_urlArray[i] + "&beginPosition=" + lastWeekFormated;
 				} else {
 					sos_urlArray[i] = sos_urlArray[i] + "&beginPosition=" + beginPosition;
+					display_urlArray[i] = display_urlArray[i] + "&beginPosition=" + beginPosition;
 				}
 			} else {
 				sos_urlArray[i] = sos_urlArray[i] + "&beginPosition=" + lastWeekFormated;
+				display_urlArray[i] = display_urlArray[i] + "&beginPosition=" + lastWeekFormated;
 			}
 
 
 			if (endPosition != null) {
 				if (endPosition.equalsIgnoreCase("null") || endPosition.equalsIgnoreCase("")) {
 					sos_urlArray[i] = sos_urlArray[i] + "&endPosition=" + todayFormated;
+					display_urlArray[i] = display_urlArray[i] + "&endPosition=" + todayFormated;
 				} else {
 					sos_urlArray[i] = sos_urlArray[i] + "&endPosition=" + endPosition;
+					display_urlArray[i] = display_urlArray[i] + "&endPosition=" + endPosition;
 				}
 			} else {
 				sos_urlArray[i] = sos_urlArray[i] + "&endPosition=" + todayFormated;
+				display_urlArray[i] = display_urlArray[i] + "&endPosition=" + todayFormated;
 			}
 
-			Data_link = Data_link + "<a href =" + sos_urlArray[i] + ">Link to plot data: offering=" + stat_cdArray[i] + "&observedProperty=" + obsProp[i] + "</a><br />";
+			Data_link = Data_link + "<a href =" + display_urlArray[i] + ">Link to plot data: offering=" + stat_cdArray[i] + "&observedProperty=" + obsProp[i] + "</a><br />";
 			sos_url = sos_url + sos_urlArray[i] + ",";
 			stat_cd = stat_cd + stat_cdArray[i] + ",";
 			observedProperty = observedProperty + obsProp[i] + ",";
