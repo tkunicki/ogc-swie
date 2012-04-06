@@ -94,6 +94,14 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			javaType="string" />
 -->
 	</resultMap>
+	<!-- Usage key. Implementation lies in XMLMapDescriptor.java in swsf-ibatis
+	
+	^ -- pop to this level (as indicated by the element)
+	! -- use the @column as control element, but don't output value ( used in conjunction with "{" )
+	{ -- open group, only output on change in value of @column
+	} -- close group. Currently, this is placed at the beginning of @property, but syntactically, would make more sense at end
+	
+	 -->
 
 	<resultMap id="observationsResultMap" type="XMLMap" extends="dvResultMap">
 
@@ -296,7 +304,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="station_parameter_stat"
 			javaType="string" />
 			
-			<!-- temporalExtent -->
+			<!-- om:result/MeasurementTimeSeries/temporalExtent -->
 		<result
 			property="wml2:observationMember/om:OM_Observation/om:result/wml2:MeasurementTimeseries/wml2:temporalExtent#xlink:href=ts_period_%s"
 			column="parameter_stat"
@@ -314,7 +322,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="endPosition"
 			typeHandler="ISODateTypeHandler" />
 			
-			<!-- metadata. not used -->
+			<!-- metadata element. not used but we could use in the future-->
 			<!-- 
           <wml2:metadata>
             <wml2:MeasurementTimeseriesMetadata>
@@ -338,7 +346,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="units"
 			javaType="string" />
 		<result
-			property="wml2:observationMember/om:OM_Observation/om:result/wml2:MeasurementTimeseries/wml2:defaultPointMetadata/wml2:DefaultTVPMeasurementMetadata/wml2:interpolationType#xlink:title"
+			property="}wml2:observationMember/om:OM_Observation/om:result/wml2:MeasurementTimeseries/wml2:defaultPointMetadata/wml2:DefaultTVPMeasurementMetadata/wml2:interpolationType#xlink:title"
 			column="dataTypeTitle"
 			javaType="string" />
 			

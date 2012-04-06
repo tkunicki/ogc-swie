@@ -5,10 +5,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <mapper namespace="dvMapper">
 
 	<resultMap id="dvResultMap" type="XMLMap">
-            <result
+           <result
 	    	property="om:ObservationCollection"
 	    	column="%ROOT_ELEMENT"
 			javaType="string" />
+			
+		<!-- A whole bunch of namespace declarations, because that's the OGC way -->
 	    <result
 	    	property="xmlns:gml=http://www.opengis.net/gml/3.2"
 	    	column="%ROOT_ELEMENT_ATTRIBUTE"
@@ -21,39 +23,39 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    	property="xmlns:sa=http://www.opengis.net/sampling/2.0"
 	    	column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
-            <result
+		<result
     		property="xmlns:swe=http://www.opengis.net/swe/2.0"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
-            <result
+		<result
     		property="xmlns:xlink=http://www.w3.org/1999/xlink"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
-            <result
+		<result
     		property="xmlns:xsi=http://www.w3.org/2001/XMLSchema-instance"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
-            <result
+		<result
     		property="xmlns:wml2=http://www.opengis.net/waterml/2.0"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
-            <result
+		<result
     		property="xmlns:x-wml2=http://www.opengis.net/waterml/2.0"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
-            <result
+		<result
     		property="xmlns:gmd=http://www.isotc211.org/2005/gmd"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
-            <result
+		<result
     		property="xmlns:gco=http://www.isotc211.org/2005/gco"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
-            <result
+		<result
     		property="xmlns:sf=http://www.opengis.net/sampling/2.0"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
-            <result
+		<result
     		property="xmlns:sams=http://www.opengis.net/samplingSpatial/2.0"
     		column="%ROOT_ELEMENT_ATTRIBUTE"
 			javaType="string" />
@@ -79,6 +81,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 	</resultMap>
 
 	<resultMap id="observationsResultMap" type="XMLMap" extends="dvResultMap">
+	<!-- Header group begins -->
 		<result
 			property="^!{wml2:TimeseriesObservation"
 			column="station_parameter_stat_loc_nu"
@@ -87,11 +90,11 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="wml2:TimeseriesObservation#gml:id=USGS.%s"
 			column="station_parameter_stat_loc_nu"
 			javaType="string" />
-                <result
+		<result
 			property="wml2:TimeseriesObservation/gml:identifier#codeSpace=http://nwis.waterdata.usgs.gov/%s/nwis"
 			column="state_cd"
 			typeHandler="StateCodeTypeHandler" />
-                <result
+		<result
 			property="wml2:TimeseriesObservation/gml:identifier"
 			column="FeatureID"
 			javaType="string" />
@@ -115,7 +118,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="wml2:TimeseriesObservation/om:metadata/wml2:ObservationMetadata/gmd:identificationInfo#xlink:href=urn:OGC:unknown"
 			column="dateStamp"
 			javaType="string" />
-                <result
+		<result
 			property="wml2:TimeseriesObservation/om:metadata/wml2:ObservationMetadata/wml2:status#xlink:href=http://waterdata.usgs.gov/%s/nwis/help/?provisional"
 			column="state_cd"
 			typeHandler="StateCodeTypeHandler" />
@@ -139,11 +142,11 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="wml2:TimeseriesObservation/om:resultTime/gml:TimeInstant#gml:id=result_time"
 			column="station_nm"
 			javaType="string" />
-                <result
+		<result
 			property="wml2:TimeseriesObservation/om:resultTime/gml:TimeInstant/gml:timePosition"
 			column="TimestampNow"
 			javaType="string" />
-                <result
+		<result
 			property="wml2:TimeseriesObservation/om:procedure#xlink:href=http://www.nemi.gov"
 			column="dataTypeTitle"
 			javaType="string" />
@@ -151,7 +154,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="wml2:TimeseriesObservation/om:procedure#xlink:title=%s"
 			column="dataTypeTitle"
 			javaType="string" />
-                <result
+		<result
 			property="wml2:TimeseriesObservation/om:observedProperty#xlink:href=urn:ogc:def:phenomenon:OGC:%s"
 			column="parameter_nm"
 			javaType="string" />
@@ -163,8 +166,8 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint#gml:id=USGS.MP.%s"
 			column="site_no"
 			javaType="string" />
-                <result
-                        property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint/sf:sampledFeature#xlink:href=%s"
+		<result
+			property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint/sf:sampledFeature#xlink:href=%s"
  			column="state_site"
 			typeHandler="USGS_URL_TypeHandler" />
 		<result
@@ -175,48 +178,48 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint/sf:parameter/om:NamedValue/om:value"
 			column="huc_nm"
 			javaType="string" />
-                <result
-                        property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint/sams:shape/gml:Point#gml:id=USGS.P.%s"
+		<result
+			property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint/sams:shape/gml:Point#gml:id=USGS.P.%s"
  			column="site_no"
 			javaType="string" />
-               <result
-                        property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint/sams:shape/gml:Point/gml:pos#srsName=%s"
+		<result
+			property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint/sams:shape/gml:Point/gml:pos#srsName=%s"
  			column="coord_datum"
 			javaType="string" />
-                <result
-                        property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint/sams:shape/gml:Point/gml:pos"
+		<result
+			property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint/sams:shape/gml:Point/gml:pos"
  			column="pos"
 			javaType="string" />
-                <result
-                        property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint/wml2:descriptionReference#xlink:href=http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/SurfacewaterInteroperabilityExperiment#Use_Case_2"
+		<result
+			 property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint/wml2:descriptionReference#xlink:href=http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/SurfacewaterInteroperabilityExperiment#Use_Case_2"
  			column="station_nm"
 			javaType="string" />
-                <result
-                        property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint/wml2:descriptionReference#xlink:title=This wiki page describes the IE"
+		<result
+			property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint/wml2:descriptionReference#xlink:title=This wiki page describes the IE"
  			column="station_nm"
 			javaType="string" />
 		<result
 			property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint/wml2:timeZone/wml2:TimeZone/wml2:zoneOffset"
 			column="beginPosition"
 			typeHandler="TimeZoneTypeHandler" />
-                <result
+		<result
 			property="wml2:TimeseriesObservation/om:featureOfInterest/wml2:MonitoringPoint/wml2:timeZone/wml2:TimeZone/wml2:zoneAbbreviation"
 			column="zoneAbbreviation"
 			javaType="string" />
-                <result
+		<result
 			property="wml2:TimeseriesObservation/om:result/wml2:owner/gmd:organisationName/gmd:CharacterString=%s Water Science Center"
 			column="district_cd"
 			typeHandler="StateFullNameTypeHandler" />
 <!-- Start line with }-->
-                <result
+		<result
 			property="wml2:TimeseriesObservation/om:result/^wml2:Timeseries#gml:id=ts_%s"
 			column="station_parameter_stat"
 			javaType="string" />
-               <result
+		<result
 			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:domainExtent#xlink:href=ts_period_%s"
 			column="parameter_stat"
 			javaType="string" />
-               <result
+		<result
 			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:domainExtent/gml:TimePeriod#gml:id=USGS.TP.%s"
 			column="parameter_stat"
 			javaType="string" />
@@ -240,14 +243,6 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:InterpolationType#xlink:title"
 			column="dataTypeTitle"
 			javaType="string" />
-<!-- 		<result
-			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/x-wml2:observedProperty#xlink:href=urn:ogc:def:phenomenon:OGC:%s"
-			column="parameter_nm"
-			javaType="string" />
-		<result
-			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/x-wml2:observedProperty#xlink:title=%s"
-			column="parameter_nm"
-			javaType="string" />-->
 		<result
 			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:defaultTimeValuePair/wml2:TimeValuePair/wml2:qualifier#xlink:href=http://waterdata.usgs.gov/%s/nwis/help"
 			column="state_cd"
@@ -264,21 +259,20 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:value"
 			column="value"
 			javaType="string" />
-                <result
+		<result
 			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:comment"
 			column="table_cd"
 			javaType="string" />
-                <result
+		<result
 			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:comment"
 			column="result_cd"
-                        javaType="string" />
+			javaType="string" />
 <!--			typeHandler="RemarkCDTypeHandler" />-->
-                <result
+		<result
 			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/^wml2:qualifier#xlink:href=http://waterdata.usgs.gov/nwis/help"
 			column="qualifier_message"
 			javaType="string" />
-<!-- start line with } for interleaving timeseries'-->
-                <result
+		<result
 			property="wml2:TimeseriesObservation/om:result/wml2:Timeseries/wml2:point/wml2:TimeValuePair/wml2:qualifier#xlink:title=%s"
 			column="qualifier_message"
 			javaType="string" />
