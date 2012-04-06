@@ -96,10 +96,10 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 	</resultMap>
 	<!-- Usage key. Implementation lies in XMLMapDescriptor.java in swsf-ibatis
 	
-	^ -- pop to this level (as indicated by the element)
-	! -- use the @column as control element, but don't output value ( used in conjunction with "{" )
-	{ -- open group, only output on change in value of @column
-	} -- close group. Currently, this is placed at the beginning of @property, but syntactically, would make more sense at end
+	^ : pop to this level (as indicated by the element)
+	! : use the @column as control element, but don't output value ( used in conjunction with "{" )
+	{ : open group, only output on change in value of @column
+	} : close group. Currently, this is placed at the beginning of @property, but syntactically, would make more sense at end
 	
 	 -->
 
