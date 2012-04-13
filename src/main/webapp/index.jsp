@@ -383,7 +383,7 @@
                                         <dd>
                                             <a href="<%=baseURL%>/wml2/uv/sos?request=GetObservation&featureID=05407000&offering=UNIT&observedProperty=Temperature&Interval=ThisWeek"><%=baseURL%>/wml2/uv/sos?request=GetObservation&featureId=05407000&offering=UNIT&observedProperty=Temperature&Interval=ThisWeek</a>
                                         </dd>
-                                        <br /><i>Collection Example:</i>
+                                        <br /><i>Collection Example: Note this example does not necessarily validate to WaterML2 schema</i>
                                         <dd>
                                             <a href="<%=baseURL%>/wml2/uv/sos?request=GetObservation&featureID=01446500,05082500&observedProperty=Discharge,DO&offering=UNIT&beginPosition=<%=LastWeek%>"><%=baseURL%>/wml2/uv/sos?request=GetObservation&featureId=01446500,05082500&offering=UNIT&observedProperty=Discharge,DO&beginPosition=<%=LastWeek%></a>
                                         </dd>
@@ -461,7 +461,7 @@
                                 <dd>
                                     <a href="<%=baseURL%>/wml2/dv/sos?request=GetObservation&featureID=05082500&observedProperty=Discharge&offering=Mean&Latest"><%=baseURL%>/wml2/dv/sos?request=GetObservation&featureId=05407000&observedProperty=Discharge&offering=Mean&Latest</a>
                                 </dd>
-                                <br /><i>Collection Example:</i>
+                                <br /><i>Collection Example: Note this example does not necessarily validate to WaterML2 schema</i>
                                 <dd>
                                     <a href="<%=baseURL%>/wml2/dv/sos?request=GetObservation&featureID=01446500,05082500&observedProperty=Discharge,DO&offering=Mean,Maximum&beginPosition=<%=LastWeek%>"><%=baseURL%>/wml2/dv/sos?request=GetObservation&featureId=01446500,05082500&offering=Mean,Maximum&observedProperty=Discharge,DO&beginPosition=<%=LastWeek%></a>
                                 </dd>
