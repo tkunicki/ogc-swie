@@ -392,15 +392,11 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			column="table_cd"
 			javaType="string" />
 		<result
-			property="wml2:observationMember/om:OM_Observation/om:result/wml2:MeasurementTimeseries/wml2:point/wml2:MeasurementTVP/wml2:metadata/wml2:TVPMeasurementMetadata/^wml2:comment"
-			column="result_cd"
-			javaType="string" />
-		<result
-			property="wml2:observationMember/om:OM_Observation/om:result/wml2:MeasurementTimeseries/wml2:point/wml2:MeasurementTVP/^wml2:qualifier#xlink:href=http://waterdata.usgs.gov/nwis/help"
+			property="wml2:observationMember/om:OM_Observation/om:result/wml2:MeasurementTimeseries/wml2:point/wml2:MeasurementTVP/wml2:metadata/wml2:TVPMeasurementMetadata/^wml2:qualifier#xlink:href=http://waterdata.usgs.gov/nwis/help"
 			column="qualifier_message"
 			javaType="string" />
 		<result
-			property="wml2:observationMember/om:OM_Observation/om:result/wml2:MeasurementTimeseries/wml2:point/wml2:MeasurementTVP/wml2:qualifier#xlink:title=%s"
+			property="wml2:observationMember/om:OM_Observation/om:result/wml2:MeasurementTimeseries/wml2:point/wml2:MeasurementTVP/wml2:metadata/wml2:TVPMeasurementMetadata/wml2:qualifier#xlink:title=%s"
 			column="qualifier_message"
 			javaType="string" />
 
@@ -447,17 +443,13 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 					WHEN INSTR(c.table_cd, 'Rat') > 0 THEN 'Rating being developed or revised'
 					WHEN INSTR(c.table_cd, 'Ssn') > 0 THEN 'Parameter monitored seasonally'
 					WHEN INSTR(c.table_cd, 'ZFl') > 0 THEN 'Zero flow'
-					ELSE c.table_cd
+					ELSE (CASE
+							WHEN INSTR(g.result_cd, <![CDATA[ '<' ]]>) > 0 THEN 'The value is known to be less than reported value and is write protected.'
+							WHEN INSTR(g.result_cd, <![CDATA[ '>' ]]>) > 0 THEN 'The value is known to be greater than reported value and is write protected.'
+							WHEN INSTR(g.result_cd, 'e') > 0 THEN 'Value has been edited or estimated by USGS personnel and is write protected'
+							WHEN INSTR(g.result_cd, 'E') > 0 THEN 'Value was computed from estimated unit values.'
+						END) 
 				END) table_cd,
-				(CASE
-					WHEN LENGTH(result_cd) > 0 THEN result_cd
-				END) result_cd,
-<!--				(CASE
-					WHEN INSTR(g.result_cd, <![CDATA[ '<' ]]>) > 0 THEN 'The value is known to be less than reported value and is write protected.'
-					WHEN INSTR(g.result_cd, <![CDATA[ '>' ]]>) > 0 THEN 'The value is known to be greater than reported value and is write protected.'
-					WHEN INSTR(g.result_cd, 'e') > 0 THEN 'Value has been edited or estimated by USGS personnel and is write protected'
-					WHEN INSTR(g.result_cd, 'E') > 0 THEN 'Value was computed from estimated unit values.'
-				END) result_cd,-->
 				(CASE
 					WHEN f.dec_coord_datum_cd = 'NAD83' THEN 'urn:ogc:def:crs:EPSG:4269'
 					ELSE f.dec_coord_datum_cd
