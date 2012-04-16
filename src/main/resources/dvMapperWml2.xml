@@ -338,15 +338,15 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			 -->
 			<!-- TimeseriesMetadataMetadata -->
 		<result
-			property="wml2:observationMember/om:OM_Observation/om:result/wml2:MeasurementTimeseries/wml2:temporalExtent/gml:TimePeriod#gml:id=USGS.TP.%s"
+			property="wml2:observationMember/om:OM_Observation/om:result/wml2:MeasurementTimeseries/wml2:metadata/wml2:TimeseriesMetadata/wml2:temporalExtent/gml:TimePeriod#gml:id=USGS.TP.%s"
 			column="parameter_stat"
 			javaType="string" />
 		<result
-			property="wml2:observationMember/om:OM_Observation/om:result/wml2:MeasurementTimeseries/wml2:temporalExtent/gml:TimePeriod/gml:beginPosition"
+			property="wml2:observationMember/om:OM_Observation/om:result/wml2:MeasurementTimeseries/wml2:metadata/wml2:TimeseriesMetadata/wml2:temporalExtent/gml:TimePeriod/gml:beginPosition"
 			column="beginPosition"
 			typeHandler="ISODateTypeHandler" />
 		<result
-			property="wml2:observationMember/om:OM_Observation/om:result/wml2:MeasurementTimeseries/wml2:temporalExtent/gml:TimePeriod/gml:endPosition"
+			property="wml2:observationMember/om:OM_Observation/om:result/wml2:MeasurementTimeseries/wml2:metadata/wml2:TimeseriesMetadata/wml2:temporalExtent/gml:TimePeriod/gml:endPosition"
 			column="endPosition"
 			typeHandler="ISODateTypeHandler" />
 			<!-- /TimeseriesMetadataMetadata -->
