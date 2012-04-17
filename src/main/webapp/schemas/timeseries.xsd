@@ -1,29 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:swe="http://www.opengis.net/swe/2.0"
-  xmlns:wml2="http://www.opengis.net/waterml/2.0" xmlns:om="http://www.opengis.net/om/2.0" targetNamespace="http://www.opengis.net/waterml/2.0"
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml/3.2"
+  xmlns:swe="http://www.opengis.net/swe/2.0" xmlns:wml2="http://www.opengis.net/waterml/2.0"
+  xmlns:om="http://www.opengis.net/om/2.0" targetNamespace="http://www.opengis.net/waterml/2.0"
   elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
-
   <annotation>
-    <documentation>This schema describes the timeseries result structures for WaterML2.0. The XML implements the interleaved coverage timeseries
-      represetation described in the WaterML2.0 conceptual model. This implementation only covers timeseries of measurements and categorical values
+    <documentation>This schema describes the timeseries result structures for OGC WaterML2.0. The XML implements the interleaved coverage timeseries
+      represetation described in the OGC WaterML2.0 conceptual model. This implementation only covers timeseries of measurements and categorical values
       (string with codespaces). Subsequent versions of schema may support more complex results such as multi-result (compound), vectors etc. </documentation>
   </annotation>
-  <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
-  <import namespace="http://www.opengis.net/swe/2.0" schemaLocation="http://schemas.opengis.net/sweCommon/2.0/simple_components.xsd"/>
-  <import namespace="http://www.opengis.net/om/2.0" schemaLocation="http://schemas.opengis.net/om/2.0/observation.xsd"/>
+  <import namespace="http://www.opengis.net/gml/3.2"
+    schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+  <import namespace="http://www.opengis.net/swe/2.0"
+    schemaLocation="http://schemas.opengis.net/sweCommon/2.0/swe.xsd"/>
+  <import namespace="http://www.opengis.net/om/2.0"
+    schemaLocation="http://schemas.opengis.net/om/2.0/observation.xsd"/>
   <include schemaLocation="waterml2.xsd"/>
 
   <!-- ====================================================================== -->
   <!-- ===== Time-value pairs and metadata ======= -->
   <!-- ====================================================================== -->
-  
+
   <!-- ===== Base level time-value pair metadata ======= -->
   <element name="TVPMetadata" type="wml2:TVPMetadataType"/>
   <complexType name="TVPMetadataType">
     <sequence>
       <element maxOccurs="1" minOccurs="0" name="quality" type="gml:ReferenceType">
         <annotation>
-          <documentation>Defines the quality of the point (or the default if it is the defaultTimeValuePair) using a WaterML2.0 quality code. The
+          <documentation>Defines the quality of the point (or the default if it is the defaultTimeValuePair) using a OGC WaterML2.0 quality code. The
             qualifier element should be used for other assertions (e.g. using internal codes). </documentation>
         </annotation>
       </element>
@@ -37,7 +40,8 @@
           <documentation>Free text comment associated with the data point.</documentation>
         </annotation>
       </element>
-      <element maxOccurs="1" minOccurs="0" name="relatedObservation" type="gml:ReferenceType">
+      <element maxOccurs="unbounded" minOccurs="0" name="relatedObservation"
+        type="om:ObservationContextPropertyType">
         <annotation>
           <documentation>Defines a reference to an observation that is related to this point. E.g. derived from a sample.</documentation>
         </annotation>
@@ -50,19 +54,25 @@
       </element>
       <element maxOccurs="1" minOccurs="0" name="processing" type="gml:ReferenceType">
         <annotation>
-          <documentation>Defines what processing has occured on the data point.</documentation>
+          <documentation>Defines what processing has occured on the data point using a reference to a code item.</documentation>
+        </annotation>
+      </element>
+      <element maxOccurs="1" minOccurs="0" name="source" type="gml:ReferenceType">
+        <annotation>
+          <documentation>Defines the source of the value through an indentification reference. This is used where the timeseries may be aggregated from multiple sources.his can be an internal link to om:OM_Observation/om:metadata/wml2:ObservationMetadata/gmd:identificationInfo/gmd:MD_DataIdentification</documentation>
         </annotation>
       </element>
     </sequence>
   </complexType>
-  
+
   <!-- ===== Measurement specific time-value pair metadata ======= -->
-  <element name="TVPMeasurementMetadata" substitutionGroup="wml2:TVPMetadata" type="wml2:TVPMeasurementMetadataType"/>
+  <element name="TVPMeasurementMetadata" substitutionGroup="wml2:TVPMetadata"
+    type="wml2:TVPMeasurementMetadataType"/>
   <complexType name="TVPMeasurementMetadataType">
     <complexContent>
       <extension base="wml2:TVPMetadataType">
         <sequence>
-          <element name="uom" maxOccurs="1" minOccurs="0" type="gml:UnitOfMeasureType">
+          <element name="uom" maxOccurs="1" minOccurs="0" type="swe:UnitReference">
             <annotation>
               <documentation>Defines the default unit of measure across the series</documentation>
             </annotation>
@@ -83,31 +93,37 @@
               <documentation>Used to specify the accuracy of a single value. </documentation>
             </annotation>
           </element>
+          <element maxOccurs="1" minOccurs="0" name="aggregationDuration" type="duration">
+            <annotation>
+              <documentation>Describes the temporal aggregation that has occured to the value. </documentation>
+            </annotation>
+          </element>
         </sequence>
       </extension>
     </complexContent>
   </complexType>
-  
+
   <complexType name="TVPMetadataPropertyType">
     <sequence>
       <element ref="wml2:TVPMetadata"/>
     </sequence>
     <attributeGroup ref="gml:OwnershipAttributeGroup"/>
   </complexType>
-  
+
   <complexType name="TVPMeasurementMetadataPropertyType">
     <sequence>
       <element ref="wml2:TVPMeasurementMetadata"/>
     </sequence>
     <attributeGroup ref="gml:OwnershipAttributeGroup"/>
   </complexType>
-  
+
   <complexType name="TVPDefaultMetadataPropertyType">
     <sequence>
       <element ref="wml2:DefaultTVPMetadata"/>
     </sequence>
     <attributeGroup ref="gml:OwnershipAttributeGroup"/>
   </complexType>
+  
   <!-- ====================================================================== -->
   <!-- ===== Timeseries and timeseries metadata ======= -->
   <!-- ====================================================================== -->
@@ -121,20 +137,21 @@
     <complexContent>
       <extension base="gml:AbstractFeatureType">
         <sequence>
-          <element name="temporalExtent" type="gml:TimePeriodPropertyType"/>
-          <element maxOccurs="1" minOccurs="0" name="metadata" type="wml2:TimeseriesMetadataPropertyType"/>
-          <element maxOccurs="unbounded" minOccurs="0" name="extension" type="om:NamedValuePropertyType"/>
-          <element maxOccurs="unbounded" minOccurs="0" name="defaultPointMetadata" type="wml2:TVPDefaultMetadataPropertyType"/>
+          <element maxOccurs="1" minOccurs="0" name="metadata"
+            type="wml2:TimeseriesMetadataPropertyType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="defaultPointMetadata"
+            type="wml2:TVPDefaultMetadataPropertyType"/>
         </sequence>
       </extension>
     </complexContent>
   </complexType>
-  
+
   <!-- The point element is directly restricted using XML schema types. The metadata
     (wml2:Timeseries/wml2:metadata) is restricted using schematron. This is done to maintain element ordering
     for the metadata element, but schema is used for the point tp provide better integration 
-    with XML tools (and it won't affect element ordering. --> 
-  <element name="MeasurementTimeseries" substitutionGroup="wml2:Timeseries" type="wml2:MeasurementTimeseriesType">
+    with XML tools (and it won't affect element ordering. -->
+  <element name="MeasurementTimeseries" substitutionGroup="wml2:Timeseries"
+    type="wml2:MeasurementTimeseriesType">
     <annotation>
       <documentation>Describes a time series as a collection of time-value pairs where the value-type is a measurement
         and associated metadata is specific to measurement types. </documentation>
@@ -147,7 +164,7 @@
           <element maxOccurs="unbounded" minOccurs="1" name="point">
             <complexType>
               <sequence>
-                <element ref="wml2:MeasurementTVP"></element>
+                <element ref="wml2:MeasurementTVP"/>
               </sequence>
             </complexType>
           </element>
@@ -155,8 +172,9 @@
       </extension>
     </complexContent>
   </complexType>
-  
-  <element name="CategoricalTimeseries" substitutionGroup="wml2:Timeseries" type="wml2:CategoricalTimeseriesType">
+
+  <element name="CategoricalTimeseries" substitutionGroup="wml2:Timeseries"
+    type="wml2:CategoricalTimeseriesType">
     <annotation>
       <documentation>Describes a time series as a collection of time-value pairs where the value-type is a category
         and associated metadata is specific to categorical types. </documentation>
@@ -169,7 +187,7 @@
           <element maxOccurs="unbounded" minOccurs="1" name="point">
             <complexType>
               <sequence>
-                <element ref="wml2:CategoricalTVP"></element>
+                <element ref="wml2:CategoricalTVP"/>
               </sequence>
             </complexType>
           </element>
@@ -187,10 +205,11 @@
   </complexType>
 
   <!-- ===== Base level timeseries metadata ======= -->
-  <!-- No categotical metadata: provide a comment as to why --> 
+  <!-- No categotical metadata: provide a comment as to why -->
   <element name="TimeseriesMetadata" type="wml2:TimeseriesMetadataType"/>
   <complexType name="TimeseriesMetadataType">
     <sequence>
+      <element name="temporalExtent" type="gml:TimePeriodPropertyType"/>
       <element maxOccurs="1" minOccurs="0" name="baseTime" type="gml:TimePositionType">
         <annotation>
           <documentation>Defines the start time for isochronous (equidistant) time series. Each point occurs at regular steps (defined by the spacing
@@ -202,9 +221,16 @@
           <documentation>The spacing between points for isochronous or equidistant (equally space) points.</documentation>
         </annotation>
       </element>
-      <element maxOccurs="unbounded" minOccurs="0" name="commentBlock" type="wml2:CommentBlockPropertyType">
+      <element maxOccurs="unbounded" minOccurs="0" name="commentBlock"
+        type="wml2:CommentBlockPropertyType">
         <annotation>
           <documentation>A comment that applies over a period of time for the time series.</documentation>
+        </annotation>
+      </element>
+      <element maxOccurs="unbounded" minOccurs="0" name="parameter"
+        type="om:NamedValuePropertyType">
+        <annotation>
+          <documentation>A named-value extension point, allowing extra metadata to be associated with a timeseries. </documentation>
         </annotation>
       </element>
     </sequence>
@@ -218,7 +244,8 @@
   </complexType>
 
   <!-- ===== Measurement specific timeseries metadata ======= -->
-  <element name="MeasurementTimeseriesMetadata" substitutionGroup="wml2:TimeseriesMetadata" type="wml2:MeasurementTimeseriesMetadataType"/>
+  <element name="MeasurementTimeseriesMetadata" substitutionGroup="wml2:TimeseriesMetadata"
+    type="wml2:MeasurementTimeseriesMetadataType"/>
   <complexType name="MeasurementTimeseriesMetadataType">
     <complexContent>
       <extension base="wml2:TimeseriesMetadataType">
@@ -238,7 +265,8 @@
               <documentation>Sets the time series to be a cumulative series.</documentation>
             </annotation>
           </element>
-          <element maxOccurs="1" minOccurs="0" name="accumulationAnchorTime" type="gml:TimePositionType">
+          <element maxOccurs="1" minOccurs="0" name="accumulationAnchorTime"
+            type="gml:TimePositionType">
             <annotation>
               <documentation>Defines the time at which accumulation begins.</documentation>
             </annotation>
@@ -248,10 +276,16 @@
               <documentation>Defines the period over which accumulation occurs.</documentation>
             </annotation>
           </element>
-          <element maxOccurs="1" minOccurs="0" name="aggregationDuration" type="duration">
+           <!--element maxOccurs="1" minOccurs="0" name="aggregationDuration" type="duration">
             <annotation>
               <documentation>Specifies the duration over which aggregation of the series has occurred (e.g. daily averages, 1 hourly
                 etc.).</documentation>
+            </annotation>
+          </element-->
+          <element maxOccurs="1" minOccurs="0" name="maxGapPeriod" type="duration">
+            <annotation>
+              <documentation>Indicates the maxiumum period allowed between two series before interpolation is not possible. 
+              </documentation>
             </annotation>
           </element>
         </sequence>
@@ -266,15 +300,17 @@
     <attributeGroup ref="gml:OwnershipAttributeGroup"/>
   </complexType>
 
- 
+
   <!-- ===== Default point metadata ======= -->
   <!-- Measurment uses the same TVP types;  -->
-  <!-- Categorical uses extended version of base TVP metadata, adding codeSpace --> 
-  
+  <!-- Categorical uses extended version of base TVP metadata, adding codeSpace -->
+
   <element name="DefaultTVPMetadata" type="wml2:TVPMetadataType"/>
-  <element name="DefaultTVPMeasurementMetadata" substitutionGroup="wml2:DefaultTVPMetadata" type="wml2:TVPMeasurementMetadataType"/>
-  <element name="DefaultTVPCategoricalMetadata" substitutionGroup="wml2:DefaultTVPMetadata" type="wml2:DefaultCategoricalTVPMetadataType"/>
-  
+  <element name="DefaultTVPMeasurementMetadata" substitutionGroup="wml2:DefaultTVPMetadata"
+    type="wml2:TVPMeasurementMetadataType"/>
+  <element name="DefaultTVPCategoricalMetadata" substitutionGroup="wml2:DefaultTVPMetadata"
+    type="wml2:DefaultCategoricalTVPMetadataType"/>
+
   <complexType name="DefaultCategoricalTVPMetadataType">
     <complexContent>
       <extension base="wml2:TVPMetadataType">
@@ -288,7 +324,7 @@
       </extension>
     </complexContent>
   </complexType>
-  
+
   <complexType name="DefaultTVPMetadataPropertyType">
     <sequence minOccurs="0">
       <element ref="wml2:DefaultTVPMetadata"/>
@@ -305,14 +341,14 @@
   <element name="TimeValuePair" type="wml2:TimeValuePairType"/>
   <complexType name="TimeValuePairType" abstract="true">
     <sequence>
-     <element maxOccurs="1" minOccurs="0" name="time" type="gml:TimePositionType">
-       <annotation>
-         <documentation>The time instant for the data point.</documentation>
-       </annotation>
-     </element>
+      <element maxOccurs="1" minOccurs="0" name="time" type="gml:TimePositionType">
+        <annotation>
+          <documentation>The time instant for the data point.</documentation>
+        </annotation>
+      </element>
     </sequence>
   </complexType>
-  
+
   <element name="MeasurementTVP" type="wml2:MeasureTVPType" substitutionGroup="wml2:TimeValuePair"/>
   <complexType name="MeasureTVPType">
     <complexContent>
@@ -323,18 +359,21 @@
               <documentation>The value of a measurement timeseries is a measure</documentation>
             </annotation>
           </element>
-          <element maxOccurs="1" minOccurs="0" name="metadata" type="wml2:TVPMeasurementMetadataPropertyType"/>
+          <element maxOccurs="1" minOccurs="0" name="metadata"
+            type="wml2:TVPMeasurementMetadataPropertyType"/>
         </sequence>
       </extension>
     </complexContent>
   </complexType>
-  
-  <element name="CategoricalTVP" type="wml2:CategoricalTVPType" substitutionGroup="wml2:TimeValuePair"/>
+
+  <element name="CategoricalTVP" type="wml2:CategoricalTVPType"
+    substitutionGroup="wml2:TimeValuePair"/>
   <complexType name="CategoricalTVPType">
     <complexContent>
       <extension base="wml2:TimeValuePairType">
         <sequence>
-          <element maxOccurs="1" minOccurs="0" name="value" nillable="true" type="swe:CategoryPropertyType">
+          <element maxOccurs="1" minOccurs="0" name="value" nillable="true"
+            type="swe:CategoryPropertyType">
             <annotation>
               <documentation>The value type is a category</documentation>
             </annotation>
@@ -344,7 +383,7 @@
       </extension>
     </complexContent>
   </complexType>
-  
+
   <!-- ====== Comment blocks (temporally bounded comments) ======= -->
   <element name="CommentBlock" substitutionGroup="gml:AbstractObject" type="wml2:CommentBlockType"/>
   <complexType name="CommentBlockType">
@@ -368,19 +407,19 @@
     <attributeGroup ref="gml:OwnershipAttributeGroup"/>
   </complexType>
 
-  <!-- ======== WML2 definition of measure type ========= --> 
+  <!-- ======== WML2 definition of measure type ========= -->
   <!--  gml:MeasureType his not used as it has as a mandatory attribute uom which means  -->
-  <!--  defaulting for uom may not be used. This type also adds the censorReason for censored values. --> 
+  <!--  defaulting for uom may not be used. This type also adds the censorReason for censored values. -->
   <element name="value" type="wml2:MeasureType"/>
   <complexType name="MeasureType">
     <annotation>
       <documentation>gml:MeasureType supports recording an amount encoded as a value of XML Schema double, together with a units of measure indicated
         by an attribute uom, short for "units Of measure". The value of the uom attribute identifies a reference system for the amount, usually a
-        ratio or interval scale. WaterML2.0 alters this definition to make uom optional as this value is defaulted for a series.</documentation>
+        ratio or interval scale. OGC WaterML2.0 alters this definition to make uom optional as this value is defaulted for a series.</documentation>
     </annotation>
     <simpleContent>
       <extension base="double">
-        <attribute name="uom" type="gml:UomIdentifier"/>
+        <attribute name="uom" type="swe:UomSymbol"/>
         <!-- Nil reason and censored reason are captured in point/metadata -->
         <!-- attribute name="nilReason" type="gml:NilReasonType"/-->
         <!--attribute name="censorReason" type="gml:NilReasonType"/-->
@@ -389,5 +428,3 @@
   </complexType>
 
 </schema>
-
-   

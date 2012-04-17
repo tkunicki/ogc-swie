@@ -4,7 +4,7 @@
   xmlns:sams="http://www.opengis.net/samplingSpatial/2.0" xmlns:sam="http://www.opengis.net/sampling/2.0"
   targetNamespace="http://www.opengis.net/waterml/2.0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
   <annotation>
-    <documentation>Specialized observation metadata classes for WaterML 2.0</documentation>
+    <documentation>Specialized observation metadata classes for OGC WaterML2.0</documentation>
   </annotation>
   <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
   <import namespace="http://www.isotc211.org/2005/gmd" schemaLocation="http://schemas.opengis.net/iso/19139/20070417/gmd/gmd.xsd"/>
@@ -21,7 +21,7 @@
     <complexContent>
       <extension base="gmd:MD_Metadata_Type">
         <sequence>
-          <element maxOccurs="1" minOccurs="0" name="intendedSamplingInterval" type="duration">
+          <element maxOccurs="1" minOccurs="0" name="intendedObservationSpacing" type="duration">
             <annotation>
               <documentation>Defines the expected interval in which observations can be expected. e.g. daily.</documentation>
             </annotation>

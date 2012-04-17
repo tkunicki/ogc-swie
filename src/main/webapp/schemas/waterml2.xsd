@@ -3,7 +3,7 @@
   xmlns:om="http://www.opengis.net/om/2.0" targetNamespace="http://www.opengis.net/waterml/2.0" elementFormDefault="qualified"
   attributeFormDefault="unqualified" version="1.0">
   <annotation>
-    <documentation>WaterML2.0 is designed as an extensible schema to allow encoding of data to be used in a variety of exchange scenarios. Example
+    <documentation>OGC WaterML2.0 is designed as an extensible schema to allow encoding of data to be used in a variety of exchange scenarios. Example
       areas of usage are: exchange of data for operational hydrological monitoring programs; supporting operation of infrastructure (e.g. dams, supply
       systems); cross-border exchange of observational data; release of data for public dissemination; enhancing disaster management through data
       exchange; and exchange in support of national reporting. The core aspect of the model is in the correct, precise description of time series.

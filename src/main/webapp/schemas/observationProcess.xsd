@@ -4,7 +4,7 @@
   attributeFormDefault="unqualified" version="1.0">
 
   <annotation>
-    <documentation>Specialized observation procedures for WaterML2.0</documentation>
+    <documentation>Specialized observation procedures for OGC WaterML2.0</documentation>
   </annotation>
   <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
   <import namespace="http://www.opengis.net/om/2.0" schemaLocation="http://schemas.opengis.net/om/2.0/observation.xsd"/>
@@ -38,21 +38,20 @@
                 to be maintained regardless of the processing that has occured to it.</documentation>
             </annotation>
           </element>
-          <element maxOccurs="1" minOccurs="0" name="aggregationPeriod" type="duration">
+          <element maxOccurs="1" minOccurs="0" name="aggregationDuration" type="duration">
             <annotation>
-              <documentation>A list of the inputs used in the process. This may be a list of references to the data sets used (e.g. model input
-                series) or a input array to an algorithm.</documentation>
+              <documentation>If the process involves temporal aggregation of a result set, the time duration over which data has been aggregated should be expressed here. E.g. hourly, daily aggregates.</documentation>
             </annotation>
           </element>
-          <element maxOccurs="1" minOccurs="0" name="gaugeDatum" type="gml:ReferenceType">
+          <element maxOccurs="1" minOccurs="0" name="verticalDatum" type="gml:ReferenceType">
             <annotation>
               <documentation>Specifies the datum that is used as the zero point for level measurements. This can be process-specific as opposed the
                 gauge at the actual monitoring point.</documentation>
             </annotation>
           </element>
-          <element maxOccurs="unbounded" minOccurs="0" name="operatorComments" type="string">
+          <element maxOccurs="unbounded" minOccurs="0" name="comment" type="string">
             <annotation>
-              <documentation>Comments specific to the process from the operator.</documentation>
+              <documentation>Comments specific to the process from the operator or system performing the process.</documentation>
             </annotation>
           </element>
           <element maxOccurs="1" minOccurs="0" name="processReference" type="gml:ReferenceType">
