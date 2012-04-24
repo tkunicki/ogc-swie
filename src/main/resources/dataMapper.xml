@@ -453,6 +453,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                     <choose>
                           <when test="featureId != null">
                                     WHERE site_no IN (#{featureId})
+									AND site_web_cd = 'Y'
                           </when>
 
                           <when test="bBox0 != null">
@@ -588,6 +589,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                 <choose>
                       <when test="featureId != null">
                                 WHERE site_no IN (#{featureId})
+								AND site_web_cd = 'Y'
                       </when>
 <!--                <when test="featureId != null">
                     WHERE site_no IN <foreach item="i" collection="featureId" open="(" separator="," close=")">#{i}</foreach>
@@ -633,7 +635,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
             AND c.access_cd = '0'
             AND c.parameter_cd = d.parameter_cd
-            
             GROUP BY a.site_no, c.parameter_cd
        </if>
 

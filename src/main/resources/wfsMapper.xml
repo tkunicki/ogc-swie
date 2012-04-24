@@ -111,11 +111,11 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			javaType="string" />
 		<result
 			property="}^!{wfs:member/^om:featureOfInterest"
-			column="myrow"
+			column="site_no"
 			javaType="string" />
 		<result
 			property="wfs:member/om:featureOfInterest#gml:id=%s"
-			column="myrow"
+			column="site_no"
 			javaType="string" />
 		<result
 			property="wfs:member/om:featureOfInterest/gml:name"
@@ -167,16 +167,18 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			javaType="string" />
 		<result
 			property="}wfs:member/om:featureOfInterest/wml2:WaterMonitoringPoint/wml2:owner/gmd:organisationName/^gmd:CharacterString=%s Water Science Center"
-			column="district_cd"
+			column="state_cd"
 			typeHandler="StateFullNameTypeHandler" />
 
 	</resultMap>
 
 	<select id="wfsSelect" parameterType="map" resultMap="wfsResultMap" fetchSize="1024" useCache="false" resultSetType="FORWARD_ONLY">
-		SELECT a.site_no, 
+		SELECT DISTINCT 
+		a.site_no, 
 		a.station_nm AS STATION_NM,
 		CONCAT(CONVERT(a.dec_lat_va,CHAR),' ',CONVERT(a.dec_long_va,CHAR)) AS LON_LAT, 
-                a.district_cd,
+                a.state_cd,
+				a.site_no,
                 CONCAT(a.state_cd,'.',a.site_no) as state_site,
                 a.tz_cd,
                 s.lowerPosition AS lower,
@@ -186,8 +188,8 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 (CASE
                     WHEN a.dec_coord_datum_cd = 'NAD83' THEN 'urn:ogc:def:crs:EPSG:4269'
                     ELSE a.dec_coord_datum_cd
-                END) coord_datum,
-                @i:=@i+1 as myrow
+                END) coord_datum
+<!--                @i:=@i+1 as myrow-->
 
 		FROM (
                     SELECT b.site_no,
@@ -267,7 +269,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
                 AND a.tz_cd = b.tz_cd
                 AND c.huc_cd = a.huc_cd
                 AND c.state_cd = a.state_cd
-                AND a.instruments_cd != 'NNNNNNNNNNNNNNNNNNNNNNNNNNNNNN'
+<!--                AND a.instruments_cd != 'NNNNNNNNNNNNNNNNNNNNNNNNNNNNNN'-->
                 AND a.site_web_cd = 'Y'
                 LIMIT 750
 
