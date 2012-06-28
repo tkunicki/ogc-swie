@@ -129,17 +129,19 @@ public class WML2DVServlet extends HttpServlet {
             String[] observedProperties = parameters.get(OGCBusinessRules.observedProperty);
             if (observedProperties != null && observedProperties.length > 0){
                 String observedProperty = observedProperties[0];
-                String[] observedPropertySplit = observedProperty.split(",");
+                String[] observedPropertySplit = observedProperty.split(",");				
+				String[] observedPropertyQueriedSplit = observedProperty.split(",");
                 for (int i=0; i<observedPropertySplit.length; i++){
-                    try {
-                            observedPropertySplit[i] = ObservedProperties.valueOf(observedPropertySplit[i].toUpperCase()).code;
+                    try {    
+						observedPropertySplit[i] = ObservedProperties.valueOf(observedPropertySplit[i].toUpperCase()).code;
                     } catch (IllegalArgumentException e) {
                         // property not found in list...
                     }
                 }
-                  parameters.put(OGCBusinessRules.observedProperty, observedPropertySplit);
+			  parameters.put(OGCBusinessRules.observedProperty, observedPropertySplit);
+			  parameters.put(OGCBusinessRules.observedPropertyQueried, observedPropertyQueriedSplit);
             } // Can't put a default here because it breaks GDA
-
+			
             String[] offerings = parameters.get(OGCBusinessRules.offering);
             if (offerings != null && offerings.length > 0){
                 String offering = offerings[0];
@@ -354,6 +356,8 @@ public class WML2DVServlet extends HttpServlet {
 				String observedProperty = observedPropertyNode.getTextContent();    
 //                                String[] observedPropertySplit = observedProperty.split(",");
                 parameterMap.put(OGCBusinessRules.observedProperty, new String[] {observedProperty});
+				//TODO: work on this......
+//				parameterMap.put(OGCBusinessRules.observedPropertyQueried, new String[] {observedProperty});
 //                                parameterMap.put(OGCBusinessRules.observedProperty, observedPropertySplit);
 			}
 		}

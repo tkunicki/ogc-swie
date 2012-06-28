@@ -265,7 +265,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		 	<!-- observedProperty -->
 		<result
 			property="wml2:observationMember/om:OM_Observation/om:observedProperty#xlink:href=urn:ogc:def:phenomenon:OGC:%s"
-			column="parameter_nm"
+			column="observedPropertyQueried"
 			javaType="string" />
 		<result
 			property="wml2:observationMember/om:OM_Observation/om:observedProperty#xlink:title=%s"
@@ -377,6 +377,10 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			<!-- wml2:point -->
 		<result
 			property="wml2:observationMember/om:OM_Observation/om:result/wml2:MeasurementTimeseries/^wml2:point/wml2:MeasurementTVP/^wml2:time"
+			column="currentPositionUV"
+			javaType="string" />
+		<result
+			property="wml2:observationMember/om:OM_Observation/om:result/wml2:MeasurementTimeseries/^wml2:point/wml2:MeasurementTVP/^wml2:time"
 			column="currentPosition"
 			typeHandler="ISODateTimeTypeHandler" />
 		<result
@@ -409,8 +413,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 					ELSE f.station_nm
 				END) station_nm,
 				CONCAT('USGS.',CONVERT(f.site_no,CHAR)) as FeatureID,
-				f.site_no,
-				f.tz_cd as zoneAbbreviation,
+				f.site_no,				
 				CONCAT(f.state_cd,'.',f.site_no) as state_site,
 				f.state_cd,
 				f.district_cd,
@@ -418,8 +421,6 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 				CONCAT(DATE_FORMAT(SYSDATE(),'%Y-%m-%dT%H:%i'),f.tz_cd) as currentTimeStamp,
 				DATE_FORMAT(SYSDATE(),'%Y-%m-%dT%H:%i:%s') as TimestampNow,
 				CONCAT(CONVERT(f.DEC_LAT_VA,CHAR),' ',CONVERT(f.DEC_LONG_VA,CHAR)) AS pos,
-				CONCAT(CONVERT(DATE_FORMAT(s.startTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS beginPosition,
-				CONCAT(CONVERT(DATE_FORMAT(s.endTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS endPosition,
 				(CASE
 					WHEN LENGTH(c.table_cd) > 0 THEN null
 					ELSE g.result_va    
@@ -458,10 +459,10 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 				<when test="IsUnitValue[0] == 'True'">
 					<choose>
 						<when test="latest != null">
-							CONCAT(CONVERT(DATE_FORMAT(MAX(g.result_dt),'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) as currentPosition,
+							CONCAT(CONVERT(DATE_FORMAT(MAX(g.result_dt),'%Y-%m-%dT%H:%i'),CHAR),':00',g.result_tz_offset) as currentPositionUV,
 						</when>
 						<otherwise>
-							CONCAT(CONVERT(DATE_FORMAT(g.result_dt,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) as currentPosition,
+							CONCAT(CONVERT(DATE_FORMAT(g.result_dt,'%Y-%m-%dT%H:%i'),CHAR),':00',g.result_tz_offset) as currentPositionUV,
 						</otherwise>
 					</choose>
 					(CASE
@@ -473,6 +474,9 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 					CONCAT(e.parameter_cd,'_00000') AS parameter_stat,
 					CONCAT(f.site_no,'_',e.parameter_cd,'_00000') AS station_parameter_stat,
 					CONCAT(f.site_no,'_',e.parameter_cd,'_00000_',e.loc_nu) AS station_parameter_stat_loc_nu,
+					g.result_tz_cd as zoneAbbreviation,
+					CONCAT(CONVERT(DATE_FORMAT(s.startTime,'%Y-%m-%dT%H:%i'),CHAR),g.result_tz_cd) AS beginPosition,
+					CONCAT(CONVERT(DATE_FORMAT(s.endTime,'%Y-%m-%dT%H:%i'),CHAR),g.result_tz_cd) AS endPosition,
 				</when>
 				<otherwise>
 					<choose>
@@ -483,42 +487,55 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 							CONCAT(CONVERT(DATE_FORMAT(g.result_dt,'%Y-%m-%dT'),CHAR),'12:00',f.tz_cd) as currentPosition,
 						</otherwise>
 					</choose>
-				(CASE
-					WHEN g.data_aging_cd = 'P' THEN 'Provisional data subject to revision.'
-					WHEN g.data_aging_cd = 'W' THEN 'Provisional data subject to revision.'
-					WHEN g.data_aging_cd = 'R' THEN 'Provisional data subject to revision.'
-				END) qualifier_message,
-				'Approved for publication. Processing and review completed.' AS defaultQualifier,
-				(CASE
-					WHEN g.stat_cd = '00003' THEN 'Average in preceding interval'
-					WHEN g.stat_cd = '00001' THEN 'Maximum in preceding interval'
-					WHEN g.stat_cd = '00002' THEN 'Minimum in preceding interval'
-					WHEN g.stat_cd = '00006' THEN 'Preceding total'
-					WHEN g.stat_cd = '00007' THEN 'Mode in preceding interval'
-					WHEN g.stat_cd = '00008' THEN 'Median in preceding interval'
-					WHEN g.stat_cd = '00009' THEN 'Standard deviation in preceding interval'
-					WHEN g.stat_cd = '00010' THEN 'Variance in preceding interval'
-					ELSE 'Unknown'
-				END) dataTypeTitle,
-				(CASE
-					WHEN g.stat_cd = '00003' THEN 'AveragePrec'
-					WHEN g.stat_cd = '00001' THEN 'MaxPrec'
-					WHEN g.stat_cd = '00002' THEN 'MinPrec'
-					WHEN g.stat_cd = '00006' THEN 'TotalPrec'
-					WHEN g.stat_cd = '00007' THEN 'Mode'
-					WHEN g.stat_cd = '00008' THEN 'Median'
-					WHEN g.stat_cd = '00009' THEN 'STD'
-					WHEN g.stat_cd = '00010' THEN 'Variance'
-					ELSE 'Continuous'
-				END) dataTypeLink,
-				CONCAT(e.parameter_cd,'_',g.stat_cd) AS parameter_stat,
-				CONCAT(f.site_no,'_',e.parameter_cd,'_',g.stat_cd) AS station_parameter_stat,
-				CONCAT(f.site_no,'_',e.parameter_cd,'_',g.stat_cd,'_',e.loc_nu) AS station_parameter_stat_loc_nu,
+					(CASE
+						WHEN g.data_aging_cd = 'P' THEN 'Provisional data subject to revision.'
+						WHEN g.data_aging_cd = 'W' THEN 'Provisional data subject to revision.'
+						WHEN g.data_aging_cd = 'R' THEN 'Provisional data subject to revision.'
+					END) qualifier_message,
+					'Approved for publication. Processing and review completed.' AS defaultQualifier,
+					(CASE
+						WHEN g.stat_cd = '00003' THEN 'Average in preceding interval'
+						WHEN g.stat_cd = '00001' THEN 'Maximum in preceding interval'
+						WHEN g.stat_cd = '00002' THEN 'Minimum in preceding interval'
+						WHEN g.stat_cd = '00006' THEN 'Preceding total'
+						WHEN g.stat_cd = '00007' THEN 'Mode in preceding interval'
+						WHEN g.stat_cd = '00008' THEN 'Median in preceding interval'
+						WHEN g.stat_cd = '00009' THEN 'Standard deviation in preceding interval'
+						WHEN g.stat_cd = '00010' THEN 'Variance in preceding interval'
+						ELSE 'Unknown'
+					END) dataTypeTitle,
+					(CASE
+						WHEN g.stat_cd = '00003' THEN 'AveragePrec'
+						WHEN g.stat_cd = '00001' THEN 'MaxPrec'
+						WHEN g.stat_cd = '00002' THEN 'MinPrec'
+						WHEN g.stat_cd = '00006' THEN 'TotalPrec'
+						WHEN g.stat_cd = '00007' THEN 'Mode'
+						WHEN g.stat_cd = '00008' THEN 'Median'
+						WHEN g.stat_cd = '00009' THEN 'STD'
+						WHEN g.stat_cd = '00010' THEN 'Variance'
+						ELSE 'Continuous'
+					END) dataTypeLink,
+					CONCAT(e.parameter_cd,'_',g.stat_cd) AS parameter_stat,
+					CONCAT(f.site_no,'_',e.parameter_cd,'_',g.stat_cd) AS station_parameter_stat,
+					CONCAT(f.site_no,'_',e.parameter_cd,'_',g.stat_cd,'_',e.loc_nu) AS station_parameter_stat_loc_nu,
+					f.tz_cd as zoneAbbreviation,
+					CONCAT(CONVERT(DATE_FORMAT(s.startTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS beginPosition,
+					CONCAT(CONVERT(DATE_FORMAT(s.endTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS endPosition,
 				</otherwise>
 				</choose>
 				e.loc_nm,
 				e.loc_nu,
-				h.huc_nm
+				h.huc_nm,
+				(CASE
+					WHEN e.parameter_cd = #{observedProperty[0]} THEN #{observedPropertyQueried[0]}
+<!--					WHEN e.parameter_cd = #{observedProperty[1]} THEN #{observedPropertyQueried[1]}	-->
+<!--					WHEN e.parameter_cd = #{observedProperty[2]} THEN #{observedPropertyQueried[2]}-->
+
+<!--					<foreach item="i" collection="observedProperty" index="index">
+							WHEN e.parameter_cd = #{i} THEN #{observedPropertyQueried[index]}
+					</foreach>-->
+					ELSE 'CollectionsNotSupported'
+				END) observedPropertyQueried
 
 		FROM
 			(select b.site_id,
@@ -607,7 +624,6 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 					AND e.access_cd = '0'
 				</otherwise>
 			</choose>
-
 				AND f.site_web_cd = 'Y'
 				AND h.huc_cd = f.huc_cd
 				AND h.state_cd = f.state_cd
@@ -630,12 +646,19 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		</if>
 
 		<choose>
-		<when test="latest != null">
-			GROUP BY station_nm, parameter_stat
-		</when>
-		<otherwise>
-			ORDER BY station_nm, loc_nu, parameter_stat, currentPosition ASC
-		</otherwise>
+			<when test="latest != null">
+				GROUP BY station_nm, parameter_stat
+			</when>
+			<otherwise>
+				<choose>
+					<when test="IsUnitValue[0] == 'True'">			
+						ORDER BY station_nm, loc_nu, parameter_stat, currentPositionUV ASC
+					</when>
+					<otherwise>
+						ORDER BY station_nm, loc_nu, parameter_stat, currentPosition ASC
+					</otherwise>
+				</choose>
+			</otherwise>
 		</choose>
 	</select>
 </mapper>

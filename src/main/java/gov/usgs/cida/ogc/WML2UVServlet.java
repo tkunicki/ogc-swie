@@ -126,17 +126,22 @@ public class WML2UVServlet extends HttpServlet {
             } // Can't put a default here because it breaks GDA
 
             String[] observedProperties = parameters.get(OGCBusinessRules.observedProperty);
+//			String[] observedPropertyQueriedSplit = new String[3];
+//			String[] observedPropertySplit = new String[3];
             if (observedProperties != null && observedProperties.length > 0){
                 String observedProperty = observedProperties[0];
                 String[] observedPropertySplit = observedProperty.split(",");
+				String[] observedPropertyQueriedSplit = observedProperty.split(",");
                 for (int i=0; i<observedPropertySplit.length; i++){
                     try {
-                            observedPropertySplit[i] = ObservedProperties.valueOf(observedPropertySplit[i].toUpperCase()).code;
+                           observedPropertySplit[i] = ObservedProperties.valueOf(observedPropertySplit[i].toUpperCase()).code;
                     } catch (IllegalArgumentException e) {
-                        // property not found in list...
+//                        observedPropertySplit[i] = "";
+						// property not found in list...
                     }
                 }
                   parameters.put(OGCBusinessRules.observedProperty, observedPropertySplit);
+				  parameters.put(OGCBusinessRules.observedPropertyQueried, observedPropertyQueriedSplit);
             } // Can't put a default here because it breaks GDA
 
             String[] offerings = parameters.get(OGCBusinessRules.offering);

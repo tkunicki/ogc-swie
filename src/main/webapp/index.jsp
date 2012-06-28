@@ -311,7 +311,7 @@
     </div>
 <!-- END USGS Header Template -->
 
-    <h1>Forecasting Interoperability Experiment 2.0</h1>
+    <h1>Forecasting Interoperability Experiment 2.1</h1>
 
     <table>
         <tr>
@@ -725,6 +725,9 @@
             <p />
         </li>
         <li><strong>Log</strong>
+			<dl>Version 2.1 May 29, 2012<br />
+				<dd> * Fixed daylight savings issue</dd>
+			</dl>
 			<dl>Version 2.0 April 6, 2012<br />
 				<dd> * Updated WML2 output to comply with OGC accepted schema</dd>
 			</dl>
