@@ -11,7 +11,7 @@ function parseGDAXML(xml,base_url){
         });
     });
     siteList = siteList.substring(1, siteList.length);
-    wfs_url = base_url + 'wfs?request=GetFeature&featureId=' + siteList;
+    wfs_url = base_url + '/wfs?request=GetFeature&featureId=' + siteList;
     document.getElementById("FeatureNumber").innerHTML = i;
     LoadXML(wfs_url);
 

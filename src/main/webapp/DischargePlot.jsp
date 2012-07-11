@@ -237,74 +237,24 @@
             google.setOnLoadCallback(function(){cida.createMultiPlot (sos_url, gdaDV_url, stat_cd, observedProperty, N)});
 
         </script>
+		<jsp:include page="template/css.jsp"></jsp:include>
     </head>
     <body>
 		<img alt="Spinner"  style="display: none;" src = "img/ajax-loader.gif" id="loading_image"/>
         <table cellpadding="0" cellspacing="0" width="100%">
             <tr>
                 <td width="100%" valign="top"><!-- START header and top navigation section -->
-					<!-- BEGIN USGS Header Template -->
-                    <div id="usgscolorband">
-						<div id="usgsbanner">
-							<div id="usgsidentifier"><a href="http://www.usgs.gov/"><img src="http://www.usgs.gov/images/header_graphic_usgsIdentifier_white.jpg" alt="USGS - science for a changing world" title="U.S. Geological Survey Home Page" width="178" height="72" /></a></div>
-
-							<div id="usgsccsabox">
-								<div id="usgsccsa">
-									<br /><a href="http://www.usgs.gov/">USGS Home</a>
-									<br /><a href="http://www.usgs.gov/ask/">Contact USGS</a>
-									<br /><a href="http://search.usgs.gov/">Search USGS</a>
-								</div>
-							</div>
-
-						</div>
-                    </div>
-
-                    <div id="usgstitle">
-						<p>Water Resources of the United States</p>
-                    </div>
-					<!-- END USGS Header Template -->
+					<jsp:include page="template/usgsheader.jsp"></jsp:include>
                 </td>
             </tr>
         </table>
 
-        <h1>Surface Water Interoperability Experiment USGS Timeseries Observations</h1>
+        <h1>Forecasting Interoperability Experiment USGS Timeseries Observations</h1>
         <br />
 		<table>
 			<tr>
 				<td>
-					<table>
-						<tr>
-							<td>
-								<table>
-									<tr>
-										<td>
-											<table  style="width:135px">
-												<tr height="50">
-												</tr>
-												<tr>
-													<td style="width:300px">
-														<table>
-															<tr>
-																<td>
-																	<center><b>Navigation</b></center>
-																</td>
-															</tr>
-															<tr height="10"></tr>
-															<tr>
-																<td>
-															<li><a href="<%=base_url%>"> OGC Services</a></li>
-															<li><a href="<%=base_url%>/MapFiles/Map.jsp"> Interactive Map</a></li>
-															<li><a href="<%=base_url%>/DischargePlot.jsp"><b> Timeseries Plot</b></a></li>
-													</td>
-												</tr>
-											</table>
-										</td>
-									</tr>
-								</table>
-							</td>
-
-						</tr>
-					</table>
+					<jsp:include page="template/sidebar.jsp"></jsp:include>
 				<td>
 					<table>
 						<tr>
@@ -357,39 +307,7 @@
 		<br />
 
 
-<!-- BEGIN USGS Footer Template -->
-
-	<div id="linksfooterbar">
-		<!-- <p id="usgsfooterbar">-->
-		<a href="http://www.usgs.gov/" title="USGS Home page.">USGS Home</a>
-		<a href="http://water.usgs.gov/" title="USGS Water Resources of the United States">Water</a>
-		<a href="http://www.usgs.gov/climate_landuse/" title="USGS Climate and Land Use Change">Climate Change</a>
-		<a href="http://www.usgs.gov/core_science_systems/" title="USGS Core Science Systems">Science Systems</a>
-		<a href="http://www.usgs.gov/ecosystems/" title="USGS Ecosystems">Ecosystems</a>
-		<a href="http://www.usgs.gov/resources_envirohealth/" title="USGS Energy, Minerals, and Environmental Health">Energy, Minerals, &amp; Env. Health</a>
-		<a href="http://www.usgs.gov/natural_hazards/" title="USGS Natural Hazards">Hazards</a>
-		<a href="http://internal.usgs.gov/" title="USGS Intranet home page">USGS Intranet</a>
-		<!-- </p>-->
-	</div>
-	<div id="usgsfooter">
-		<p id="usgsfooterbar">
-			<a href="http://www.usgs.gov/accessibility.html" title="Accessibility Policy (Section 508)">Accessibility</a>
-			<a href="http://www.usgs.gov/foia/" title="Freedom of Information Act">FOIA</a>
-			<a href="http://www.usgs.gov/privacy.html" title="Privacy policies of the U.S. Geological Survey.">Privacy</a>
-			<a href="http://www.usgs.gov/policies_notices.html" title="Policies and notices that govern information posted on USGS Web sites.">Policies and Notices</a>
-		</p>
-
-		<p id="usgsfootertext">
-			<a href="http://www.takepride.gov/"><img src="http://www.usgs.gov/images/footer_graphic_takePride.jpg" alt="Take Pride in America logo" title="Take Pride in America Home Page" width="60" height="58"/></a>
-			<a href="http://firstgov.gov/"><img src="http://www.usgs.gov/images/footer_graphic_usagov.jpg" alt="USA.gov logo" width="90" height="26" style="float: right; margin-right: 10px;" title="USAGov: Government Made Easy."/></a>
-			<a href="http://www.doi.gov/">U.S. Department of the Interior</a> |
-			<a href="http://www.usgs.gov/">U.S. Geological Survey</a><br />
-			<br />
-
-			<!-- Page Contact Information: <a href="http://water.usgs.gov/user_feedback_form.html">Water Webserver Team</a><br />-->
-
-		</p>
-	</div>
+	<jsp:include page="template/usgsfooter.jsp"></jsp:include>
 
 	</body>
 </html>

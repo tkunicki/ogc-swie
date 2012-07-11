@@ -233,12 +233,12 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		
 			<!-- procedure -->
 		<result
-			property="wml2:observationMember/om:OM_Observation/om:procedure#xlink:href=http://www.nemi.gov/%s"
+			property="wml2:observationMember/om:OM_Observation/om:procedure#xlink:href=http://nwis.waterdata.usgs.gov/nwis/help/?read_file=stat&amp;format=table"
 			column="dataTypeTitle"
 			javaType="string" />
 		<result
 			property="wml2:observationMember/om:OM_Observation/om:procedure#xlink:title=%s"
-			column="dataTypeTitle"
+			column="stat_cd"
 			javaType="string" />
 			<!-- om:metadata -->
 			
@@ -264,7 +264,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 		 
 		 	<!-- observedProperty -->
 		<result
-			property="wml2:observationMember/om:OM_Observation/om:observedProperty#xlink:href=urn:ogc:def:phenomenon:OGC:%s"
+			property="wml2:observationMember/om:OM_Observation/om:observedProperty#xlink:href=http://nwis.waterdata.usgs.gov/usa/nwis/pmcodes?radio_pm_search=pm_search&amp;format=html_table&amp;show=parameter_nm&amp;show=parameter_units&amp;pm_search=%s"
 			column="observedPropertyQueried"
 			javaType="string" />
 		<result
@@ -302,11 +302,11 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
  			column="pos"
 			javaType="string" />
 		<result
-			property="wml2:observationMember/om:OM_Observation/om:featureOfInterest/wml2:MonitoringPoint/wml2:descriptionReference#xlink:href=http://external.opengis.org/twiki_public/bin/view/HydrologyDWG/SurfacewaterInteroperabilityExperiment#Use_Case_2"
- 			column="station_nm"
+			property="wml2:observationMember/om:OM_Observation/om:featureOfInterest/wml2:MonitoringPoint/wml2:descriptionReference#xlink:href=http://waterdata.usgs.gov/nwis/nwisman/?site_no=%s"
+ 			column="site_no"
 			javaType="string" />
 		<result
-			property="wml2:observationMember/om:OM_Observation/om:featureOfInterest/wml2:MonitoringPoint/wml2:descriptionReference#xlink:title=This wiki page describes the IE"
+			property="wml2:observationMember/om:OM_Observation/om:featureOfInterest/wml2:MonitoringPoint/wml2:descriptionReference#xlink:title=%s"
  			column="station_nm"
 			javaType="string" />
 		<result
@@ -477,6 +477,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 					g.result_tz_cd as zoneAbbreviation,
 					CONCAT(CONVERT(DATE_FORMAT(s.startTime,'%Y-%m-%dT%H:%i'),CHAR),g.result_tz_cd) AS beginPosition,
 					CONCAT(CONVERT(DATE_FORMAT(s.endTime,'%Y-%m-%dT%H:%i'),CHAR),g.result_tz_cd) AS endPosition,
+					'00001' AS stat_cd,
 				</when>
 				<otherwise>
 					<choose>
@@ -521,6 +522,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 					f.tz_cd as zoneAbbreviation,
 					CONCAT(CONVERT(DATE_FORMAT(s.startTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS beginPosition,
 					CONCAT(CONVERT(DATE_FORMAT(s.endTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS endPosition,
+					g.stat_cd AS stat_cd,
 				</otherwise>
 				</choose>
 				e.loc_nm,

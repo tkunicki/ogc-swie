@@ -6,7 +6,7 @@
 <%
 
     String baseURL = request.getRequestURL().toString().replaceAll("/[^/]*$", "");
-    String base_url =  baseURL.substring(0,baseURL.length() - 8);
+    String base_url =  baseURL;
     Calendar lastWeek = new GregorianCalendar();
     lastWeek.add(Calendar.DAY_OF_YEAR, -7);
 
@@ -37,8 +37,8 @@
     String[] Selected = new String[40];
     String Lat;
     String Long;
-    String XML_Call = base_url;
-    String Sites = base_url + "wfs?request=GetFeature&featureId=";
+    String XML_Call = base_url + "/";
+    String Sites = base_url + "/wfs?request=GetFeature&featureId=";
     Integer Scale;
     String textbox = "01446500,05082500";
     String UpperLat = "44.0";
@@ -80,7 +80,7 @@
             } else if (dataSetString.equalsIgnoreCase("OH_Black")) {
                 dataSet = 11;
             } else if (dataSetString.equalsIgnoreCase("NY_Buffalo")) {
-                Sites = XML_Call + "wfs";
+                Sites = XML_Call + "/wfs";
                 UpLat = "42.881562";
                 LowLat = "42.850633";
                 LowLong = "-78.890824";
@@ -107,7 +107,7 @@
                 dataSet = 9;
             } else if (dataSetString.equalsIgnoreCase("MI_Deer")) {
                 GDA = "False";
-                Sites = XML_Call + "wfs";
+                Sites = XML_Call + "/wfs";
                 UpLat = "46.556820";
                 LowLat = "46.447536";
                 LowLong = "-87.804871";
@@ -125,7 +125,7 @@
                 dataSet = 9;
             } else if (dataSetString.equalsIgnoreCase("NY_Eighteen")) {
                 GDA = "False";
-                Sites = XML_Call + "wfs";
+                Sites = XML_Call + "/wfs";
                 UpLat = "43.340909";
                 LowLat = "43.137289";
                 LowLong = "-78.797217";
@@ -134,7 +134,7 @@
                 dataSet = 9;
             } else if (dataSetString.equalsIgnoreCase("IN_Grandcalumet")) {
                 GDA = "False";
-                Sites = XML_Call + "wfs";
+                Sites = XML_Call + "/wfs";
                 UpLat = "41.760071";
                 LowLat = "41.606395";
                 LowLong = "-87.524709";
@@ -181,7 +181,7 @@
                 dataSet = 9;
             } else if (dataSetString.equalsIgnoreCase("NY_Niagara")) {
                 GDA = "False";
-                Sites = XML_Call + "wfs";
+                Sites = XML_Call + "/wfs";
                 UpLat = "43.263355";
                 LowLat = "42.811803";
                 LowLong = "-79.076271";
@@ -190,7 +190,7 @@
                 dataSet = 9;
             } else if (dataSetString.equalsIgnoreCase("NY_Oswego")) {
                 GDA = "False";
-                Sites = XML_Call + "wfs";
+                Sites = XML_Call + "/wfs";
                 UpLat = "43.473991";
                 LowLat = "43.446402";
                 LowLong = "-76.531727";
@@ -199,7 +199,7 @@
                 dataSet = 9;
             } else if (dataSetString.equalsIgnoreCase("PA_PresqueIsle")) {
                 GDA = "False";
-                Sites = XML_Call + "wfs";
+                Sites = XML_Call + "/wfs";
                 UpLat = "42.162684";
                 LowLat = "42.113121";
                 LowLong = "-80.151499";
@@ -217,7 +217,7 @@
                 dataSet = 9;
             } else if (dataSetString.equalsIgnoreCase("NY_Rochester")) {
                 GDA = "False";
-                Sites = XML_Call + "wfs";
+                Sites = XML_Call + "/wfs";
                 UpLat = "43.339662";
                 LowLat = "43.175139";
                 LowLong = "-77.756398";
@@ -244,7 +244,7 @@
                 dataSet = 9;
             } else if (dataSetString.equalsIgnoreCase("WI_Sheboygan")) {
                 GDA = "False";
-                Sites = XML_Call + "wfs";
+                Sites = XML_Call + "/wfs";
                 UpLat = "43.755541";
                 LowLat = "43.720441";
                 LowLong = "-87.812581";
@@ -262,7 +262,7 @@
                 dataSet = 9;
             } else if (dataSetString.equalsIgnoreCase("NY_StLawrence")) {
                 GDA = "False";
-                Sites = XML_Call + "wfs";
+                Sites = XML_Call + "/wfs";
                 UpLat = "45.015901";
                 LowLat = "44.931629";
                 LowLong = "-74.935712";
@@ -289,7 +289,7 @@
                 dataSet = 9;
             } else if (dataSetString.equalsIgnoreCase("MI_TorchLake")) {
                 GDA = "False";
-                Sites = XML_Call + "wfs";
+                Sites = XML_Call + "/wfs";
                 UpLat = "47.196807";
                 LowLat = "47.126543";
                 LowLong = "-88.476051";
@@ -298,7 +298,7 @@
                 dataSet = 9;
             } else if (dataSetString.equalsIgnoreCase("IL_Waukegan")) {
                 GDA = "False";
-                Sites = XML_Call + "wfs";
+                Sites = XML_Call + "/wfs";
                 UpLat = "42.419105";
                 LowLat = "42.319276";
                 LowLong = "-87.842729";
@@ -564,10 +564,10 @@
 		<link href="http://www.usgs.gov/frameworkfiles/styles/custom.css" rel="stylesheet" type="text/css" />
 		<link href="http://www.usgs.gov/frameworkfiles/styles/framework.css" rel="stylesheet" type="text/css" />
 
-		<link href="../styles/custom-theme/jquery.ui.all.css" rel="stylesheet"/>
+		<link href="styles/custom-theme/jquery.ui.all.css" rel="stylesheet"/>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 
-		<title>OGC Services SWIE</title>
+		<title>OGC Services</title>
 
 		<style type="text/css">
 			h1 {font-size: 3em;
@@ -576,20 +576,19 @@
 			}
 		</style>
 
-        <script type="text/javascript" src="../js/jquery-1.6.js"></script>
-        <script src="../js/LoadXML.js" type="text/javascript"></script>
-        <script src="../js/LoadXMLGDA.js" type="text/javascript"></script>
-        <script src="../js/LoadXMLPost.js" type="text/javascript"></script>
-        <script src="../js/parseXML.js" type="text/javascript"></script>
-        <script src="../js/parseGDAXML.js" type="text/javascript"></script>
-        <script src="../js/CreateMarker.js" type="text/javascript"></script>
-        <script src="../js/jquery.ui.core.min.js" type="text/javascript" ></script>
-        <script src="../js/jquery.ui.widget.min.js" type="text/javascript" ></script>
-        <script src="../js/jquery-ui-1.8.12.custom.min.js" type="text/javascript" ></script>
-<!--        <link rel="stylesheet" type="text/css" media="screen" href="tooltipv2.css" />-->
+        <script type="text/javascript" src="js/jquery-1.6.js"></script>
+        <script src="js/LoadXML.js" type="text/javascript"></script>
+        <script src="js/LoadXMLGDA.js" type="text/javascript"></script>
+        <script src="js/LoadXMLPost.js" type="text/javascript"></script>
+        <script src="js/parseXML.js" type="text/javascript"></script>
+        <script src="js/parseGDAXML.js" type="text/javascript"></script>
+        <script src="js/CreateMarker.js" type="text/javascript"></script>
+        <script src="js/jquery.ui.core.min.js" type="text/javascript" ></script>
+        <script src="js/jquery.ui.widget.min.js" type="text/javascript" ></script>
+        <script src="js/jquery-ui-1.8.12.custom.min.js" type="text/javascript" ></script>
 
         <script src="http://maps.google.com/maps?file=api&amp;v=3&amp;sensor=false&amp;key=ABQIAAAA_s7fSqhIs_dt6wGcko6mSRT0fazSD1VpH7Mi_uflQ_dFOWTAeBRRlw3A34pENLWUzwjXtIwUQHBc6Q" type="text/javascript"></script>
-        <script src="../js/mapiconmaker.js" type="text/javascript"></script>
+        <script src="js/mapiconmaker.js" type="text/javascript"></script>
 		
 		<script type="text/javascript">
 			$(function() {
@@ -605,76 +604,35 @@
 			});
 
 		</script>
+		<jsp:include page="template/css.jsp"></jsp:include>
     </head>
 
 <body>
     <table cellpadding="0" cellspacing="0" width="100%">
         <tr>
-            <td width="100%" valign="top"><!-- START header and top navigation section -->
-            <!-- BEGIN USGS Header Template -->
-                <div id="usgscolorband">
-                        <div id="usgsbanner">
-                                <div id="usgsidentifier"><a href="http://www.usgs.gov/"><img src="http://www.usgs.gov/images/header_graphic_usgsIdentifier_white.jpg" alt="USGS - science for a changing world" title="U.S. Geological Survey Home Page" width="178" height="72" /></a></div>
-
-                                <div id="usgsccsabox">
-                                        <div id="usgsccsa">
-                                          <br /><a href="http://www.usgs.gov/">USGS Home</a>
-                                          <br /><a href="http://www.usgs.gov/ask/">Contact USGS</a>
-                                          <br /><a href="http://search.usgs.gov/">Search USGS</a>
-                                        </div>
-                                </div>
-
-                        </div>
-                </div>
-
-                <div id="usgstitle">
-                        <p>Water Resources of the United States</p>
-                </div>
-    <!-- END USGS Header Template -->
+            <td width="100%" valign="top">
+				<jsp:include page="template/usgsheader.jsp"></jsp:include>
             </td>
         </tr>
     </table>
 
-        <h1>Surface Water Interoperability Experiment USGS Gage Sites</h1><br />
+        <h1>Forecasting Interoperability Experiment</h1><br />
 
 <!--===============================Create Table=========================================-->
 
 <table>
     <tr>
+		<td rowspan="2">
+			   <jsp:include page="template/sidebar.jsp"></jsp:include>
+		</td>
         <td>
-<table>
-        <tr>
-           <td>
-           <table  style="width:135px">
-               <tr height="50">
-               </tr>
-               <tr>
-                <td style="width:300px">
-                    <table>
-                        <tr>
-                            <td>
-                                <center><b>Navigation</b></center>
-                            </td>
-                        </tr>
-                        <tr height="10"></tr>
-                        <tr>
-                            <td>
-                                <li><a href="<%=base_url%>"> OGC Services</a></li>
-                                <li><a href="<%=base_url%>MapFiles/Map.jsp"> <b>Interactive Map</b></a></li>
-                                <li><a href="<%=base_url%>DischargePlot.jsp"> Timeseries Plot</a></li>
-                            </td>
-                        </tr>
-                    </table>
+			<table>
+				<tr>
+					<td>
+						<div id="map" style="width: 660px; height: 350px"></div><br />
+					</td>
 
-                </td>
-               </tr>
-           </table>
-           </td>
-            <td>
-                <div id="map" style="width: 660px; height: 350px"></div><br />
-            </td>
-
-        </tr>
+				</tr>
         <tr>
             <td COLSPAN="2">
                 <div id="tabs">
@@ -848,35 +806,35 @@ This example populates a GetDataAvailability query to find stations that measure
     </table>
         </td>
         <td>
-    <table>
-        <tr>
+			<table>
+				<tr>
 
-            <td valign="top">
-                <table style="width:400px">
-                    <tr>
-                        <td>
-                            <i><b>Current Marker:</b></i>
-                        </td>
-                        <td align="right">
-                            Number of Markers:<br />
-                            <b><div id="FeatureNumber"></div></b>
-<!--                            <img src = "../img/USGS.gif" width="84" height="31" alighn="right"/><br />-->
-                        </td>
-                    </tr>
-                </table>
-                <center>
-                    <div id="StationInfo" style="height:15px; width:400px">Click on a marker for data availability demonstration</div>
-                </center>
+					<td valign="top">
+						<table style="width:400px">
+							<tr>
+								<td>
+									<i><b>Current Marker:</b></i>
+								</td>
+								<td align="right">
+									Number of Markers:<br />
+									<b><div id="FeatureNumber"></div></b>
+		<!--                            <img src = "../img/USGS.gif" width="84" height="31" alighn="right"/><br />-->
+								</td>
+							</tr>
+						</table>
+						<center>
+							<div id="StationInfo" style="height:15px; width:400px">Click on a marker for data availability demonstration</div>
+						</center>
 
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div id="AvailableDataHeader"></div>
-                <div id="AvailableData" style="overflow:auto; height: 375px; width:400px"></div>
-            </td>
-        </tr>
-    </table>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div id="AvailableDataHeader"></div>
+						<div id="AvailableData" style="overflow:auto; height: 375px; width:400px"></div>
+					</td>
+				</tr>
+			</table>
         </td>
     </tr>
 </table>
@@ -906,7 +864,7 @@ This example populates a GetDataAvailability query to find stations that measure
             var Get = '<%=get%>';
             var GDA = '<%=GDA%>';
             var today = '<%=Today%>';
-            var test = base.length - 8;    // Gets rid of /MapFiles/ from baseURL
+            var test = base.length;    // Gets rid of /MapFiles/ from baseURL
             var base_url = base.substring(0,test);
             var LastWeekStr = '<%=LastWeek%>';
 
@@ -935,7 +893,7 @@ This example populates a GetDataAvailability query to find stations that measure
         pane.style.display = "none";
         
         var wfs_url = Sites;
-        document.getElementById("AvailableData").innerHTML = 'Loading...<img src = "../img/ajax-loader.gif"/>';
+        document.getElementById("AvailableData").innerHTML = 'Loading...<img src = "img/ajax-loader.gif"/>';
         if (Get == 'True'){
             xml = LoadXML(wfs_url);
         } else if (Get == 'False' & GDA == 'False'){
@@ -972,42 +930,7 @@ This example populates a GetDataAvailability query to find stations that measure
         <span> <font size="0.5"><br />* References to non-U.S. Department of the Interior (DOI) products do not constitute an endorsement by the DOI. By viewing the Google Maps API on this web site the user agrees to these
         <a href="http://code.google.com/apis/maps/terms.html" target="_blank" title="Opens a new browser window.">Terms of Service set forth by Google</a>.<br /></font></span>
         <br />
-        <!-- BEGIN USGS Footer Template -->
-
-<div id="linksfooterbar">
-   <!-- <p id="usgsfooterbar">-->
-	<a href="http://www.usgs.gov/" title="USGS Home page.">USGS Home</a>
-	<a href="http://water.usgs.gov/" title="USGS Water Resources of the United States">Water</a>
-	<a href="http://www.usgs.gov/climate_landuse/" title="USGS Climate and Land Use Change">Climate Change</a>
-	<a href="http://www.usgs.gov/core_science_systems/" title="USGS Core Science Systems">Science Systems</a>
-	<a href="http://www.usgs.gov/ecosystems/" title="USGS Ecosystems">Ecosystems</a>
-	<a href="http://www.usgs.gov/resources_envirohealth/" title="USGS Energy, Minerals, and Environmental Health">Energy, Minerals, &amp; Env. Health</a>
-	<a href="http://www.usgs.gov/natural_hazards/" title="USGS Natural Hazards">Hazards</a>
-        <a href="http://internal.usgs.gov/" title="USGS Intranet home page">USGS Intranet</a>
-   <!-- </p>-->
-</div>
-<div id="usgsfooter">
-      <p id="usgsfooterbar">
-        <a href="http://www.usgs.gov/accessibility.html" title="Accessibility Policy (Section 508)">Accessibility</a>
-        <a href="http://www.usgs.gov/foia/" title="Freedom of Information Act">FOIA</a>
-        <a href="http://www.usgs.gov/privacy.html" title="Privacy policies of the U.S. Geological Survey.">Privacy</a>
-        <a href="http://www.usgs.gov/policies_notices.html" title="Policies and notices that govern information posted on USGS Web sites.">Policies and Notices</a>
-      </p>
-
-      <p id="usgsfootertext">
-        <a href="http://www.takepride.gov/"><img src="http://www.usgs.gov/images/footer_graphic_takePride.jpg" alt="Take Pride in America logo" title="Take Pride in America Home Page" width="60" height="58"/></a>
-	<a href="http://firstgov.gov/"><img src="http://www.usgs.gov/images/footer_graphic_usagov.jpg" alt="USA.gov logo" width="90" height="26" style="float: right; margin-right: 10px;" title="USAGov: Government Made Easy."/></a>
-        <a href="http://www.doi.gov/">U.S. Department of the Interior</a> |
-        <a href="http://www.usgs.gov/">U.S. Geological Survey</a><br />
-        <br />
-
-       <!-- Page Contact Information: <a href="http://water.usgs.gov/user_feedback_form.html">Water Webserver Team</a><br />-->
-
-        Page Last Modified: Tuesday, 16-March-2011 16:45:46 CST
-      </p>
-</div>
-
-<!-- END USGS Footer Template -->
+	<jsp:include page="template/usgsfooter.jsp"></jsp:include>
   </body>
 
 </html>

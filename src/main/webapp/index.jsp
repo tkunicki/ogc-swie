@@ -286,61 +286,21 @@
 
 
     </script>
-
+	<jsp:include page="template/css.jsp"></jsp:include>
+	<link href="styles/style.css" type="text/css" rel="stylesheet">
   </head>
 
   <body onunload="GUnload()">
+	
+	<jsp:include page="template/usgsheader.jsp"></jsp:include>
 
-      <!-- BEGIN USGS Header Template -->
-    <div id="usgscolorband">
-      <div id="usgsbanner">
-		<div id="usgsidentifier"><a href="http://www.usgs.gov/"><img src="http://www.usgs.gov/images/header_graphic_usgsIdentifier_white.jpg" alt="USGS - science for a changing world" title="U.S. Geological Survey Home Page" width="178" height="72" /></a></div>
-
-        <div id="usgsccsabox">
-          <div id="usgsccsa">
-            <br /><a href="http://www.usgs.gov/">USGS Home</a>
-            <br /><a href="http://www.usgs.gov/ask/">Contact USGS</a>
-            <br /><a href="http://search.usgs.gov/">Search USGS</a>
-          </div>
-        </div>
-
-      </div>
-    </div>
-    <div id="usgstitle">
-      <p>Water Resources of the United States</p>
-    </div>
-<!-- END USGS Header Template -->
-
-    <h1>Forecasting Interoperability Experiment 2.1</h1>
+    <h1>Forecasting Interoperability Experiment 2.1.1</h1>
 
     <table>
         <tr>
-                   <td rowspan="2">
-                   <table  style="width:135px">
-                       <tr height="50">
-                       </tr>
-                       <tr>
-                        <td rowspan="2" style="width:300px">
-                            <table>
-                                <tr>
-                                    <td>
-                                        <center><b>Navigation</b></center>
-                                    </td>
-                                </tr>
-                                <tr height="10"></tr>
-                                <tr>
-                                    <td>
-                                        <li><a href="<%=baseURL%>"> <b>OGC Services</b></a></li>
-                                        <li><a href="<%=baseURL%>/MapFiles/Map.jsp"> Interactive Map</a></li>
-                                        <li><a href="<%=baseURL%>/DischargePlot.jsp"> Timeseries Plot</a></li>
-                                    </td>
-                                </tr>
-                            </table>
-
-                        </td>
-                       </tr>
-                   </table>
-                   </td>
+           <td rowspan="2">
+				   <jsp:include page="template/sidebar.jsp"></jsp:include>
+            </td>
             <td>
                 <div class="container">
 
@@ -361,7 +321,8 @@
                                 <p />
                                     <dl>
                                         <dt><b>GetObservation</b> - featureID(required), observedProperty(required), offering (required), beginPosition(optional), endPosition(optional), Interval(optional), Latest(optional)</dt><br />
-                                        <dd>observedProperty: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH </dd>
+                                        <dd>bservedProperty: 00060, 00065, 00010, 00045, 63680, 00300, 00400 </dd>
+										<dd>-   <i> corresponds to</i>: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH </dd>
                                         <dd>beginPostion: YYYY-MM-DD, YYYY-MM, YYYY <i>(defaults to earliest record)</i></dd>
                                         <dd>endPostion: YYYY-MM-DD, YYYY-MM, YYYY <i>(defaults to most recent record)</i></dd>
                                         <dd>Interval: Today, ThisWeek <i>Future plan to implement ISO-8601 Duration option</i></dd>
@@ -369,23 +330,23 @@
                                         <dd>offering: UNIT <i>(defaults to UNIT)</i></dd>
                                         <br /><i>Gage height observation by feature ID and begin time:</i>
                                         <dd>
-                                            <a href="<%=baseURL%>/wml2/uv/sos?request=GetObservation&featureID=01446500&observedProperty=GageHeight&offering=UNIT&beginPosition=<%=LastWeek%>"><%=baseURL%>/wml2/uv/sos?request=GetObservation&featureId=01446500&offering=UNIT&observedProperty=GageHeight&beginPosition=<%=LastWeek%></a>
+                                            <a href="<%=baseURL%>/wml2/uv/sos?request=GetObservation&featureID=01446500&observedProperty=00065&offering=UNIT&beginPosition=<%=LastWeek%>"><%=baseURL%>/wml2/uv/sos?request=GetObservation&featureId=01446500&offering=UNIT&observedProperty=00065t&beginPosition=<%=LastWeek%></a>
                                         </dd>
                                         <br /><i>Discharge observation by feature ID and begin time:</i><br />
                                         <dd>
-                                            <a href="<%=baseURL%>/wml2/uv/sos?request=GetObservation&featureID=01446500&offering=UNIT&observedProperty=Discharge&beginPosition=<%=LastWeek%>"><%=baseURL%>/wml2/uv/sos?request=GetObservation&featureId=01446500&offering=UNIT&observedProperty=Discharge&beginPosition=<%=LastWeek%></a>
+                                            <a href="<%=baseURL%>/wml2/uv/sos?request=GetObservation&featureID=01446500&offering=UNIT&observedProperty=00060&beginPosition=<%=LastWeek%>"><%=baseURL%>/wml2/uv/sos?request=GetObservation&featureId=01446500&offering=UNIT&observedProperty=00060&beginPosition=<%=LastWeek%></a>
                                         </dd>
                                         <br /><i>Latest discharge observation by feature ID:</i><br />
                                         <dd>
-                                            <a href="<%=baseURL%>/wml2/uv/sos?request=GetObservation&featureID=05407000&offering=UNIT&observedProperty=Discharge&Latest"><%=baseURL%>/wml2/uv/sos?request=GetObservation&featureId=05407000&offering=UNIT&observedProperty=Discharge&Latest</a>
+                                            <a href="<%=baseURL%>/wml2/uv/sos?request=GetObservation&featureID=05407000&offering=UNIT&observedProperty=00060&Latest"><%=baseURL%>/wml2/uv/sos?request=GetObservation&featureId=05407000&offering=UNIT&observedProperty=00060&Latest</a>
                                         </dd>
                                         <br /><i>Temperature observation by feature ID for this week:</i><br />
                                         <dd>
-                                            <a href="<%=baseURL%>/wml2/uv/sos?request=GetObservation&featureID=05407000&offering=UNIT&observedProperty=Temperature&Interval=ThisWeek"><%=baseURL%>/wml2/uv/sos?request=GetObservation&featureId=05407000&offering=UNIT&observedProperty=Temperature&Interval=ThisWeek</a>
+                                            <a href="<%=baseURL%>/wml2/uv/sos?request=GetObservation&featureID=05407000&offering=UNIT&observedProperty=00010&Interval=ThisWeek"><%=baseURL%>/wml2/uv/sos?request=GetObservation&featureId=05407000&offering=UNIT&observedProperty=00010&Interval=ThisWeek</a>
                                         </dd>
                                         <br /><i>Collection Example: Note this example does not necessarily validate to WaterML2 schema</i>
                                         <dd>
-                                            <a href="<%=baseURL%>/wml2/uv/sos?request=GetObservation&featureID=01446500,05082500&observedProperty=Discharge,DO&offering=UNIT&beginPosition=<%=LastWeek%>"><%=baseURL%>/wml2/uv/sos?request=GetObservation&featureId=01446500,05082500&offering=UNIT&observedProperty=Discharge,DO&beginPosition=<%=LastWeek%></a>
+                                            <a href="<%=baseURL%>/wml2/uv/sos?request=GetObservation&featureID=01446500,05082500&observedProperty=00060,00300&offering=UNIT&beginPosition=<%=LastWeek%>"><%=baseURL%>/wml2/uv/sos?request=GetObservation&featureId=01446500,05082500&offering=UNIT&observedProperty=00060,00300&beginPosition=<%=LastWeek%></a>
                                         </dd>
 
                                     </dl>
@@ -406,7 +367,7 @@
     xmlns:xlink="http://www.w3.org/1999/xlink"
     xsi:schemaLocation="http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0.0/sos.xsd">
     <sos:featureOfInterest>01446500</sos:featureOfInterest>
-    <sos:observedProperty>Discharge</sos:observedProperty>
+    <sos:observedProperty>00060</sos:observedProperty>
     <sos:temporalFilter>
         <fes:ValueReference>phenomenonTime</fes:ValueReference>
         <gml:TimeInstant gml:id='beginPosition'>
@@ -439,7 +400,8 @@
 
                             <dl>
                                 <dt><b>GetObservation</b> - featureID(required), offering(required), observedProperty(required), beginPosition(optional), endPosition(optional), Interval(optional), Latest(optional)</dt><br />
-                                <dd>observedProperty: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH </dd>
+                                <dd>observedProperty: 00060, 00065, 00010, 00045, 63680, 00300, 00400 </dd>
+								<dd>-  <i> corresponds to: </i> Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH </dd>
                                 <dd>offering: Unit, Mean, Maximum, Minimum, Variance, Mode, STD, SUM</dd>
                                 <dd>beginPostion: YYYY-MM-DD, YYYY-MM, YYYY <i>(defaults to earliest record)</i></dd>
                                 <dd>endPostion: YYYY-MM-DD, YYYY-MM, YYYY <i>(defaults to most recent record)</i></dd>
@@ -447,23 +409,23 @@
                                 <dd>Latest: only the most recent data point is reported</dd>
                                 <br /><i>Daily mean discharge observation by feature ID with begin and end time:</i><br />
                                 <dd>
-                                    <a href="<%=baseURL%>/wml2/dv/sos?request=GetObservation&featureID=01446500&observedProperty=Discharge&beginPosition=1970-01-01&endPosition=1971-01-01&offering=Mean"><%=baseURL%>/wml2/dv/sos?request=GetObservation&featureId=01446500&observedProperty=Discharge&beginPosition=1970-01-01&endPosition=1971-01-01&offering=Mean</a>
+                                    <a href="<%=baseURL%>/wml2/dv/sos?request=GetObservation&featureID=01446500&observedProperty=00060&beginPosition=1970-01-01&endPosition=1971-01-01&offering=Mean"><%=baseURL%>/wml2/dv/sos?request=GetObservation&featureId=01446500&observedProperty=00060&beginPosition=1970-01-01&endPosition=1971-01-01&offering=Mean</a>
                                 </dd>
-                                <br /><i>Daily maximum temperature observations by feature ID and begin time:</i><br />
+                                <br /><i>Daily sum precipitation observations by feature ID and begin time:</i><br />
                                 <dd>
-                                    <a href="<%=baseURL%>/wml2/dv/sos?request=GetObservation&featureID=05082500&observedProperty=Temperature&beginPosition=2010-01-01&offering=Maximum"><%=baseURL%>/wml2/dv/sos?request=GetObservation&featureId=05407000&observedProperty=Precipitation&beginPosition=2010-01-01&offering=Maximum</a>
+                                    <a href="<%=baseURL%>/wml2/dv/sos?request=GetObservation&featureID=435601087432701&observedProperty=00045&beginPosition=2012-01-01&offering=Sum"><%=baseURL%>/wml2/dv/sos?request=GetObservation&featureId=435601087432701&observedProperty=00045&beginPosition=2012-01-01&offering=Sum</a>
                                 </dd>
                                 <br /><i>Daily mean discharge observations by feature ID this year:</i><br />
                                 <dd>
-                                    <a href="<%=baseURL%>/wml2/dv/sos?request=GetObservation&featureID=05082500&observedProperty=Discharge&Interval=ThisYear&offering=Mean"><%=baseURL%>/wml2/dv/sos?request=GetObservation&featureId=05407000&observedProperty=Discharge&Interval=ThisYear&offering=Mean</a>
+                                    <a href="<%=baseURL%>/wml2/dv/sos?request=GetObservation&featureID=05082500&observedProperty=00060&Interval=ThisYear&offering=Mean"><%=baseURL%>/wml2/dv/sos?request=GetObservation&featureId=05407000&observedProperty=00060&Interval=ThisYear&offering=Mean</a>
                                 </dd>
                                 <br /><i>Latest daily mean discharge observations by feature ID:</i><br />
                                 <dd>
-                                    <a href="<%=baseURL%>/wml2/dv/sos?request=GetObservation&featureID=05082500&observedProperty=Discharge&offering=Mean&Latest"><%=baseURL%>/wml2/dv/sos?request=GetObservation&featureId=05407000&observedProperty=Discharge&offering=Mean&Latest</a>
+                                    <a href="<%=baseURL%>/wml2/dv/sos?request=GetObservation&featureID=05082500&observedProperty=00060&offering=Mean&Latest"><%=baseURL%>/wml2/dv/sos?request=GetObservation&featureId=05407000&observedProperty=00060&offering=Mean&Latest</a>
                                 </dd>
                                 <br /><i>Collection Example: Note this example does not necessarily validate to WaterML2 schema</i>
                                 <dd>
-                                    <a href="<%=baseURL%>/wml2/dv/sos?request=GetObservation&featureID=01446500,05082500&observedProperty=Discharge,DO&offering=Mean,Maximum&beginPosition=<%=LastWeek%>"><%=baseURL%>/wml2/dv/sos?request=GetObservation&featureId=01446500,05082500&offering=Mean,Maximum&observedProperty=Discharge,DO&beginPosition=<%=LastWeek%></a>
+                                    <a href="<%=baseURL%>/wml2/dv/sos?request=GetObservation&featureID=01446500,05082500&observedProperty=00060,00300&offering=Mean,Maximum&beginPosition=<%=LastWeek%>"><%=baseURL%>/wml2/dv/sos?request=GetObservation&featureId=01446500,05082500&offering=Mean,Maximum&observedProperty=00060,00300&beginPosition=<%=LastWeek%></a>
                                 </dd>
                             </dl>
                             <p />
@@ -482,7 +444,7 @@
     xmlns:xlink="http://www.w3.org/1999/xlink"
     xsi:schemaLocation="http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0.0/sos.xsd">
     <sos:featureOfInterest>05082500</sos:featureOfInterest>
-    <sos:observedProperty>DO</sos:observedProperty>
+    <sos:observedProperty>00300</sos:observedProperty>
     <sos:offering>Maximum</sos:offering>
     <sos:temporalFilter>
         <fes:ValueReference>phenomenonTime</fes:ValueReference>
@@ -725,6 +687,9 @@
             <p />
         </li>
         <li><strong>Log</strong>
+			<dl>Version 2.1.1 July 11, 2012<br />
+				<dd> * Fixed daylight savings issue</dd>
+			</dl>
 			<dl>Version 2.1 May 29, 2012<br />
 				<dd> * Fixed daylight savings issue</dd>
 			</dl>
@@ -736,7 +701,6 @@
 				<dd> * Updated output on Map tab to show Forecasting IE sites rather than Surface Water IE sites</dd>
 			</dl>
             <dl>Version 1.8 May 11th, 2011 <br />
-                <dd> * Fixed spelling mistake (Availablity to Availability) </dd>
                 <dd> * Included interactive map </dd>
             </dl>
             <dl>Version 1.7 May 6th, 2011 <br />
@@ -794,7 +758,7 @@ if (GBrowserIsCompatible()) {
     map.addControl(new GMapTypeControl());
     map.addMapType(G_PHYSICAL_MAP);
 //    map.setCenter(new GLatLng(40.55972222, -95.613888889), 4, G_PHYSICAL_MAP);   // good for Surface Water IE
-    map.setCenter(new GLatLng(48.55972222, -101.5), 6, G_PHYSICAL_MAP);
+    map.setCenter(new GLatLng(48.55972222, -101.5), 7, G_PHYSICAL_MAP);
 //    map.setCenter(new GLatLng(Lat, Long), Scale, G_PHYSICAL_MAP);
     map.enableScrollWheelZoom();
     map.addOverlay(ActiveMarker);
@@ -820,44 +784,7 @@ else {
         <p />
     </ul>
 
-        <!-- BEGIN USGS Footer Template -->
-
-<div id="linksfooterbar">
-   <!-- <p id="usgsfooterbar">-->
-	<a href="http://www.usgs.gov/" title="USGS Home page.">USGS Home</a>
-	<a href="http://water.usgs.gov/" title="USGS Water Resources of the United States">Water</a>
-	<a href="http://www.usgs.gov/climate_landuse/" title="USGS Climate and Land Use Change">Climate Change</a>
-	<a href="http://www.usgs.gov/core_science_systems/" title="USGS Core Science Systems">Science Systems</a>
-	<a href="http://www.usgs.gov/ecosystems/" title="USGS Ecosystems">Ecosystems</a>
-	<a href="http://www.usgs.gov/resources_envirohealth/" title="USGS Energy, Minerals, and Environmental Health">Energy, Minerals, &amp; Env. Health</a>
-	<a href="http://www.usgs.gov/natural_hazards/" title="USGS Natural Hazards">Hazards</a>
-        <a href="http://internal.usgs.gov/" title="USGS Intranet home page">USGS Intranet</a>
-   <!-- </p>-->
-</div>
-<div id="usgsfooter">
-      <p id="usgsfooterbar">
-        <a href="http://www.usgs.gov/accessibility.html" title="Accessibility Policy (Section 508)">Accessibility</a>
-        <a href="http://www.usgs.gov/foia/" title="Freedom of Information Act">FOIA</a>
-        <a href="http://www.usgs.gov/privacy.html" title="Privacy policies of the U.S. Geological Survey.">Privacy</a>
-        <a href="http://www.usgs.gov/policies_notices.html" title="Policies and notices that govern information posted on USGS Web sites.">Policies and Notices</a>
-      </p>
-
-      <p id="usgsfootertext">
-        <a href="http://www.takepride.gov/"><img src="http://www.usgs.gov/images/footer_graphic_takePride.jpg" alt="Take Pride in America logo" title="Take Pride in America Home Page" width="60" height="58"/></a>
-	<a href="http://firstgov.gov/"><img src="http://www.usgs.gov/images/footer_graphic_usagov.jpg" alt="USA.gov logo" width="90" height="26" style="float: right; margin-right: 10px;" title="USAGov: Government Made Easy."/></a>
-        <a href="http://www.doi.gov/">U.S. Department of the Interior</a> |
-        <a href="http://www.usgs.gov/">U.S. Geological Survey</a><br />
-        URL: <%=baseURL%><br />
-
-       <!-- Page Contact Information: <a href="http://water.usgs.gov/user_feedback_form.html">Water Webserver Team</a><br />-->
-
-       <script type="text/javascript">
-            document.write("Last updated: " + document.lastModified +"");
-        </script>
-      </p>
-</div>
-
-<!-- END USGS Footer Template -->
+	<jsp:include page="template/usgsfooter.jsp"></jsp:include>
   </body>
 
 </html>
