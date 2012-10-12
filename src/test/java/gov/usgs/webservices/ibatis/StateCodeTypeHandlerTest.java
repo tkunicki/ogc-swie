@@ -28,6 +28,8 @@ public class StateCodeTypeHandlerTest {
         assertEquals("AL", result);
         result = StateCodeTypeHandler.getPostalNameFromSQL("55");
         assertEquals("WI", result);
+        result = StateCodeTypeHandler.getPostalNameFromSQL("12");
+        assertEquals("FL", result);
     }
 
     @Test
@@ -37,6 +39,8 @@ public class StateCodeTypeHandlerTest {
         assertEquals("Alabama", result);
         result = StateCodeTypeHandler.getStateNameFromSQL("55");
         assertEquals("Wisconsin", result);
+        result = StateCodeTypeHandler.getStateNameFromSQL("12");
+        assertEquals("Flordia", result);
     }
 
 }

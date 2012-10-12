@@ -321,7 +321,7 @@
                                 <p />
                                     <dl>
                                         <dt><b>GetObservation</b> - featureID(required), observedProperty(required), offering (required), beginPosition(optional), endPosition(optional), Interval(optional), Latest(optional)</dt><br />
-                                        <dd>bservedProperty: 00060, 00065, 00010, 00045, 63680, 00300, 00400 </dd>
+                                        <dd>observedProperty: 00060, 00065, 00010, 00045, 63680, 00300, 00400 </dd>
 										<dd>-   <i> corresponds to</i>: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH </dd>
                                         <dd>beginPostion: YYYY-MM-DD, YYYY-MM, YYYY <i>(defaults to earliest record)</i></dd>
                                         <dd>endPostion: YYYY-MM-DD, YYYY-MM, YYYY <i>(defaults to most recent record)</i></dd>
@@ -621,7 +621,7 @@
                         </div>
                         <div id="tabMap" class="tab_content">
                             This map shows USGS sites for the Forecasting IE, although <b>all USGS sites are available</b> in these services. <br />
-							See the <a href="MapFiles/Map.jsp">Interactive Map</a> for more mapping features.
+							See the <a href="Map.jsp">Interactive Map</a> for more mapping features.
 							<center>
                                 <table cellpadding="5">
                                     <tr>
@@ -688,7 +688,8 @@
         </li>
         <li><strong>Log</strong>
 			<dl>Version 2.1.1 July 11, 2012<br />
-				<dd> * Fixed daylight savings issue</dd>
+				<dd> * Changed observedProperty requirements to USGS parameter codes.  This allows the xlink:href to resolve.</dd>
+				<dd> * getCapabilities was not updated, however using the codes in getCapabilities will work, however the url's will not resolve</dd>
 			</dl>
 			<dl>Version 2.1 May 29, 2012<br />
 				<dd> * Fixed daylight savings issue</dd>

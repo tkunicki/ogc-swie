@@ -171,15 +171,15 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			<!-- om:result/owner -->
 		<result
 			property="wml2:observationMember/om:OM_Observation/om:metadata/wml2:ObservationMetadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString=%s Water Science Center"
-			column="district_cd"
+			column="state_cd"
 			typeHandler="StateFullNameTypeHandler" />
 		<result
 			property="wml2:observationMember/om:OM_Observation/om:metadata/wml2:ObservationMetadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode#codeList=http://www.isotc211.org/2005/resources/CodeList/gmxCodelists.xml#CI_RoleCode"
-			column="district_cd"
+			column="state_cd"
 			typeHandler="StateFullNameTypeHandler" />
 		<result
 			property="wml2:observationMember/om:OM_Observation/om:metadata/wml2:ObservationMetadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode#codeListValue=owner"
-			column="district_cd"
+			column="state_cd"
 			typeHandler="StateFullNameTypeHandler" />
 		<result
 			property="wml2:observationMember/om:OM_Observation/om:metadata/wml2:ObservationMetadata/gmd:dateStamp/gco:DateTime"
@@ -187,7 +187,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 			javaType="string" />
 		<result
 			property="wml2:observationMember/om:OM_Observation/om:metadata/wml2:ObservationMetadata/gmd:identificationInfo="
-			column="district_cd"
+			column="state_cd"
 			typeHandler="StateFullNameTypeHandler" />
 			
 			<!-- /om:metadata -->
@@ -477,7 +477,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 					g.result_tz_cd as zoneAbbreviation,
 					CONCAT(CONVERT(DATE_FORMAT(s.startTime,'%Y-%m-%dT%H:%i'),CHAR),g.result_tz_cd) AS beginPosition,
 					CONCAT(CONVERT(DATE_FORMAT(s.endTime,'%Y-%m-%dT%H:%i'),CHAR),g.result_tz_cd) AS endPosition,
-					'00001' AS stat_cd,
+					'Instantaneous' AS stat_cd,
 				</when>
 				<otherwise>
 					<choose>
@@ -522,7 +522,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 					f.tz_cd as zoneAbbreviation,
 					CONCAT(CONVERT(DATE_FORMAT(s.startTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS beginPosition,
 					CONCAT(CONVERT(DATE_FORMAT(s.endTime,'%Y-%m-%dT%H:%i'),CHAR),f.tz_cd) AS endPosition,
-					g.stat_cd AS stat_cd,
+					z.stat_ds AS stat_cd,
 				</otherwise>
 				</choose>
 				e.loc_nm,
@@ -600,7 +600,9 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 				</when>
 				<otherwise>
 				nwisweb.DV_DD_CONF e,
+				nwisweb.STAT z,
 				nwisweb.DV g
+				
 				</otherwise>
 			</choose>
 				LEFT JOIN nwisweb.DD_STATUS c ON (c.site_id = g.site_id
@@ -633,6 +635,7 @@ http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd"
 
 		<if test="IsUnitValue[0] == 'False'">
 				AND g.stat_cd IN <foreach item="i" collection="offering" open="(" separator="," close=")">#{i}</foreach>
+				AND g.stat_cd = z.stat_cd
 		</if>
 
 		<if test="beginPosition != null">
